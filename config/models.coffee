@@ -11,6 +11,7 @@
 
 module.exports.models = {
   migrate: 'drop'
+  connection: 'subsapp_db'
 }
 
 # ---
