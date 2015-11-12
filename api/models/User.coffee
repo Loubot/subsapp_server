@@ -22,13 +22,7 @@ module.exports =
     lastName:
       type: 'string'
       defaultsTo: ''
-    photo:
-      type: 'string'
-      defaultsTo: ''
-      url: true
-    socialProfiles:
-      type: 'object'
-      defaultsTo: {}
+    
     toJSON: ->
       obj = @toObject()
       delete obj.password
