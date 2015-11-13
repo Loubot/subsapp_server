@@ -5,8 +5,8 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
-    "coffee-script": "~1.10",
     "bcrypt-nodejs": "0.0.3",
+    "coffee-script": "~1.10",
     "ejs": "~0.8.4",
     "grunt": "0.4.2",
     "grunt-contrib-clean": "~0.5.0",
