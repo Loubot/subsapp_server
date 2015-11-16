@@ -5,14 +5,11 @@
  * @description :: Model for storing users
  */
 module.exports = {
+  autoUpdatedAt: true,
+  autoCreatedAt: true,
+  autoPK: true,
   schema: true,
   attributes: {
-    username: {
-      type: 'string',
-      required: true,
-      unique: true,
-      alphanumericdashed: true
-    },
     password: {
       type: 'string'
     },
@@ -28,15 +25,6 @@ module.exports = {
     lastName: {
       type: 'string',
       defaultsTo: ''
-    },
-    photo: {
-      type: 'string',
-      defaultsTo: '',
-      url: true
-    },
-    socialProfiles: {
-      type: 'object',
-      defaultsTo: {}
     },
     toJSON: function() {
       var obj;

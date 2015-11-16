@@ -59,7 +59,7 @@ _onLocalStrategyAuth = function(email, password, next) {
     if (!user) {
       return next(null, false, {
         code: 'E_USER_NOT_FOUND',
-        message: email + ' is not found'
+        message: email + ' is not a registered user'
       });
     }
     if (!CipherService.comparePassword(password, user)) {

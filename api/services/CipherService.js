@@ -22,7 +22,7 @@ module.exports = {
       user: user.toJSON()
     }, sails.config.jwtSettings.secret, {
       algorithm: sails.config.jwtSettings.algorithm,
-      expiresInMinutes: sails.config.jwtSettings.expiresInMinutes,
+      expiresIn: sails.config.jwtSettings.expiresInMinutes,
       issuer: sails.config.jwtSettings.issuer,
       audience: sails.config.jwtSettings.audience
     });
