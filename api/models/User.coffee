@@ -6,11 +6,11 @@
 module.exports =
   schema: true
   attributes:
-    username:
-      type: 'string'
-      required: true
-      unique: true
-      alphanumericdashed: true
+    # username:
+    #   type: 'string'
+    #   required: true
+    #   unique: true
+    #   alphanumericdashed: true
     password: type: 'string'
     email:
       type: 'email'
