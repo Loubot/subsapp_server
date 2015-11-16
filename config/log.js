@@ -24,6 +24,9 @@ module.exports.log = {
   *                                                                          *
   ***************************************************************************/
 
-  // level: 'info'
+  log: {
+    level: 'info',
+    filePath: 'C:\\Users\\angell\\Documents\\sails\\subsapp_serve\\logfile.log'
+  }
 
 };

@@ -19,6 +19,8 @@ passport = require('passport');
  * @private
  */
 
+sails.log.silly();
+
 _onPassportAuth = function(req, res, error, user, info) {
   if (error) {
     return res.serverError(error);

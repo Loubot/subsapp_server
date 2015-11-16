@@ -5,6 +5,9 @@
  * @description :: Model for storing users
  */
 module.exports = {
+  autoUpdatedAt: true,
+  autoCreatedAt: true,
+  autoPK: true,
   schema: true,
   attributes: {
     password: {

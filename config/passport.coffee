@@ -41,7 +41,7 @@ _onLocalStrategyAuth = (email, password, next) ->
     if !user
       return next(null, false,
         code: 'E_USER_NOT_FOUND'
-        message: email + ' is not found')
+        message: email + ' is not a registered user')
     # TODO: replace with new cipher service type
     if !CipherService.comparePassword(password, user)
       return next(null, false,
