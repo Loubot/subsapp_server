@@ -5,6 +5,8 @@
  * @description :: Model for storing users
  */
 module.exports = {
+  migrate: 'safe',
+  adapter: 'mysql',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -25,6 +27,10 @@ module.exports = {
     lastName: {
       type: 'string',
       defaultsTo: ''
+    },
+    tokens: {
+      type: 'integer',
+      defaultsTo: 0
     },
     toJSON: function() {
       var obj;
