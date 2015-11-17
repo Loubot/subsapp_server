@@ -8,24 +8,22 @@
  */
 module.exports = {
   up_tokens: function(req, res) {
-    return User.findOne(req.user.id, function(err, res) {
+    return User.findOne({
+      id: req.user.id
+    }).then(function(found) {
       var new_tokens;
-      sails.log.debug("res.tokens " + res.tokens);
-      sails.log.debug("before " + res.tokens);
-      new_tokens = ++res.tokens;
-      sails.log.debug("after " + new_tokens);
+      sails.log.debug(" result " + (JSON.stringify(found)));
+      new_tokens = ++found.tokens;
+      sails.log.debug("new_tokens " + new_tokens);
       return User.update(req.user.id, {
         tokens: new_tokens
-      }, function(err, res) {
-        var error, error1;
-        sails.log.debug("update " + (JSON.stringify(res)));
-        try {
-          return console.log("res attempt " + res);
-        } catch (error1) {
-          error = error1;
-          return console.log(error);
-        }
+      }).then(function(result) {
+        sails.log.debug(" user id " + req.user.id);
+        sails.log.debug("update result " + (JSON.stringify(result)));
+        return res.send(result);
       });
+    }).fail(function(error) {
+      return console.log('bla');
     });
   }
 };
