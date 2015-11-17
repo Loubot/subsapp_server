@@ -16,8 +16,9 @@ module.exports =
     #   required: true
     #   unique: true
     #   alphanumericdashed: true
-    password: 
-      type: 'string'
+
+    password: type: 'string'
+
     email:
       type: 'email'
       required: true
