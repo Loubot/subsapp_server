@@ -1,0 +1,10 @@
+html, body {
+    height: 100%;
+
+}
+
+body{
+  background-color: #337F76 !important;
+  width: 100%;
+  word-wrap: break-word
+}

@@ -21,5 +21,8 @@
 ###
 
 module.exports.routes = 
-  '/': view: 'homepage'
-  'post /up_tokens': 'UserController.up_tokens'
+  # '/': view: 'homepage'
+  'get /':              'WebController.homepage'
+  'get /welcome':       'WebController.welcome'
+  'get /register':      'WebController.register'
+  'post /up_tokens':    'UserController.up_tokens'

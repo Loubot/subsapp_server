@@ -32,24 +32,6 @@ module.exports = {
 
       # User.update req.user.id, { tokens: new_tokens }, (err, updated) ->
       #   sails.log.debug "update #{ JSON.stringify updated }"
-        
-
-    
+      
     
 }
-
-
-
-
-# try
-#   User.update(1, { tokens: 2 }).exec (err, updated) ->
-#   console.log 'Updated user to have name ' + JSON.stringify updated
-#   if err
-#     res.send err
-#     # handle error here- e.g. `res.serverError(err);`
-#     return
-  
-#   return
-#   res.send 'Hi there!' + JSON.stringify updated
-# catch err
-#   console.log JSON.stringify err
