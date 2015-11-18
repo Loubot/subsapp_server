@@ -6,17 +6,4 @@
  * @description :: Server-side logic for managing Web pages
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-module.exports = {
-  homepage: function(req, res) {
-    sails.log.debug('This is the homepage');
-    return res.view('homepage');
-  },
-  welcome: function(req, res) {
-    sails.log.debug('This is the welcome page');
-    return res.view('webcontroller/welcome');
-  },
-  register: function(req, res) {
-    sails.log.debug('This is the register page');
-    return res.view('webcontroller/register');
-  }
-};
+module.exports = {};

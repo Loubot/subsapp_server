@@ -6,15 +6,15 @@
 ###
 
 module.exports = {
-  homepage: (req, res) ->
-    sails.log.debug 'This is the homepage'
-    res.view('homepage')
+  # homepage: (req, res) ->
+  #   sails.log.debug 'This is the homepage'
+  #   res.view('homepage')
 
-  welcome: (req, res)  ->
-    sails.log.debug 'This is the welcome page'
-    res.view('webcontroller/welcome')
+  # welcome: (req, res)  ->
+  #   sails.log.debug 'This is the welcome page'
+  #   res.view('webcontroller/welcome')
 
-  register: (req, res) ->
-    sails.log.debug 'This is the register page'
-    res.view('webcontroller/register')
+  # register: (req, res) ->
+  #   sails.log.debug 'This is the register page'
+  #   res.view('webcontroller/register')
 }

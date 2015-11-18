@@ -5,7 +5,7 @@ angular.module('subzapp_server.controllers', [])
 subzapp_server.config ($routeProvider) ->
   $routeProvider.when('/',
     # controller: 'login_controller'
-    templateUrl: 'login')
+    templateUrl: 'login/login')
 
 
 
@@ -20,6 +20,11 @@ subzapp_server.constant 'RESOURCES', do ->
     # BASIC_INFO: resource + '/api/info'
   }
 
+window.subzapp_server.controller 'login_controller', ($scope, $http, $location, RESOURCES) ->
+  console.log 'login conteroller'
+  $scope.user = {}
+  alert 'b'
+  
 
 
 

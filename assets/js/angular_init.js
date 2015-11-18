@@ -7,7 +7,7 @@ angular.module('subzapp_server.controllers', []);
 
 subzapp_server.config(function($routeProvider) {
   return $routeProvider.when('/', {
-    templateUrl: 'login'
+    templateUrl: 'login/login'
   });
 });
 
@@ -18,5 +18,11 @@ subzapp_server.constant('RESOURCES', (function() {
     DOMAIN: url
   };
 })());
+
+window.subzapp_server.controller('login_controller', function($scope, $http, $location, RESOURCES) {
+  console.log('login conteroller');
+  $scope.user = {};
+  return alert('b');
+});
 
 $(document).ready(function() {});
