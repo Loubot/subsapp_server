@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="subzapp_server">
   <head>
     <title>SubZapp</title>
 
@@ -36,6 +36,7 @@
   </head>
 
   <body>
+    <%- partial('partials/nav.ejs') %>
     <%- body %>
 
 
@@ -91,7 +92,11 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/angular.js"></script>
+    <script src="/js/angular-route.js"></script>
+    <script src="/js/angular-animate.js"></script>
     <script src="/js/jquery-2.1.4.min.js"></script>
+    <script src="/js/angular_init.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/login_reg.js"></script>
     <!--SCRIPTS END-->

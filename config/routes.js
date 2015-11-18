@@ -22,8 +22,7 @@
  * http://sailsjs.org/#!/documentation/concepts/Routes/RouteTargetSyntax.html
  */
 module.exports.routes = {
-  'get /': 'WebController.homepage',
-  'get /welcome': 'WebController.welcome',
-  'get /register': 'WebController.register',
-  'post /up_tokens': 'UserController.up_tokens'
+  '/': {
+    view: 'homepage'
+  }
 };
