@@ -5,17 +5,13 @@ window.subzapp_server = angular.module('subzapp_server', ['ngRoute', 'ngAnimate'
 
 angular.module('subzapp_server.controllers', []);
 
-myApp.config(function($routeProvider) {
+subzapp_server.config(function($routeProvider) {
   return $routeProvider.when('/', {
-    templateUrl: 'views/login/login.html'
-  }).when('/register', {
-    templateUrl: 'views/register/register.html'
-  }).when('/user', {
-    templateUrl: 'views/user/user.html'
+    templateUrl: 'login'
   });
 });
 
-myApp.constant('RESOURCES', (function() {
+subzapp_server.constant('RESOURCES', (function() {
   var url;
   url = 'http://localhost:1337';
   return {

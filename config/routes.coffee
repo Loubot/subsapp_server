@@ -22,6 +22,7 @@
 
 module.exports.routes = 
   '/': view: 'homepage'
+  '/login': view: 'login'
   # 'get /':              'WebController.homepage'
   # 'get /welcome':       'WebController.welcome'
   # 'get /register':      'WebController.register'
