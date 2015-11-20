@@ -5,6 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "angular-ui-router": "^0.2.15",
     "bcrypt-nodejs": "0.0.3",
     "coffee-script": "~1.10",
     "ejs": "~0.8.4",
