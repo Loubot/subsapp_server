@@ -24,5 +24,9 @@
 module.exports.routes = {
   '/': {
     view: 'index'
+  },
+  'post /api/v1/login': {
+    controller: 'WebController',
+    action: 'login'
   }
 };

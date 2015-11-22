@@ -13,10 +13,30 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
 
     $urlRouterProvider.otherwise "/"
 
-    #login state
-    # $stateProvider.state "login",
-    #     url : "/"
-    #     templateUrl : 'angular_app/views/login/login.html'
-    #     controller : "LoginController"
+    $stateProvider.state "user",
+      url : "/user"
+      templateUrl : 'angular_app/views/user/user.html'
+      controller : "UserController"
+
+    # login state
+    $stateProvider.state "login",
+      url : "/"
+      templateUrl : 'angular_app/views/login/login.html'
+      controller : "LoginController"
+    
+    # register state
+    $stateProvider.state "register",
+      url : '/register'
+      templateUrl : 'angular_app/views/register/register.html'
+      controller : 'RegisterController'
 
 
+angular.module('subzapp').constant 'RESOURCES', do ->
+  # Define your variable
+  url = 'http://localhost:1337'
+  # Use the variable in your constants
+  {
+    DOMAIN: url
+    # USERS_API: resource + '/users'
+    # BASIC_INFO: resource + '/api/info'
+  }

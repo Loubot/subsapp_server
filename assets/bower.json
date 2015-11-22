@@ -1,0 +1,29 @@
+{
+  "name": "assets",
+  "homepage": "https://github.com/Loubot/subsapp_server",
+  "authors": [
+    "Louis <lllouis@yahoo.com>"
+  ],
+  "description": "Subzapp bower file",
+  "main": "app.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "Subzapp"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "jquery": "~2.1.4"
+  }
+}

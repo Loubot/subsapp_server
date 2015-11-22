@@ -8,26 +8,39 @@
 
 
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/bower/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/server_custom.css">
     <!--STYLES END-->
 
     <!--SCRIPTS-->
-    <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/angular.js"></script>
-    <script src="/js/angular-route.js"></script>
-    <script src="/js/angular-ui-router.js"></script>
-    <script src="/js/angular-animate.js"></script>
-    <script src="/js/jquery-2.1.4.min.js"></script>
-    <script src="/js/angular-ui-router.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/angular_app/scripts/app.js"></script>
-    <!--SCRIPTS END-->
+    <!--<script src="/js/dependencies/sails.io.js"></script>-->
+        <script src="/bower/jquery/dist/jquery.min.js"></script>
+        <script src="/bower/angular/angular.js"></script>
+        <script src="/bower/angular-route/angular-route.js"></script>
+        <script src="/js/angular-ui-router.js"></script>
+        
+        <script src="/bower/angular-animate/angular-animate.js"></script>
+        <script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <!-- app.js -->
+        <script src="/angular_app/scripts/app.js"></script>
+
+        <!-- services -->
+       <!-- <script src="/angular_app/scripts/services/AuthService.js"></script> -->
+
+        <!-- controllers -->
+        <script src="/angular_app/scripts/controllers/NavController.js"></script> 
+        <script src="/angular_app/scripts/controllers/LoginController.js"></script> 
+        <script src="/angular_app/scripts/controllers/RegisterController.js"></script> 
+        <script src="/angular_app/scripts/controllers/UserController.js"></script> 
   </head>
 
   <body>
+      <div ng-include="'/angular_app/views/nav/nav.html'" ng-controller="NavController"></div>
 
+      <div ui-view>
+        <!-- angular app injection here -->
+      </div>
         <!-- JJ added, ui-view is what the angular-ui-router uses instead of ng-view -->
         
 

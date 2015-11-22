@@ -5,5 +5,28 @@ angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute']);
 angular.module('subzapp').constant('API', 'api/v1/');
 
 angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
-  return $urlRouterProvider.otherwise("/");
+  $urlRouterProvider.otherwise("/");
+  $stateProvider.state("user", {
+    url: "/user",
+    templateUrl: 'angular_app/views/user/user.html',
+    controller: "UserController"
+  });
+  $stateProvider.state("login", {
+    url: "/",
+    templateUrl: 'angular_app/views/login/login.html',
+    controller: "LoginController"
+  });
+  return $stateProvider.state("register", {
+    url: '/register',
+    templateUrl: 'angular_app/views/register/register.html',
+    controller: 'RegisterController'
+  });
 });
+
+angular.module('subzapp').constant('RESOURCES', (function() {
+  var url;
+  url = 'http://localhost:1337';
+  return {
+    DOMAIN: url
+  };
+})());

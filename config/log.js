@@ -4,7 +4,8 @@ var customLogger = new winston.Logger({
     transports: [
         new(winston.transports.File)({
             level: 'debug',
-            filename: 'C:\\Users\\angell\\Documents\\sails\\subsapp_server\\logfile.log'
+            filename: "logfile.log"
+            // filename: "'C:\\Users\\angell\\Documents\\sails\\subsapp_server\\logfile.log'"
         }),
     ],
 });
