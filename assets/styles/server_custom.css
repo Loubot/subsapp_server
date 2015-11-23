@@ -18,7 +18,18 @@ body{
   color: #FFF;
 }
 
+.login_form{
+  color: #FFF;
+}
+
 .login_error{
+  display: none;
+  background-color: #ff3b3b;
+  color: #FFF;
+  padding:5px;
+}
+
+.register_error{
   display: none;
   background-color: #ff3b3b;
   color: #FFF;

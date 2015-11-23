@@ -29,8 +29,8 @@ module.exports = {
       defaultsTo: ''
     },
     tokens: {
-      type: 'integer',
-      defaultsTo: 0
+      collection: 'token',
+      via: 'owner'
     },
     toJSON: function() {
       var obj;

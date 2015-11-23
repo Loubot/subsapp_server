@@ -30,8 +30,8 @@ module.exports =
       type: 'string'
       defaultsTo: ''
     tokens:
-      type: 'integer'
-      defaultsTo: 0
+      collection: 'token'
+      via: 'owner'
     
     toJSON: ->
       obj = @toObject()

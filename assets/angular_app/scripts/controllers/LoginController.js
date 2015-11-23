@@ -4,18 +4,20 @@ angular.module('subzapp').controller('LoginController', [
   '$scope', '$state', '$http', '$window', 'RESOURCES', function($scope, $state, $http, $window, RESOURCES) {
     console.log('Login Controller');
     $scope.login_submit = function() {
-      return $http.post(RESOURCES.DOMAIN + "/auth/signin", $scope.login_form_data).success(function(data) {
-        console.log("returned " + (JSON.stringify(data)));
-        window.localStorage.setItem('logged_in_user', JSON.stringify(data));
-        $scope.login_form_data = {};
-        $scope.returned = data;
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/auth/signin",
+        data: $scope.login_form_data
+      }).then((function(response) {
+        window.localStorage.setItem('user_token', JSON.stringify(response.data.token));
+        console.log("Success response token " + (JSON.stringify(response.data.token)));
         return $state.go('user');
-      }).error(function(err) {
+      }), function(errResponse) {
+        console.log("Error response " + (JSON.stringify(errResponse.data)));
         $('.login_error').show('slide', {
           direction: 'right'
         }, 1000);
-        $scope.errorMessage = err;
-        return console.log("error!!!!!" + JSON.stringify(err));
+        return $scope.errorMessage = errResponse;
       });
     };
     return $scope.credentials = {

@@ -2,21 +2,22 @@
 'use strict';
 angular.module('subzapp').controller('UserController', [
   '$scope', '$state', '$http', '$window', 'RESOURCES', function($scope, $state, $http, $window, RESOURCES) {
-    var user_object;
+    var user_token;
     console.log('User Controller');
-    user_object = JSON.parse(window.localStorage.getItem('logged_in_user'));
+    user_token = JSON.parse(window.localStorage.getItem('user_token'));
     return $http({
       method: 'GET',
       url: RESOURCES.DOMAIN + "/user",
       headers: {
-        'Authorization': "JWT " + user_object.token,
+        'Authorization': "JWT " + user_token,
         "Content-Type": "application/json"
       }
     }).success(function(data) {
-      console.log("Fetched user data " + (JSON.stringify(data[0].email)));
+      console.log("Fetched user data " + (JSON.stringify(data)));
       return $scope.user = data[0];
     }).error(function(err) {
-      return console.log("Fetching user data error " + (JSON.stringify(err)));
+      console.log("Fetching user data error " + (JSON.stringify(err)));
+      return $state.go('login');
     });
   }
 ]);

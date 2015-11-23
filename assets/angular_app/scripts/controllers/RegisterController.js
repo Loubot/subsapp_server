@@ -4,12 +4,19 @@ angular.module('subzapp').controller('RegisterController', [
   '$scope', '$state', '$http', '$window', 'RESOURCES', function($scope, $state, $http, $window, RESOURCES) {
     console.log('Register Controller');
     return $scope.register_submit = function() {
-      return $http.post(RESOURCES.DOMAIN + "/auth/signup", $scope.register_form_data).success(function(data) {
-        console.log("Registry attempt return " + (JSON.stringify(data)));
-        window.localStorage.setItem('logged_in_user', JSON.stringify(data));
-        return $state.goto('/user');
-      }).error(function(err) {
-        return console.log("Register error " + (JSON.stringify(err)));
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/auth/signup",
+        data: $scope.register_form_data
+      }).then((function(response) {
+        console.log("Registration successfull " + (JSON.stringify(response)));
+        return $state.go('user');
+      }), function(errResponse) {
+        console.log("Registration failed " + (JSON.stringify(errResponse.data.invalidAttributes.email[0].message)));
+        $scope.errMessage = errResponse;
+        return $('.register_error').show('slide', {
+          direction: 'right'
+        }, 1000);
       });
     };
   }
