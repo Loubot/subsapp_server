@@ -6,7 +6,8 @@ html, body {
 body{
   background-color: #337F76 !important;
   width: 100%;
-  word-wrap: break-word
+  word-wrap: break-word;
+  color: #FFF;
 }
 
 
@@ -19,19 +20,19 @@ body{
 }
 
 .login_form{
-  color: #FFF;
+  /*color: #FFF;*/
 }
 
 .login_error{
   display: none;
   background-color: #ff3b3b;
-  color: #FFF;
+  /*color: #FFF;*/
   padding:5px;
 }
 
 .register_error{
   display: none;
   background-color: #ff3b3b;
-  color: #FFF;
+  /*color: #FFF;*/
   padding:5px;
 }

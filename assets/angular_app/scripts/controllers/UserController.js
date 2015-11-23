@@ -5,7 +5,7 @@ angular.module('subzapp').controller('UserController', [
     var user_token;
     console.log('User Controller');
     user_token = JSON.parse(window.localStorage.getItem('user_token'));
-    return $http({
+    $http({
       method: 'GET',
       url: RESOURCES.DOMAIN + "/user",
       headers: {
@@ -19,5 +19,20 @@ angular.module('subzapp').controller('UserController', [
       console.log("Fetching user data error " + (JSON.stringify(err)));
       return $state.go('login');
     });
+    return $scope.business_create = function() {
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/create-business",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: $scope.business_form_data
+      }).then((function(response) {
+        return console.log("Business create return " + (JSON.stringify(response)));
+      }), function(errResponse) {
+        return console.log("Business create error response " + (JSON.stringify(errResponse)));
+      });
+    };
   }
 ]);

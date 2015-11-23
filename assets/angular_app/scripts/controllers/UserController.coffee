@@ -20,4 +20,16 @@ angular.module('subzapp').controller('UserController', [
     ).error (err) ->
       console.log "Fetching user data error #{ JSON.stringify err }"
       $state.go 'login'
-])
+
+
+    $scope.business_create = ->
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/create-business"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: $scope.business_form_data
+      ).then ( (response) ->
+        console.log "Business create return #{ JSON.stringify response }"
+      ), ( errResponse ) ->
+        console.log "Business create error response #{ JSON.stringify errResponse }"
+]) 

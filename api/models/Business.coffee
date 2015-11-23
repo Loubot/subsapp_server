@@ -16,16 +16,19 @@ module.exports =
     #   required: true
     #   unique: true
     #   alphanumericdashed: true
-
-
-    email:
-      type: 'email'
-      required: true
       
-    businessName:
+    name:
       type: 'string'
       defaultsTo: ''
+      required: true
+
+    address:
+      type: 'text'
+      defaultsTo: ''
+      required: true
     admins: []
+
+
     
     toJSON: ->
       obj = @toObject()

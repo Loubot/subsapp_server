@@ -28,5 +28,9 @@ module.exports.routes = {
   'post /api/v1/login': {
     controller: 'WebController',
     action: 'login'
+  },
+  'post /create-business': {
+    controller: 'BusinessController',
+    action: 'create_business'
   }
 };

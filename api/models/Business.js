@@ -12,13 +12,15 @@ module.exports = {
   autoPK: true,
   schema: true,
   attributes: {
-    email: {
-      type: 'email',
+    name: {
+      type: 'string',
+      defaultsTo: '',
       required: true
     },
-    businessName: {
-      type: 'string',
-      defaultsTo: ''
+    address: {
+      type: 'text',
+      defaultsTo: '',
+      required: true
     },
     admins: [],
     toJSON: function() {
