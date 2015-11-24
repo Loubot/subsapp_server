@@ -15,8 +15,20 @@ module.exports = {
       sails.log.debug "Create response #{ JSON.stringify res }"      
     ).fail ( err ) ->
       sails.log.debug "Create error response #{ JSON.stringify err }"
+     
+  find_all: (req, res)  ->
+
+    Business.find().where( name: 'my').exec (err, users) ->
+      sails.log.debug "err  #{ JSON.stringify err }"
+      sails.log.debug "users  #{ JSON.stringify users }"
+      return
+    # sails.log.debug "Find one method"
+    # Business.find().where({id: 1}).then((found) ->
+    #   sails.log.debug " result #{ JSON.stringify found }"
       
-    
+      
+    # )
+
 }
 
 

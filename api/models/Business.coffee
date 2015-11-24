@@ -1,14 +1,14 @@
 ###*
-# User
+# Business
 # @description :: Model for storing businesses
 ###
 
 module.exports =
-  migrate: 'drop',
+  migrate: 'safe',
   adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
-  autoPK: true
+  autoPK: false
   schema: true
   attributes:
     # username:
@@ -26,7 +26,7 @@ module.exports =
       type: 'text'
       defaultsTo: ''
       required: true
-    admins: []
+    
 
 
     

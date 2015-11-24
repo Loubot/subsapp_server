@@ -32,5 +32,9 @@ module.exports.routes = {
   'post /create-business': {
     controller: 'BusinessController',
     action: 'create_business'
+  },
+  'get /find-all': {
+    controller: 'BusinessController',
+    action: 'find_all'
   }
 };

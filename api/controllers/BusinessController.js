@@ -20,5 +20,13 @@ module.exports = {
     }).fail(function(err) {
       return sails.log.debug("Create error response " + (JSON.stringify(err)));
     });
+  },
+  find_all: function(req, res) {
+    return Business.find().where({
+      name: 'my'
+    }).exec(function(err, users) {
+      sails.log.debug("err  " + (JSON.stringify(err)));
+      sails.log.debug("users  " + (JSON.stringify(users)));
+    });
   }
 };
