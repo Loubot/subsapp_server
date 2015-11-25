@@ -23,23 +23,23 @@ angular.module('subzapp').controller('UserController', [
 
 
     $scope.business_create = ->
-      $http(
-        method: 'GET'
-        url:    "#{ RESOURCES.DOMAIN }/find-all"
-        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-      ).then ( ( response ) ->
-        console.log 'hellloo'
-      ), ( errResponse ) ->
-        console.log "#{ JSON.stringify errResponse }"
-
-
       # $http(
-      #   method: 'POST'
-      #   url: "#{ RESOURCES.DOMAIN }/create-business"
+      #   method: 'GET'
+      #   url:    "#{ RESOURCES.DOMAIN }/find-all"
       #   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-      #   data: $scope.business_form_data
-      # ).then ( (response) ->
-      #   console.log "Business create return #{ JSON.stringify response }"
+      # ).then ( ( response ) ->
+      #   console.log 'hellloo'
       # ), ( errResponse ) ->
-      #   console.log "Business create error response #{ JSON.stringify errResponse }"
+      #   console.log "#{ JSON.stringify errResponse }"
+
+
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/create-business"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: $scope.business_form_data
+      ).then ( (response) ->
+        console.log "Business create return #{ JSON.stringify response }"
+      ), ( errResponse ) ->
+        console.log "Business create error response #{ JSON.stringify errResponse }"
 ]) 

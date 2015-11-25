@@ -21,16 +21,17 @@ angular.module('subzapp').controller('UserController', [
     });
     return $scope.business_create = function() {
       return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/find-all",
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/create-business",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
-        }
+        },
+        data: $scope.business_form_data
       }).then((function(response) {
-        return console.log('hellloo');
+        return console.log("Business create return " + (JSON.stringify(response)));
       }), function(errResponse) {
-        return console.log("" + (JSON.stringify(errResponse)));
+        return console.log("Business create error response " + (JSON.stringify(errResponse)));
       });
     };
   }

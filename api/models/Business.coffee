@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  migrate: 'safe',
+  migrate: 'alter',
   adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -26,6 +26,9 @@ module.exports =
       type: 'text'
       defaultsTo: ''
       required: true
+    admins:
+      type: 'array'
+
     
 
 
