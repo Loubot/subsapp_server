@@ -30,3 +30,14 @@ angular.module('subzapp').constant('RESOURCES', (function() {
     DOMAIN: url
   };
 })());
+
+angular.module('subzapp').factory('message', function() {
+  return {
+    error: function(mes) {
+      $('.login_error').text(mes);
+      return $('.login_error').show('slide', {
+        direction: 'right'
+      }, 1000);
+    }
+  };
+});

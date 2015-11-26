@@ -40,3 +40,11 @@ angular.module('subzapp').constant 'RESOURCES', do ->
     # USERS_API: resource + '/users'
     # BASIC_INFO: resource + '/api/info'
   }
+
+angular.module('subzapp').factory 'message', ->
+  { error: (mes) ->
+    $('.login_error').text mes
+    $('.login_error').show 'slide', { direction: 'right' }, 1000
+    # alert "This is an error #{ mes }"
+    # return
+ }

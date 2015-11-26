@@ -5,9 +5,10 @@ angular.module('subzapp').controller('LoginController', [
   '$state'
   '$http'
   '$window'
+  'message'
   'RESOURCES'
   # 'AuthService'
-  ( $scope, $state, $http, $window, RESOURCES ) ->
+  ( $scope, $state, $http, $window, message, RESOURCES ) ->
     console.log 'Login Controller'
 
     $scope.login_submit = ->
@@ -23,8 +24,9 @@ angular.module('subzapp').controller('LoginController', [
         $state.go 'user'
       ), ( errResponse ) ->
         console.log "Error response #{ JSON.stringify errResponse.data }"
-        $('.login_error').show 'slide', { direction: 'right' }, 1000
-        $scope.errorMessage = errResponse
+        # $('.login_error').show 'slide', { direction: 'right' }, 1000
+        message.error( errResponse.data.message )
+        # $scope.errorMessage = errResponse
         
 
 
