@@ -16,9 +16,10 @@ angular.module('subzapp').controller('LoginController', [
         url: "#{ RESOURCES.DOMAIN }/auth/signin"
         data: $scope.login_form_data
       ).then ( (response) ->
-        
+        console.log "User id #{ JSON.stringify response.data.user.id }"
         window.localStorage.setItem 'user_token', JSON.stringify response.data.token
-        console.log "Success response token #{ JSON.stringify response.data.token }"
+        window.localStorage.setItem 'user_id', JSON.stringify response.data.user.id
+        # console.log "Success response token #{ JSON.stringify response.data.token }"
         $state.go 'user'
       ), ( errResponse ) ->
         console.log "Error response #{ JSON.stringify errResponse.data }"

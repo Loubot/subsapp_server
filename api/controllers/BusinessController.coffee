@@ -11,7 +11,7 @@ module.exports = {
     sails.log.debug "Hit the business controller &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     business_data = req.body
-    Business.create( { name: business_data.name, address: business_data.address } ).then( ( res ) ->
+    Business.create( { name: business_data.name, address: business_data.address, admins: [ business_data.user_id ] } ).then( ( res ) ->
       sails.log.debug "Create response #{ JSON.stringify res }"      
     ).fail ( err ) ->
       sails.log.debug "Create error response #{ JSON.stringify err }"

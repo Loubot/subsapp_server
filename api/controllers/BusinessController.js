@@ -14,7 +14,8 @@ module.exports = {
     business_data = req.body;
     return Business.create({
       name: business_data.name,
-      address: business_data.address
+      address: business_data.address,
+      admins: [business_data.user_id]
     }).then(function(res) {
       return sails.log.debug("Create response " + (JSON.stringify(res)));
     }).fail(function(err) {

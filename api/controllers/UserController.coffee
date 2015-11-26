@@ -9,6 +9,7 @@ module.exports = {
   up_tokens: (req, res) ->
     User.findOne(id: req.user.id).then((found) ->
       sails.log.debug " result #{ JSON.stringify found }"
+      sails.log.debug " session #{ JSON.stringify req.session }"
       new_tokens = ++found.tokens
       sails.log.debug "new_tokens #{ new_tokens }"
       User.update(req.user.id, { tokens: new_tokens }).then (result) ->

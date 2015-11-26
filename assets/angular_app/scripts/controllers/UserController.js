@@ -13,13 +13,15 @@ angular.module('subzapp').controller('UserController', [
         "Content-Type": "application/json"
       }
     }).success(function(data) {
-      console.log("Fetched user data " + (JSON.stringify(data)));
+      console.log("Fetched user data " + data[0].email);
       return $scope.user = data[0];
     }).error(function(err) {
       console.log("Fetching user data error " + (JSON.stringify(err)));
       return $state.go('login');
     });
     return $scope.business_create = function() {
+      $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
+      console.log(JSON.stringify($scope.business_form_data));
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/create-business",

@@ -13,6 +13,7 @@ module.exports = {
     }).then(function(found) {
       var new_tokens;
       sails.log.debug(" result " + (JSON.stringify(found)));
+      sails.log.debug(" session " + (JSON.stringify(req.session)));
       new_tokens = ++found.tokens;
       sails.log.debug("new_tokens " + new_tokens);
       return User.update(req.user.id, {

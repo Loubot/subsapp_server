@@ -6,6 +6,7 @@
 passport = require('passport')
 
 module.exports = (req, res, next) ->
+  sails.log.debug "session #{ JSON.stringify req.session.authenticated }"
   passport.authenticate('jwt', (error, user, info) ->
     if error
       return res.serverError(error)

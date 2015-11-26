@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  migrate: 'alter',
+  migrate: 'safe',
   adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true

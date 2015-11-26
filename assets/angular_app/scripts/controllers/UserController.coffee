@@ -9,13 +9,15 @@ angular.module('subzapp').controller('UserController', [
   ( $scope, $state, $http, $window, RESOURCES ) ->
     console.log 'User Controller'
     user_token = JSON.parse window.localStorage.getItem 'user_token'
-    
+    # console.log "User data #{ sails.config.user_data.name }"
     $http(
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/user"
       headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
     ).success( (data) ->
-      console.log "Fetched user data #{ JSON.stringify data }"
+      console.log "Fetched user data #{ data[0].email}"
+
+      # user = data[0]
       $scope.user = data[0] 
     ).error (err) ->
       console.log "Fetching user data error #{ JSON.stringify err }"
@@ -30,9 +32,9 @@ angular.module('subzapp').controller('UserController', [
       # ).then ( ( response ) ->
       #   console.log 'hellloo'
       # ), ( errResponse ) ->
-      #   console.log "#{ JSON.stringify errResponse }"
-
-
+      #   console.log "#{ JSON.stringify errResponse }"     
+      $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
+      console.log JSON.stringify $scope.business_form_data
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/create-business"
