@@ -29,9 +29,16 @@ module.exports =
     lastName:
       type: 'string'
       defaultsTo: ''
+
     tokens:
       collection: 'token'
       via: 'owner'
+
+    orgs:
+      collection: 'org'
+      via: 'admins'
+
+
     
     toJSON: ->
       obj = @toObject()

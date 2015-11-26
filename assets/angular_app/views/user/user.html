@@ -8,14 +8,47 @@
 
   </div>
   <div class="col-xs-9">
-    <ul class="example-animate-container">
-      <li class="animate-repeat" ng-repeat="bus in business | filter:q as results">
-        [{{$index + 1}}] {{friend.name}} who is {{friend.age}} years old.
-      </li>
-      <li class="animate-repeat" ng-if="results.length == 0">
-        <strong>No results found...</strong>
-      </li>
-    </ul>
+    <form class="form-horizontal" 
+            ng-submit="business_create()" 
+            method="post" enctype="application/x-www-form-urlencoded">
+
+      <div class="form-group">
+        <label class="col-sm-2">Name: </label>
+        <div class="col-sm-10">
+          <input type="text" name="name" ng-model="business_form_data.name" class="form-control" placholder:'Name'>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="form-group">
+        <label class="col-sm-2">Address: </label>
+        <div class="col-sm-10">
+          <input type="address" name="address" ng-model="business_form_data.address" class="form-control"  placholder:'Address'>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+      
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input type="submit" value="Create business" class="btn btn-default btn btn-success btn-lg login">
+          
+        </div>  <!-- end of col-sm-offset-2 col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="login_error">
+        
+        
+      </div>
+    </form>
+    
+    Clubs you can edit
+    <input type="search" ng-model="q" placeholder="filter clubs..." aria-label="filter friends" class="black_text" />
+   <ul class="example-animate-container">
+    <li class="animate-repeat" ng-repeat="org in orgs | filter:q as results">
+      [{{$index + 1}}] {{org.name}}; Address: {{org.address}}.
+    </li>
+    <li class="animate-repeat" ng-if="results.length == 0">
+      <strong>No results found...</strong>
+    </li>
+  </ul>
   </div> <!-- end of col-xs-9 -->
 
 

@@ -11,14 +11,20 @@ module.exports = {
     sails.log.debug "Hit the business controller &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     business_data = req.body
-    Business.create( { name: business_data.name, address: business_data.address, admins: [ business_data.user_id ] } ).then( ( res ) ->
-      sails.log.debug "Create response #{ JSON.stringify res }"      
+    Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
+      sails.log.debug "Create response #{ JSON.stringify org }" 
+      org.admins.add(business_data.user_id)
+      org.save (err, s) ->
+        sails.log.debug "saved #{ JSON.stringify s }"
+        res.send s
+      # sails.log.debug org.admins
+      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
     ).fail ( err ) ->
       sails.log.debug "Create error response #{ JSON.stringify err }"
      
   find_all: (req, res)  ->
 
-    Business.find().where( name: 'my').exec (err, users) ->
+    Org.find().where( name: 'my').exec (err, users) ->
       sails.log.debug "err  #{ JSON.stringify err }"
       sails.log.debug "users  #{ JSON.stringify users }"
       return

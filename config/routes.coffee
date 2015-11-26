@@ -27,11 +27,11 @@ module.exports.routes =
         action :          'login'
 
   'post /create-business' :
-        controller:       'BusinessController'
+        controller:       'OrgController'
         action:           'create_business'
 
   'get /find-all' : 
-        controller :      'BusinessController'
+        controller :      'OrgController'
         action:           'find_all'
   # 'get /':              'WebController.homepage'
   # 'get /welcome':       'WebController.welcome'

@@ -32,6 +32,10 @@ module.exports = {
       collection: 'token',
       via: 'owner'
     },
+    orgs: {
+      collection: 'org',
+      via: 'admins'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();

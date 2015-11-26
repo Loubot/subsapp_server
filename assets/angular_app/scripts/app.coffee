@@ -31,10 +31,10 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       controller: 'RegisterController'
 
     # busniess state
-    $stateProvider.state "business",
-      url : '/business'
-      templateUrl : 'angular_app/views/business/business.html'
-      controller : 'BusinessController'
+    $stateProvider.state "org",
+      url : '/org'
+      templateUrl : 'angular_app/views/org/org.html'
+      controller : 'OrgController'
 
 
 angular.module('subzapp').constant 'RESOURCES', do ->

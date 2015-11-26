@@ -1,6 +1,6 @@
 ###*
-# Business
-# @description :: Model for storing businesses
+# Org
+# @description :: Model for storing orgs
 ###
 
 module.exports =
@@ -8,7 +8,7 @@ module.exports =
   adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
-  autoPK: false
+  autoPK: true
   schema: true
   attributes:
     # username:
@@ -26,8 +26,10 @@ module.exports =
       type: 'text'
       defaultsTo: ''
       required: true
-    admins:
-      type: 'array'
+
+    admins: 
+      collection: 'user'
+      via: 'orgs'
 
     
 

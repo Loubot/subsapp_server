@@ -13,26 +13,8 @@ angular.module('subzapp').controller('UserController', [
         "Content-Type": "application/json"
       }
     }).success(function(data) {
-      console.log("Fetched user data " + data[0].email);
-      $scope.friends = [
-        {
-          name: 'John',
-          age: 25,
-          gender: 'boy'
-        }, {
-          name: 'Jessie',
-          age: 30,
-          gender: 'girl'
-        }, {
-          name: 'Johanna',
-          age: 28,
-          gender: 'girl'
-        }, {
-          name: 'Joy',
-          age: 15,
-          gender: 'girl'
-        }
-      ];
+      console.log("Fetched user data " + (JSON.stringify(data[0].orgs)));
+      $scope.orgs = data[0].orgs;
       return $scope.user = data[0];
     }).error(function(err) {
       console.log("Fetching user data error " + (JSON.stringify(err)));

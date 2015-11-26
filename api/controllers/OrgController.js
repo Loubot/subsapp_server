@@ -12,18 +12,22 @@ module.exports = {
     sails.log.debug("Hit the business controller &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     sails.log.debug("Data " + (JSON.stringify(req.body)));
     business_data = req.body;
-    return Business.create({
+    return Org.create({
       name: business_data.name,
-      address: business_data.address,
-      admins: [business_data.user_id]
-    }).then(function(res) {
-      return sails.log.debug("Create response " + (JSON.stringify(res)));
+      address: business_data.address
+    }).then(function(org) {
+      sails.log.debug("Create response " + (JSON.stringify(org)));
+      org.admins.add(business_data.user_id);
+      return org.save(function(err, s) {
+        sails.log.debug("saved " + (JSON.stringify(s)));
+        return res.send(s);
+      });
     }).fail(function(err) {
       return sails.log.debug("Create error response " + (JSON.stringify(err)));
     });
   },
   find_all: function(req, res) {
-    return Business.find().where({
+    return Org.find().where({
       name: 'my'
     }).exec(function(err, users) {
       sails.log.debug("err  " + (JSON.stringify(err)));

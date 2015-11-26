@@ -21,10 +21,10 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'angular_app/views/register/register.html',
     controller: 'RegisterController'
   });
-  return $stateProvider.state("business", {
-    url: '/business',
-    templateUrl: 'angular_app/views/business/business.html',
-    controller: 'BusinessController'
+  return $stateProvider.state("org", {
+    url: '/org',
+    templateUrl: 'angular_app/views/org/org.html',
+    controller: 'OrgController'
   });
 });
 
