@@ -16,10 +16,15 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'angular_app/views/login/login.html',
     controller: "LoginController"
   });
-  return $stateProvider.state("register", {
+  $stateProvider.state("register", {
     url: '/register',
     templateUrl: 'angular_app/views/register/register.html',
     controller: 'RegisterController'
+  });
+  return $stateProvider.state("business", {
+    url: '/business',
+    templateUrl: 'angular_app/views/business/business.html',
+    controller: 'BusinessController'
   });
 });
 

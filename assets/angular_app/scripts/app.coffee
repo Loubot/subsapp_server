@@ -28,7 +28,13 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
     $stateProvider.state "register",
       url : '/register'
       templateUrl : 'angular_app/views/register/register.html'
-      controller : 'RegisterController'
+      controller: 'RegisterController'
+
+    # busniess state
+    $stateProvider.state "business",
+      url : '/business'
+      templateUrl : 'angular_app/views/business/business.html'
+      controller : 'BusinessController'
 
 
 angular.module('subzapp').constant 'RESOURCES', do ->

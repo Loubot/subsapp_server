@@ -17,6 +17,27 @@ angular.module('subzapp').controller('UserController', [
       headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
     ).success( (data) ->
       console.log "Fetched user data #{ data[0].email}"
+      $scope.friends = [
+                {
+                  name: 'John'
+                  age: 25
+                  gender: 'boy'
+                }
+                {
+                  name: 'Jessie'
+                  age: 30
+                  gender: 'girl'
+                }
+                {
+                  name: 'Johanna'
+                  age: 28
+                  gender: 'girl'
+                }
+                {
+                  name: 'Joy'
+                  age: 15
+                  gender: 'girl'
+                }]
 
       # user = data[0]
       $scope.user = data[0] 
