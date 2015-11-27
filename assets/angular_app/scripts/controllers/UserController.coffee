@@ -16,7 +16,7 @@ angular.module('subzapp').controller('UserController', [
       url: "#{ RESOURCES.DOMAIN }/user"
       headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
     ).success( (data) ->
-      console.log "Fetched user data #{ JSON.stringify data[0].orgs }"
+      console.log "Fetched user data #{ JSON.stringify data[0] }"
       $scope.orgs = data[0].orgs
       # user = data[0]
       $scope.user = data[0] 
@@ -42,7 +42,23 @@ angular.module('subzapp').controller('UserController', [
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
         data: $scope.business_form_data
       ).then ( (response) ->
-        console.log "Business create return #{ JSON.stringify response }"
+        console.log "Business create return #{ JSON.stringify response.data }"
+        $scope.orgs = response.data
+        $('.business_name').val ""
+        $('.business_address').val ""
       ), ( errResponse ) ->
         console.log "Business create error response #{ JSON.stringify errResponse }"
+        $state.go 'login'
+
+    $scope.delete_business = (id) ->
+      $http(
+        method: 'DELETE'
+        url: "#{ RESOURCES.DOMAIN }/delete-business"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: 
+          org_id: id
+      ).then ( (response) ->
+        
+      ), ( errResponse ) ->
+        
 ]) 

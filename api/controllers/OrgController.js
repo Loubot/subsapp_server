@@ -6,6 +6,10 @@
  * @description :: Server-side logic for managing Business
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var passport;
+
+passport = require('passport');
+
 module.exports = {
   create_business: function(req, res) {
     var business_data;
@@ -14,24 +18,28 @@ module.exports = {
     business_data = req.body;
     return Org.create({
       name: business_data.name,
-      address: business_data.address
+      address: business_data.address,
+      admin: business_data.user_id
     }).then(function(org) {
-      sails.log.debug("Create response " + (JSON.stringify(org)));
-      org.admins.add(business_data.user_id);
-      return org.save(function(err, s) {
-        sails.log.debug("saved " + (JSON.stringify(s)));
-        return res.send(s);
+      return sails.log.debug("Org create THEN " + (JSON.stringify(org)));
+    })["catch"](function(err) {
+      return sails.log.debug("Org create catch " + (JSON.stringify(err)));
+    }).done(function(e) {
+      sails.log.debug("Org create done " + (JSON.stringify(e)));
+      return User.findOne({
+        id: business_data.user_id
+      }).populate('orgs').exec(function(err, users_orgs) {
+        sails.log.debug("user find populate " + (JSON.stringify(users_orgs)));
+        sails.log.debug("user find populate error " + (JSON.stringify(err)));
+        return res.send(users_orgs.orgs);
       });
-    }).fail(function(err) {
-      return sails.log.debug("Create error response " + (JSON.stringify(err)));
     });
   },
-  find_all: function(req, res) {
-    return Org.find().where({
-      name: 'my'
-    }).exec(function(err, users) {
-      sails.log.debug("err  " + (JSON.stringify(err)));
-      sails.log.debug("users  " + (JSON.stringify(users)));
+  destroy_business: function(req, res) {
+    return Org.destroy({
+      id: req.body.org_id
+    }).exec(function(err) {
+      sails.log.debug('The record has been deleted ' + JSON.stringify(err));
     });
   }
 };

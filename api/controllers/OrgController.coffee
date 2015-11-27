@@ -5,37 +5,42 @@
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
 
+passport = require('passport')
 module.exports = {
 
   create_business: (req, res) ->
     sails.log.debug "Hit the business controller &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     business_data = req.body
-    Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
-      sails.log.debug "Create response #{ JSON.stringify org }" 
-      org.admins.add(business_data.user_id)
-      org.save (err, s) ->
-        sails.log.debug "saved #{ JSON.stringify s }"
-        res.send s
-      # sails.log.debug org.admins
-      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
-    ).fail ( err ) ->
-      sails.log.debug "Create error response #{ JSON.stringify err }"
-     
-  find_all: (req, res)  ->
 
-    Org.find().where( name: 'my').exec (err, users) ->
-      sails.log.debug "err  #{ JSON.stringify err }"
-      sails.log.debug "users  #{ JSON.stringify users }"
+    Org.create( name: business_data.name, address: business_data.address, admin: business_data.user_id ).then( (org) ->
+     
+      sails.log.debug "Org create THEN #{ JSON.stringify org }"
+      # org.users.add(business_data.user_id)
+      # org.save ( err, s ) ->
+      #   sails.log.debug "save err #{ JSON.stringify err }"
+      #   sails.log.debug "save #{ JSON.stringify s }"
+      #   return
+    ).catch( (err) ->
+      sails.log.debug "Org create catch #{ JSON.stringify err }"
+    ).done( (e) ->
+      sails.log.debug "Org create done #{ JSON.stringify e }"
+      
+      User.findOne(id: business_data.user_id).populate('orgs').exec (err, users_orgs) ->
+        sails.log.debug "user find populate #{ JSON.stringify users_orgs }"
+        sails.log.debug "user find populate error #{ JSON.stringify err }"
+        res.send users_orgs.orgs
+
+    )
+     
+  destroy_business: (req, res) ->
+    Org.destroy(id: req.body.org_id).exec (err) ->
+      sails.log.debug 'The record has been deleted ' + JSON.stringify err
       return
-    # sails.log.debug "Find one method"
-    # Business.find().where({id: 1}).then((found) ->
-    #   sails.log.debug " result #{ JSON.stringify found }"
-      
-      
-    # )
 
 }
+
+
 
 
 # up_tokens: (req, res) ->

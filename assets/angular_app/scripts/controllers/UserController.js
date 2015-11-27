@@ -13,14 +13,14 @@ angular.module('subzapp').controller('UserController', [
         "Content-Type": "application/json"
       }
     }).success(function(data) {
-      console.log("Fetched user data " + (JSON.stringify(data[0].orgs)));
+      console.log("Fetched user data " + (JSON.stringify(data[0])));
       $scope.orgs = data[0].orgs;
       return $scope.user = data[0];
     }).error(function(err) {
       console.log("Fetching user data error " + (JSON.stringify(err)));
       return $state.go('login');
     });
-    return $scope.business_create = function() {
+    $scope.business_create = function() {
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log(JSON.stringify($scope.business_form_data));
       return $http({
@@ -32,10 +32,27 @@ angular.module('subzapp').controller('UserController', [
         },
         data: $scope.business_form_data
       }).then((function(response) {
-        return console.log("Business create return " + (JSON.stringify(response)));
+        console.log("Business create return " + (JSON.stringify(response.data)));
+        $scope.orgs = response.data;
+        $('.business_name').val("");
+        return $('.business_address').val("");
       }), function(errResponse) {
-        return console.log("Business create error response " + (JSON.stringify(errResponse)));
+        console.log("Business create error response " + (JSON.stringify(errResponse)));
+        return $state.go('login');
       });
+    };
+    return $scope.delete_business = function(id) {
+      return $http({
+        method: 'DELETE',
+        url: RESOURCES.DOMAIN + "/delete-business",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: {
+          org_id: id
+        }
+      }).then((function(response) {}), function(errResponse) {});
     };
   }
 ]);

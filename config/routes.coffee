@@ -23,16 +23,19 @@
 module.exports.routes = 
   '/': view: 'index'
   'post /api/v1/login' :
-        controller :      'WebController'
-        action :          'login'
+        controller :            'WebController'
+        action :                'login'
 
   'post /create-business' :
-        controller:       'OrgController'
-        action:           'create_business'
+        controller:             'OrgController'
+        action:                 'create_business'
 
-  'get /find-all' : 
-        controller :      'OrgController'
-        action:           'find_all'
+  'destroy /delete-business' :
+        controller:             'OrgController'
+        action:                 'destroy_business'
+
+ 
+  
   # 'get /':              'WebController.homepage'
   # 'get /welcome':       'WebController.welcome'
   # 'get /register':      'WebController.register'
