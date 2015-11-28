@@ -42,10 +42,12 @@ angular.module('subzapp').controller('UserController', [
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
         data: $scope.business_form_data
       ).then ( (response) ->
+
         console.log "Business create return #{ JSON.stringify response.data }"
         $scope.orgs = response.data
         $('.business_name').val ""
         $('.business_address').val ""
+
       ), ( errResponse ) ->
         console.log "Business create error response #{ JSON.stringify errResponse }"
         $state.go 'login'

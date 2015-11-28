@@ -18,21 +18,23 @@ module.exports = {
     business_data = req.body;
     return Org.create({
       name: business_data.name,
-      address: business_data.address,
-      admin: business_data.user_id
+      address: business_data.address
     }).then(function(org) {
-      return sails.log.debug("Org create THEN " + (JSON.stringify(org)));
-    })["catch"](function(err) {
-      return sails.log.debug("Org create catch " + (JSON.stringify(err)));
-    }).done(function(e) {
-      sails.log.debug("Org create done " + (JSON.stringify(e)));
-      return User.findOne({
-        id: business_data.user_id
-      }).populate('orgs').exec(function(err, users_orgs) {
-        sails.log.debug("user find populate " + (JSON.stringify(users_orgs)));
-        sails.log.debug("user find populate error " + (JSON.stringify(err)));
-        return res.send(users_orgs.orgs);
+      sails.log.debug("Create response " + (JSON.stringify(org)));
+      org.admins.add(business_data.user_id);
+      return org.save(function(err, s) {
+        sails.log.debug("saved " + (JSON.stringify(s)));
+        return User.find().where({
+          id: business_data.user_id
+        }).populateAll().exec(function(e, r) {
+          sails.log.debug("Populate result " + (JSON.stringify(r[0].orgs)));
+          res.send(r[0].orgs);
+        });
       });
+    })["catch"](function(err) {
+      return sails.log.debug("Create error response " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("Create done");
     });
   },
   destroy_business: function(req, res) {

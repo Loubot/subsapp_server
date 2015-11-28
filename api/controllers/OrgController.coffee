@@ -12,26 +12,24 @@ module.exports = {
     sails.log.debug "Hit the business controller &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     business_data = req.body
-
-    Org.create( name: business_data.name, address: business_data.address, admin: business_data.user_id ).then( (org) ->
-     
-      sails.log.debug "Org create THEN #{ JSON.stringify org }"
-      # org.users.add(business_data.user_id)
-      # org.save ( err, s ) ->
-      #   sails.log.debug "save err #{ JSON.stringify err }"
-      #   sails.log.debug "save #{ JSON.stringify s }"
-      #   return
-    ).catch( (err) ->
-      sails.log.debug "Org create catch #{ JSON.stringify err }"
-    ).done( (e) ->
-      sails.log.debug "Org create done #{ JSON.stringify e }"
+    Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
+      sails.log.debug "Create response #{ JSON.stringify org }" 
+      org.admins.add(business_data.user_id)
+      org.save (err, s) ->
+        sails.log.debug "saved #{ JSON.stringify s }"
+        User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
+          sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
+          res.send r[0].orgs
+          return
+      #   res.send s
+      # sails.log.debug org.admins
+      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
+    ).catch( ( err ) ->
+      sails.log.debug "Create error response #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "Create done"
       
-      User.findOne(id: business_data.user_id).populate('orgs').exec (err, users_orgs) ->
-        sails.log.debug "user find populate #{ JSON.stringify users_orgs }"
-        sails.log.debug "user find populate error #{ JSON.stringify err }"
-        res.send users_orgs.orgs
-
-    )
+    
      
   destroy_business: (req, res) ->
     Org.destroy(id: req.body.org_id).exec (err) ->

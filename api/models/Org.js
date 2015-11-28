@@ -5,7 +5,6 @@
  * @description :: Model for storing orgs
  */
 module.exports = {
-  migrate: 'safe',
   adapter: 'mysql',
   autoUpdatedAt: true,
   autoCreatedAt: true,
