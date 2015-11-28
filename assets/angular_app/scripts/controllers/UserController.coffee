@@ -43,6 +43,7 @@ angular.module('subzapp').controller('UserController', [
         data: $scope.business_form_data
       ).then ( (response) ->
         console.log "Business create return #{ JSON.stringify response }"
+        
       ), ( errResponse ) ->
         console.log "Business create error response #{ JSON.stringify errResponse }"
 ]) 

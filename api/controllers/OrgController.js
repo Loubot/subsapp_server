@@ -20,10 +20,17 @@ module.exports = {
       org.admins.add(business_data.user_id);
       return org.save(function(err, s) {
         sails.log.debug("saved " + (JSON.stringify(s)));
-        return res.send(s);
+        return User.find().where({
+          id: business_data.user_id
+        }).populateAll().exec(function(e, r) {
+          sails.log.debug("Populate result " + (JSON.stringify(r[0].orgs)));
+          res.send(r[0].orgs);
+        });
       });
-    }).fail(function(err) {
+    })["catch"](function(err) {
       return sails.log.debug("Create error response " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("Create done");
     });
   },
   find_all: function(req, res) {
