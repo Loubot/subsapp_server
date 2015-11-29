@@ -43,8 +43,10 @@
     <input type="search" ng-model="q" placeholder="filter clubs..." aria-label="filter friends" class="black_text" />
    <ul class="example-animate-container">
     <li class="animate-repeat" ng-repeat="org in orgs | filter:q as results">
-      [{{$index + 1}}] {{org.name}}; Address: {{org.address}}.
+      <a href="/#/org?id={{ org.id }}" >[{{$index + 1}}] {{org.name}}; Address: {{org.address}}.</a>
       <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business($index)">Delete?</button>
+      
+      
     </li>
     <li class="animate-repeat" ng-if="results.length == 0">
       <strong>No results found...</strong>

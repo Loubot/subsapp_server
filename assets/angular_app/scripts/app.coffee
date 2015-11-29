@@ -54,3 +54,14 @@ angular.module('subzapp').factory 'message', ->
     # alert "This is an error #{ mes }"
     # return
  }
+
+# angular.module('subzapp').service 'params', ->
+#   property = null
+#   {
+#     getProperty: ->
+#       property
+#     setProperty: (value) ->
+#       property = value
+#       return
+
+#   }

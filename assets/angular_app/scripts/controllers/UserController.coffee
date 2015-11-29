@@ -7,7 +7,7 @@ angular.module('subzapp').controller('UserController', [
   '$window'
   'message'
   'RESOURCES'
-  ( $scope, $state, $http, $window,message, RESOURCES ) ->
+  ( $scope, $state, $http, $window, message, RESOURCES ) ->
     console.log 'User Controller'
     user_token = JSON.parse window.localStorage.getItem 'user_token'
     # console.log "User data #{ sails.config.user_data.name }"

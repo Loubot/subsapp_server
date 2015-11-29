@@ -8,8 +8,27 @@
 passport = require('passport')
 module.exports = {
 
+  get_business: (req, res) ->
+    sails.log.debug "Hit the business controller/get_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    sails.log.debug "Data #{ JSON.stringify req.query.org_id }"
+    Org.find( { id: req.query.org_id } ).then( ( org ) ->
+      sails.log.debug "Find response #{ JSON.stringify org }" 
+      res.send org[0]
+      return
+      
+    ).catch( ( err ) ->
+      sails.log.debug "Find error response #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "Find done"
+      return
+      
+
+      
+    
+
+
   create_business: (req, res) ->
-    sails.log.debug "Hit the business controller &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     business_data = req.body
     Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
@@ -20,7 +39,7 @@ module.exports = {
         User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
           sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
           res.send r[0].orgs
-          return
+      return
       #   res.send s
       # sails.log.debug org.admins
       # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
@@ -29,6 +48,7 @@ module.exports = {
     ).done ->
       sails.log.debug "Create done"
       
+      return
     
      
   destroy_business: (req, res) ->

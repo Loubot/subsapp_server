@@ -34,6 +34,9 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'destroy_business'
 
+  'get /get-business':
+        controller:             'OrgController'
+        action:                 'get_business'
  
   
   # 'get /':              'WebController.homepage'

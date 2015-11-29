@@ -36,5 +36,9 @@ module.exports.routes = {
   'destroy /delete-business': {
     controller: 'OrgController',
     action: 'destroy_business'
+  },
+  'get /get-business': {
+    controller: 'OrgController',
+    action: 'get_business'
   }
 };
