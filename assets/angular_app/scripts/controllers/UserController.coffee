@@ -17,7 +17,8 @@ angular.module('subzapp').controller('UserController', [
       headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
     ).success( (data) ->
       console.log "Fetched user data #{ JSON.stringify data[0] }"
-      $scope.orgs = data[0].orgs
+
+      $scope.orgs = if (data[0]?) then data[0].orgs else []
       # user = data[0]
       $scope.user = data[0] 
     ).error (err) ->
@@ -26,14 +27,7 @@ angular.module('subzapp').controller('UserController', [
 
 
     $scope.business_create = ->
-      # $http(
-      #   method: 'GET'
-      #   url:    "#{ RESOURCES.DOMAIN }/find-all"
-      #   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-      # ).then ( ( response ) ->
-      #   console.log 'hellloo'
-      # ), ( errResponse ) ->
-      #   console.log "#{ JSON.stringify errResponse }"     
+      
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log JSON.stringify $scope.business_form_data
       $http(
@@ -60,7 +54,7 @@ angular.module('subzapp').controller('UserController', [
         data: 
           org_id: id
       ).then ( (response) ->
-        
+        console.log "Delete response #{ JSON.stringify response}"
       ), ( errResponse ) ->
-        
+        console.log "Delete error response #{ JSON.stringify errResponse }"
 ]) 

@@ -33,7 +33,7 @@ module.exports.routes = {
     controller: 'OrgController',
     action: 'create_business'
   },
-  'destroy /delete-business': {
+  'delete /delete-business': {
     controller: 'OrgController',
     action: 'destroy_business'
   },

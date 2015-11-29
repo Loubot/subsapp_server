@@ -14,7 +14,7 @@ angular.module('subzapp').controller('UserController', [
       }
     }).success(function(data) {
       console.log("Fetched user data " + (JSON.stringify(data[0])));
-      $scope.orgs = data[0].orgs;
+      $scope.orgs = (data[0] != null) ? data[0].orgs : [];
       return $scope.user = data[0];
     }).error(function(err) {
       console.log("Fetching user data error " + (JSON.stringify(err)));
@@ -52,7 +52,11 @@ angular.module('subzapp').controller('UserController', [
         data: {
           org_id: id
         }
-      }).then((function(response) {}), function(errResponse) {});
+      }).then((function(response) {
+        return console.log("Delete response " + (JSON.stringify(response)));
+      }), function(errResponse) {
+        return console.log("Delete error response " + (JSON.stringify(errResponse)));
+      });
     };
   }
 ]);

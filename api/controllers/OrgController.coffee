@@ -52,9 +52,25 @@ module.exports = {
     
      
   destroy_business: (req, res) ->
-    Org.destroy(id: req.body.org_id).exec (err) ->
-      sails.log.debug 'The record has been deleted ' + JSON.stringify err
+    sails.log.debug "Hit delete method"
+    sails.log.debug "Hit delete method #{ req.body.org_id }"
+    Org.destroy( id: req.body.org_id ).then( ( org ) ->
+      sails.log.debug "Delete response #{ JSON.stringify org }" 
+      
       return
+      #   res.send s
+      # sails.log.debug org.admins
+      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
+    ).catch( ( err ) ->
+      sails.log.debug "Create error response #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "Create done"
+      
+      return
+    # Org.destroy(id: req.body.org_id).exec (err, res) ->
+    #   sails.log.debug 'The record has been deleted ' + JSON.stringify err
+    #   sails.log.debug 'The record has been deleted ' + JSON.stringify res
+    #   return
 
 }
 

@@ -52,10 +52,16 @@ module.exports = {
     });
   },
   destroy_business: function(req, res) {
+    sails.log.debug("Hit delete method");
+    sails.log.debug("Hit delete method " + req.body.org_id);
     return Org.destroy({
       id: req.body.org_id
-    }).exec(function(err) {
-      sails.log.debug('The record has been deleted ' + JSON.stringify(err));
+    }).then(function(org) {
+      sails.log.debug("Delete response " + (JSON.stringify(org)));
+    })["catch"](function(err) {
+      return sails.log.debug("Create error response " + (JSON.stringify(err)));
+    }).done(function() {
+      sails.log.debug("Create done");
     });
   }
 };
