@@ -46,3 +46,34 @@ angular.module('subzapp').factory('message', function() {
     }
   };
 });
+
+angular.module('subzapp').service('user', function($http, RESOURCES) {
+  console.log("user service");
+  return {
+    get_user: function() {
+      var getUser, user;
+      getUser = function() {
+        var user_token;
+        console.log("yyyyyyyyyyyyyyyyyyy");
+        user_token = JSON.parse(window.localStorage.getItem('user_token'));
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/user",
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).success(function(data) {
+          return data[0];
+        }).error(function(err) {
+          console.log("Fetching user data error " + (JSON.stringify(err)));
+          return $state.go('login');
+        });
+      };
+      if (!(typeof user !== "undefined" && user !== null)) {
+        user = getUser();
+        return user;
+      }
+    }
+  };
+});

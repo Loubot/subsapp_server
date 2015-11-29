@@ -14,11 +14,19 @@ module.exports = {
   get_business: function(req, res) {
     sails.log.debug("Hit the business controller/get_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     sails.log.debug("Data " + (JSON.stringify(req.query.org_id)));
-    return Org.find({
+    return Org.findOne({
       id: req.query.org_id
     }).then(function(org) {
       sails.log.debug("Find response " + (JSON.stringify(org)));
-      res.send(org[0]);
+      Team.find().where({
+        main_org: req.query.org_id
+      }).exec(function(e, teams) {
+        sails.log.debug("Team results " + (JSON.stringify(teams[0])));
+        return res.send({
+          org: org,
+          teams: teams[0]
+        });
+      });
     })["catch"](function(err) {
       return sails.log.debug("Find error response " + (JSON.stringify(err)));
     }).done(function() {

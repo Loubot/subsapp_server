@@ -12,7 +12,26 @@ passport = require('passport');
 
 module.exports = {
   create_team: function(req, res) {
+    var params;
     sails.log.debug("Hit the team controller/create_team ***************");
-    return sails.log.debug("Data " + req);
+    sails.log.debug("Data " + (JSON.stringify(req.body)));
+    params = req.body;
+    return Team.create({
+      name: params.name,
+      main_org: params.org_id,
+      manager: params.user_id
+    }).then(function(team) {
+      return sails.log.debug("Team create " + (JSON.stringify(team)));
+    })["catch"](function(err) {
+      return sails.log.debug("Team create error " + (JSON.stringify(err)));
+    }).done(function() {
+      sails.log.debug("Team create done");
+      return User.find().where({
+        id: params.user_id
+      }).populateAll().exec(function(e, r) {
+        sails.log.debug("Populate result " + (JSON.stringify(r[0].orgs)));
+        return res.send(r[0].orgs);
+      });
+    });
   }
 };

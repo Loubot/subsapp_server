@@ -11,9 +11,12 @@ module.exports = {
   get_business: (req, res) ->
     sails.log.debug "Hit the business controller/get_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.query.org_id }"
-    Org.find( { id: req.query.org_id } ).then( ( org ) ->
+    Org.findOne( { id: req.query.org_id } ).then( ( org ) ->
       sails.log.debug "Find response #{ JSON.stringify org }" 
-      res.send org[0]
+      Team.find().where( { main_org: req.query.org_id }).exec (e, teams) ->
+        sails.log.debug "Team results #{ JSON.stringify teams[0] }"
+        res.send { org: org, teams: teams[0] }
+        
       return
       
     ).catch( ( err ) ->
