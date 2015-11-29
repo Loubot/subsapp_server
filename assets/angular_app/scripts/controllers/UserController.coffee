@@ -40,8 +40,7 @@ angular.module('subzapp').controller('UserController', [
 
         console.log "Business create return #{ JSON.stringify response.data }"
         $scope.orgs = response.data
-        $('.business_name').val ""
-        $('.business_address').val ""
+        $scope.business_form_data.$setPristine()
 
       ), ( errResponse ) ->
         console.log "Business create error response #{ JSON.stringify errResponse }"

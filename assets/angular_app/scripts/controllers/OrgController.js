@@ -20,26 +20,15 @@ angular.module('subzapp').controller('OrgController', [
       }
     }).then((function(response) {
       console.log("Org response " + (JSON.stringify(response.data)));
-      return $scope.org = response.data;
+      return $scope.team = response.data;
     }), function(errResponse) {
       console.log("Org error " + (JSON.stringify(errResponse)));
       return message.error(errResponse.data.message);
     });
-    return $scope.create_team = function() {
+    return $scope.team_create = function() {
       $scope.team_form_data.user_id = window.localStorage.getItem('user_id');
-      return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/create-team",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        },
-        data: $scope.team_form_data
-      }).then((function(response) {
-        return console.log("Team create response " + (JSON.stringify(response)));
-      }), function(errResponse) {
-        return console.log("Teacm create error " + (JSON.stringify(errResponse)));
-      });
+      $scope.team_form_data.org_id = params.id;
+      return console.log("Form data " + (JSON.stringify($scope.team_form_data)));
     };
   }
 ]);

@@ -22,24 +22,25 @@ angular.module('subzapp').controller('OrgController', [
         org_id: params.id
     ).then ( (response) ->
       console.log "Org response #{ JSON.stringify response.data }"
-      $scope.org = response.data
+      $scope.team = response.data
     ), ( errResponse ) ->
       console.log "Org error #{ JSON.stringify errResponse }"
       message.error( errResponse.data.message )
       # $scope.errorMessage = errResponse
 
-    $scope.create_team = ->
+    $scope.team_create = ->
       $scope.team_form_data.user_id = window.localStorage.getItem 'user_id'
-
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN}/create-team"
-        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-        data: 
-          $scope.team_form_data
-      ).then ( (response) ->
-        console.log "Team create response #{ JSON.stringify response }"
-      ), (errResponse) ->
-        console.log "Teacm create error #{ JSON.stringify errResponse }"
+      $scope.team_form_data.org_id = params.id
+      console.log "Form data #{ JSON.stringify $scope.team_form_data }"
+      # $http(
+      #   method: 'POST'
+      #   url: "#{ RESOURCES.DOMAIN}/create-team"
+      #   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+      #   data: 
+      #     $scope.team_form_data
+      # ).then ( (response) ->
+      #   console.log "Team create response #{ JSON.stringify response }"
+      # ), (errResponse) ->
+      #   console.log "Teacm create error #{ JSON.stringify errResponse }"
 
 ])
