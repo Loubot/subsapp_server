@@ -34,7 +34,8 @@ angular.module('subzapp').controller('UserController', [
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/create-business"
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-        data: $scope.business_form_data
+        data: 
+          $scope.business_form_data
       ).then ( (response) ->
 
         console.log "Business create return #{ JSON.stringify response.data }"

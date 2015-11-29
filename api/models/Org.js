@@ -25,6 +25,10 @@ module.exports = {
       collection: 'user',
       via: 'orgs'
     },
+    teams: {
+      collection: 'team',
+      via: 'main_org'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();

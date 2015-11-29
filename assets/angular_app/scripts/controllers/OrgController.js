@@ -8,7 +8,7 @@ angular.module('subzapp').controller('OrgController', [
     params = $location.search();
     console.log("params " + params.id);
     user_token = JSON.parse(window.localStorage.getItem('user_token'));
-    return $http({
+    $http({
       method: 'GET',
       url: RESOURCES.DOMAIN + "/get-business",
       headers: {
@@ -25,5 +25,21 @@ angular.module('subzapp').controller('OrgController', [
       console.log("Org error " + (JSON.stringify(errResponse)));
       return message.error(errResponse.data.message);
     });
+    return $scope.create_team = function() {
+      $scope.team_form_data.user_id = window.localStorage.getItem('user_id');
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/create-team",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: $scope.team_form_data
+      }).then((function(response) {
+        return console.log("Team create response " + (JSON.stringify(response)));
+      }), function(errResponse) {
+        return console.log("Teacm create error " + (JSON.stringify(errResponse)));
+      });
+    };
   }
 ]);

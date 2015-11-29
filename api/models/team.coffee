@@ -1,6 +1,6 @@
 ###*
-# User
-# @description :: Model for storing users
+# Org
+# @description :: Model for storing teams
 ###
 
 module.exports =
@@ -16,31 +16,17 @@ module.exports =
     #   required: true
     #   unique: true
     #   alphanumericdashed: true
-
-    password: type: 'string'
-
-    email:
-      type: 'email'
+      
+    name:
+      type: 'string'
+      defaultsTo: ''
       required: true
-      unique: true
-    firstName:
-      type: 'string'
-      defaultsTo: ''
-    lastName:
-      type: 'string'
-      defaultsTo: ''
 
-    orgs:
-      collection: 'org'
-      via: 'admins'
+    main_org: 
+      model: 'org'
 
-    teams:
-      collection: 'team'
-      via: 'manager'
-
-    tokens:
-      collection: 'token'
-      via: 'owner'
+    manager:
+      model: 'user'
 
     
 

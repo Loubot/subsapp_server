@@ -26,6 +26,8 @@ module.exports.routes =
         controller :            'WebController'
         action :                'login'
 
+  # Business controller
+
   'post /create-business' :
         controller:             'OrgController'
         action:                 'create_business'
@@ -37,9 +39,13 @@ module.exports.routes =
   'get /get-business':
         controller:             'OrgController'
         action:                 'get_business'
- 
+
+  # end of business controller
+
+  # Team controller
   
-  # 'get /':              'WebController.homepage'
-  # 'get /welcome':       'WebController.welcome'
-  # 'get /register':      'WebController.register'
-  # 'post /up_tokens':    'UserController.up_tokens'
+  'post /create-team' :
+        controller:             'TeamController'
+        action:                 'create_team'
+
+  # end of Team controller

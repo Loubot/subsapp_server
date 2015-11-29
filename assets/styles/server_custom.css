@@ -37,17 +37,21 @@ body{
   padding:5px;
 }
 
-.org_list{
-  padding-top: 5px;
+.example-animate-container {
+  /*color: #111;*/
+  /*background:white;*/
+  /*border:1px solid black*/;
+  list-style:none;
+  margin:5px;
+  /*padding:0 10px;*/
 }
 
-.example-animate-container {
-  color: #111;
+.example-animate-container li {
+  color: #FFF;
   background:white;
   border:1px solid black;
-  list-style:none;
-  margin:0;
-  padding:0 10px;
+  padding: 5px;
+  margin-bottom: 5px;
 }
 
 .animate-repeat {

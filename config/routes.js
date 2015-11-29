@@ -40,5 +40,9 @@ module.exports.routes = {
   'get /get-business': {
     controller: 'OrgController',
     action: 'get_business'
+  },
+  'post /create-team': {
+    controller: 'TeamController',
+    action: 'create_team'
   }
 };
