@@ -6,7 +6,7 @@ angular.module('subzapp').controller('OrgController', [
     console.log('Org Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        console.log("user controller " + (JSON.stringify(window.USER)));
+        console.log("OrgController teams " + (JSON.stringify(window.USER.teams)));
         $scope.org = window.USER.orgs[0];
         $scope.teams = window.USER.teams;
         return res;
@@ -14,10 +14,14 @@ angular.module('subzapp').controller('OrgController', [
         console.log("User get error " + (JSON.stringify(errResponse)));
         return $state.go('login');
       });
+    } else {
+      console.log("USER already defined");
+      $scope.org = window.USER.orgs[0];
+      $scope.teams = window.USER.teams;
     }
     console.log("check it " + (JSON.stringify($location.search())));
     params = $location.search();
-    return $scope.team_create = function() {
+    $scope.team_create = function() {
       var user_token;
       user_token = JSON.parse(window.localStorage.getItem('user_token'));
       $scope.team_form_data.user_id = window.localStorage.getItem('user_id');
@@ -36,6 +40,25 @@ angular.module('subzapp').controller('OrgController', [
         return $scope.teams = teams.data;
       }), function(errResponse) {
         return console.log("Teacm create error " + (JSON.stringify(errResponse)));
+      });
+    };
+    return $scope.delete_team = function(id) {
+      var user_token;
+      user_token = JSON.parse(window.localStorage.getItem('user_token'));
+      return $http({
+        method: 'DELETE',
+        url: RESOURCES.DOMAIN + "/delete-team",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: {
+          team_id: id
+        }
+      }).then((function(res) {
+        return console.log("Delete response " + (JSON.stringify(res)));
+      }), function(errResponse) {
+        return console.log("Delte team error " + (JSON.stringify(errResponse)));
       });
     };
   }

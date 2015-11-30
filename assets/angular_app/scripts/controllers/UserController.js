@@ -36,6 +36,8 @@ angular.module('subzapp').controller('UserController', [
       });
     };
     return $scope.delete_business = function(id) {
+      var user_token;
+      user_token = JSON.parse(window.localStorage.getItem('user_token'));
       return $http({
         method: 'DELETE',
         url: RESOURCES.DOMAIN + "/delete-business",

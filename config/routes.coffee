@@ -48,4 +48,8 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'create_team'
 
+  'delete /delete-team' :
+        controller:             'TeamController'
+        action:                 'destroy_team'
+
   # end of Team controller

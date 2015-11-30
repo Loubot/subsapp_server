@@ -14,7 +14,7 @@ angular.module('subzapp').controller('OrgController', [
     if !(window.USER?)
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify res }"
-        console.log "user controller #{JSON.stringify window.USER }"
+        console.log "OrgController teams #{JSON.stringify window.USER.teams}"
         $scope.org = window.USER.orgs[0]
         # $scope.org = response.data.org
         $scope.teams =  window.USER.teams
@@ -22,25 +22,15 @@ angular.module('subzapp').controller('OrgController', [
       ), ( errResponse ) ->
         console.log "User get error #{ JSON.stringify errResponse }"
         $state.go 'login'
+    else
+      console.log "USER already defined"
+      $scope.org = window.USER.orgs[0]
+        
+      $scope.teams =  window.USER.teams
 
     console.log "check it #{ JSON.stringify $location.search() }"
     params = $location.search()
-    # console.log "params #{ params.id }"
-    # user_token = JSON.parse window.localStorage.getItem 'user_token'
-    # $http(
-    #   method: 'GET'
-    #   url: "#{ RESOURCES.DOMAIN }/get-business"
-    #   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-    #   params: 
-    #     org_id: params.id
-    # ).then ( (response) ->
-    #   console.log "Org response #{ JSON.stringify response.data }"
-    #   $scope.org = response.data.org
-    #   $scope.teams = response.data.teams
-    # ), ( errResponse ) ->
-    #   console.log "Org error #{ JSON.stringify errResponse }"
-    #   message.error( errResponse.data.message )
-      # $scope.errorMessage = errResponse
+    
 
     $scope.team_create = ->
       user_token = JSON.parse window.localStorage.getItem 'user_token'
@@ -58,5 +48,18 @@ angular.module('subzapp').controller('OrgController', [
         $scope.teams = teams.data
       ), (errResponse) ->
         console.log "Teacm create error #{ JSON.stringify errResponse }"
+
+    $scope.delete_team = (id) ->
+      user_token = JSON.parse window.localStorage.getItem 'user_token'
+      $http(
+        method: 'DELETE'
+        url: "#{ RESOURCES.DOMAIN }/delete-team"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: 
+          team_id: id
+      ).then ( (res) ->
+        console.log "Delete response #{ JSON.stringify res }"
+      ), (errResponse) ->
+        console.log "Delte team error #{ JSON.stringify errResponse }"
 
 ])

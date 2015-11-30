@@ -10,7 +10,7 @@
 ###
 
 module.exports.models = {
-  migrate: 'drop'
+  migrate: 'safe'
   connection: 'subsapp_db'
 }
 

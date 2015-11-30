@@ -61,6 +61,7 @@ angular.module('subzapp').controller('UserController', [
         $state.go 'login'
 
     $scope.delete_business = (id) ->
+      user_token = JSON.parse window.localStorage.getItem 'user_token'
       $http(
         method: 'DELETE'
         url: "#{ RESOURCES.DOMAIN }/delete-business"

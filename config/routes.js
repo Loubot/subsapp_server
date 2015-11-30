@@ -44,5 +44,9 @@ module.exports.routes = {
   'post /create-team': {
     controller: 'TeamController',
     action: 'create_team'
+  },
+  'delete /delete-team': {
+    controller: 'TeamController',
+    action: 'destroy_team'
   }
 };

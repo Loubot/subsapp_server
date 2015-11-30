@@ -43,7 +43,7 @@
       <br>Your clubs. Click to view more options
       <li class="animate-repeat team_list" ng-repeat="team in teams | filter:q as results">
         <a href="/#/team?id={{ team.id }}" >[{{$index + 1}}] {{team.name}}; Address: .</a>
-        <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business(team.id)">Delete?</button>     
+        <button class="btn btn-danger btn-sm pull-right" ng-click="delete_team(team.id)">Delete?</button>     
       </li>
       <li class="animate-repeat" ng-if="teams.length == 0">
         <strong>No results found...</strong>
