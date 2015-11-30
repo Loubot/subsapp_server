@@ -2,9 +2,9 @@
   <img src="images/corins.jpg" class="img-responsive subs_app_logo" alt="Responsive image">
 </div> -->
 <div class="container-fluid">
-  <h4 class="text-center">Add a team to the org e.g. "U15 Boys/Girls"</h4>
-  <h1 class="text-center">{{org.name}}</h1>
-  <h4 class="text-center">{{org.address}}</h4>
+  <h4 class="text-center">Add a team to the team e.g. "U15 Boys/Girls"</h4>
+  <h1 class="text-center">{{team.name}}</h1>
+  <h4 class="text-center">{{team.address}}</h4>
   <div class="col-xs-2">
 
   </div>
@@ -38,6 +38,17 @@
       </div> <!-- end of login_error -->
     </form>
 
+    <ul class="example-animate-container">
+      <input type="search" ng-model="q" placeholder="filter clubs..." aria-label="filter friends" class="black_text" />
+      <br>Your clubs. Click to view more options
+      <li class="animate-repeat team_list" ng-repeat="team in teams | filter:q as results">
+        <a href="/#/team?id={{ team.id }}" >[{{$index + 1}}] {{team.name}}; Address: .</a>
+        <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business(team.id)">Delete?</button>     
+      </li>
+      <li class="animate-repeat" ng-if="teams.length == 0">
+        <strong>No results found...</strong>
+      </li>
+    </ul>
      
   </div> <!-- end of col-xs-9 -->
 

@@ -19,8 +19,8 @@ module.exports = {
       sails.log.debug "Team create done"
 
       User.find().where( id: params.user_id).populateAll().exec (e, r) ->
-        sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
-        res.send r[0].orgs
+        sails.log.debug "Populate result #{ JSON.stringify r[0].teams }"
+        res.send r[0].teams
         
   
 }

@@ -29,8 +29,8 @@ module.exports = {
       return User.find().where({
         id: params.user_id
       }).populateAll().exec(function(e, r) {
-        sails.log.debug("Populate result " + (JSON.stringify(r[0].orgs)));
-        return res.send(r[0].orgs);
+        sails.log.debug("Populate result " + (JSON.stringify(r[0].teams)));
+        return res.send(r[0].teams);
       });
     });
   }

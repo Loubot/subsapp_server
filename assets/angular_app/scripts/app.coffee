@@ -1,3 +1,9 @@
+#Global variable for logged in user
+
+window.USER = null
+
+# See user service
+
 'use strict'
 
 angular.module('subzapp', [
@@ -55,30 +61,30 @@ angular.module('subzapp').factory 'message', ->
     # return
  }
 
-angular.module('subzapp').service 'user', ($http, RESOURCES ) ->
+angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
   console.log "user service"
   {
     get_user: ->
-      getUser = ->
-        console.log "yyyyyyyyyyyyyyyyyyy"
-        user_token = JSON.parse window.localStorage.getItem 'user_token'
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/user"
-          headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-        ).success( (data) ->
-          # console.log "Fetched user data #{ JSON.stringify data[0] }"
-
-          return data[0]
-          
-        ).error (err) ->
-          console.log "Fetching user data error #{ JSON.stringify err }"
+      
+      # console.log "yyyyyyyyyyyyyyyyyyy"
+      user_token = JSON.parse window.localStorage.getItem 'user_token'
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/user"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+      ).success( (data) ->
+        # console.log "Fetched user data #{ JSON.stringify data[0] }"
+        if !(data[0]?)
           $state.go 'login'
-
-      if !(user?)
-        user = getUser()
-        # console.log "User JSON.stringify user"
-        return user
+          console.log "No user data"
+          return false
+        else
+          window.USER = data[0]
+          return data[0]
+        
+      ).error (err) ->
+        console.log "Fetching user data error #{ JSON.stringify err }"
+        $state.go 'login'
   }
     
 

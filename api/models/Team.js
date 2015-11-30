@@ -5,7 +5,6 @@
  * @description :: Model for storing teams
  */
 module.exports = {
-  migrate: 'safe',
   adapter: 'mysql',
   autoUpdatedAt: true,
   autoCreatedAt: true,
