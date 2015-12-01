@@ -42,6 +42,12 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       templateUrl : 'angular_app/views/org/org.html'
       controller : 'OrgController'
 
+    # team state
+    $stateProvider.state "team",
+      url : '/team'
+      templateUrl : 'angular_app/views/team/team.html'
+      controller : 'TeamController'
+
 
 angular.module('subzapp').constant 'RESOURCES', do ->
   # Define your variable
