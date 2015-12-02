@@ -4,6 +4,8 @@ angular.module('subzapp').controller('RegisterController', [
   '$scope', '$state', '$http', '$window', 'RESOURCES', function($scope, $state, $http, $window, RESOURCES) {
     console.log('Register Controller');
     return $scope.register_submit = function() {
+      $scope.register_form_data.is_admin = true;
+      console.log($scope.register_form_data);
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/auth/signup",
