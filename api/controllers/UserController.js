@@ -7,24 +7,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 module.exports = {
-  up_tokens: function(req, res) {
-    return User.findOne({
-      id: req.user.id
-    }).then(function(found) {
-      var new_tokens;
-      sails.log.debug(" result " + (JSON.stringify(found)));
-      sails.log.debug(" session " + (JSON.stringify(req.session)));
-      new_tokens = ++found.tokens;
-      sails.log.debug("new_tokens " + new_tokens);
-      return User.update(req.user.id, {
-        tokens: new_tokens
-      }).then(function(result) {
-        sails.log.debug(" user id " + req.user.id);
-        sails.log.debug("update result " + (JSON.stringify(result)));
-        return res.send(result);
-      });
-    }).fail(function(error) {
-      return console.log('bla');
-    });
+  return_user: function(req, res) {
+    return sails.log.debug();
   }
 };

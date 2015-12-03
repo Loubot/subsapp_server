@@ -75,13 +75,14 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
       
       console.log "yyyyyyyyyyyyyyyyyyy"
       user_token = JSON.parse window.localStorage.getItem 'user_token'
+      id = window.localStorage.getItem 'user_id'
       $http(
         method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/user"
+        url: "#{ RESOURCES.DOMAIN }/user/#{ id }"
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
       ).success( (data) ->
         console.log "Fetched user data #{ JSON.stringify data }"
-        if !(data[0]?)
+        if !(data?)
           $state.go 'login'
           console.log "No user data"
           return false

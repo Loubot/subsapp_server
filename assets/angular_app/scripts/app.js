@@ -60,19 +60,20 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
   console.log("user service");
   return {
     get_user: function() {
-      var user_token;
+      var id, user_token;
       console.log("yyyyyyyyyyyyyyyyyyy");
       user_token = JSON.parse(window.localStorage.getItem('user_token'));
+      id = window.localStorage.getItem('user_id');
       return $http({
         method: 'GET',
-        url: RESOURCES.DOMAIN + "/user",
+        url: RESOURCES.DOMAIN + "/user/" + id,
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
         }
       }).success(function(data) {
         console.log("Fetched user data " + (JSON.stringify(data)));
-        if (!(data[0] != null)) {
+        if (!(data != null)) {
           $state.go('login');
           console.log("No user data");
           return false;
