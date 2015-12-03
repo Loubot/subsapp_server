@@ -40,6 +40,10 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'get_business'
 
+  'get /all-org':
+        controller:             'OrgController'
+        action:                 'all_org'
+
   # end of business controller
 
   # Team controller

@@ -60,7 +60,7 @@ module.exports = {
     });
   },
   destroy_business: function(req, res) {
-    sails.log.debug("Hit delete method");
+    sails.log.debug("Hit the business controller/destroy_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     sails.log.debug("Hit delete method " + req.body.org_id);
     return Org.destroy({
       id: req.body.org_id
@@ -70,6 +70,16 @@ module.exports = {
       return sails.log.debug("Create error response " + (JSON.stringify(err)));
     }).done(function() {
       sails.log.debug("Create done");
+    });
+  },
+  all_org: function(req, res) {
+    sails.log.debug("Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    return Org.find().then(function(orgs) {
+      return sails.log.debug("All org response " + (JSON.stringify(orgs)));
+    })["catch"](function(err) {
+      return sails.log.debug("All org error " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("All org done");
     });
   }
 };

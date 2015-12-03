@@ -38,7 +38,8 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
 
 angular.module('subzapp').constant('RESOURCES', (function() {
   var url;
-  url = 'http://localhost:1337';
+  console.log("url" + window.location.origin);
+  url = window.location.origin;
   return {
     DOMAIN: url
   };

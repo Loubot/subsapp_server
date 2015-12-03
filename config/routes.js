@@ -41,6 +41,10 @@ module.exports.routes = {
     controller: 'OrgController',
     action: 'get_business'
   },
+  'get /all-org': {
+    controller: 'OrgController',
+    action: 'all_org'
+  },
   'post /create-team': {
     controller: 'TeamController',
     action: 'create_team'

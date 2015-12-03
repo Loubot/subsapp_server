@@ -55,7 +55,7 @@ module.exports = {
     
      
   destroy_business: (req, res) ->
-    sails.log.debug "Hit delete method"
+    sails.log.debug "Hit the business controller/destroy_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Hit delete method #{ req.body.org_id }"
     Org.destroy( id: req.body.org_id ).then( ( org ) ->
       sails.log.debug "Delete response #{ JSON.stringify org }" 
@@ -70,39 +70,13 @@ module.exports = {
       sails.log.debug "Create done"
       
       return
-    # Org.destroy(id: req.body.org_id).exec (err, res) ->
-    #   sails.log.debug 'The record has been deleted ' + JSON.stringify err
-    #   sails.log.debug 'The record has been deleted ' + JSON.stringify res
-    #   return
-
+  
+  all_org: (req, res) ->
+    sails.log.debug "Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    Org.find().then( (orgs) ->
+      sails.log.debug "All org response #{ JSON.stringify orgs }"
+    ).catch(( err ) ->
+      sails.log.debug "All org error #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "All org done"
 }
-
-
-
-
-# up_tokens: (req, res) ->
-#     User.findOne(id: req.user.id).then((found) ->
-#       sails.log.debug " result #{ JSON.stringify found }"
-#       new_tokens = ++found.tokens
-#       sails.log.debug "new_tokens #{ new_tokens }"
-#       User.update(req.user.id, { tokens: new_tokens }).then (result) ->
-#         sails.log.debug " user id #{ req.user.id }"
-#         sails.log.debug "update result #{ JSON.stringify result }"
-
-#         res.send result
-#       # sails.log.debug "found.tokens #{ found.tokens }"
-#       # sails.log.debug "before #{found.tokens}"
-#       # new_tokens = ++found.tokens
-#       # return new_tokens
-#       # sails.log.debug "after #{ new_tokens }"
-#       ).fail (error) ->
-#         console.log 'bla'
-        
-
-#       # tokens = res.tokens
-#       # console.log "tokens #{ tokens }"
-#       # tokens++
-#       # console.log "tokens #{ tokens }"
-
-#       # User.update req.user.id, { tokens: new_tokens }, (err, updated) ->
-#       #   sails.log.debug "update #{ JSON.stringify updated }"

@@ -29,7 +29,7 @@ angular.module('subzapp').controller('UserController', [
       }).then((function(response) {
         console.log("Business create return " + (JSON.stringify(response.data)));
         $scope.orgs = response.data;
-        return $scope.business_form_data.$setPristine();
+        return $scope.business_form.$setPristine();
       }), function(errResponse) {
         console.log("Business create error response " + (JSON.stringify(errResponse)));
         return $state.go('login');

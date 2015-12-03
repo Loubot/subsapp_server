@@ -51,7 +51,8 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
 
 angular.module('subzapp').constant 'RESOURCES', do ->
   # Define your variable
-  url = 'http://localhost:1337'
+  console.log "url" + window.location.origin 
+  url = window.location.origin 
   # Use the variable in your constants
   {
     DOMAIN: url
