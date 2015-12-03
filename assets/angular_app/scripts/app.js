@@ -61,6 +61,7 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
   return {
     get_user: function() {
       var user_token;
+      console.log("yyyyyyyyyyyyyyyyyyy");
       user_token = JSON.parse(window.localStorage.getItem('user_token'));
       return $http({
         method: 'GET',
@@ -70,6 +71,7 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
           "Content-Type": "application/json"
         }
       }).success(function(data) {
+        console.log("Fetched user data " + (JSON.stringify(data)));
         if (!(data[0] != null)) {
           $state.go('login');
           console.log("No user data");

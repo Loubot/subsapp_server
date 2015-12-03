@@ -77,7 +77,8 @@ module.exports = {
     return Org.find().then(function(orgs) {
       return sails.log.debug("All org response " + (JSON.stringify(orgs)));
     })["catch"](function(err) {
-      return sails.log.debug("All org error " + (JSON.stringify(err)));
+      sails.log.debug("All org error " + (JSON.stringify(err)));
+      return res.send(orgs);
     }).done(function() {
       return sails.log.debug("All org done");
     });

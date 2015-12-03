@@ -77,6 +77,7 @@ module.exports = {
       sails.log.debug "All org response #{ JSON.stringify orgs }"
     ).catch(( err ) ->
       sails.log.debug "All org error #{ JSON.stringify err }"
+      res.send orgs
     ).done ->
       sails.log.debug "All org done"
 }
