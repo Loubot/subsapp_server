@@ -41,17 +41,17 @@
     
     
   
-   <ul class="example-animate-container">
-    <input type="search" ng-model="q" placeholder="filter clubs..." aria-label="filter friends" class="black_text" />
-    <br>Your clubs. Click to view more options
-    <li class="animate-repeat org_list" ng-repeat="org in orgs | filter:q as results">
-      <a href="/#/org?id={{ org.id }}" >[{{$index + 1}}] {{org.name}}; Address: {{org.address}}.</a>
-      <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business(org.id)">Delete?</button>     
-    </li>
-    <li class="animate-repeat" ng-if="orgs.length == 0">
-      <strong>No results found...</strong>
-    </li>
-  </ul>
+    <ul class="example-animate-container">
+      <input type="search" ng-model="q" placeholder="filter clubs..." aria-label="filter friends" class="black_text" />
+      <br>Your clubs. Click to view more options
+      <li class="animate-repeat org_list" ng-repeat="org in orgs | filter:q as results">
+        <a href="/#/org?id={{ org.id }}" >[{{$index + 1}}] {{org.name}}; Address: {{org.address}}.</a>
+        <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business(org.id)">Delete?</button>     
+      </li>
+      <li class="animate-repeat" ng-if="orgs.length == 0">
+        <strong>No results found...</strong>
+      </li>
+    </ul>
   </div> <!-- end of col-xs-9 -->
 
 

@@ -26,6 +26,12 @@ module.exports.routes =
         controller :            'WebController'
         action :                'login'
 
+  # User controller
+
+
+
+  # End of user controller
+
   # Business controller
 
   'post /create-business' :
@@ -36,15 +42,25 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'destroy_business'
 
-  'get /get-business':
+  'get /get-org':
         controller:             'OrgController'
-        action:                 'get_business'
+        action:                 'get_org'
 
   'get /all-org':
         controller:             'OrgController'
         action:                 'all_org'
 
-  # end of business controller
+    # mobile org controller
+      'get /get-org-list':
+              controller:               'OrgController'
+              action:                   'get_org_list'
+
+      'get /get-single-org':
+              controller:               'OrgController'
+              action:                   'get_single_org'
+    # end of mobile org controller
+
+  # end of org controller
 
   # Team controller
   

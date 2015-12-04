@@ -11,8 +11,8 @@ var passport;
 passport = require('passport');
 
 module.exports = {
-  get_business: function(req, res) {
-    sails.log.debug("Hit the business controller/get_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
+  get_org: function(req, res) {
+    sails.log.debug("Hit the business controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     sails.log.debug("Data " + (JSON.stringify(req.query.org_id)));
     return Org.findOne({
       id: req.query.org_id
@@ -75,12 +75,36 @@ module.exports = {
   all_org: function(req, res) {
     sails.log.debug("Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     return Org.find().then(function(orgs) {
-      return sails.log.debug("All org response " + (JSON.stringify(orgs)));
-    })["catch"](function(err) {
-      sails.log.debug("All org error " + (JSON.stringify(err)));
+      sails.log.debug("All org response " + (JSON.stringify(orgs)));
       return res.send(orgs);
+    })["catch"](function(err) {
+      return sails.log.debug("All org error " + (JSON.stringify(err)));
     }).done(function() {
       return sails.log.debug("All org done");
+    });
+  },
+  get_org_list: function(req, res) {
+    sails.log.debug("Hit the org controller/get_org_list");
+    return Org.find().then(function(orgs) {
+      sails.log.debug("Org get_org_list " + (JSON.stringify(orgs)));
+      return res.send(orgs);
+    })["catch"](function(err) {
+      return sails.log.debug("Org find get org list error " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("Org find done");
+    });
+  },
+  get_single_org: function(req, res) {
+    sails.log.debug("Hit the org controller/get_single_org " + (JSON.stringify(req.query)));
+    return Org.findOne().where({
+      id: req.query.org_id
+    }).then(function(org) {
+      sails.log.debug("Get single org " + (JSON.stringify(org)));
+      return res.send(org);
+    })["catch"](function(err) {
+      return sails.log.debug("Get single org error " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("Get single org done");
     });
   }
 };

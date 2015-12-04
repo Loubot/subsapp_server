@@ -14,6 +14,11 @@ module.exports = {
     password: {
       type: 'string'
     },
+    manager_access: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
+    },
     email: {
       type: 'email',
       required: true,

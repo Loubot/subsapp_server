@@ -5,18 +5,19 @@ angular.module('subzapp').controller('UserController', [
     console.log('User Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        console.log("User set to " + (JSON.stringify(res)));
-        $scope.orgs = window.USER;
+        $scope.orgs = window.USER.orgs;
         return res;
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
         return $state.go('login');
       });
+    } else {
+      $scope.orgs = window.USER.orgs;
     }
     $scope.business_create = function() {
       var user_token;
       console.log("create " + (JSON.stringify(user)));
-      user_token = JSON.parse(window.localStorage.getItem('user_token'));
+      user_token = window.localStorage.getItem('user_token');
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log(JSON.stringify($scope.business_form_data));
       return $http({
@@ -30,7 +31,8 @@ angular.module('subzapp').controller('UserController', [
       }).then((function(response) {
         console.log("Business create return " + (JSON.stringify(response.data)));
         $scope.orgs = response.data;
-        return $scope.business_form.$setPristine();
+        $('.business_name').val("");
+        return $('.business_address').val("");
       }), function(errResponse) {
         console.log("Business create error response " + (JSON.stringify(errResponse)));
         return $state.go('login');

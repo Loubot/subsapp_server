@@ -13,35 +13,20 @@ angular.module('subzapp').controller('UserController', [
     
     if !(window.USER?)
       user.get_user().then ( (res) ->
-        console.log "User set to #{ JSON.stringify res }"
+        # console.log "User set to #{ JSON.stringify res }"
         # console.log "user controller #{JSON.stringify window.USER }"
-        $scope.orgs = window.USER
+        $scope.orgs = window.USER.orgs
         return res
       ), ( errResponse ) ->
         console.log "User get error #{ JSON.stringify errResponse }"
         $state.go 'login'
-    
-    
-    
-    # console.log "User data #{ sails.config.user_data.name }"
-    # $http(
-    #   method: 'GET'
-    #   url: "#{ RESOURCES.DOMAIN }/user"
-    #   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-    # ).success( (data) ->
-    #   console.log "Fetched user data #{ JSON.stringify data[0] }"
-
-    #   $scope.orgs = if (data[0]?) then data[0].orgs else []
-    #   # user = data[0]
-    #   $scope.user = data[0] 
-    # ).error (err) ->
-    #   console.log "Fetching user data error #{ JSON.stringify err }"
-    #   $state.go 'login'
+    else 
+      $scope.orgs = window.USER.orgs
 
 
     $scope.business_create = ->
       console.log "create #{JSON.stringify user}"
-      user_token = JSON.parse window.localStorage.getItem 'user_token'
+      user_token = window.localStorage.getItem 'user_token'
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log JSON.stringify $scope.business_form_data
       $http(
@@ -54,7 +39,9 @@ angular.module('subzapp').controller('UserController', [
 
         console.log "Business create return #{ JSON.stringify response.data }"
         $scope.orgs = response.data
-        $scope.business_form.$setPristine()
+        # $scope.business_form.$setPristine()
+        $('.business_name').val ""
+        $('.business_address').val ""
 
       ), ( errResponse ) ->
         console.log "Business create error response #{ JSON.stringify errResponse }"

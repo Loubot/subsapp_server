@@ -8,8 +8,8 @@
 passport = require('passport')
 module.exports = {
 
-  get_business: (req, res) ->
-    sails.log.debug "Hit the business controller/get_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+  get_org: (req, res) ->
+    sails.log.debug "Hit the business controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.query.org_id }"
     Org.findOne( { id: req.query.org_id } ).then( ( org ) ->
       sails.log.debug "Find response #{ JSON.stringify org }" 
@@ -75,9 +75,33 @@ module.exports = {
     sails.log.debug "Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     Org.find().then( (orgs) ->
       sails.log.debug "All org response #{ JSON.stringify orgs }"
+      res.send orgs
     ).catch(( err ) ->
       sails.log.debug "All org error #{ JSON.stringify err }"
-      res.send orgs
+      
     ).done ->
       sails.log.debug "All org done"
+
+
+  ######################################################################
+          ## Mobile app ##
+  get_org_list: (req, res) ->
+    sails.log.debug "Hit the org controller/get_org_list"
+    Org.find().then( (orgs) ->
+      sails.log.debug "Org get_org_list #{ JSON.stringify orgs }"
+      res.send orgs
+    ).catch((err) ->
+      sails.log.debug "Org find get org list error #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "Org find done"
+
+  get_single_org: (req, res) ->
+    sails.log.debug "Hit the org controller/get_single_org #{ JSON.stringify req.query }"
+    Org.findOne().where( { id: req.query.org_id } ).then( (org) -> 
+      sails.log.debug "Get single org #{ JSON.stringify org }"
+      res.send org
+    ).catch( (err) ->
+      sails.log.debug "Get single org error #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "Get single org done"
 }

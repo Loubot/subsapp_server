@@ -19,7 +19,7 @@ angular.module('subzapp').controller('LoginController', [
       ).then ( (response) ->
         console.log "User id #{ response.data.user }"
         console.log response
-        window.localStorage.setItem 'user_token', JSON.stringify response.data.token
+        window.localStorage.setItem 'user_token', response.data.token
         window.localStorage.setItem 'user_id', response.data.user.id
         # console.log "Success response token #{ JSON.stringify response.data.token }"
         $state.go 'user'

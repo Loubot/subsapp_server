@@ -5,7 +5,6 @@
  * @description :: Model for storing tokens
  */
 module.exports = {
-  migrate: 'alter',
   adapter: 'mysql',
   autoUpdatedAt: true,
   autoCreatedAt: true,

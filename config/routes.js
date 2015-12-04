@@ -37,13 +37,21 @@ module.exports.routes = {
     controller: 'OrgController',
     action: 'destroy_business'
   },
-  'get /get-business': {
+  'get /get-org': {
     controller: 'OrgController',
-    action: 'get_business'
+    action: 'get_org'
   },
   'get /all-org': {
     controller: 'OrgController',
     action: 'all_org'
+  },
+  'get /get-org-list': {
+    controller: 'OrgController',
+    action: 'get_org_list'
+  },
+  'get /get-single-org': {
+    controller: 'OrgController',
+    action: 'get_single_org'
   },
   'post /create-team': {
     controller: 'TeamController',

@@ -11,7 +11,7 @@ angular.module('subzapp').controller('LoginController', [
       }).then((function(response) {
         console.log("User id " + response.data.user);
         console.log(response);
-        window.localStorage.setItem('user_token', JSON.stringify(response.data.token));
+        window.localStorage.setItem('user_token', response.data.token);
         window.localStorage.setItem('user_id', response.data.user.id);
         return $state.go('user');
       }), function(errResponse) {
