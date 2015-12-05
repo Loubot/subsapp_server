@@ -13,6 +13,7 @@ angular.module('subzapp').controller('UserController', [
         return $state.go('login');
       });
     } else {
+      console.log('else');
       $scope.orgs = window.USER.orgs;
     }
     $scope.business_create = function() {

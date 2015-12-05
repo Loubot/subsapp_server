@@ -22,6 +22,7 @@ angular.module('subzapp').controller('UserController', [
         console.log "User get error #{ JSON.stringify errResponse }"
         $state.go 'login'
     else 
+      console.log 'else'
       $scope.orgs = window.USER.orgs
 
 

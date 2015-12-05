@@ -15,6 +15,7 @@ module.exports = {
     Token.findOne( owner: 1 ).then( ( token ) ->
       sails.log.debug "Find token response #{ JSON.stringify token }" 
       
+      
 
     ).catch( (err) ->
       sails.log.debug "Join team find user error #{ JSON.stringify err }"

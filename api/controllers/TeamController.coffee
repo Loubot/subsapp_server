@@ -66,5 +66,18 @@ module.exports = {
     ).catch( (err) ->
       sails.log.debug "Get team error #{ JSON.stringify err }"
     ).done ->
-      sails.log.debug 
+      sails.log.debug "Team get team main org done"
+
+
+  get_team_members: (req, res) ->
+    sails.log.debug "Hit the team controller/get_team_members"
+    sails.log.debug "Hit the team controller/get_team_members #{ req.query.team_id }"
+
+    Team.findOne( id: req.query.team_id ).populate('team_members').then( (mems) ->
+      sails.log.debug "Get team response #{ JSON.stringify mems }"
+      res.send mems
+    ).catch( (err) ->
+      sails.log.debug "Get team error #{ JSON.stringify err }"
+    ).done ->
+      sails.log.debug "Team get team main org done"
 }

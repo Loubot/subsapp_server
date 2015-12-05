@@ -80,6 +80,10 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'join_team'
 
+  'get /get-team-members':
+        controller:             'TeamController'
+        action:                 'get_team_members'
+
   # end of Team controller
 
   #Token controller
