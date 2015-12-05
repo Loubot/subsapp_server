@@ -50,14 +50,14 @@ module.exports = {
   },
   join_team: function(req, res) {
     sails.log.debug("Hit the team controller/join_team");
-    return User.findOne({
-      id: req.body.user_id
-    }).then(function(user) {
-      sails.log.debug("Find user response " + (JSON.stringify(user)));
-      user.user_teams.add(req.body.team_id);
-      return user.save(function(err, s) {
-        sails.log.debug("Add team to user " + (JSON.stringify(s)));
-        sails.log.debug("Add team to user err " + (JSON.stringify(err)));
+    return Team.findOne({
+      id: req.body.team_id
+    }).then(function(team) {
+      sails.log.debug("Find user response " + (JSON.stringify(team)));
+      team.team_members.add(req.body.user_id);
+      return team.save(function(err, s) {
+        sails.log.debug("Add team to team " + (JSON.stringify(s)));
+        sails.log.debug("Add team to team err " + (JSON.stringify(err)));
         return res.send(s);
       });
     })["catch"](function(err) {

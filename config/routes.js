@@ -68,5 +68,9 @@ module.exports.routes = {
   'post /join-team': {
     controller: 'TeamController',
     action: 'join_team'
+  },
+  'post /up-token': {
+    controller: 'TokenController',
+    action: 'up_token'
   }
 };

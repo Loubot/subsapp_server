@@ -14,7 +14,7 @@ passport = require('passport')
 # @param {Object} info Info if some error occurs
 # @private
 ###
-sails.log.silly();
+sails.log.silly()
 _onPassportAuth = (req, res, error, user, info) ->
   if error
     return res.serverError(error)
@@ -27,6 +27,9 @@ _onPassportAuth = (req, res, error, user, info) ->
 module.exports =
   signup: (req, res) ->
     User.create(_.omit(req.allParams(), 'id')).then((user) ->
+      Token.create( owner: user.id).exec (err, token) ->
+        sails.log.debug "Token created #{ JSON.stringify token }"
+        sails.log.debug "Token create error #{ JSON.stringify err }" if err?
       {
         token: CipherService.createToken(user)
         user: user

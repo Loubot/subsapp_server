@@ -34,13 +34,5 @@ module.exports = {
       delete obj.socialProfiles;
       return obj;
     }
-  },
-  beforeUpdate: function(values, next) {
-    CipherService.hashPassword(values);
-    next();
-  },
-  beforeCreate: function(values, next) {
-    CipherService.hashPassword(values);
-    next();
   }
 };

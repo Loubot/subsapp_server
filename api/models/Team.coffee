@@ -41,14 +41,14 @@ module.exports =
       delete obj.password
       delete obj.socialProfiles
       obj
-  beforeUpdate: (values, next) ->
-    CipherService.hashPassword values
-    next()
-    return
-  beforeCreate: (values, next) ->
-    CipherService.hashPassword values
-    next()
-    return
+  # beforeUpdate: (values, next) ->
+  #   CipherService.hashPassword values
+  #   next()
+  #   return
+  # beforeCreate: (values, next) ->
+  #   CipherService.hashPassword values
+  #   next()
+  #   return
 
 
 # ---

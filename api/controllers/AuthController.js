@@ -37,6 +37,14 @@ _onPassportAuth = function(req, res, error, user, info) {
 module.exports = {
   signup: function(req, res) {
     User.create(_.omit(req.allParams(), 'id')).then(function(user) {
+      Token.create({
+        owner: user.id
+      }).exec(function(err, token) {
+        sails.log.debug("Token created " + (JSON.stringify(token)));
+        if (err != null) {
+          return sails.log.debug("Token create error " + (JSON.stringify(err)));
+        }
+      });
       return {
         token: CipherService.createToken(user),
         user: user

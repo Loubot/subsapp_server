@@ -81,3 +81,10 @@ module.exports.routes =
         action:                 'join_team'
 
   # end of Team controller
+
+  #Token controller
+  'post /up-token':
+        controller:             'TokenController'
+        action:                 'up_token'
+
+  # end of Token controller

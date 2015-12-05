@@ -37,12 +37,12 @@ module.exports = {
 
   join_team: (req, res) ->
     sails.log.debug "Hit the team controller/join_team"
-    User.findOne( { id: req.body.user_id } ).then( ( user ) ->
-      sails.log.debug "Find user response #{ JSON.stringify user }" 
-      user.user_teams.add(req.body.team_id)
-      user.save (err, s) ->
-        sails.log.debug "Add team to user #{ JSON.stringify s }"
-        sails.log.debug "Add team to user err #{ JSON.stringify err }"
+    Team.findOne( { id: req.body.team_id } ).then( ( team ) ->
+      sails.log.debug "Find user response #{ JSON.stringify team }" 
+      team.team_members.add(req.body.user_id)
+      team.save (err, s) ->
+        sails.log.debug "Add team to team #{ JSON.stringify s }"
+        sails.log.debug "Add team to team err #{ JSON.stringify err }"
         res.send s
         # User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
         #   sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
