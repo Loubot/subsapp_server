@@ -26,18 +26,18 @@ module.exports = {
       return sails.log.debug("Team create error " + (JSON.stringify(err)));
     }).done(function() {
       sails.log.debug("Team create done");
-      return User.find().where({
-        id: params.user_id
-      }).populateAll().exec(function(e, r) {
-        sails.log.debug("Populate result " + (JSON.stringify(r[0].teams)));
-        return res.send(r[0].teams);
+      return Team.find().where({
+        main_org: params.org_id
+      }).populateAll().exec(function(e, teams) {
+        sails.log.debug("Populate result " + (JSON.stringify(teams)));
+        sails.log.debug("Populate error " + (JSON.stringify(e)));
+        return res.send(teams);
       });
     });
   },
   destroy_team: function(req, res) {
     sails.log.debug("Hit the team controller/destroy_team");
     sails.log.debug("Data " + (JSON.stringify(req.body)));
-    res.status(200);
     return Team.destroy({
       id: req.body.team_id
     }).then(function(team) {
@@ -46,6 +46,37 @@ module.exports = {
       return sails.log.debug("Team destroy error " + (JSON.stringify(err)));
     }).done(function() {
       return sails.log.debug("Team destroy done");
+    });
+  },
+  join_team: function(req, res) {
+    sails.log.debug("Hit the team controller/join_team");
+    return User.findOne({
+      id: req.body.user_id
+    }).then(function(user) {
+      sails.log.debug("Find user response " + (JSON.stringify(user)));
+      user.user_teams.add(req.body.team_id);
+      return user.save(function(err, s) {
+        sails.log.debug("Add team to user " + (JSON.stringify(s)));
+        sails.log.debug("Add team to user err " + (JSON.stringify(err)));
+        return res.send(s);
+      });
+    })["catch"](function(err) {
+      return sails.log.debug("Join team find user error " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("Join team find user done");
+    });
+  },
+  get_team: function(req, res) {
+    sails.log.debug("Hit the team controller/get_team");
+    return Team.find({
+      id: req.query.team_id
+    }).populate('main_org').then(function(team) {
+      sails.log.debug("Get team response " + (JSON.stringify(team)));
+      return res.send(team);
+    })["catch"](function(err) {
+      return sails.log.debug("Get team error " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug;
     });
   }
 };

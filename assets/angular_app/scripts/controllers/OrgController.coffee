@@ -15,8 +15,8 @@ angular.module('subzapp').controller('OrgController', [
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify res }"
         # console.log "OrgController teams #{JSON.stringify window.USER.teams}"
-        $scope.org = window.USER.orgs[0]
-        console.log "teams #{ JSON.stringify window.USER.teams }"
+        $scope.org = window.USER.orgs
+        console.log "teams #{ JSON.stringify window.USER }"
         $scope.teams = return_teams(window.USER.teams, $location.search().id)
 
       ), ( errResponse ) ->

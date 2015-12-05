@@ -5,6 +5,7 @@
  * @description :: Model for storing teams
  */
 module.exports = {
+  migrate: 'safe',
   adapter: 'mysql',
   autoUpdatedAt: true,
   autoCreatedAt: true,
@@ -21,6 +22,10 @@ module.exports = {
     },
     manager: {
       model: 'user'
+    },
+    team_members: {
+      collection: 'user',
+      via: 'user_teams'
     },
     toJSON: function() {
       var obj;

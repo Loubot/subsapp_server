@@ -98,7 +98,7 @@ module.exports = {
     sails.log.debug("Hit the org controller/get_single_org " + (JSON.stringify(req.query)));
     return Org.findOne().where({
       id: req.query.org_id
-    }).then(function(org) {
+    }).populate('teams').then(function(org) {
       sails.log.debug("Get single org " + (JSON.stringify(org)));
       return res.send(org);
     })["catch"](function(err) {

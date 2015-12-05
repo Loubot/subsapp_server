@@ -35,6 +35,10 @@ module.exports =
       collection: 'team'
       via: 'main_org'
 
+    org_members:
+      collection: 'user'
+      via: 'user_orgs'
+
     
 
 

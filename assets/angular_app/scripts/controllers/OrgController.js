@@ -8,8 +8,8 @@ angular.module('subzapp').controller('OrgController', [
     console.log('Org Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        $scope.org = window.USER.orgs[0];
-        console.log("teams " + (JSON.stringify(window.USER.teams)));
+        $scope.org = window.USER.orgs;
+        console.log("teams " + (JSON.stringify(window.USER)));
         return $scope.teams = return_teams(window.USER.teams, $location.search().id);
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));

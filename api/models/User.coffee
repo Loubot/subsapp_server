@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'safe',
+  migrate: 'safe',
   adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -46,6 +46,14 @@ module.exports =
     tokens:
       collection: 'token'
       via: 'owner'
+
+    user_orgs:
+      collection: 'org'
+      via: 'org_members'
+
+    user_teams:
+      collection: 'team'
+      via: 'team_members'
 
     
 

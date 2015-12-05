@@ -5,6 +5,7 @@ angular.module('subzapp').controller('UserController', [
     console.log('User Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
+        console.log("Got user " + (JSON.stringify(res)));
         $scope.orgs = window.USER.orgs;
         return res;
       }), function(errResponse) {

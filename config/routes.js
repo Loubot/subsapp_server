@@ -60,5 +60,13 @@ module.exports.routes = {
   'delete /delete-team': {
     controller: 'TeamController',
     action: 'destroy_team'
+  },
+  'get /get-team': {
+    controller: 'TeamController',
+    action: 'get_team'
+  },
+  'post /join-team': {
+    controller: 'TeamController',
+    action: 'join_team'
   }
 };

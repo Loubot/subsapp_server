@@ -97,7 +97,7 @@ module.exports = {
 
   get_single_org: (req, res) ->
     sails.log.debug "Hit the org controller/get_single_org #{ JSON.stringify req.query }"
-    Org.findOne().where( { id: req.query.org_id } ).then( (org) -> 
+    Org.findOne().where( { id: req.query.org_id } ).populate('teams').then( (org) -> 
       sails.log.debug "Get single org #{ JSON.stringify org }"
       res.send org
     ).catch( (err) ->
