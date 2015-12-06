@@ -23,8 +23,17 @@ body{
   /*color: #FFF;*/
 }
 
-.login_error{
+.message{
   display: none;
+}
+
+.success_message{
+  
+  background-color: #00b100;
+  padding: 5px;
+}
+
+.error_message{
   background-color: #ff3b3b;
   /*color: #FFF;*/
   padding:5px;

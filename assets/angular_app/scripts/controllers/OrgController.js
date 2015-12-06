@@ -13,6 +13,7 @@ angular.module('subzapp').controller('OrgController', [
         return $scope.teams = return_teams(window.USER.teams, $location.search().id);
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
+        window.USER = null;
         return $state.go('login');
       });
     } else {

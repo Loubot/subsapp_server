@@ -29,6 +29,10 @@ module.exports.routes = {
     controller: 'WebController',
     action: 'login'
   },
+  'post /edit-user': {
+    controller: 'UserController',
+    action: 'edit_user'
+  },
   'post /create-business': {
     controller: 'OrgController',
     action: 'create_business'

@@ -25,7 +25,7 @@ angular.module('subzapp').controller('LoginController', [
         $state.go 'user'
       ), ( errResponse ) ->
         console.log "Error response #{ JSON.stringify errResponse.data }"
-        # $('.login_error').show 'slide', { direction: 'right' }, 1000
+        window.USER = null
         message.error( errResponse.data.message )
         # $scope.errorMessage = errResponse
         

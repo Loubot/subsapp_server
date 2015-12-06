@@ -16,6 +16,7 @@ angular.module('subzapp').controller('LoginController', [
         return $state.go('user');
       }), function(errResponse) {
         console.log("Error response " + (JSON.stringify(errResponse.data)));
+        window.USER = null;
         return message.error(errResponse.data.message);
       });
     };

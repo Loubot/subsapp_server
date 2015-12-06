@@ -27,7 +27,9 @@ module.exports.routes =
         action :                'login'
 
   # User controller
-
+  'post /edit-user' :
+        controller:             'UserController'
+        action:                 'edit_user'
 
 
   # End of user controller

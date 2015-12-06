@@ -13,17 +13,18 @@ angular.module('subzapp').controller('UserController', [
     
     if !(window.USER?)
       user.get_user().then ( (res) ->
-        console.log "Got user #{ JSON.stringify res }"
-        # console.log "User set to #{ JSON.stringify res }"
-        # console.log "user controller #{JSON.stringify window.USER }"
+        # console.log "Got user #{ JSON.stringify res }"
+                
         $scope.orgs = window.USER.orgs
-        return res
+        
       ), ( errResponse ) ->
         console.log "User get error #{ JSON.stringify errResponse }"
+        window.USER = null
         $state.go 'login'
     else 
       console.log 'else'
       $scope.orgs = window.USER.orgs
+
 
 
     $scope.business_create = ->
@@ -61,4 +62,4 @@ angular.module('subzapp').controller('UserController', [
         console.log "Delete response #{ JSON.stringify response}"
       ), ( errResponse ) ->
         console.log "Delete error response #{ JSON.stringify errResponse }"
-]) 
+])

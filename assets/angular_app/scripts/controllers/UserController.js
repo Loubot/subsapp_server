@@ -5,11 +5,10 @@ angular.module('subzapp').controller('UserController', [
     console.log('User Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        console.log("Got user " + (JSON.stringify(res)));
-        $scope.orgs = window.USER.orgs;
-        return res;
+        return $scope.orgs = window.USER.orgs;
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
+        window.USER = null;
         return $state.go('login');
       });
     } else {

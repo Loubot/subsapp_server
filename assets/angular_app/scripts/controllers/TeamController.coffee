@@ -19,11 +19,11 @@ angular.module('subzapp').controller('TeamController', [
         # console.log "TeamController teams #{ JSON.stringify window.USER }"
         $scope.user = window.USER
         $scope.org = window.USER.orgs[0]
-        # $scope.org = response.data.org
+        return_team( USER.teams, $location.search().id )
         
-        console.log "f #{ JSON.stringify $scope.team}"
+        console.log "f #{ JSON.stringify USER.teams }"
       ), ( errResponse ) ->
-        # console.log "User get error #{ JSON.stringify errResponse }"
+        window.USER = null
         $state.go 'login'
     else
       console.log "USER already defined"
@@ -48,3 +48,8 @@ angular.module('subzapp').controller('TeamController', [
   
 
 ])
+
+return_team = ( teams, id ) ->
+  team = (team for team in teams when team.id is parseInt( id ))
+  console.log "Team #{ JSON.stringify team }"
+  return team

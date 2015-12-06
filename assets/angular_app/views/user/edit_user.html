@@ -1,0 +1,43 @@
+<div class="container-fluid text-center">
+  <h1>Edit your details</h1>
+
+  <div class="col-xs-2"></div>
+  <div class="col-xs-8">
+    <form class="form-horizontal" 
+            ng-submit="edit_user()" 
+            method="post" enctype="application/x-www-form-urlencoded"
+            name="update_user_form">
+
+      <div class="form-group">
+        <label class="col-sm-2">First name: </label>
+        <div class="col-sm-10">
+          <input type="text" name="firstName" ng-model="user.firstName" class="form-control" value="{{ name }}" placholder:'First name'>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="form-group">
+        <label class="col-sm-2">Last name: </label>
+        <div class="col-sm-10">
+          <input type="text" name="lastName" ng-model="user.lastName" class="form-control user_last_name"   placholder:'Last name'>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="form-group">
+        <input type="submit" value="Update details" class="btn btn-default btn btn-success btn-lg">
+        
+      </div> <!-- end of form-group text-center -->
+
+      <div class="register_error">
+        {{ errMessage.data.invalidAttributes.email[0].message }}
+        
+        
+      </div>
+    </form>
+
+    <div class="message">
+      {{ mes }}
+      
+    </div> <!-- end of message -->
+  </div>
+  <div class="col-xs-2"></div>
+</div> <!-- end of container-fluid -->
