@@ -27,6 +27,7 @@ angular.module('subzapp').controller('TeamController', [
         $state.go 'login'
     else
       console.log "USER already defined"
+      $scope.user = window.USER
       $scope.org = window.USER.orgs[0]
     
   

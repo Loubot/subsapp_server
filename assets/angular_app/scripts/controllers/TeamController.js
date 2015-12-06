@@ -19,6 +19,7 @@ angular.module('subzapp').controller('TeamController', [
       });
     } else {
       console.log("USER already defined");
+      $scope.user = window.USER;
       $scope.org = window.USER.orgs[0];
     }
     console.log($location.search().id);

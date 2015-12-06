@@ -11,19 +11,12 @@ angular.module('subzapp').controller('UserController', [
   ( $scope, $state, $http, $window, message, user, RESOURCES ) ->
     console.log 'User Controller'
     
-    if !(window.USER?)
-      user.get_user().then ( (res) ->
-        # console.log "Got user #{ JSON.stringify res }"
-                
-        $scope.orgs = window.USER.orgs
-        
-      ), ( errResponse ) ->
-        console.log "User get error #{ JSON.stringify errResponse }"
-        window.USER = null
-        $state.go 'login'
-    else 
-      console.log 'else'
+    user.get_user().then ( (res) ->
+      console.log "Got user #{ JSON.stringify res }"
+              
       $scope.orgs = window.USER.orgs
+      
+    )
 
 
 

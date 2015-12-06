@@ -3,18 +3,10 @@
 angular.module('subzapp').controller('UserController', [
   '$scope', '$state', '$http', '$window', 'message', 'user', 'RESOURCES', function($scope, $state, $http, $window, message, user, RESOURCES) {
     console.log('User Controller');
-    if (!(window.USER != null)) {
-      user.get_user().then((function(res) {
-        return $scope.orgs = window.USER.orgs;
-      }), function(errResponse) {
-        console.log("User get error " + (JSON.stringify(errResponse)));
-        window.USER = null;
-        return $state.go('login');
-      });
-    } else {
-      console.log('else');
-      $scope.orgs = window.USER.orgs;
-    }
+    user.get_user().then((function(res) {
+      console.log("Got user " + (JSON.stringify(res)));
+      return $scope.orgs = window.USER.orgs;
+    }));
     $scope.business_create = function() {
       var user_token;
       console.log("create " + (JSON.stringify(user)));

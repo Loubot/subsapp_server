@@ -33,6 +33,10 @@ module.exports = {
       type: 'string',
       defaultsTo: ''
     },
+    tokens: {
+      collection: 'token',
+      via: 'owner'
+    },
     orgs: {
       collection: 'org',
       via: 'admins'
@@ -40,10 +44,6 @@ module.exports = {
     teams: {
       collection: 'team',
       via: 'manager'
-    },
-    tokens: {
-      collection: 'token',
-      via: 'owner'
     },
     user_orgs: {
       collection: 'org',
