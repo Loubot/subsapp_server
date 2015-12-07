@@ -33,6 +33,10 @@ module.exports = {
       type: 'string',
       defaultsTo: ''
     },
+    stripe_id: {
+      type: 'string',
+      defaultsTo: ''
+    },
     tokens: {
       collection: 'token',
       via: 'owner'

@@ -1,5 +1,5 @@
 ###*
-# UserController
+# OrgController
 #
 # @description :: Server-side logic for managing Business
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers

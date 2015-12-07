@@ -77,6 +77,10 @@ module.exports.routes = {
     controller: 'TeamController',
     action: 'get_team_members'
   },
+  'post /create-payment': {
+    controller: 'PaymentController',
+    action: 'create_payment'
+  },
   'post /up-token': {
     controller: 'TokenController',
     action: 'up_token'

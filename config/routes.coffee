@@ -88,6 +88,11 @@ module.exports.routes =
 
   # end of Team controller
 
+  # PaymentController
+  'post /create-payment':
+        controller:             'PaymentController'
+        action:                 'create_payment'
+
   #Token controller
   'post /up-token':
         controller:             'TokenController'
