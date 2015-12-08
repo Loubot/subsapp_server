@@ -12,23 +12,34 @@ passport = require('passport');
 
 module.exports = {
   create_payment: function(req, res) {
-    var stripe;
+    var Stripe;
     sails.log.debug("Hit the Payment controller/create_payment");
-    sails.log.debug("Create payment params " + (JSON.stringify(req.body)));
-    stripe = require("stripe")(sails.config.stripe.stripe_secret);
-    return stripe.customers.create({
-      description: 'Customer for test@example.com',
-      source: req.body.stripe_token
+    Stripe = require("stripe")(sails.config.stripe.stripe_secret);
+    return Stripe.customers.create({
+      source: req.body.stripe_token,
+      description: 'hello'
     }).then(function(customer) {
-      sails.log.debug("Customer " + (JSON.stringify(customer)));
-      return User.update(req.body.user_id, {
-        stripe_id: customer.id
-      }).exec(function(err, updated) {
-        if (err != null) {
-          sails.log.debug("User stripe customer create update error " + (JSON.stringify(err)));
-        }
-        return sails.log.debug("User stripe customer create update " + (JSON.stringify(updated)));
-      });
+      sails.log.debug("Stripe customer " + (JSON.stringify(customer)));
+      return Stripe.charges.create({
+        amount: parseInt(req.body.amount) * 100,
+        currency: 'eur',
+        customer: customer.id
+      }).then((function(charge) {
+        sails.log.debug("charge " + req.body.user_id);
+        return User.update({
+          id: req.body.user_id
+        }, {
+          stripe_token: charge.customer
+        }).then((function(updated) {
+          sails.log.debug("User updated " + (JSON.stringify(updated)));
+          return res.send(charge);
+        }), function(errResponse) {
+          return sails.log.debug("User update error " + (JSON.stringify(errResponse)));
+        });
+      }));
+    }).fail(function(err) {
+      sails.log.debug(err);
+      return res.serverError(err);
     });
   }
 };
