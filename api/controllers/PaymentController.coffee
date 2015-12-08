@@ -28,16 +28,14 @@ module.exports = {
         
         User.update( { id: req.body.user_id }, stripe_token: charge.customer ).then ( ( updated ) ->
           sails.log.debug "User updated #{ JSON.stringify updated }"
-          res.send charge
+          res.json 200, charge: charge, message: 'Tokens purchased successfully'
         ), (errResponse) ->
           sails.log.debug "User update error #{ JSON.stringify errResponse }"
-
-          
-        
+          res.serverError errResponse        
       )
-    ).fail ( err ) ->
-      sails.log.debug err
-      res.serverError err
+    ).catch ( err ) ->
+      sails.log.debug "errrooror #{ JSON.stringify err.message }"
+      res.serverError 406, message: err.message
 
     # stripe.customers.create( {
     #   description: 'Customer for test@example.com'

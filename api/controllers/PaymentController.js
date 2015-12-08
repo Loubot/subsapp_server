@@ -32,14 +32,20 @@ module.exports = {
           stripe_token: charge.customer
         }).then((function(updated) {
           sails.log.debug("User updated " + (JSON.stringify(updated)));
-          return res.send(charge);
+          return res.json(200, {
+            charge: charge,
+            message: 'Tokens purchased successfully'
+          });
         }), function(errResponse) {
-          return sails.log.debug("User update error " + (JSON.stringify(errResponse)));
+          sails.log.debug("User update error " + (JSON.stringify(errResponse)));
+          return res.serverError(errResponse);
         });
       }));
-    }).fail(function(err) {
-      sails.log.debug(err);
-      return res.serverError(err);
+    })["catch"](function(err) {
+      sails.log.debug("errrooror " + (JSON.stringify(err.message)));
+      return res.serverError(406, {
+        message: err.message
+      });
     });
   }
 };
