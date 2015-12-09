@@ -80,7 +80,7 @@ module.exports.connections = {
     user: 'YOUR_POSTGRES_USER',
     password: 'YOUR_POSTGRES_PASSWORD',
     database: 'YOUR_POSTGRES_DB'
-  }
+  },
 
 
   /***************************************************************************
@@ -88,5 +88,11 @@ module.exports.connections = {
   * More adapters: https://github.com/balderdashy/sails                      *
   *                                                                          *
   ***************************************************************************/
-
+  subsapp_db_prod: {
+    adapter: 'sails-postgresql',
+    host: process.env.DATABASE_URL,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    database: process.env.DATABASE_NAME
+  }
 };
