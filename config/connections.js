@@ -89,7 +89,7 @@ module.exports.connections = {
   *                                                                          *
   ***************************************************************************/
   subsapp_db_prod: {
-    adapter: 'sails-postgresql',
+    adapter: 'sails-mysql',
     url: process.env.JAWSDB_URL,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
