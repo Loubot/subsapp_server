@@ -5,8 +5,9 @@ angular.module('subzapp').controller('RegisterController', [
   '$state'
   '$http'
   '$window'
+  'message'
   'RESOURCES'
-  ( $scope, $state, $http, $window, RESOURCES ) ->
+  ( $scope, $state, $http, $window, message, RESOURCES ) ->
     console.log 'Register Controller'
 
     $scope.register_submit = ->

@@ -1,23 +1,25 @@
 ###*
-# Token
-# @description :: Model for storing tokens
+# Event
+# @description :: Model for storing events
 ###
 
 module.exports =
-  migrate: 'alter',
+  # migrate: 'drop',
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
   autoPK: true
   schema: true
-  attributes:
-    amount:
-      type: 'integer'
+  attributes:      
+    name:
+      type: 'string'
+      defaultsTo: ''
       required: true
-      defaultsTo: 0
 
-    owner: 
-      model: 'user'
+    date:
+      type: 'datetime'
+      required: true
+      defaultsTo: ''
       
     
     toJSON: ->
