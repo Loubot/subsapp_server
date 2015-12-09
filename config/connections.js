@@ -90,7 +90,7 @@ module.exports.connections = {
   ***************************************************************************/
   subsapp_db_prod: {
     adapter: 'sails-postgresql',
-    host: process.env.DATABASE_URL,
+    url: process.env.JAWSDB_URL,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASS,
     database: process.env.DATABASE_NAME
