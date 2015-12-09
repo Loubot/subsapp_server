@@ -4,8 +4,8 @@
 ###
 
 module.exports =
-  migrate: 'safe',
-  adapter: 'mysql',
+  migrate: 'drop',
+  # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
   autoPK: true
