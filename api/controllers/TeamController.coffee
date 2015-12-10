@@ -60,7 +60,7 @@ module.exports = {
 
   get_team: (req, res) ->
     sails.log.debug "Hit the team controller/get_team"
-    Team.find( { id: req.query.team_id } ).populate('main_org').then( (team) ->
+    Team.find( { id: req.query.team_id } ).populate('events').then( (team) ->
       sails.log.debug "Get team response #{ JSON.stringify team }"
       res.send team
     ).catch( (err) ->

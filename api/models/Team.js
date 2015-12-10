@@ -5,7 +5,6 @@
  * @description :: Model for storing teams
  */
 module.exports = {
-  migrate: 'drop',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -25,6 +24,10 @@ module.exports = {
     team_members: {
       collection: 'user',
       via: 'user_teams'
+    },
+    events: {
+      collection: 'event',
+      via: 'event_team'
     },
     toJSON: function() {
       var obj;

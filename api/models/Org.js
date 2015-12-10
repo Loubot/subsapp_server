@@ -5,7 +5,6 @@
  * @description :: Model for storing orgs
  */
 module.exports = {
-  migrate: 'drop',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,

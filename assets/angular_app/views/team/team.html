@@ -10,8 +10,8 @@
   <div class="col-xs-9">    
   
    <ul class="example-animate-container">
-    <input type="search" ng-model="q" placeholder="filter clubs..." aria-label="filter friends" class="black_text" />
-    <br>Your clubs. Click to view more options
+    <input type="search" ng-model="q" placeholder="filter members..." aria-label="filter friends" class="black_text" />
+    <br>Team members.
     <li class="animate-repeat org_list" ng-repeat="mem in mems | filter:q as results">
       <a href="" >[{{$index + 1}}] {{ mem.email }}.</a>
           
@@ -20,6 +20,40 @@
       <strong>No members added...</strong>
     </li>
   </ul>
+
+  <h2>Create an event</h2>
+
+  <form class="form-horizontal register_form" 
+            ng-submit="create_event()" 
+            method="post" enctype="application/x-www-form-urlencoded">
+
+      <div class="form-group">
+        <label class="col-sm-2">Name: </label>
+        <div class="col-sm-10">
+          <input type="text" name="name" ng-model="create_event_data.name" class="form-control" placholder:'name'>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <datepicker date-month-title="selected year">
+        <input class="black_text" ng-model="date"/>
+    </datepicker>
+
+      <div class="form-group">
+        <label class="col-sm-2">Date: </label>
+        <div class="col-sm-10">
+          <input type="datetime" name="date" ng-model="create_event_data.date" class="form-control" placholder:'date'>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="form-group text-center">
+        <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register">
+        
+      </div> <!-- end of form-group text-center -->
+
+      <div class="message">
+               
+      </div>
+    </form>
   </div> <!-- end of col-xs-9 -->
 
 

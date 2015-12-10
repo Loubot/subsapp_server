@@ -84,5 +84,9 @@ module.exports.routes = {
   'post /up-token': {
     controller: 'TokenController',
     action: 'up_token'
+  },
+  'post /create-event': {
+    controller: 'EventController',
+    action: 'create_event'
   }
 };

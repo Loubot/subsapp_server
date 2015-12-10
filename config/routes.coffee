@@ -99,3 +99,10 @@ module.exports.routes =
         action:                 'up_token'
 
   # end of Token controller
+
+  # Event controller
+  'post /create-event':
+        controller:             'EventController'
+        action:                 'create_event'
+
+  # end of Event controller

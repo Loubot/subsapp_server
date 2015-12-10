@@ -23,7 +23,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0];
     }
     console.log($location.search().id);
-    return $http({
+    $http({
       method: 'GET',
       url: RESOURCES.DOMAIN + "/get-team-members",
       headers: {
@@ -39,6 +39,25 @@ angular.module('subzapp').controller('TeamController', [
     }), function(errResponse) {
       return console.log("Get team members error " + (JSON.stringify(errResponse)));
     });
+    return $scope.create_event = function() {
+      $scope.create_event_data.team_id = $location.search().id;
+      console.log($scope.create_event_data);
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/create-event",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: $scope.create_event_data
+      }).then((function(res) {
+        console.log("Create event response");
+        return console.log(res);
+      }), function(errResponse) {
+        console.log("Create event error");
+        return console.log(errResponse);
+      });
+    };
   }
 ]);
 

@@ -20,6 +20,9 @@ module.exports = {
       required: true,
       defaultsTo: ''
     },
+    event_team: {
+      model: 'team'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();

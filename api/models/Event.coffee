@@ -20,6 +20,9 @@ module.exports =
       type: 'datetime'
       required: true
       defaultsTo: ''
+
+    event_team:
+      model: 'team'
       
     
     toJSON: ->

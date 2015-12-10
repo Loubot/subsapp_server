@@ -46,6 +46,20 @@ angular.module('subzapp').controller('TeamController', [
       console.log "Get team members error #{ JSON.stringify errResponse }"
   
       
+    $scope.create_event = ->
+      $scope.create_event_data.team_id = $location.search().id
+      console.log $scope.create_event_data
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/create-event"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: $scope.create_event_data
+      ).then ( (res) ->
+        console.log "Create event response"
+        console.log res
+      ), ( errResponse ) ->
+        console.log "Create event error"
+        console.log errResponse
   
 
 ])
