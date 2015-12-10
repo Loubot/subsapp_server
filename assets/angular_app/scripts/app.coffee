@@ -72,13 +72,18 @@ angular.module('subzapp').factory 'message', ->
     $('.message').addClass 'error_message'
     $('.message').text mes
     $('.message').show 'slide', { direction: 'right' }, 1000
-    # alert "This is an error #{ mes }"
-    # return
+    setTimeout ( ->
+      $('.message').hide 'slide', { direction: 'left' }, 1000
+    ), 5000
+
   success: ( mes ) ->
     $('.message').removeClass 'error_message'
     $('.message').addClass 'success_message'
     $('.message').text mes
     $('.message').show 'slide', { direction: 'right' }, 1000
+    setTimeout ( ->
+      $('.message').hide 'slide', { direction: 'left' }, 1000
+    ), 5000
   
 
 angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->

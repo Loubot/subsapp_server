@@ -15,12 +15,21 @@ module.exports = {
       date: req.body.date,
       event_team: req.body.team_id
     }).then(function(res) {
-      sails.log.debug("Event create response " + (JSON.stringify(res)));
-      return res.send(res);
+      return sails.log.debug("Event create response " + (JSON.stringify(res)));
     })["catch"](function(err) {
-      return sails.log.debug("Create event error " + (JSON.stringify(err)));
+      sails.log.debug("Create event error " + (JSON.stringify(err)));
+      return res.send(err);
     }).done(function() {
-      return sails.log.debug("Create event done");
+      sails.log.debug("Create event done");
+      return Event.find({
+        event_team: req.body.team_id
+      }).exec(function(e, events) {
+        sails.log.debug("Event created return all events " + (JSON.stringify(events)));
+        if ((typeof err !== "undefined" && err !== null)) {
+          sails.log.debug("Event creaed return all events error " + (JSON.stringify(e)));
+        }
+        return res.send(events);
+      });
     });
   }
 };

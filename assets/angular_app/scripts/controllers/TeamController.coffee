@@ -21,7 +21,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.org = window.USER.orgs[0]
         return_team( USER.teams, $location.search().id )
         
-        console.log "f #{ JSON.stringify USER.teams }"
+        # console.log "f #{ JSON.stringify USER.teams }"
       ), ( errResponse ) ->
         window.USER = null
         $state.go 'login'
@@ -35,13 +35,15 @@ angular.module('subzapp').controller('TeamController', [
     console.log $location.search().id
     $http(
       method: 'GET'
-      url: "#{ RESOURCES.DOMAIN }/get-team-members"
+      url: "#{ RESOURCES.DOMAIN }/get-team-info"
       headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
       params:
         team_id: $location.search().id
     ).then ( (res) ->
-       console.log "Get team members response #{ JSON.stringify res }"
+       # console.log "Get team members response #{ JSON.stringify res }"
+       console.log res
        $scope.mems = res.data.team_members
+       $scope.events = res.data.events
     ), ( errResponse ) ->
       console.log "Get team members error #{ JSON.stringify errResponse }"
   
@@ -55,10 +57,13 @@ angular.module('subzapp').controller('TeamController', [
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
         data: $scope.create_event_data
       ).then ( (res) ->
-        console.log "Create event response"
-        console.log res
+        # console.log "Create event response"
+        message.success("Event created")
+        console.log res.data
+        $scope.events = res.data
       ), ( errResponse ) ->
         console.log "Create event error"
+        message.error "Create event failed"
         console.log errResponse
   
 

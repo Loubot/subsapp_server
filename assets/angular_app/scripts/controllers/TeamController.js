@@ -11,8 +11,7 @@ angular.module('subzapp').controller('TeamController', [
       user.get_user().then((function(res) {
         $scope.user = window.USER;
         $scope.org = window.USER.orgs[0];
-        return_team(USER.teams, $location.search().id);
-        return console.log("f " + (JSON.stringify(USER.teams)));
+        return return_team(USER.teams, $location.search().id);
       }), function(errResponse) {
         window.USER = null;
         return $state.go('login');
@@ -25,7 +24,7 @@ angular.module('subzapp').controller('TeamController', [
     console.log($location.search().id);
     $http({
       method: 'GET',
-      url: RESOURCES.DOMAIN + "/get-team-members",
+      url: RESOURCES.DOMAIN + "/get-team-info",
       headers: {
         'Authorization': "JWT " + user_token,
         "Content-Type": "application/json"
@@ -34,8 +33,9 @@ angular.module('subzapp').controller('TeamController', [
         team_id: $location.search().id
       }
     }).then((function(res) {
-      console.log("Get team members response " + (JSON.stringify(res)));
-      return $scope.mems = res.data.team_members;
+      console.log(res);
+      $scope.mems = res.data.team_members;
+      return $scope.events = res.data.events;
     }), function(errResponse) {
       return console.log("Get team members error " + (JSON.stringify(errResponse)));
     });
@@ -51,10 +51,12 @@ angular.module('subzapp').controller('TeamController', [
         },
         data: $scope.create_event_data
       }).then((function(res) {
-        console.log("Create event response");
-        return console.log(res);
+        message.success("Event created");
+        console.log(res.data);
+        return $scope.events = res.data;
       }), function(errResponse) {
         console.log("Create event error");
+        message.error("Create event failed");
         return console.log(errResponse);
       });
     };

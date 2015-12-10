@@ -73,9 +73,9 @@ module.exports.routes = {
     controller: 'TeamController',
     action: 'join_team'
   },
-  'get /get-team-members': {
+  'get /get-team-info': {
     controller: 'TeamController',
-    action: 'get_team_members'
+    action: 'get_team_info'
   },
   'post /create-payment': {
     controller: 'PaymentController',

@@ -79,12 +79,12 @@ module.exports = {
       return sails.log.debug("Team get team main org done");
     });
   },
-  get_team_members: function(req, res) {
+  get_team_info: function(req, res) {
     sails.log.debug("Hit the team controller/get_team_members");
     sails.log.debug("Hit the team controller/get_team_members " + req.query.team_id);
     return Team.findOne({
       id: req.query.team_id
-    }).populate('team_members').then(function(mems) {
+    }).populate('team_members').populate('events').then(function(mems) {
       sails.log.debug("Get team response " + (JSON.stringify(mems)));
       return res.send(mems);
     })["catch"](function(err) {

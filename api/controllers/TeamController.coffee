@@ -44,12 +44,6 @@ module.exports = {
         sails.log.debug "Add team to team #{ JSON.stringify s }"
         sails.log.debug "Add team to team err #{ JSON.stringify err }"
         res.send s
-        # User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
-        #   sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
-      #   sails.log.debug "User team saved #{ JSON.sringify s }"
-
-        # user.populateAll().exec (e, r) ->
-        #   sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
 
     ).catch( (err) ->
       sails.log.debug "Join team find user error #{ JSON.stringify err }"
@@ -69,11 +63,11 @@ module.exports = {
       sails.log.debug "Team get team main org done"
 
 
-  get_team_members: (req, res) ->
+  get_team_info: (req, res) ->
     sails.log.debug "Hit the team controller/get_team_members"
     sails.log.debug "Hit the team controller/get_team_members #{ req.query.team_id }"
 
-    Team.findOne( id: req.query.team_id ).populate('team_members').then( (mems) ->
+    Team.findOne( id: req.query.team_id ).populate('team_members').populate('events').then( (mems) ->
       sails.log.debug "Get team response #{ JSON.stringify mems }"
       res.send mems
     ).catch( (err) ->
