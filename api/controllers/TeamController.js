@@ -68,7 +68,7 @@ module.exports = {
   },
   get_team: function(req, res) {
     sails.log.debug("Hit the team controller/get_team");
-    return Team.find({
+    return Team.findOne({
       id: req.query.team_id
     }).populate('events').then(function(team) {
       sails.log.debug("Get team response " + (JSON.stringify(team)));
