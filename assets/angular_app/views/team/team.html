@@ -23,7 +23,7 @@
 
   <h2>Create an event</h2>
 
-  <form class="form-horizontal register_form" 
+  <form class="form-horizontal register_form black_text" 
             ng-submit="create_event()" 
             method="post" enctype="application/x-www-form-urlencoded">
 
@@ -34,14 +34,15 @@
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
-      <datepicker date-month-title="selected year">
-        <input class="black_text" ng-model="date"/>
-    </datepicker>
+      
 
       <div class="form-group">
         <label class="col-sm-2">Date: </label>
         <div class="col-sm-10">
-          <input type="datetime" name="date" ng-model="create_event_data.date" class="form-control" placholder:'date'>
+          <datepicker date-month-title="selected year" date-format="MMMM d, y">
+            <input  ng-model="date" ng-model="create_event_data.date" />
+        </datepicker>
+          
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
