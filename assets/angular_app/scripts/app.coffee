@@ -10,7 +10,7 @@ angular.module('subzapp', [
     'ngAnimate'
     'ui.router'
     'ngRoute'
-    '720kb.datepicker'
+    'ui.bootstrap.datetimepicker'
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')

@@ -3,7 +3,7 @@ window.USER = null;
 
 'use strict';
 
-angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', '720kb.datepicker']);
+angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker']);
 
 angular.module('subzapp').constant('API', 'api/v1/');
 

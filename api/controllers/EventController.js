@@ -8,6 +8,19 @@
  */
 module.exports = {
   create_event: function(req, res) {
-    return sails.log.debug(req.body);
+    sails.log.debug("Hit the events controller/create_event");
+    sails.log.debug(req.body);
+    return Event.create({
+      name: req.body.name,
+      date: req.body.date,
+      event_team: req.body.team_id
+    }).then(function(res) {
+      sails.log.debug("Event create response " + (JSON.stringify(res)));
+      return res.send(res);
+    })["catch"](function(err) {
+      return sails.log.debug("Create event error " + (JSON.stringify(err)));
+    }).done(function() {
+      return sails.log.debug("Create event done");
+    });
   }
 };

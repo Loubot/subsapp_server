@@ -39,9 +39,9 @@
     "debug": "node debug app.js",
     "start": "node app.js"
   },
-   "engines": {
-      "node": "~4.2.2",
-      "npm": "~2.14.17"
+  "engines": {
+    "node": "~4.2.2",
+    "npm": "~2.14.17"
   },
   "main": "app.js",
   "repository": {
