@@ -16,7 +16,7 @@ module.exports = {
       # res.send res
     ).catch((err) ->
       sails.log.debug "Create event error #{ JSON.stringify err }"
-      res.send err
+      res.serverError err
     ).done ->
       sails.log.debug "Create event done"
 

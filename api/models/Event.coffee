@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'drop',
+  # migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true

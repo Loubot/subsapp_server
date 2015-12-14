@@ -18,7 +18,7 @@ module.exports = {
       return sails.log.debug("Event create response " + (JSON.stringify(res)));
     })["catch"](function(err) {
       sails.log.debug("Create event error " + (JSON.stringify(err)));
-      return res.send(err);
+      return res.serverError(err);
     }).done(function() {
       sails.log.debug("Create event done");
       return Event.find({
