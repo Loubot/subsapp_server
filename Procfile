@@ -1,1 +1,1 @@
-web: forever -w start app.js
+web: sails lift
