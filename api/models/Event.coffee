@@ -21,6 +21,10 @@ module.exports =
       required: true
       defaultsTo: ''
 
+    price:
+      type: 'integer'
+      required: true
+
     event_team:
       model: 'team'
       

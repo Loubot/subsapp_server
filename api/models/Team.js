@@ -5,7 +5,6 @@
  * @description :: Model for storing teams
  */
 module.exports = {
-  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,

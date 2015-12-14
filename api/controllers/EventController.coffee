@@ -11,7 +11,7 @@ module.exports = {
     sails.log.debug "Hit the events controller/create_event"
     sails.log.debug req.body
 
-    Event.create( name: req.body.name, date: req.body.date, event_team: req.body.team_id ).then( (res) ->
+    Event.create( name: req.body.name, date: req.body.date, event_team: req.body.team_id, price: parseInt(req.body.price) ).then( (res) ->
       sails.log.debug "Event create response #{ JSON.stringify res }"
       # res.send res
     ).catch((err) ->

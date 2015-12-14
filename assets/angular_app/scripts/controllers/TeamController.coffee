@@ -42,6 +42,7 @@ angular.module('subzapp').controller('TeamController', [
     ).then ( (res) ->
        # console.log "Get team members response #{ JSON.stringify res }"
        console.log res
+       $scope.team = res.data
        $scope.mems = res.data.team_members
        $scope.events = res.data.events
     ), ( errResponse ) ->

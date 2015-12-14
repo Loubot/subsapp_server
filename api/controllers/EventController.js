@@ -13,7 +13,8 @@ module.exports = {
     return Event.create({
       name: req.body.name,
       date: req.body.date,
-      event_team: req.body.team_id
+      event_team: req.body.team_id,
+      price: parseInt(req.body.price)
     }).then(function(res) {
       return sails.log.debug("Event create response " + (JSON.stringify(res)));
     })["catch"](function(err) {
