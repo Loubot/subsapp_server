@@ -44,7 +44,7 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
 angular.module('subzapp').constant('RESOURCES', (function() {
   var url;
   console.log("url" + window.location.origin);
-  url = window.location.origin;
+  url = "http://subzapp.herokuapp.com";
   return {
     DOMAIN: url
   };
