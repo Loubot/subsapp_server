@@ -59,7 +59,7 @@ angular.module('subzapp').constant 'RESOURCES', do ->
   # Define your variable
   console.log "url" + window.location.origin 
   # url = window.location.origin 
-  url = "http://subzapp.herokuapp.com"
+  url = "https://subzapp.herokuapp.com"
   # Use the variable in your constants
   {
     DOMAIN: url
