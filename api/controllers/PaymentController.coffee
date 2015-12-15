@@ -14,28 +14,41 @@ module.exports = {
     # sails.log.debug "config #{ sails.config.stripe.stripe_publish }"
     Stripe = require("stripe")(sails.config.stripe.stripe_secret)
 
-    Stripe.customers.create(
+    charge = Stripe.charges.create({
       source: req.body.stripe_token
-      description: 'hello'
-    ).then((customer) ->
-      sails.log.debug "Stripe customer #{ JSON.stringify customer }"
-      Stripe.charges.create(
-        amount: parseInt( req.body.amount )  * 100
-        currency: 'eur'
-        customer: customer.id
-      ).then ( (charge) ->
-        sails.log.debug "charge #{ req.body.user_id }"
+      description: 'Example charge'
+      amount: parseInt( req.body.amount )  * 100
+      currency: 'eur'
+      }).then( ( charge ) ->
+        sails.log.debug "Charge response #{ JSON.stringify charge.amount }"
         
-        User.update( { id: req.body.user_id }, stripe_token: charge.customer ).then ( ( updated ) ->
-          sails.log.debug "User updated #{ JSON.stringify updated }"
-          res.json 200, charge: charge, message: 'Tokens purchased successfully'
-        ), (errResponse) ->
-          sails.log.debug "User update error #{ JSON.stringify errResponse }"
-          res.serverError errResponse        
+
+        Token.findOne( { owner: req.body.user_id },  ).exec (err, token) ->
+          sails.log.debug "Token amount #{ token.amount }"
+          token.amount = token.amount + ( charge.amount / 100 )
+          token.save ( err, token ) ->
+            sails.log.debug "Token saved #{ JSON.stringify token }"
+            sails.log.debug "Token saved error #{ JSON.stringify err }" if (err?)
+            res.json 200, token: token, message: 'Tokens purchased successfully'
+
+
+      ).catch( ( err ) ->
+        sails.log.debug "Charge err #{ JSON.stringify err }"
+        res.serverError "Charge refused"
       )
-    ).catch ( err ) ->
-      sails.log.debug "errrooror #{ JSON.stringify err.message }"
-      res.serverError 406, message: err.message
+
+    #     sails.log.debug "charge #{ req.body.user_id }"
+        
+    #     User.update( { id: req.body.user_id }, stripe_token: charge.customer ).then ( ( updated ) ->
+    #       sails.log.debug "User updated #{ JSON.stringify updated }"
+    #       res.json 200, charge: charge, message: 'Tokens purchased successfully'
+    #     ), (errResponse) ->
+    #       sails.log.debug "User update error #{ JSON.stringify errResponse }"
+    #       res.serverError errResponse        
+    #   )
+    # ).catch ( err ) ->
+    #   sails.log.debug "errrooror #{ JSON.stringify err.message }"
+    #   res.serverError 406, message: err.message
 
     # stripe.customers.create( {
     #   description: 'Customer for test@example.com'

@@ -12,40 +12,35 @@ passport = require('passport');
 
 module.exports = {
   create_payment: function(req, res) {
-    var Stripe;
+    var Stripe, charge;
     sails.log.debug("Hit the Payment controller/create_payment");
     Stripe = require("stripe")(sails.config.stripe.stripe_secret);
-    return Stripe.customers.create({
+    return charge = Stripe.charges.create({
       source: req.body.stripe_token,
-      description: 'hello'
-    }).then(function(customer) {
-      sails.log.debug("Stripe customer " + (JSON.stringify(customer)));
-      return Stripe.charges.create({
-        amount: parseInt(req.body.amount) * 100,
-        currency: 'eur',
-        customer: customer.id
-      }).then((function(charge) {
-        sails.log.debug("charge " + req.body.user_id);
-        return User.update({
-          id: req.body.user_id
-        }, {
-          stripe_token: charge.customer
-        }).then((function(updated) {
-          sails.log.debug("User updated " + (JSON.stringify(updated)));
+      description: 'Example charge',
+      amount: parseInt(req.body.amount) * 100,
+      currency: 'eur'
+    }).then(function(charge) {
+      sails.log.debug("Charge response " + (JSON.stringify(charge.amount)));
+      return Token.findOne({
+        owner: req.body.user_id
+      }).exec(function(err, token) {
+        sails.log.debug("Token amount " + token.amount);
+        token.amount = token.amount + (charge.amount / 100);
+        return token.save(function(err, token) {
+          sails.log.debug("Token saved " + (JSON.stringify(token)));
+          if ((err != null)) {
+            sails.log.debug("Token saved error " + (JSON.stringify(err)));
+          }
           return res.json(200, {
-            charge: charge,
+            token: token,
             message: 'Tokens purchased successfully'
           });
-        }), function(errResponse) {
-          sails.log.debug("User update error " + (JSON.stringify(errResponse)));
-          return res.serverError(errResponse);
         });
-      }));
-    })["catch"](function(err) {
-      sails.log.debug("errrooror " + (JSON.stringify(err.message)));
-      return res.serverError(406, {
-        message: err.message
       });
+    })["catch"](function(err) {
+      sails.log.debug("Charge err " + (JSON.stringify(err)));
+      return res.serverError("Charge refused");
     });
   }
 };
