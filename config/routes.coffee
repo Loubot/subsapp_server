@@ -93,6 +93,10 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'create_payment'
 
+  'post /pay-for-event':
+        controller:             'PaymentController'
+        action:                 'pay_for_event'
+
   #Token controller
   'post /up-token':
         controller:             'TokenController'
