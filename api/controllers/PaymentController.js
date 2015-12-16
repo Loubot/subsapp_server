@@ -32,7 +32,7 @@ module.exports = {
           if ((err != null)) {
             sails.log.debug("Token saved error " + (JSON.stringify(err)));
           }
-          return res.json(200, {
+          return res.ok({
             token: token,
             message: 'Tokens purchased successfully'
           });
@@ -42,5 +42,10 @@ module.exports = {
       sails.log.debug("Charge err " + (JSON.stringify(err)));
       return res.serverError("Charge refused");
     });
+  },
+  pay_for_event: function(req, res) {
+    sails.log.debug("Hit the Payment controller/pay_for_event");
+    sails.log.debug("Pay for event params " + (JSON.stringify(req.body)));
+    return res.created(200);
   }
 };
