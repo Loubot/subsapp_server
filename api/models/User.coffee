@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'drop',
+  migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -59,6 +59,10 @@ module.exports =
     user_teams:
       collection: 'team'
       via: 'team_members'
+
+    user_events:
+      collection: 'event'
+      via: 'event_user'
 
     
 

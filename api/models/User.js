@@ -5,6 +5,7 @@
  * @description :: Model for storing users
  */
 module.exports = {
+  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -54,6 +55,10 @@ module.exports = {
     user_teams: {
       collection: 'team',
       via: 'team_members'
+    },
+    user_events: {
+      collection: 'event',
+      via: 'event_user'
     },
     toJSON: function() {
       var obj;

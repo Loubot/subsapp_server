@@ -5,6 +5,7 @@
  * @description :: Model for storing events
  */
 module.exports = {
+  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -26,6 +27,10 @@ module.exports = {
     },
     event_team: {
       model: 'team'
+    },
+    event_user: {
+      collection: 'user',
+      via: 'user_events'
     },
     toJSON: function() {
       var obj;
