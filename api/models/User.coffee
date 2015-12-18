@@ -73,12 +73,13 @@ module.exports =
       delete obj.password
       delete obj.socialProfiles
       obj
-  beforeUpdate: (values, next) ->
-    sails.log.debug "ValuesAaaaa #{ JSON.stringify values }"
-    sails.log.debug "nextxxxx #{ JSON.stringify next }"
-    CipherService.hashPassword values
-    next()
-    return
+  # beforeUpdate: (values, next) ->
+  #   delete values.password
+  #   sails.log.debug "ValuesAaaaa #{ JSON.stringify values }"
+  #   sails.log.debug "nextxxxx #{ JSON.stringify next }"
+  #   CipherService.hashPassword values
+  #   next()
+  #   return
   beforeCreate: (values, next) ->
     CipherService.hashPassword values
     next()

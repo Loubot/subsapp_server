@@ -68,12 +68,6 @@ module.exports = {
       return obj;
     }
   },
-  beforeUpdate: function(values, next) {
-    sails.log.debug("ValuesAaaaa " + (JSON.stringify(values)));
-    sails.log.debug("nextxxxx " + (JSON.stringify(next)));
-    CipherService.hashPassword(values);
-    next();
-  },
   beforeCreate: function(values, next) {
     CipherService.hashPassword(values);
     next();
