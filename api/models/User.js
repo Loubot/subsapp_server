@@ -69,6 +69,8 @@ module.exports = {
     }
   },
   beforeUpdate: function(values, next) {
+    sails.log.debug("ValuesAaaaa " + (JSON.stringify(values)));
+    sails.log.debug("nextxxxx " + (JSON.stringify(next)));
     CipherService.hashPassword(values);
     next();
   },

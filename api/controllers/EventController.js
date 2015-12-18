@@ -40,7 +40,25 @@ module.exports = {
       id: req.body.user_id
     }).populate('user_events').populate('tokens').then(function(user) {
       sails.log.debug("Join event user find/populate " + (JSON.stringify(user.tokens)));
-      return res.send(user.tokens);
+      user.tokens[0].amount = user.tokens[0].amount - req.body.event_price;
+      sails.log.debug("user tokens " + user.tokens[0].amount);
+      user.user_events.add(req.body.event_id);
+      user.save(function(err, saved) {
+        sails.log.debug("User event updated " + (JSON.stringify(saved)));
+        if ((err != null)) {
+          sails.log.debug("User event update error " + (JSON.stringify(err)));
+        }
+        return res.created({
+          user: saved,
+          message: 'You have paid for this event'
+        });
+      });
+      return user.tokens[0].save(function(err, saved) {
+        sails.log.debug("User token updated " + (JSON.stringify(saved)));
+        if ((err != null)) {
+          return sails.log.debug("User token update error " + (JSON.stringify(err)));
+        }
+      });
     })["catch"](function(err) {
       return sails.log.debug("Join event user find error " + (JSON.stringify(err)));
     });
