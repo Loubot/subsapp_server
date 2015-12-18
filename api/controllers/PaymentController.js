@@ -42,10 +42,5 @@ module.exports = {
       sails.log.debug("Charge err " + (JSON.stringify(err)));
       return res.serverError("Charge refused");
     });
-  },
-  pay_for_event: function(req, res) {
-    sails.log.debug("Hit the Payment controller/pay_for_event");
-    sails.log.debug("Pay for event params " + (JSON.stringify(req.body)));
-    return res.created(200);
   }
 };

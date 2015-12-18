@@ -32,5 +32,17 @@ module.exports = {
         return res.send(events);
       });
     });
+  },
+  join_event: function(req, res) {
+    sails.log.debug("Hit the Payment controller/pay_for_event");
+    sails.log.debug("Pay for event params " + (JSON.stringify(req.body)));
+    return User.findOne({
+      id: req.body.user_id
+    }).populate('user_events').populate('tokens').then(function(user) {
+      sails.log.debug("Join event user find/populate " + (JSON.stringify(user.tokens)));
+      return res.send(user.tokens);
+    })["catch"](function(err) {
+      return sails.log.debug("Join event user find error " + (JSON.stringify(err)));
+    });
   }
 };

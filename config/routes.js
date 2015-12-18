@@ -81,10 +81,6 @@ module.exports.routes = {
     controller: 'PaymentController',
     action: 'create_payment'
   },
-  'post /pay-for-event': {
-    controller: 'PaymentController',
-    action: 'pay_for_event'
-  },
   'post /up-token': {
     controller: 'TokenController',
     action: 'up_token'
@@ -92,5 +88,9 @@ module.exports.routes = {
   'post /create-event': {
     controller: 'EventController',
     action: 'create_event'
+  },
+  'post /join-event': {
+    controller: 'EventController',
+    action: 'join_event'
   }
 };
