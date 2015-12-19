@@ -32,19 +32,36 @@ module.exports = {
     sails.log.debug "Pay for event params #{ JSON.stringify req.body }"
     User.findOne( id: req.body.user_id ).populate( 'user_events' ).populate('tokens').then( ( user ) ->
       sails.log.debug "Join event user find/populate #{ JSON.stringify user.tokens }"
+
+      if ( user.tokens[0].amount - req.body.event_price < 0 )
+        res.serverError "You don't have enough tokens" 
+        return false
+      
+      sails.log.debug "asdfasdfasdf #{  user.tokens[0].amount - req.body.event_price }"
       user.tokens[0].amount = user.tokens[0].amount - req.body.event_price
       sails.log.debug "user tokens #{ user.tokens[0].amount }"
+
       user.user_events.add( req.body.event_id )
-      user.save ( err, saved ) ->
-        sails.log.debug "User event updated #{ JSON.stringify saved }"
-        sails.log.debug "User event update error #{ JSON.stringify err }" if (err?)
-        res.created user: saved, message: 'You have paid for this event'
-      user.tokens[0].save ( err, saved ) ->
-        sails.log.debug "User token updated #{ JSON.stringify saved }"
-        sails.log.debug "User token update error #{ JSON.stringify err }" if (err?)
-      # res.send user.tokens
+
+      user.save( ( saved_user ) ->
+        sails.log.debug "user saved #{ JSON.stringify saved_user }"
+        
+      )
+
+      user.tokens[0].save( ( saved_user ) ->
+        User.findOne( id: req.body.user_id ).populate('tokens').populate('user_events').exec ( err, user ) ->
+          sails.log.debug "Populate user #{ JSON.stringify user }"
+          sails.log.debug "Populate user error #{ JSON.stringify err }" if(err?)
+          res.ok user: user, message: "You have joined this event"
+      )
+
+
+
+      
+      
     ).catch( ( err ) ->
       sails.log.debug "Join event user find error #{ JSON.stringify err }"
+      res.serverError "Payment failed"
     )
       
 

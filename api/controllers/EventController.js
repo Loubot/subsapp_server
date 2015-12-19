@@ -40,27 +40,34 @@ module.exports = {
       id: req.body.user_id
     }).populate('user_events').populate('tokens').then(function(user) {
       sails.log.debug("Join event user find/populate " + (JSON.stringify(user.tokens)));
+      if (user.tokens[0].amount - req.body.event_price < 0) {
+        res.serverError("You don't have enough tokens");
+        return false;
+      }
+      sails.log.debug("asdfasdfasdf " + (user.tokens[0].amount - req.body.event_price));
       user.tokens[0].amount = user.tokens[0].amount - req.body.event_price;
       sails.log.debug("user tokens " + user.tokens[0].amount);
       user.user_events.add(req.body.event_id);
-      user.save(function(err, saved) {
-        sails.log.debug("User event updated " + (JSON.stringify(saved)));
-        if ((err != null)) {
-          sails.log.debug("User event update error " + (JSON.stringify(err)));
-        }
-        return res.created({
-          user: saved,
-          message: 'You have paid for this event'
+      user.save(function(saved_user) {
+        return sails.log.debug("user saved " + (JSON.stringify(saved_user)));
+      });
+      return user.tokens[0].save(function(saved_user) {
+        return User.findOne({
+          id: req.body.user_id
+        }).populate('tokens').populate('user_events').exec(function(err, user) {
+          sails.log.debug("Populate user " + (JSON.stringify(user)));
+          if ((err != null)) {
+            sails.log.debug("Populate user error " + (JSON.stringify(err)));
+          }
+          return res.ok({
+            user: user,
+            message: "You have joined this event"
+          });
         });
       });
-      return user.tokens[0].save(function(err, saved) {
-        sails.log.debug("User token updated " + (JSON.stringify(saved)));
-        if ((err != null)) {
-          return sails.log.debug("User token update error " + (JSON.stringify(err)));
-        }
-      });
     })["catch"](function(err) {
-      return sails.log.debug("Join event user find error " + (JSON.stringify(err)));
+      sails.log.debug("Join event user find error " + (JSON.stringify(err)));
+      return res.serverError("Payment failed");
     });
   }
 };

@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'alter',
+  migrate: 'alter',
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -21,6 +21,7 @@ module.exports =
       type: 'string'
       defaultsTo: ''
       required: true
+      unique: true
 
     main_org: 
       model: 'org'

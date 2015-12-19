@@ -5,7 +5,7 @@
 passport = require('passport')
 LocalStrategy = require('passport-local').Strategy
 JwtStrategy = require('passport-jwt').Strategy
-EXPIRES_IN_MINUTES = 60 * 24
+EXPIRES_IN_MINUTES = 60 * 200
 SECRET = process.env.tokenSecret or '4ukI0uIVnB3iI1yxj646fVXSE3ZVk4doZgz6fTbNg7jO41EAtl20J5F7Trtwe7OM'
 ALGORITHM = 'HS256'
 ISSUER = 'nozus.com'
