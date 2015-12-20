@@ -69,5 +69,17 @@ module.exports = {
       sails.log.debug("Join event user find error " + (JSON.stringify(err)));
       return res.serverError("Payment failed");
     });
+  },
+  get_event_members: function(req, res) {
+    sails.log.debug("Hit the event controller/get_event_members");
+    return Event.findOne({
+      id: req.query.event_id
+    }).populate('event_user').then(function(result) {
+      sails.log.debug("Event find " + (JSON.stringify(result)));
+      return res.send(result);
+    })["catch"](function(err) {
+      sails.log.debug("Event find error " + (JSON.stringify(err)));
+      return res.serverError(err);
+    });
   }
 };

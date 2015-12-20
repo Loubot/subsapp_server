@@ -34,10 +34,15 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'angular_app/views/org/org.html',
     controller: 'OrgController'
   });
-  return $stateProvider.state("team", {
+  $stateProvider.state("team", {
     url: '/team',
     templateUrl: 'angular_app/views/team/team.html',
     controller: 'TeamController'
+  });
+  return $stateProvider.state('event', {
+    url: '/event',
+    templateUrl: 'angular_app/views/event/event.html',
+    controller: 'EventController'
   });
 });
 

@@ -92,5 +92,9 @@ module.exports.routes = {
   'post /join-event': {
     controller: 'EventController',
     action: 'join_event'
+  },
+  'get /get-event-members': {
+    controller: 'EventController',
+    action: 'get_event_members'
   }
 };

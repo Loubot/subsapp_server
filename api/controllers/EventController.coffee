@@ -54,15 +54,22 @@ module.exports = {
           sails.log.debug "Populate user error #{ JSON.stringify err }" if(err?)
           res.ok user: user, message: "You have joined this event"
       )
-
-
-
-      
-      
     ).catch( ( err ) ->
       sails.log.debug "Join event user find error #{ JSON.stringify err }"
       res.serverError "Payment failed"
     )
-      
 
+  get_event_members: ( req, res ) ->
+    sails.log.debug "Hit the event controller/get_event_members"
+    # Event.findOne( )
+    
+    Event.findOne( id: req.query.event_id ).populate('event_user').then( ( result ) ->
+      sails.log.debug "Event find #{ JSON.stringify result }"
+      res.send result
+      
+    ).catch( ( err ) ->
+      sails.log.debug "Event find error #{ JSON.stringify err }"
+      res.serverError err
+    )
+ 
 }

@@ -110,4 +110,8 @@ module.exports.routes =
         controller:             'EventController'
         action:                 'join_event'
 
+  'get /get-event-members': 
+        controller:             'EventController'
+        action:                 'get_event_members'
+
   # end of Event controller
