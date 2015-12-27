@@ -31,6 +31,10 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'edit_user'
 
+  'get /get-user-teams':
+        controller:             'UserController'
+        action:                 'get_user_teams'
+
 
   # End of user controller
 
@@ -93,9 +97,6 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'create_payment'
 
-  'post /pay-for-event':
-        controller:             'PaymentController'
-        action:                 'pay_for_event'
 
   #Token controller
   'post /up-token':
@@ -108,5 +109,13 @@ module.exports.routes =
   'post /create-event':
         controller:             'EventController'
         action:                 'create_event'
+
+  'post /join-event':
+        controller:             'EventController'
+        action:                 'join_event'
+
+  'get /get-event-members': 
+        controller:             'EventController'
+        action:                 'get_event_members'
 
   # end of Event controller

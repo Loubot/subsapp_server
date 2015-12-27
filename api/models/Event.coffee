@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'alter'
+  migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -27,6 +27,10 @@ module.exports =
 
     event_team:
       model: 'team'
+
+    event_user:
+      collection: 'user'
+      via: 'user_events'
       
     
     toJSON: ->

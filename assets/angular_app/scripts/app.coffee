@@ -54,11 +54,17 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       templateUrl : 'angular_app/views/team/team.html'
       controller : 'TeamController'
 
+    $stateProvider.state 'event',
+      url: '/event'
+      templateUrl : 'angular_app/views/event/event.html'
+      controller : 'EventController'
+
 
 angular.module('subzapp').constant 'RESOURCES', do ->
   # Define your variable
   console.log "url" + window.location.origin 
   url = window.location.origin 
+  # url = "https://subzapp.herokuapp.com"
   # Use the variable in your constants
   {
     DOMAIN: url

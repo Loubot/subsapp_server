@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'drop',
+  migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -60,6 +60,10 @@ module.exports =
       collection: 'team'
       via: 'team_members'
 
+    user_events:
+      collection: 'event'
+      via: 'event_user'
+
     
 
 
@@ -69,10 +73,13 @@ module.exports =
       delete obj.password
       delete obj.socialProfiles
       obj
-  beforeUpdate: (values, next) ->
-    CipherService.hashPassword values
-    next()
-    return
+  # beforeUpdate: (values, next) ->
+  #   delete values.password
+  #   sails.log.debug "ValuesAaaaa #{ JSON.stringify values }"
+  #   sails.log.debug "nextxxxx #{ JSON.stringify next }"
+  #   CipherService.hashPassword values
+  #   next()
+  #   return
   beforeCreate: (values, next) ->
     CipherService.hashPassword values
     next()

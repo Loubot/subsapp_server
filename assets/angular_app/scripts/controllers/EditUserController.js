@@ -4,7 +4,6 @@ angular.module('subzapp').controller('EditUserController', [
   '$scope', '$state', '$http', '$window', 'message', 'user', 'RESOURCES', function($scope, $state, $http, $window, message, user, RESOURCES) {
     var user_token;
     console.log('User Controller');
-    console.log('User Controller');
     user_token = window.localStorage.getItem('user_token');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {

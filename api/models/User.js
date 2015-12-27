@@ -5,6 +5,7 @@
  * @description :: Model for storing users
  */
 module.exports = {
+  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -55,6 +56,10 @@ module.exports = {
       collection: 'team',
       via: 'team_members'
     },
+    user_events: {
+      collection: 'event',
+      via: 'event_user'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();
@@ -62,10 +67,6 @@ module.exports = {
       delete obj.socialProfiles;
       return obj;
     }
-  },
-  beforeUpdate: function(values, next) {
-    CipherService.hashPassword(values);
-    next();
   },
   beforeCreate: function(values, next) {
     CipherService.hashPassword(values);

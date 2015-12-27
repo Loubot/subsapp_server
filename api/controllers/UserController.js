@@ -24,5 +24,8 @@ module.exports = {
     }).done(function() {
       return sails.log.debug("Edit user done");
     });
+  },
+  get_user_teams: function(req, res) {
+    return sails.log.debug("Hit the UserController/get_user_teams");
   }
 };

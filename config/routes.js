@@ -33,6 +33,10 @@ module.exports.routes = {
     controller: 'UserController',
     action: 'edit_user'
   },
+  'get /get-user-teams': {
+    controller: 'UserController',
+    action: 'get_user_teams'
+  },
   'post /create-business': {
     controller: 'OrgController',
     action: 'create_business'
@@ -81,10 +85,6 @@ module.exports.routes = {
     controller: 'PaymentController',
     action: 'create_payment'
   },
-  'post /pay-for-event': {
-    controller: 'PaymentController',
-    action: 'pay_for_event'
-  },
   'post /up-token': {
     controller: 'TokenController',
     action: 'up_token'
@@ -92,5 +92,13 @@ module.exports.routes = {
   'post /create-event': {
     controller: 'EventController',
     action: 'create_event'
+  },
+  'post /join-event': {
+    controller: 'EventController',
+    action: 'join_event'
+  },
+  'get /get-event-members': {
+    controller: 'EventController',
+    action: 'get_event_members'
   }
 };

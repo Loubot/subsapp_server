@@ -18,4 +18,7 @@ module.exports = {
       res.serverError err
     ).done ->
       sails.log.debug "Edit user done"
+
+  get_user_teams: ( req, res ) ->
+    sails.log.debug "Hit the UserController/get_user_teams"
 }

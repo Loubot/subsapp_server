@@ -5,6 +5,7 @@
  * @description :: Model for storing orgs
  */
 module.exports = {
+  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,

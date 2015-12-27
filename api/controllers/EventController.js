@@ -32,5 +32,54 @@ module.exports = {
         return res.send(events);
       });
     });
+  },
+  join_event: function(req, res) {
+    sails.log.debug("Hit the Payment controller/pay_for_event");
+    sails.log.debug("Pay for event params " + (JSON.stringify(req.body)));
+    return User.findOne({
+      id: req.body.user_id
+    }).populate('user_events').populate('tokens').then(function(user) {
+      sails.log.debug("Join event user find/populate " + (JSON.stringify(user.tokens)));
+      if (user.tokens[0].amount - req.body.event_price < 0) {
+        res.serverError("You don't have enough tokens");
+        return false;
+      }
+      sails.log.debug("asdfasdfasdf " + (user.tokens[0].amount - req.body.event_price));
+      user.tokens[0].amount = user.tokens[0].amount - req.body.event_price;
+      sails.log.debug("user tokens " + user.tokens[0].amount);
+      user.user_events.add(req.body.event_id);
+      user.save(function(saved_user) {
+        return sails.log.debug("user saved " + (JSON.stringify(saved_user)));
+      });
+      return user.tokens[0].save(function(saved_user) {
+        return User.findOne({
+          id: req.body.user_id
+        }).populate('tokens').populate('user_events').exec(function(err, user) {
+          sails.log.debug("Populate user " + (JSON.stringify(user)));
+          if ((err != null)) {
+            sails.log.debug("Populate user error " + (JSON.stringify(err)));
+          }
+          return res.ok({
+            user: user,
+            message: "You have joined this event"
+          });
+        });
+      });
+    })["catch"](function(err) {
+      sails.log.debug("Join event user find error " + (JSON.stringify(err)));
+      return res.serverError("Payment failed");
+    });
+  },
+  get_event_members: function(req, res) {
+    sails.log.debug("Hit the event controller/get_event_members");
+    return Event.findOne({
+      id: req.query.event_id
+    }).populate('event_user').then(function(result) {
+      sails.log.debug("Event find " + (JSON.stringify(result)));
+      return res.send(result);
+    })["catch"](function(err) {
+      sails.log.debug("Event find error " + (JSON.stringify(err)));
+      return res.serverError(err);
+    });
   }
 };
