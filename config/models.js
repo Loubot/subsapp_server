@@ -11,6 +11,6 @@
  * http://sailsjs.org/#!/documentation/concepts/ORM
  */
 module.exports.models = {
-  migrate: 'safe',
+  migrate: 'alter',
   connection: 'subsapp_db'
 };

@@ -63,7 +63,7 @@ angular.module('subzapp').factory('message', function() {
         return $('.message').hide('slide', {
           direction: 'left'
         }, 1000);
-      }), 5000);
+      }), 10000);
     },
     success: function(mes) {
       $('.message').removeClass('error_message');
@@ -76,7 +76,7 @@ angular.module('subzapp').factory('message', function() {
         return $('.message').hide('slide', {
           direction: 'left'
         }, 1000);
-      }), 5000);
+      }), 10000);
     }
   };
 });

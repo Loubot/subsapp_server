@@ -74,7 +74,7 @@ angular.module('subzapp').factory 'message', ->
     $('.message').show 'slide', { direction: 'right' }, 1000
     setTimeout ( ->
       $('.message').hide 'slide', { direction: 'left' }, 1000
-    ), 5000
+    ), 10000
 
   success: ( mes ) ->
     $('.message').removeClass 'error_message'
@@ -83,7 +83,7 @@ angular.module('subzapp').factory 'message', ->
     $('.message').show 'slide', { direction: 'right' }, 1000
     setTimeout ( ->
       $('.message').hide 'slide', { direction: 'left' }, 1000
-    ), 5000
+    ), 10000
   
 
 angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->

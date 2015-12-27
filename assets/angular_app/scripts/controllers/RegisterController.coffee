@@ -25,9 +25,13 @@ angular.module('subzapp').controller('RegisterController', [
         $state.go 'user'
       ), ( errResponse ) ->
         console.log "Registration failed "
-        console.log errResponse
-        window.USER = null
-        message.error errResponse
+        setTimeout ( ->
+          $state.go 'login' 
+        ), 5000
+        
+        console.log errResponse.data.invalidAttributes.email[0].message        
        
-
+        message.error errResponse.data.invalidAttributes.email[0].message
+       
+        
 ])

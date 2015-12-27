@@ -17,9 +17,11 @@ angular.module('subzapp').controller('RegisterController', [
         return $state.go('user');
       }), function(errResponse) {
         console.log("Registration failed ");
-        console.log(errResponse);
-        window.USER = null;
-        return message.error(errResponse);
+        setTimeout((function() {
+          return $state.go('login');
+        }), 5000);
+        console.log(errResponse.data.invalidAttributes.email[0].message);
+        return message.error(errResponse.data.invalidAttributes.email[0].message);
       });
     };
   }
