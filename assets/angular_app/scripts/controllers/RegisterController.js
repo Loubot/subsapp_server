@@ -20,6 +20,7 @@ angular.module('subzapp').controller('RegisterController', [
         setTimeout((function() {
           return $state.go('login');
         }), 5000);
+        console.log(errResponse);
         console.log(errResponse.data.invalidAttributes.email[0].message);
         return message.error(errResponse.data.invalidAttributes.email[0].message);
       });

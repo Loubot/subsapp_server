@@ -28,7 +28,7 @@ angular.module('subzapp').controller('RegisterController', [
         setTimeout ( ->
           $state.go 'login' 
         ), 5000
-        
+        console.log errResponse
         console.log errResponse.data.invalidAttributes.email[0].message        
        
         message.error errResponse.data.invalidAttributes.email[0].message
