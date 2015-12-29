@@ -25,7 +25,7 @@ module.exports = {
       return sails.log.debug("Edit user done");
     });
   },
-  get_user_orgs: function(req, res) {
+  get_user_teams: function(req, res) {
     sails.log.debug("Hit the UserController/get_user_teams");
     sails.log.debug("Data " + (JSON.stringify(req.query)));
     return Team.find({

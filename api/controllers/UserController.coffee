@@ -19,7 +19,7 @@ module.exports = {
     ).done ->
       sails.log.debug "Edit user done"
 
-  get_user_orgs: ( req, res ) ->
+  get_user_teams: ( req, res ) ->
     sails.log.debug "Hit the UserController/get_user_teams"
     sails.log.debug "Data #{ JSON.stringify req.query }"
     Team.find( { id: req.query.teams } ).populate('main_org').then( ( teams ) ->
