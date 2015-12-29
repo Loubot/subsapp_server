@@ -19,6 +19,35 @@ module.exports = {
     ).done ->
       sails.log.debug "Edit user done"
 
-  get_user_teams: ( req, res ) ->
+  get_user_orgs: ( req, res ) ->
     sails.log.debug "Hit the UserController/get_user_teams"
+    sails.log.debug "Data #{ JSON.stringify req.query }"
+    Team.find( { id: req.query.teams } ).populate('main_org').then( ( teams ) ->
+      sails.log.debug "Teams find #{ JSON.stringify teams }"
+      res.ok teams
+    ).catch( ( err ) ->
+      sails.log.debug "Teams find error #{ JSON.stringify err }"
+      res.serverError err
+    )
+
+    # Post.findOne(req.param('id')).populate('user').populate('comments').then((post) ->
+    #   commentUsers = User.find(id: _.pluck(post.comments, 'user')).then((commentUsers) ->
+    #     commentUsers
+    #   )
+    #   [
+    #     post
+    #     commentUsers
+    #   ]
+    # ).spread((post, commentUsers) ->
+    #   commentUsers = _.indexBy(commentUsers, 'id')
+    #   #_.indexBy: Creates an object composed of keys generated from the results of running each element of the collection through the given callback. The corresponding value of each key is the last element responsible for generating the key
+    #   post.comments = _.map(post.comments, (comment) ->
+    #     comment.user = commentUsers[comment.user]
+    #     comment
+    #   )
+    #   res.json post
+    #   return
+    # ).catch (err) ->
+    #   res.serverError err
+
 }

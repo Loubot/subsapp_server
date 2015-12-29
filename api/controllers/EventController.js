@@ -48,8 +48,9 @@ module.exports = {
       user.tokens[0].amount = user.tokens[0].amount - req.body.event_price;
       sails.log.debug("user tokens " + user.tokens[0].amount);
       user.user_events.add(req.body.event_id);
-      user.save(function(saved_user) {
-        return sails.log.debug("user saved " + (JSON.stringify(saved_user)));
+      user.save(function(err, saved_user) {
+        sails.log.debug("user saved " + (JSON.stringify(saved_user)));
+        return sails.log.debug("user saved " + (JSON.stringify(err)));
       });
       return user.tokens[0].save(function(saved_user) {
         return User.findOne({

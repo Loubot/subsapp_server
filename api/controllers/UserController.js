@@ -25,7 +25,17 @@ module.exports = {
       return sails.log.debug("Edit user done");
     });
   },
-  get_user_teams: function(req, res) {
-    return sails.log.debug("Hit the UserController/get_user_teams");
+  get_user_orgs: function(req, res) {
+    sails.log.debug("Hit the UserController/get_user_teams");
+    sails.log.debug("Data " + (JSON.stringify(req.query)));
+    return Team.find({
+      id: req.query.teams
+    }).populate('main_org').then(function(teams) {
+      sails.log.debug("Teams find " + (JSON.stringify(teams)));
+      return res.ok(teams);
+    })["catch"](function(err) {
+      sails.log.debug("Teams find error " + (JSON.stringify(err)));
+      return res.serverError(err);
+    });
   }
 };

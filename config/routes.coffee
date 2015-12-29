@@ -31,9 +31,9 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'edit_user'
 
-  'get /get-user-teams':
+  'get /get-user-orgs':
         controller:             'UserController'
-        action:                 'get_user_teams'
+        action:                 'get_user_orgs'
 
 
   # End of user controller

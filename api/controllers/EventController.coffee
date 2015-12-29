@@ -43,8 +43,9 @@ module.exports = {
 
       user.user_events.add( req.body.event_id )
 
-      user.save( ( saved_user ) ->
+      user.save( ( err, saved_user ) ->
         sails.log.debug "user saved #{ JSON.stringify saved_user }"
+        sails.log.debug "user saved #{ JSON.stringify err }"
         
       )
 
