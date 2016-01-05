@@ -9,14 +9,18 @@ angular.module('subzapp').controller('OrgController', [
   'user'
   'message'
   'RESOURCES'
-  ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->    
+  ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->
+    check_club_admin = ( user ) ->
+      $state.go 'login' 
+      $message.error 'You are not a club admin. Contact subzapp admin team for assitance'
+      return false 
+
     console.log 'Org Controller'
     if !(window.USER?)
       user.get_user().then ( (res) ->
-        # console.log "User set to #{ JSON.stringify res }"
-        # console.log "OrgController teams #{JSON.stringify window.USER.teams}"
-        $scope.org = window.USER.orgs
-        console.log "teams #{ JSON.stringify window.USER }"
+        # console.log "User set to #{ JSON.stringify window.USER }"
+        check_club_admin(window.User)
+
         $scope.teams = return_teams(window.USER.teams, $location.search().id)
 
       ), ( errResponse ) ->
@@ -65,7 +69,6 @@ angular.module('subzapp').controller('OrgController', [
         console.log "Delte team error #{ JSON.stringify errResponse }"
 
 ])
-
 
 
 return_teams = (all_teams, id) ->

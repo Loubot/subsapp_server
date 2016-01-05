@@ -11,7 +11,8 @@ angular.module('subzapp').controller('RegisterController', [
     console.log 'Register Controller'
 
     $scope.register_submit = ->
-      $scope.register_form_data.manager_access = true
+      $scope.register_form_data.club_admin = true
+      $scope.register_form_data.team_admin = true
       console.log $scope.register_form_data
       $http(
         method: 'POST'
@@ -22,7 +23,7 @@ angular.module('subzapp').controller('RegisterController', [
         window.localStorage.setItem 'user_token', response.data.data.token
         # console.log "user_token " + window.localStorage.getItem 'user_token'
         window.localStorage.setItem 'user_id', response.data.data.user.id
-        $state.go 'user'
+        $state.go 'org'
       ), ( errResponse ) ->
         console.log "Registration failed "
         setTimeout ( ->

@@ -19,7 +19,12 @@ module.exports =
 
     password: type: 'string'
 
-    manager_access:
+    club_admin:
+      type: 'boolean'
+      required: true
+      defaultsTo: false
+
+    team_admin:
       type: 'boolean'
       required: true
       defaultsTo: false
@@ -33,15 +38,7 @@ module.exports =
       defaultsTo: ''
     lastName:
       type: 'string'
-      defaultsTo: ''
-
-    stripe_id: 
-      type: 'string'
-      defaultsTo: ''
-
-    tokens:
-      collection: 'token'
-      via: 'owner'
+      defaultsTo: ''    
 
     orgs:
       collection: 'org'
@@ -55,17 +52,25 @@ module.exports =
     user_orgs:
       collection: 'org'
       via: 'org_members'
+    
 
-    user_teams:
-      collection: 'team'
-      via: 'team_members'
+    ### non admin attributes ###
 
     user_events:
       collection: 'event'
       via: 'event_user'
 
-    
+    tokens:
+      collection: 'token'
+      via: 'owner'
 
+    user_teams:
+      collection: 'team'
+      via: 'team_members'
+
+    # stripe_id: 
+    #   type: 'string'
+    #   defaultsTo: ''
 
     
     toJSON: ->
@@ -73,6 +78,7 @@ module.exports =
       delete obj.password
       delete obj.socialProfiles
       obj
+
   # beforeUpdate: (values, next) ->
   #   delete values.password
   #   sails.log.debug "ValuesAaaaa #{ JSON.stringify values }"

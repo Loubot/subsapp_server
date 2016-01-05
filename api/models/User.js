@@ -14,7 +14,12 @@ module.exports = {
     password: {
       type: 'string'
     },
-    manager_access: {
+    club_admin: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
+    },
+    team_admin: {
       type: 'boolean',
       required: true,
       defaultsTo: false
@@ -32,14 +37,6 @@ module.exports = {
       type: 'string',
       defaultsTo: ''
     },
-    stripe_id: {
-      type: 'string',
-      defaultsTo: ''
-    },
-    tokens: {
-      collection: 'token',
-      via: 'owner'
-    },
     orgs: {
       collection: 'org',
       via: 'admins'
@@ -52,13 +49,19 @@ module.exports = {
       collection: 'org',
       via: 'org_members'
     },
-    user_teams: {
-      collection: 'team',
-      via: 'team_members'
-    },
+
+    /* non admin attributes */
     user_events: {
       collection: 'event',
       via: 'event_user'
+    },
+    tokens: {
+      collection: 'token',
+      via: 'owner'
+    },
+    user_teams: {
+      collection: 'team',
+      via: 'team_members'
     },
     toJSON: function() {
       var obj;

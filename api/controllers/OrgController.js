@@ -37,6 +37,11 @@ module.exports = {
     var business_data;
     sails.log.debug("Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     sails.log.debug("Data " + (JSON.stringify(req.body)));
+    sails.log.debug("Data " + (JSON.stringify(req.user)));
+    if (req.user.club_admin !== true) {
+      res.serverError("You are not an admin");
+      return false;
+    }
     business_data = req.body;
     return Org.create({
       name: business_data.name,

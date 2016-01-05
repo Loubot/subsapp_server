@@ -23,16 +23,16 @@ module.exports = {
       sails.log.debug "Find error response #{ JSON.stringify err }"
     ).done ->
       sails.log.debug "Find done"
-      return
-      
-
-      
-    
+      return    
 
 
   create_business: (req, res) ->
     sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
+    sails.log.debug "Data #{ JSON.stringify req.user }"
+    if req.user.club_admin != true
+      res.serverError "You are not an admin"
+      return false
     business_data = req.body
     Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
       sails.log.debug "Create response #{ JSON.stringify org }" 

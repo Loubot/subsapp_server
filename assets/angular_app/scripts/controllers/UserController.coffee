@@ -12,7 +12,7 @@ angular.module('subzapp').controller('UserController', [
     console.log 'User Controller'
     
     user.get_user().then ( (res) ->
-      console.log "Got user #{ JSON.stringify res }"
+      # console.log "Got user #{ JSON.stringify res }"
               
       $scope.orgs = window.USER.orgs
       
@@ -21,7 +21,7 @@ angular.module('subzapp').controller('UserController', [
 
 
     $scope.business_create = ->
-      console.log "create #{JSON.stringify user}"
+      # console.log "create #{JSON.stringify user}"
       user_token = window.localStorage.getItem 'user_token'
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log JSON.stringify $scope.business_form_data

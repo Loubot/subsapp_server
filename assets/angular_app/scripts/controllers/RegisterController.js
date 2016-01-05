@@ -4,7 +4,8 @@ angular.module('subzapp').controller('RegisterController', [
   '$scope', '$state', '$http', '$window', 'message', 'RESOURCES', function($scope, $state, $http, $window, message, RESOURCES) {
     console.log('Register Controller');
     return $scope.register_submit = function() {
-      $scope.register_form_data.manager_access = true;
+      $scope.register_form_data.club_admin = true;
+      $scope.register_form_data.team_admin = true;
       console.log($scope.register_form_data);
       return $http({
         method: 'POST',
@@ -14,7 +15,7 @@ angular.module('subzapp').controller('RegisterController', [
         console.log("Registration successfull " + (JSON.stringify(response)));
         window.localStorage.setItem('user_token', response.data.data.token);
         window.localStorage.setItem('user_id', response.data.data.user.id);
-        return $state.go('user');
+        return $state.go('org');
       }), function(errResponse) {
         console.log("Registration failed ");
         setTimeout((function() {

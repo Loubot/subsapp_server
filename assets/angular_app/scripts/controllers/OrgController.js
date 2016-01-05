@@ -4,12 +4,16 @@ var return_teams;
 
 angular.module('subzapp').controller('OrgController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'message', 'RESOURCES', function($scope, $state, $http, $window, $location, user, message, RESOURCES) {
-    var params;
+    var check_club_admin, params;
+    check_club_admin = function(user) {
+      $state.go('login');
+      $message.error('You are not a club admin. Contact subzapp admin team for assitance');
+      return false;
+    };
     console.log('Org Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        $scope.org = window.USER.orgs;
-        console.log("teams " + (JSON.stringify(window.USER)));
+        check_club_admin(window.User);
         return $scope.teams = return_teams(window.USER.teams, $location.search().id);
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
