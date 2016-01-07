@@ -6,14 +6,18 @@ angular.module('subzapp').controller('OrgController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'message', 'RESOURCES', function($scope, $state, $http, $window, $location, user, message, RESOURCES) {
     var check_club_admin, params;
     check_club_admin = function(user) {
-      $state.go('login');
-      $message.error('You are not a club admin. Contact subzapp admin team for assitance');
+      if (!user.club_admin) {
+        $state.go('login');
+      }
+      message.error('You are not a club admin. Contact subzapp admin team for assitance');
       return false;
     };
     console.log('Org Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        check_club_admin(window.User);
+        $scope.orgs = res.data.orgs;
+        check_club_admin(res.data);
+        $scope.user = res.data;
         return $scope.teams = return_teams(window.USER.teams, $location.search().id);
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
@@ -27,45 +31,46 @@ angular.module('subzapp').controller('OrgController', [
     }
     console.log("check it " + (JSON.stringify($location.search())));
     params = $location.search();
-    $scope.team_create = function() {
+    $scope.business_create = function() {
       var user_token;
       user_token = window.localStorage.getItem('user_token');
-      $scope.team_form_data.user_id = window.localStorage.getItem('user_id');
-      $scope.team_form_data.org_id = params.id;
-      console.log("Form data " + (JSON.stringify($scope.team_form_data)));
+      $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
+      console.log(JSON.stringify($scope.business_form_data));
       return $http({
         method: 'POST',
-        url: RESOURCES.DOMAIN + "/create-team",
+        url: RESOURCES.DOMAIN + "/create-business",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
         },
-        data: $scope.team_form_data
-      }).then((function(teams) {
-        console.log("Team create response " + (JSON.stringify(teams)));
-        $('.team_name').val("");
-        return $scope.teams = teams.data;
+        data: $scope.business_form_data
+      }).then((function(response) {
+        console.log("Business create return " + (JSON.stringify(response.data)));
+        $scope.orgs = response.data;
+        $('.business_name').val("");
+        return $('.business_address').val("");
       }), function(errResponse) {
-        return console.log("Teacm create error " + (JSON.stringify(errResponse)));
+        console.log("Business create error response " + (JSON.stringify(errResponse)));
+        return $state.go('login');
       });
     };
-    return $scope.delete_team = function(id) {
+    return $scope.delete_business = function(id) {
       var user_token;
-      user_token = window.localStorage.getItem('user_token');
+      user_token = JSON.parse(window.localStorage.getItem('user_token'));
       return $http({
         method: 'DELETE',
-        url: RESOURCES.DOMAIN + "/delete-team",
+        url: RESOURCES.DOMAIN + "/delete-business",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
         },
         data: {
-          team_id: id
+          org_id: id
         }
-      }).then((function(res) {
-        return console.log("Delete response " + (JSON.stringify(res)));
+      }).then((function(response) {
+        return console.log("Delete response " + (JSON.stringify(response)));
       }), function(errResponse) {
-        return console.log("Delte team error " + (JSON.stringify(errResponse)));
+        return console.log("Delete error response " + (JSON.stringify(errResponse)));
       });
     };
   }

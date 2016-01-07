@@ -10,7 +10,7 @@ angular.module('subzapp').controller('LoginController', [
   # 'AuthService'
   ( $scope, $state, $http, $window, message, RESOURCES ) ->
     console.log 'Login Controller'
-
+    
     $scope.login_submit = ->
       $http(
         method: 'POST'
@@ -22,7 +22,7 @@ angular.module('subzapp').controller('LoginController', [
         window.localStorage.setItem 'user_token', response.data.token
         window.localStorage.setItem 'user_id', response.data.user.id
         # console.log "Success response token #{ JSON.stringify response.data.token }"
-        $state.go 'user'
+        $state.go 'org'
       ), ( errResponse ) ->
         console.log "Error response #{ JSON.stringify errResponse.data }"
         window.USER = null

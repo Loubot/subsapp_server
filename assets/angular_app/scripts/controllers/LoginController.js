@@ -13,7 +13,7 @@ angular.module('subzapp').controller('LoginController', [
         console.log(response);
         window.localStorage.setItem('user_token', response.data.token);
         window.localStorage.setItem('user_id', response.data.user.id);
-        return $state.go('user');
+        return $state.go('org');
       }), function(errResponse) {
         console.log("Error response " + (JSON.stringify(errResponse.data)));
         window.USER = null;

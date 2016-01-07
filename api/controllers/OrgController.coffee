@@ -23,7 +23,19 @@ module.exports = {
       sails.log.debug "Find error response #{ JSON.stringify err }"
     ).done ->
       sails.log.debug "Find done"
-      return    
+      return
+
+  get_org_admins: (req, res) ->
+    sails.log.debug "Hit the Org controller/get_org_admins"
+    sails.log.debug req.query
+    Org.findOne( id: req.query.org_id ).populate('admins').populate('teams').then( ( org ) ->
+      sails.log.debug "get org admins #{ JSON.stringify org }"
+      res.ok org #return only admins
+    ).catch( ( err ) ->
+      sails.log.debug "Get org admins error"
+      sails.log.debug "#{ JSON.stringify err }"
+      res.serverError err
+    )
 
 
   create_business: (req, res) ->

@@ -53,6 +53,10 @@ module.exports.routes = {
     controller: 'OrgController',
     action: 'all_org'
   },
+  'get /org-admins': {
+    controller: 'OrgController',
+    action: 'get_org_admins'
+  },
   'get /get-org-list': {
     controller: 'OrgController',
     action: 'get_org_list'
