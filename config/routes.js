@@ -104,5 +104,9 @@ module.exports.routes = {
   'get /get-event-members': {
     controller: 'EventController',
     action: 'get_event_members'
+  },
+  'post /send-mail': {
+    controller: 'MailController',
+    action: 'send_mail'
   }
 };

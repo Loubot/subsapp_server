@@ -39,9 +39,9 @@
     </form>
     <ul class="example-animate-container">
       <input type="search" ng-model="q" placeholder="filter teams..." aria-label="filter friends" class="black_text" />
-      <br>Admins of this org
+      <br>Teams in this club
       <li class="animate-repeat org_list" ng-repeat="team in teams | filter:q as results">
-        <a href="" >[{{$index + 1}}] {{team.name}}.</a>
+        <a href="/#org_admin_team?id={{team.id}}" >[{{$index + 1}}] {{team.name}}.</a>
         <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business(org.id)">Remove admin?</button>     
       </li>
       <li class="animate-repeat" ng-if="orgs.length == 0">

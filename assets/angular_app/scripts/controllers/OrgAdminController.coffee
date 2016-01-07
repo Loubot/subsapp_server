@@ -34,6 +34,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log "Get org admins error"
       console.log errResponse
 
+    
+
     $scope.team_create = ->
       $scope.team_form_data.org_id = $location.search().id
       $http(
@@ -57,3 +59,16 @@ return_org = ( orgs, search) ->
     if parseInt( org.id ) == parseInt( search.id )
       return org
 
+
+# $http(
+#   method: 'POST'
+#   url: "#{ RESOURCES.DOMAIN }/send-mail"
+#   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+  
+# ).then ( ( response ) ->
+#   console.log "get mandrill-object"
+#   console.log response
+  
+# ), ( errResponse ) ->
+#   console.log "Get mandrill-object"
+#   console.log errResponse

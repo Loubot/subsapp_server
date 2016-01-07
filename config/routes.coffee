@@ -123,3 +123,9 @@ module.exports.routes =
         action:                 'get_event_members'
 
   # end of Event controller
+
+  #Mail controller
+
+  'post /send-mail':
+        controller:             'MailController'
+        action:                 'send_mail'
