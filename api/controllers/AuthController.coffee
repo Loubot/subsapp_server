@@ -37,22 +37,25 @@ module.exports =
     ).then(res.created).catch res.serverError
     return
   team_manager_signup: (req, res) ->
-    sails.log.debug "Body #{ req.body }"
-    # User.create(_.omit(req.allParams(), 'id')).then((user) ->
-    #   Token.create( owner: user.id).then( (err, token) ->
-    #     sails.log.debug "Token created #{ JSON.stringify token }"
-    #     sails.log.debug "Token create error #{ JSON.stringify err }" if err?
-    #   {
-    #     token: CipherService.createToken(user)
-    #     user: user
-    #   }
-    #   ).then(
-    #     Team.findOne( id: 1 ).exec (err, team) ->
-    #       team.manager.add( req.body.manager_id )
-    #       team.save()
-    #   )
-    # ).then(res.created).catch res.serverError
-    # return
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+    User.create(_.omit(req.allParams(), 'id')).then((user) ->
+      Token.create( owner: user.id).then( (err, token) ->
+        sails.log.debug "Token created #{ JSON.stringify token }"
+        sails.log.debug "Token create error #{ JSON.stringify err }" if err?
+      
+      ).then(
+        Team.findOne( id: req.body.team_id ).exec (err, team) ->
+          sails.log.debug "team #{ JSON.stringify team}"
+          sails.log.debug "err #{ JSON.stringify team}" if err?
+          team.manager = user.id
+          team.save()
+      )
+      {
+        token: CipherService.createToken(user)
+        user: user
+      }
+    ).then(res.created).catch res.serverError
+    return
   signin: (req, res) ->
     passport.authenticate('local', _onPassportAuth.bind(this, req, res)) req, res
     return

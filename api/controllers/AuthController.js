@@ -52,7 +52,30 @@ module.exports = {
     }).then(res.created)["catch"](res.serverError);
   },
   team_manager_signup: function(req, res) {
-    return sails.log.debug("Body " + req.body);
+    sails.log.debug("Body " + (JSON.stringify(req.body)));
+    User.create(_.omit(req.allParams(), 'id')).then(function(user) {
+      Token.create({
+        owner: user.id
+      }).then(function(err, token) {
+        sails.log.debug("Token created " + (JSON.stringify(token)));
+        if (err != null) {
+          return sails.log.debug("Token create error " + (JSON.stringify(err)));
+        }
+      }).then(Team.findOne({
+        id: req.body.team_id
+      }).exec(function(err, team) {
+        sails.log.debug("team " + (JSON.stringify(team)));
+        if (err != null) {
+          sails.log.debug("err " + (JSON.stringify(team)));
+        }
+        team.manager = user.id;
+        return team.save();
+      }));
+      return {
+        token: CipherService.createToken(user),
+        user: user
+      };
+    }).then(res.created)["catch"](res.serverError);
   },
   signin: function(req, res) {
     passport.authenticate('local', _onPassportAuth.bind(this, req, res))(req, res);
