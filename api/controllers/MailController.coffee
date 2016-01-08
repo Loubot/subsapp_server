@@ -14,19 +14,15 @@ module.exports = {
     sails.log.debug "Params #{ JSON.stringify req.body }"
     m = MandrillService.m
     message = 
-      'html': '<p>Example HTML content</p>'
+      'html': "<a href='#{ req.body.url }'>Click her to take control </a>"
       'text': req.body.url
       'subject': 'You are invited to join subzapp'
-      'from_email': 'lllouis@yahoo.com'
-      'from_name': 'Example Name'
+      'from_email': 'loubot@subzapp.ie'
       'to': [ {
         'email': req.body.manager_email
-        'name': req.body.manager_name
-        'type': 'to'
         }
       ]
-    async = true
-    ip_pool = 'Main Pool'
+    async = false
     m.messages.send {
       'message': message
       'async': async

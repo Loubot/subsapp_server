@@ -51,6 +51,9 @@ module.exports = {
       };
     }).then(res.created)["catch"](res.serverError);
   },
+  team_manager_signup: function(req, res) {
+    return sails.log.debug("Body " + req.body);
+  },
   signin: function(req, res) {
     passport.authenticate('local', _onPassportAuth.bind(this, req, res))(req, res);
   }

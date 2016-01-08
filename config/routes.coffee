@@ -21,6 +21,10 @@
 ###
 
 module.exports.routes = 
+  'post /auth/team_manager_signup' :
+        controller :            'AuthController'
+        action :                 'team_manager_signup'
+        
   '/': view: 'index'
   'post /api/v1/login' :
         controller :            'WebController'

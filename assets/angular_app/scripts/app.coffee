@@ -42,6 +42,11 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       templateUrl : 'angular_app/views/register/register.html'
       controller: 'RegisterController'
 
+    $stateProvider.state "register_manager",
+      url : '/register-manager'
+      templateUrl : 'angular_app/views/register/register_manager.html'
+      controller : 'RegisterManagerController'
+
     # busniess state
     $stateProvider.state "org",
       url : '/org'

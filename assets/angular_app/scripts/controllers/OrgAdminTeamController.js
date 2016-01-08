@@ -43,7 +43,7 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
           manager_email: $scope.invite_manager_data.email,
           manager_name: $scope.invite_manager_data.name,
           team_id: $location.search().id,
-          url: RESOURCES.DOMAIN + "/register_manager?team_id=" + ($location.search().id)
+          url: RESOURCES.DOMAIN + "/#/register-manager?team_id=" + ($location.search().id) + "&email=" + $scope.invite_manager_data.email
         }
       }).then((function(response) {
         console.log("Send invite mail");

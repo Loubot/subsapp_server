@@ -22,6 +22,10 @@
  * http://sailsjs.org/#!/documentation/concepts/Routes/RouteTargetSyntax.html
  */
 module.exports.routes = {
+  'post /auth/team_manager_signup': {
+    controller: 'AuthController',
+    action: 'team_manager_signup'
+  },
   '/': {
     view: 'index'
   },
