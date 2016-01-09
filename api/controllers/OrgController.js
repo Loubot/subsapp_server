@@ -22,7 +22,7 @@ module.exports = {
         main_org: req.query.org_id
       }).exec(function(e, teams) {
         sails.log.debug("Team results " + (JSON.stringify(teams[0])));
-        return res.send({
+        return res.json({
           org: org,
           teams: teams[0]
         });
@@ -40,7 +40,7 @@ module.exports = {
       id: req.query.org_id
     }).populate('admins').populate('teams').then(function(org) {
       sails.log.debug("get org admins " + (JSON.stringify(org)));
-      return res.ok(org);
+      return res.json(org);
     })["catch"](function(err) {
       sails.log.debug("Get org admins error");
       sails.log.debug("" + (JSON.stringify(err)));
@@ -69,7 +69,7 @@ module.exports = {
           id: business_data.user_id
         }).populateAll().exec(function(e, r) {
           sails.log.debug("Populate result " + (JSON.stringify(r[0].orgs)));
-          return res.send(r[0].orgs);
+          return res.json(r[0].orgs);
         });
       });
     })["catch"](function(err) {
@@ -95,7 +95,7 @@ module.exports = {
     sails.log.debug("Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&");
     return Org.find().then(function(orgs) {
       sails.log.debug("All org response " + (JSON.stringify(orgs)));
-      return res.send(orgs);
+      return res.json(orgs);
     })["catch"](function(err) {
       return sails.log.debug("All org error " + (JSON.stringify(err)));
     }).done(function() {
@@ -106,7 +106,7 @@ module.exports = {
     sails.log.debug("Hit the org controller/get_org_list");
     return Org.find().then(function(orgs) {
       sails.log.debug("Org get_org_list " + (JSON.stringify(orgs)));
-      return res.send(orgs);
+      return res.json(orgs);
     })["catch"](function(err) {
       return sails.log.debug("Org find get org list error " + (JSON.stringify(err)));
     }).done(function() {
@@ -119,7 +119,7 @@ module.exports = {
       id: req.query.org_id
     }).populate('teams').then(function(org) {
       sails.log.debug("Get single org " + (JSON.stringify(org)));
-      return res.send(org);
+      return res.json(org);
     })["catch"](function(err) {
       return sails.log.debug("Get single org error " + (JSON.stringify(err)));
     }).done(function() {

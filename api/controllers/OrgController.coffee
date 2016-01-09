@@ -15,7 +15,7 @@ module.exports = {
       sails.log.debug "Find response #{ JSON.stringify org }" 
       Team.find().where( { main_org: req.query.org_id }).exec (e, teams) ->
         sails.log.debug "Team results #{ JSON.stringify teams[0] }"
-        res.send { org: org, teams: teams[0] }
+        res.json { org: org, teams: teams[0] }
         
       return
       
@@ -30,7 +30,7 @@ module.exports = {
     sails.log.debug req.query
     Org.findOne( id: req.query.org_id ).populate('admins').populate('teams').then( ( org ) ->
       sails.log.debug "get org admins #{ JSON.stringify org }"
-      res.ok org #return only admins
+      res.json org #return only admins
     ).catch( ( err ) ->
       sails.log.debug "Get org admins error"
       sails.log.debug "#{ JSON.stringify err }"
@@ -53,9 +53,9 @@ module.exports = {
         sails.log.debug "saved #{ JSON.stringify s }"
         User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
           sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
-          res.send r[0].orgs
+          res.json r[0].orgs
       return
-      #   res.send s
+      #   res.json s
       # sails.log.debug org.admins
       # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
     ).catch( ( err ) ->
@@ -73,7 +73,7 @@ module.exports = {
       sails.log.debug "Delete response #{ JSON.stringify org }" 
       
       return
-      #   res.send s
+      #   res.json s
       # sails.log.debug org.admins
       # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
     ).catch( ( err ) ->
@@ -87,7 +87,7 @@ module.exports = {
     sails.log.debug "Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     Org.find().then( (orgs) ->
       sails.log.debug "All org response #{ JSON.stringify orgs }"
-      res.send orgs
+      res.json orgs
     ).catch(( err ) ->
       sails.log.debug "All org error #{ JSON.stringify err }"
       
@@ -101,7 +101,7 @@ module.exports = {
     sails.log.debug "Hit the org controller/get_org_list"
     Org.find().then( (orgs) ->
       sails.log.debug "Org get_org_list #{ JSON.stringify orgs }"
-      res.send orgs
+      res.json orgs
     ).catch((err) ->
       sails.log.debug "Org find get org list error #{ JSON.stringify err }"
     ).done ->
@@ -111,7 +111,7 @@ module.exports = {
     sails.log.debug "Hit the org controller/get_single_org #{ JSON.stringify req.query }"
     Org.findOne().where( { id: req.query.org_id } ).populate('teams').then( (org) -> 
       sails.log.debug "Get single org #{ JSON.stringify org }"
-      res.send org
+      res.json org
     ).catch( (err) ->
       sails.log.debug "Get single org error #{ JSON.stringify err }"
     ).done ->
