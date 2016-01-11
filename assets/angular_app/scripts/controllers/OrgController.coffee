@@ -11,7 +11,7 @@ angular.module('subzapp').controller('OrgController', [
   'RESOURCES'
   ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->
     check_club_admin = ( user ) ->
-      $state.go 'login' if !user.club_admin
+      $state.go 'login' if !user.team_admin
       message.error 'You are not a club admin. Contact subzapp admin team for assitance'
       return false 
 
@@ -27,7 +27,7 @@ angular.module('subzapp').controller('OrgController', [
       ), ( errResponse ) ->
         console.log "User get error #{ JSON.stringify errResponse }"
         window.USER = null
-        $state.go 'login'
+        # $state.go 'login'
     else
       console.log "USER already defined"
       $scope.org = window.USER.orgs[0]

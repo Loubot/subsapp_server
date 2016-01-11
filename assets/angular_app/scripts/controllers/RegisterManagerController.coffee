@@ -22,6 +22,7 @@ angular.module('subzapp').controller('RegisterManagerController', [
     ).then ( ( response ) ->
       console.log "Get invite response"
       console.log response
+      # $scope.register_manager_form_data = response.data
       $scope.register_manager_form_data.invited_email = response.data.invited_email
       $scope.team_id = response.data.team_id
 
@@ -33,6 +34,8 @@ angular.module('subzapp').controller('RegisterManagerController', [
       console.log JSON.stringify $scope.register_manager_form_data
       $scope.register_manager_form_data.team_admin = true
       $scope.register_manager_form_data.team_id = $scope.team_id
+      $scope.register_manager_form_data.email = $scope.register_manager_form_data.invited_email
+      delete $scope.register_manager_form_data.invited_email
       
       console.log $scope.register_manager_form_data
       $http(
@@ -45,7 +48,7 @@ angular.module('subzapp').controller('RegisterManagerController', [
         window.localStorage.setItem 'user_token', response.data.data.token
         # console.log "user_token " + window.localStorage.getItem 'user_token'
         window.localStorage.setItem 'user_id', response.data.data.user.id
-        $state.go 'org'
+        $state.go 'user'
       ), ( errResponse ) ->
         console.log "Registration failed "
         setTimeout ( ->

@@ -12,9 +12,10 @@ angular.module('subzapp').controller('UserController', [
     console.log 'User Controller'
     
     user.get_user().then ( (res) ->
-      # console.log "Got user #{ JSON.stringify res }"
-              
-      $scope.orgs = window.USER.orgs
+      console.log "Got user "
+      console.log window.USER              
+      $scope.teams = window.USER.teams
+
       
     )
 

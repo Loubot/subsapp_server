@@ -24,6 +24,8 @@ angular.module('subzapp').controller('RegisterManagerController', [
       console.log(JSON.stringify($scope.register_manager_form_data));
       $scope.register_manager_form_data.team_admin = true;
       $scope.register_manager_form_data.team_id = $scope.team_id;
+      $scope.register_manager_form_data.email = $scope.register_manager_form_data.invited_email;
+      delete $scope.register_manager_form_data.invited_email;
       console.log($scope.register_manager_form_data);
       return $http({
         method: 'POST',
@@ -34,7 +36,7 @@ angular.module('subzapp').controller('RegisterManagerController', [
         console.log(response);
         window.localStorage.setItem('user_token', response.data.data.token);
         window.localStorage.setItem('user_id', response.data.data.user.id);
-        return $state.go('org');
+        return $state.go('user');
       }), function(errResponse) {
         console.log("Registration failed ");
         setTimeout((function() {

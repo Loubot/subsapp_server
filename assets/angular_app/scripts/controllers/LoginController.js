@@ -11,9 +11,16 @@ angular.module('subzapp').controller('LoginController', [
       }).then((function(response) {
         console.log("User id " + response.data.user);
         console.log(response);
+        $scope.user = response.data.user;
         window.localStorage.setItem('user_token', response.data.token);
         window.localStorage.setItem('user_id', response.data.user.id);
-        return $state.go('org');
+        if ($scope.user.club_admin) {
+          console.log('club_admin');
+          return $state.go('org_admin');
+        } else {
+          console.log('team_manager');
+          return $state.go('team_manager_home');
+        }
       }), function(errResponse) {
         console.log("Error response " + (JSON.stringify(errResponse.data)));
         window.USER = null;

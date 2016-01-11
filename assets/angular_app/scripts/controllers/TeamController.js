@@ -11,35 +11,38 @@ angular.module('subzapp').controller('TeamController', [
       user.get_user().then((function(res) {
         $scope.user = window.USER;
         $scope.org = window.USER.orgs[0];
+        $scope.teams = window.USER.teams;
         return return_team(USER.teams, $location.search().id);
       }), function(errResponse) {
-        window.USER = null;
-        return $state.go('login');
+        return window.USER = null;
       });
     } else {
       console.log("USER already defined");
       $scope.user = window.USER;
       $scope.org = window.USER.orgs[0];
+      $scope.teams = window.USER.teams;
     }
-    console.log($location.search().id);
-    $http({
-      method: 'GET',
-      url: RESOURCES.DOMAIN + "/get-team-info",
-      headers: {
-        'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
-      },
-      params: {
-        team_id: $location.search().id
-      }
-    }).then((function(res) {
-      console.log(res);
-      $scope.team = res.data;
-      $scope.mems = res.data.team_members;
-      return $scope.events = res.data.events;
-    }), function(errResponse) {
-      return console.log("Get team members error " + (JSON.stringify(errResponse)));
-    });
+    if ($location.search().hasOwnProperty('id')) {
+      $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/get-team-info",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        params: {
+          team_id: $location.search().id
+        }
+      }).then((function(res) {
+        console.log("Get team members response");
+        console.log(res);
+        $scope.team = res.data;
+        $scope.members = res.data.team_members;
+        return $scope.events = res.data.events;
+      }), function(errResponse) {
+        return console.log("Get team members error " + (JSON.stringify(errResponse)));
+      });
+    }
     return $scope.create_event = function() {
       $scope.create_event_data.team_id = $location.search().id;
       console.log($scope.create_event_data);

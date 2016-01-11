@@ -69,6 +69,15 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       templateUrl : 'angular_app/views/team/team.html'
       controller : 'TeamController'
 
+    $stateProvider.state 'team_manager_home',
+      url: '/team-manager-home'
+      templateUrl : 'angular_app/views/team/team_manager_home.html'
+      controller : 'TeamController'
+    $stateProvider.state 'team_manager',
+      url: '/team-manager'
+      templateUrl : 'angular_app/views/team/team_manager.html'
+      controller : 'TeamController'
+
     $stateProvider.state 'event',
       url: '/event'
       templateUrl : 'angular_app/views/event/event.html'

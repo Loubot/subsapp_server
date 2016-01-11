@@ -4,7 +4,9 @@ angular.module('subzapp').controller('UserController', [
   '$scope', '$state', '$http', '$window', 'message', 'user', 'RESOURCES', function($scope, $state, $http, $window, message, user, RESOURCES) {
     console.log('User Controller');
     return user.get_user().then((function(res) {
-      return $scope.orgs = window.USER.orgs;
+      console.log("Got user ");
+      console.log(window.USER);
+      return $scope.teams = window.USER.teams;
     }));
   }
 ]);
