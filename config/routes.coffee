@@ -22,7 +22,7 @@
 
 module.exports.routes = 
   'post /auth/team_manager_signup' :
-        controller :            'AuthController'
+        controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
         action :                 'team_manager_signup'
         
   '/': view: 'index'
@@ -30,7 +30,7 @@ module.exports.routes =
         controller :            'WebController'
         action :                'login'
 
-  # User controller
+  # User controller   update user attributes. See user.coffee
   'post /edit-user' :
         controller:             'UserController'
         action:                 'edit_user'
@@ -44,69 +44,60 @@ module.exports.routes =
 
   # Business controller
 
-  'post /create-business' :
+  'post /create-business' : # Create new org. See org.coffee for attributes
         controller:             'OrgController'
         action:                 'create_business'
 
-  'delete /delete-business' :
+  'delete /delete-business' : #Destroy org. Requires org.id
         controller:             'OrgController'
         action:                 'destroy_business'
 
-  'get /get-org':
+  'get /get-org':             #Require org.id. Returns details of org
         controller:             'OrgController'
         action:                 'get_org'
 
-  'get /all-org':
+  'get /all-org':             #Requires nothing. Return all org details;
         controller:             'OrgController'
         action:                 'all_org'
 
-  'get /org-admins':
+  'get /org-admins':          #Requires org.id. Returns org, admins and teams of org
         controller:             'OrgController'
         action:                 'get_org_admins'
-
-    # mobile org controller
-      'get /get-org-list':
-              controller:               'OrgController'
-              action:                   'get_org_list'
-
-      'get /get-single-org':
-              controller:               'OrgController'
-              action:                   'get_single_org'
-    # end of mobile org controller
 
   # end of org controller
 
   # Team controller
   
-  'post /create-team' :
+  'post /create-team' :       #Requires name, main_org id, user_id. 
         controller:             'TeamController'
         action:                 'create_team'
 
-  'delete /delete-team' :
+  'delete /delete-team' :     #Requires id. Destroys team
         controller:             'TeamController'
         action:                 'destroy_team'
 
-  'get /get-team' :
+  'get /get-team' :           #Requires team id. Returns team with events and main org.
         controller:             'TeamController'
         action:                 'get_team'
 
-  'post /join-team':            
+  'post /join-team':          #Requires team id and user id. Adds user to list of teams members.          
         controller:             'TeamController'
         action:                 'join_team'
 
-  'get /get-team-info':
+  'get /get-team-info':       #Requires team id. Returns team members and events
         controller:             'TeamController'
         action:                 'get_team_info'
 
   # end of Team controller
 
   # PaymentController
-  'post /create-payment':
+  'post /create-payment':     #Requires stripe token user id. Creates charge reduces users tokens amount. Returns user tokens amount
         controller:             'PaymentController'
         action:                 'create_payment'
 
+  #End of PaymentController
 
-  #Token controller
+  #Token TeamController     #
   'post /up-token':
         controller:             'TokenController'
         action:                 'up_token'
@@ -114,22 +105,32 @@ module.exports.routes =
   # end of Token controller
 
   # Event controller
-  'post /create-event':
+  'post /create-event':       #Creates event. See Event.coffee for attributes
         controller:             'EventController'
         action:                 'create_event'
 
-  'post /join-event':
+  'post /join-event':         #Requires event id and user id. Add event to user events 
         controller:             'EventController'
         action:                 'join_event'
 
-  'get /get-event-members': 
+  'get /get-event-members':   #Requires event id. Returns event with event users.
         controller:             'EventController'
         action:                 'get_event_members'
 
   # end of Event controller
 
-  #Mail controller
+  #Invite controller
 
-  'post /send-mail':
-        controller:             'MailController'
-        action:                 'send_mail'
+  'post /invite-manager':
+        controller:             'InviteController'
+        action:                 'invite_manager'
+
+  'get /get-invite':
+        controller:             'InviteController'
+        action:                 'get_invite'
+
+  # #Mail controller
+
+  # 'post /send-mail':          #
+  #       controller:             'MailController'
+  #       action:                 'send_mail'

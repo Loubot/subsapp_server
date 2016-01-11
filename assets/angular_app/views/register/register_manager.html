@@ -6,8 +6,11 @@
   <div class="col-xs-2">
 
   </div>
-  <div class="col-xs-8">    
 
+
+  <div class="col-xs-8">
+    <h4 class="text-center">{{ register_manager_form_data.main_org_name }}</h4>
+    <h4 class="text-center">You have been invited to manage the {{ register_manager_form_data.team_name }}</h4><br>
     <form class="form-horizontal register_form" 
             ng-submit="register_manager_submit()" 
             method="post" enctype="application/x-www-form-urlencoded">
@@ -15,7 +18,7 @@
       <div class="form-group">
         <label class="col-sm-3">Email: </label>
         <div class="col-sm-9">
-          <input type="email" name="email" ng-model="register_manager_form_data.email" class="form-control" placholder:'email' required>
+          <input type="email" name="email" ng-model="register_manager_form_data.invited_email" class="form-control" placholder:'email' required>
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 

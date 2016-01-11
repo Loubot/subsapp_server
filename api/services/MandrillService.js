@@ -6,5 +6,29 @@ mandrill = require('mandrill-api/mandrill');
 m = new mandrill.Mandrill("" + process.env.SUBZAPP_MANDRILL);
 
 module.exports = {
-  m: m
+  m: m,
+  send_mail: function(id, email) {
+    var async, message;
+    message = {
+      'html': "<a href='http://localhost:1337/#/register-manager?id=" + id + "'>Click her to take control </a>",
+      'text': email,
+      'subject': 'You are invited to join subzapp',
+      'from_email': 'loubot@subzapp.ie',
+      'to': [
+        {
+          'email': email
+        }
+      ]
+    };
+    async = false;
+    return m.messages.send({
+      'message': message,
+      'async': async
+    }, (function(result) {
+      sails.log.debug("result " + JSON.stringify(result));
+    }), function(e) {
+      sails.log.debug('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+      res.serverError("Error sending email", e.message);
+    });
+  }
 };

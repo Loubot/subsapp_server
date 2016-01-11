@@ -6,5 +6,8 @@ module.exports.policies = {
   },
   WebController: {
     '*': true
+  },
+  InviteController: {
+    '*': true
   }
 };

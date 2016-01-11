@@ -14,6 +14,19 @@ angular.module('subzapp').controller('RegisterManagerController', [
 
     console.log $location.search()
 
+    $http(
+      method: 'GET'
+      url: "#{ RESOURCES.DOMAIN }/get-invite"
+      params:
+        invite_id: $location.search().id
+    ).then ( ( response ) ->
+      console.log "Get invite response"
+      console.log response
+      $scope.register_manager_form_data = response.data
+    ), ( errResponse ) ->
+      console.log "Get invite error"
+      console.log errResponse
+
     $scope.register_manager_submit = ->
       $scope.register_manager_form_data.team_admin = true
       

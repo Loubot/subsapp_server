@@ -40,20 +40,23 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       console.log $scope.invite_manager_data
       $http(
         method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/send-mail"
+        url: "#{ RESOURCES.DOMAIN }/invite-manager"
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
         data:
-          manager_email: $scope.invite_manager_data.email
-          manager_name: $scope.invite_manager_data.name
+          org_id: $scope.org.id
           team_id: $location.search().id
-          url: "#{ RESOURCES.DOMAIN}/#/register-manager?team_id=#{ $location.search().id }&email=#{ $scope.invite_manager_data.email }"
+          club_admin: $scope.user.id
+          club_admin_email: $scope.user.email
+          invited_email: $scope.invite_manager_data.invited_email
+          main_org_name: $scope.org.name
+          team_name: $scope.team.name
       ).then ( ( response ) ->
         console.log "Send invite mail"
         console.log response
-        
+        message.success "Invite sent ok"
       ), ( errResponse ) ->
         console.log "Send invite mail"
         console.log errResponse
-
+        message.error errResponse.message 
 ])
 

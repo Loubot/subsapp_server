@@ -5,6 +5,20 @@ angular.module('subzapp').controller('RegisterManagerController', [
     console.log('Register Manager Controller');
     $scope.register_manager_form_data = $location.search();
     console.log($location.search());
+    $http({
+      method: 'GET',
+      url: RESOURCES.DOMAIN + "/get-invite",
+      params: {
+        invite_id: $location.search().id
+      }
+    }).then((function(response) {
+      console.log("Get invite response");
+      console.log(response);
+      return $scope.register_manager_form_data = response.data;
+    }), function(errResponse) {
+      console.log("Get invite error");
+      return console.log(errResponse);
+    });
     return $scope.register_manager_submit = function() {
       $scope.register_manager_form_data.team_admin = true;
       console.log($scope.register_manager_form_data);

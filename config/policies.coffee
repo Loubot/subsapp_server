@@ -2,6 +2,7 @@ module.exports.policies =
   '*': [ 'isAuthenticated' ]
   AuthController: '*': true
   WebController: '*': true
+  InviteController: '*': true
   # BusinessController: '*': true
 
 # ---

@@ -61,14 +61,6 @@ module.exports.routes = {
     controller: 'OrgController',
     action: 'get_org_admins'
   },
-  'get /get-org-list': {
-    controller: 'OrgController',
-    action: 'get_org_list'
-  },
-  'get /get-single-org': {
-    controller: 'OrgController',
-    action: 'get_single_org'
-  },
   'post /create-team': {
     controller: 'TeamController',
     action: 'create_team'
@@ -109,8 +101,12 @@ module.exports.routes = {
     controller: 'EventController',
     action: 'get_event_members'
   },
-  'post /send-mail': {
-    controller: 'MailController',
-    action: 'send_mail'
+  'post /invite-manager': {
+    controller: 'InviteController',
+    action: 'invite_manager'
+  },
+  'get /get-invite': {
+    controller: 'InviteController',
+    action: 'get_invite'
   }
 };
