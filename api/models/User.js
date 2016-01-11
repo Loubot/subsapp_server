@@ -11,19 +11,6 @@ module.exports = {
   autoPK: true,
   schema: true,
   attributes: {
-    password: {
-      type: 'string'
-    },
-    club_admin: {
-      type: 'boolean',
-      required: true,
-      defaultsTo: false
-    },
-    team_admin: {
-      type: 'boolean',
-      required: true,
-      defaultsTo: false
-    },
     email: {
       type: 'email',
       required: true,
@@ -36,6 +23,19 @@ module.exports = {
     lastName: {
       type: 'string',
       defaultsTo: ''
+    },
+    password: {
+      type: 'string'
+    },
+    club_admin: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
+    },
+    team_admin: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
     },
     orgs: {
       collection: 'org',

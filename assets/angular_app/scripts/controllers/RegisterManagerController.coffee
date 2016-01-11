@@ -22,13 +22,17 @@ angular.module('subzapp').controller('RegisterManagerController', [
     ).then ( ( response ) ->
       console.log "Get invite response"
       console.log response
-      $scope.register_manager_form_data = response.data
+      $scope.register_manager_form_data.invited_email = response.data.invited_email
+      $scope.team_id = response.data.team_id
+
     ), ( errResponse ) ->
       console.log "Get invite error"
       console.log errResponse
 
     $scope.register_manager_submit = ->
+      console.log JSON.stringify $scope.register_manager_form_data
       $scope.register_manager_form_data.team_admin = true
+      $scope.register_manager_form_data.team_id = $scope.team_id
       
       console.log $scope.register_manager_form_data
       $http(

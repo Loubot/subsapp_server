@@ -14,13 +14,16 @@ angular.module('subzapp').controller('RegisterManagerController', [
     }).then((function(response) {
       console.log("Get invite response");
       console.log(response);
-      return $scope.register_manager_form_data = response.data;
+      $scope.register_manager_form_data.invited_email = response.data.invited_email;
+      return $scope.team_id = response.data.team_id;
     }), function(errResponse) {
       console.log("Get invite error");
       return console.log(errResponse);
     });
     return $scope.register_manager_submit = function() {
+      console.log(JSON.stringify($scope.register_manager_form_data));
       $scope.register_manager_form_data.team_admin = true;
+      $scope.register_manager_form_data.team_id = $scope.team_id;
       console.log($scope.register_manager_form_data);
       return $http({
         method: 'POST',

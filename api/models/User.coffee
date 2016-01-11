@@ -17,6 +17,19 @@ module.exports =
     #   unique: true
     #   alphanumericdashed: true
 
+    email:
+      type: 'email'
+      required: true
+      unique: true
+
+    firstName:
+      type: 'string'
+      defaultsTo: ''
+      
+    lastName:
+      type: 'string'
+      defaultsTo: ''  
+
     password: type: 'string'
 
     club_admin:
@@ -27,18 +40,7 @@ module.exports =
     team_admin:
       type: 'boolean'
       required: true
-      defaultsTo: false
-
-    email:
-      type: 'email'
-      required: true
-      unique: true
-    firstName:
-      type: 'string'
-      defaultsTo: ''
-    lastName:
-      type: 'string'
-      defaultsTo: ''    
+      defaultsTo: false  
 
     orgs:
       collection: 'org'
