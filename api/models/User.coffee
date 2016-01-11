@@ -28,7 +28,11 @@ module.exports =
       
     lastName:
       type: 'string'
-      defaultsTo: ''  
+      defaultsTo: ''
+
+    address: 
+      type: 'text'
+      defaultsTo: ''
 
     password: type: 'string'
 

@@ -24,6 +24,10 @@ module.exports = {
       type: 'string',
       defaultsTo: ''
     },
+    address: {
+      type: 'text',
+      defaultsTo: ''
+    },
     password: {
       type: 'string'
     },
