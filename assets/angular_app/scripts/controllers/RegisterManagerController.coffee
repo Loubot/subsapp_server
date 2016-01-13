@@ -21,8 +21,8 @@ angular.module('subzapp').controller('RegisterManagerController', [
         invite_id: $location.search().id
     ).then ( ( response ) ->
       console.log "Get invite response"
-      console.log response
-      # $scope.register_manager_form_data = response.data
+      console.log response.data.team_name
+      $scope.register_manager_form_data = response.data
       $scope.register_manager_form_data.invited_email = response.data.invited_email
       $scope.team_id = response.data.team_id
 
