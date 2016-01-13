@@ -1,5 +1,5 @@
 ###*
-# AuthController
+## AuthController
 # @description :: Server-side logic for manage user's authorization
 ###
 
