@@ -36,7 +36,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return console.log(errResponse);
       });
     };
-    return $scope.team_create = function() {
+    $scope.team_create = function() {
       $scope.team_form_data.org_id = $location.search().id;
       return $http({
         method: 'POST',
@@ -49,9 +49,34 @@ angular.module('subzapp').controller('OrgAdminController', [
       }).then((function(response) {
         console.log("Team create");
         console.log(response);
-        return $scope.teams = response.data;
+        message.success = response.data.message;
+        $scope.teams = response.data;
+        $scope.team_form.$setPristine();
+        return $scope.team_form_data = '';
       }), function(errResponse) {
         console.log("Team create error");
+        console.log(errResponse);
+        return message.error(errResponse);
+      });
+    };
+    return $scope.delete_team = function(id) {
+      return $http({
+        url: RESOURCES.DOMAIN + "/delete-team",
+        method: 'DELETE',
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: {
+          team_id: id,
+          org_id: $scope.org.id
+        }
+      }).then((function(res) {
+        console.log("Team delete");
+        console.log(res);
+        return $scope.teams = res.data.teams;
+      }), function(errResponse) {
+        console.log("Team delete error");
         return console.log(errResponse);
       });
     };

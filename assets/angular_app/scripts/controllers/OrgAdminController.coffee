@@ -51,9 +51,29 @@ angular.module('subzapp').controller('OrgAdminController', [
       ).then ( ( response ) ->
         console.log "Team create"
         console.log response
+        message.success = response.data.message
         $scope.teams = response.data
+        $scope.team_form.$setPristine()
+        $scope.team_form_data = ''
       ), ( errResponse ) ->
         console.log "Team create error"
+        console.log errResponse
+        message.error errResponse
+
+    $scope.delete_team = ( id ) ->
+      $http(
+        url: "#{ RESOURCES.DOMAIN }/delete-team"
+        method: 'DELETE'
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data:
+          team_id: id
+          org_id: $scope.org.id
+      ).then ( ( res ) ->
+        console.log "Team delete"
+        console.log res
+        $scope.teams = res.data.teams
+      ), ( errResponse ) ->
+        console.log "Team delete error"
         console.log errResponse
 
 ])

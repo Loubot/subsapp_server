@@ -8,20 +8,24 @@
 
   </div>
   <div class="col-xs-9">
-    
+    <div class="message">
+          
+          
+    </div> <!-- end of message -->
+
     <div class="col-xs-12" ng-show="show_team_admin">
       <h2>Viewing {{ org.name }}</h2>
       
       <h4>Create team e.g. U17 boys</h4>
       
-      <form class="form-horizontal" 
+      <form class="form-horizontal" name="team_form"
               ng-submit="team_create()" 
               method="post" enctype="application/x-www-form-urlencoded">
 
         <div class="form-group">
           <label class="col-sm-2">Name: </label>
           <div class="col-sm-10">
-            <input type="text" name="name" ng-model="team_form_data.name" class="form-control business_name" placholder:'Name'>
+            <input type="text" name="name" ng-model="team_form_data.name" class="form-control org_name" placholder:'Name'>
           </div> <!-- end of col-sm-10 -->
         </div> <!-- end of form-group -->
         
@@ -30,12 +34,8 @@
             <input type="submit" value="Create team!" class="btn btn-default btn btn-success btn-lg login">
             
           </div>  <!-- end of col-sm-offset-2 col-sm-10 -->
-        </div> <!-- end of form-group -->
-
-        <div class="message">
           
-          
-        </div> <!-- end of message -->
+        </div> <!-- end of form-group -->        
 
 
       </form>
@@ -44,7 +44,7 @@
         <br>Teams in this club
         <li class="animate-repeat org_list" ng-repeat="team in teams | filter:q as results">
           <a href="/#org_admin_team?id={{team.id}}" >[{{$index + 1}}] {{team.name}}.</a>
-          <button class="btn btn-danger btn-sm pull-right" ng-click="delete_business(org.id)">Remove admin?</button>     
+          <button class="btn btn-danger btn-sm pull-right" ng-click="delete_team( team.id )">Remove team?</button>     
         </li>
         <li class="animate-repeat" ng-if="orgs.length == 0">
           <strong>No results found...</strong>
@@ -75,8 +75,6 @@
 
 
 
-
-
 <div class="container-fluid">
   <div class="col-xs-10 center-block" ng-hide="show_team_admin">
     <ul class="example-animate-container">
@@ -92,3 +90,7 @@
     </ul>
   </div> <!-- end of ng-hide="show_team_admin" -->
 </div> <!-- end of container-fluid -->
+
+
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
