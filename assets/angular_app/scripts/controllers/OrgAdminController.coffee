@@ -13,10 +13,12 @@ angular.module('subzapp').controller('OrgAdminController', [
     console.log 'OrgAdmin Controller'
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
-      # console.log "Got user #{ JSON.stringify res }"
+      console.log "Got user "
+      console.log res
+      $scope.org = window.USER.orgs[0]
       $scope.user = res.data
       $scope.orgs = window.USER.orgs
-      $scope.org = return_org($scope.orgs, $location.search())
+      # $scope.org = return_org($scope.orgs, $location.search())
     )
     console.log $location.search().id
     $http(
