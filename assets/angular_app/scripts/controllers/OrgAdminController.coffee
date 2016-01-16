@@ -20,21 +20,24 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.orgs = window.USER.orgs
       # $scope.org = return_org($scope.orgs, $location.search())
     )
-    console.log $location.search().id
-    $http(
-      method: 'GET'
-      url: "#{ RESOURCES.DOMAIN }/org-admins"
-      headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-      params:
-        org_id: $location.search().id
-    ).then ( ( response ) ->
-      console.log "get org-admins"
-      console.log response
-      $scope.admins = response.data.admins
-      $scope.teams = response.data.teams
-    ), ( errResponse ) ->
-      console.log "Get org admins error"
-      console.log errResponse
+
+
+    $scope.edit_org = ( id ) ->
+      $scope.show_team_admin = true
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/org-admins"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        params:
+          org_id: id
+      ).then ( ( response ) ->
+        console.log "get org-admins"
+        console.log response
+        $scope.admins = response.data.admins
+        $scope.teams = response.data.teams
+      ), ( errResponse ) ->
+        console.log "Get org admins error"
+        console.log errResponse
 
     
 

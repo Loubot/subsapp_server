@@ -14,26 +14,28 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.user = res.data;
       return $scope.orgs = window.USER.orgs;
     }));
-    console.log($location.search().id);
-    $http({
-      method: 'GET',
-      url: RESOURCES.DOMAIN + "/org-admins",
-      headers: {
-        'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
-      },
-      params: {
-        org_id: $location.search().id
-      }
-    }).then((function(response) {
-      console.log("get org-admins");
-      console.log(response);
-      $scope.admins = response.data.admins;
-      return $scope.teams = response.data.teams;
-    }), function(errResponse) {
-      console.log("Get org admins error");
-      return console.log(errResponse);
-    });
+    $scope.edit_org = function(id) {
+      $scope.show_team_admin = true;
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/org-admins",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        params: {
+          org_id: id
+        }
+      }).then((function(response) {
+        console.log("get org-admins");
+        console.log(response);
+        $scope.admins = response.data.admins;
+        return $scope.teams = response.data.teams;
+      }), function(errResponse) {
+        console.log("Get org admins error");
+        return console.log(errResponse);
+      });
+    };
     return $scope.team_create = function() {
       $scope.team_form_data.org_id = $location.search().id;
       return $http({
