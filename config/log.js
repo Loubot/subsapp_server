@@ -5,6 +5,7 @@ require('winston-papertrail').Papertrail;
   var logger = new winston.Logger({
     transports: [
         new winston.transports.Papertrail({
+            level: 'silly',
             host: 'logs.papertrailapp.com',
             port: 12345
         })
