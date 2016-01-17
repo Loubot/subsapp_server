@@ -3,7 +3,7 @@ var winston = require('winston');
 var customLogger = new winston.Logger({
     transports: [
         new(winston.transports.File)({
-            level: 'debug',
+            level: 'silly',
             filename: "logfile.log"
             // filename: "C:\\Users\\angell\\Documents\\sails\\subsapp_server\\logfile.log"
         }),
