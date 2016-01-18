@@ -42,10 +42,12 @@ module.exports.session = {
   ***************************************************************************/
 
   adapter: 'redis',
-    host: 'jack.redistogo.com',
-    port: '10206',
-    db: 'redistogo',
-    pass: 'ec084b15f91872286b62658861bc9df4'
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    // ttl: <redis session TTL in seconds>,
+    db: process.env.REDIS_DB,
+    pass: process.env.REDIS_PASS
+
 
   /***************************************************************************
   *                                                                          *
