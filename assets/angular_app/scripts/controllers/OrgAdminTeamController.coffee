@@ -11,9 +11,15 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
   'RESOURCES'
   ( $scope, $state, $http, $window, message, user, $location, RESOURCES ) ->
     console.log 'OrgAdminTeam Controller'
+    check_club_admin = ( user ) ->
+      $state.go 'login' if !user.team_admin
+      message.error 'You are not a club admin. Contact subzapp admin team for assitance'
+      return false 
+
     user_token = window.localStorage.getItem 'user_token'
 
     user.get_user().then ( (res) ->
+      check_club_admin(res.data)
       # console.log "Got user #{ JSON.stringify res }"
       $scope.user = res.data
       $scope.orgs = window.USER.orgs

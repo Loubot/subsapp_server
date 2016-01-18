@@ -2,10 +2,18 @@
 'use strict';
 angular.module('subzapp').controller('OrgAdminTeamController', [
   '$scope', '$state', '$http', '$window', 'message', 'user', '$location', 'RESOURCES', function($scope, $state, $http, $window, message, user, $location, RESOURCES) {
-    var user_token;
+    var check_club_admin, user_token;
     console.log('OrgAdminTeam Controller');
+    check_club_admin = function(user) {
+      if (!user.team_admin) {
+        $state.go('login');
+      }
+      message.error('You are not a club admin. Contact subzapp admin team for assitance');
+      return false;
+    };
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
+      check_club_admin(res.data);
       $scope.user = res.data;
       $scope.orgs = window.USER.orgs;
       return $scope.org = return_org($scope.orgs, $location.search());
