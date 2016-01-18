@@ -11,6 +11,6 @@
  * http://sailsjs.org/#!/documentation/concepts/ORM
  */
 module.exports.models = {
-  migrate: 'drop',
+  migrate: 'alter',
   connection: 'subsapp_db'
 };

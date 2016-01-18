@@ -7,13 +7,52 @@
   <div class="col-xs-1">
 
   </div>
-  <div class="col-xs-9">
-    <div class="message">
-          
-          
-    </div> <!-- end of message -->
 
-    <div class="col-xs-12" ng-show="show_team_admin">
+  <div class="message">
+          
+          
+  </div> <!-- end of message -->
+
+  <div class="col-xs-9" ng-show="show_team_admin">
+    <form class="form-horizontal" 
+            ng-submit="org_create()" 
+            method="post" enctype="application/x-www-form-urlencoded">
+
+      <div class="form-group">
+        <label class="col-sm-2">Name: </label>
+        <div class="col-sm-10">
+          <input type="text" name="name" ng-model="business_form_data.name" class="form-control business_name" placholder:'Name' required>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="form-group">
+        <label class="col-sm-2">Address: </label>
+        <div class="col-sm-10">
+          <input type="address" name="address" ng-model="business_form_data.address" class="form-control business_address"  placholder:'Address' required>
+        </div> <!-- end of col-sm-10 -->
+      </div> <!-- end of form-group -->
+      
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input type="submit" value="Create Club!" class="btn btn-default btn btn-success btn-lg login">
+          
+        </div>  <!-- end of col-sm-offset-2 col-sm-10 -->
+      </div> <!-- end of form-group -->
+
+      <div class="login_error">
+        
+        
+      </div>
+    </form>
+    
+  
+  </div> <!-- end of col-xs-9 -->
+
+
+  <div class="col-xs-9">
+    
+
+    <div class="col-xs-12" ng-hide="show_team_admin">
       <h2>Viewing {{ org.name }}</h2>
       
       <h4>Create team e.g. U17 boys</h4>
@@ -63,7 +102,7 @@
         </li>
       </ul>
       <br><br>
-      <button class="btn btn-warning center-block" ng-click="show_team_admin = false">View all org</button>
+      <button class="btn btn-warning center-block" ng-click="show_team_admin = true">View org level</button>
     </div> <!-- end of show_team_admin -->
 
 
@@ -76,7 +115,7 @@
 
 
 <div class="container-fluid">
-  <div class="col-xs-10 center-block" ng-hide="show_team_admin">
+  <div class="col-xs-10 center-block" >
     <ul class="example-animate-container">
       <input type="search" ng-model="q" placeholder="filter orgs..." aria-label="filter friends" class="black_text" />
       <br>Your clubs. Click to view more options
