@@ -9,7 +9,6 @@
     "bcrypt-nodejs": "0.0.3",
     "coffee-script": "~1.10",
     "connect": "^3.4.0",
-    "connect-redis": "^3.0.2",
     "ejs": "~0.8.4",
     "express-session": "^1.13.0",
     "grunt": "^0.4.2",
