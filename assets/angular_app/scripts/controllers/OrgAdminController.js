@@ -3,36 +3,40 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', '$window', 'message', 'user', '$location', 'RESOURCES', function($scope, $state, $http, $window, message, user, $location, RESOURCES) {
-    var user_token;
+  '$scope', '$state', '$http', '$window', 'message', 'user', '$location', 'RESOURCES', 'Upload', function($scope, $state, $http, $window, message, user, $location, RESOURCES, Upload) {
+    var myDropzone, user_token;
     console.log('OrgAdmin Controller');
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
+      console.log("Got user ");
+      console.log(res);
+      $scope.org = window.USER.orgs[0];
       $scope.user = res.data;
-      $scope.orgs = window.USER.orgs;
-      return $scope.org = return_org($scope.orgs, $location.search());
+      return $scope.orgs = window.USER.orgs;
     }));
-    console.log($location.search().id);
-    $http({
-      method: 'GET',
-      url: RESOURCES.DOMAIN + "/org-admins",
-      headers: {
-        'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
-      },
-      params: {
-        org_id: $location.search().id
-      }
-    }).then((function(response) {
-      console.log("get org-admins");
-      console.log(response);
-      $scope.admins = response.data.admins;
-      return $scope.teams = response.data.teams;
-    }), function(errResponse) {
-      console.log("Get org admins error");
-      return console.log(errResponse);
-    });
-    return $scope.team_create = function() {
+    $scope.edit_org = function(id) {
+      $scope.show_team_admin = true;
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/org-admins",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        params: {
+          org_id: id
+        }
+      }).then((function(response) {
+        console.log("get org-admins");
+        console.log(response);
+        $scope.admins = response.data.admins;
+        return $scope.teams = response.data.teams;
+      }), function(errResponse) {
+        console.log("Get org admins error");
+        return console.log(errResponse);
+      });
+    };
+    $scope.team_create = function() {
       $scope.team_form_data.org_id = $location.search().id;
       return $http({
         method: 'POST',
@@ -45,12 +49,44 @@ angular.module('subzapp').controller('OrgAdminController', [
       }).then((function(response) {
         console.log("Team create");
         console.log(response);
-        return $scope.teams = response.data;
+        message.success = response.data.message;
+        $scope.teams = response.data;
+        $scope.team_form.$setPristine();
+        return $scope.team_form_data = '';
       }), function(errResponse) {
         console.log("Team create error");
+        console.log(errResponse);
+        return message.error(errResponse);
+      });
+    };
+    $scope.delete_team = function(id) {
+      return $http({
+        url: RESOURCES.DOMAIN + "/delete-team",
+        method: 'DELETE',
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: {
+          team_id: id,
+          org_id: $scope.org.id
+        }
+      }).then((function(res) {
+        console.log("Team delete");
+        console.log(res);
+        return $scope.teams = res.data.teams;
+      }), function(errResponse) {
+        console.log("Team delete error");
         return console.log(errResponse);
       });
     };
+    return myDropzone = new Dropzone('.dropzone', {
+      url: RESOURCES.DOMAIN + "/test",
+      headers: {
+        'Authorization': "JWT " + user_token,
+        "Content-Type": "application/json"
+      }
+    });
   }
 ]);
 
