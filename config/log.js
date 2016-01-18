@@ -1,18 +1,16 @@
 var winston = require('winston');
 
-require('winston-papertrail').Papertrail;
-
-  var logger = new winston.Logger({
+var customLogger = new winston.Logger({
     transports: [
-        new winston.transports.Papertrail({
+        new(winston.transports.File)({
             level: 'silly',
-            host: 'logs.papertrailapp.com',
-            port: 12345
-        })
-    ]
-  });
+            filename: "logfile.log"
+            // filename: "C:\\Users\\angell\\Documents\\sails\\subsapp_server\\logfile.log"
+        }),
+    ],
+});
 
 module.exports.log = {
     colors: false,  // To get clean logs without prefixes or color codings
-    custom: logger
+    custom: customLogger
 };
