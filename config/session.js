@@ -43,6 +43,12 @@ module.exports.session = {
 
   // adapter: 'redis'
 
+    adapter: 'socket.io-redis',
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    db: process.env.REDIS_DB,
+    pass: process.env.REDIS_PASSWORD
+
   /***************************************************************************
   *                                                                          *
   * The following values are optional, if no options are set a redis         *
