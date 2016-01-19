@@ -24,10 +24,25 @@ module.exports = {
     #   #   file: files
     #   return
 
-    req.file('uploadFile').upload { dirname: './assets/images' }, (err, uploadedFiles) ->
+    req.file('uploadFile').upload {
+      adapter: require('skipper-s3')
+      key: process.env.AWS_ACCESS_KEY_ID
+      secret: process.env.AWS_SECRET_ACCESS_KEY
+      bucket: 'subzapp'
+    }, (err, uploadedFiles) ->
       if err
-        return res.negotiate(err)
-      res.json message: uploadedFiles.length + ' file(s) uploaded successfully!'
+        sails.log.debug "Upload error #{ JSON.stringify err }"
+        res.negotiate err
+      else
+        sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles }"
+        res.json
+          files: uploadedFiles
+          textParams: req.params.all()
+
+    # req.file('uploadFile').upload { dirname: './assets/images' }, (err, uploadedFiles) ->
+    #   if err
+    #     return res.negotiate(err)
+    #   res.json message: uploadedFiles.length + ' file(s) uploaded successfully!'
  
    
     # xlsx = require('node-xlsx')

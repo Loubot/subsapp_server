@@ -11,14 +11,21 @@ module.exports = {
     sails.log.debug("Hit FileController/upload");
     sails.log.debug(req.file);
     return req.file('uploadFile').upload({
-      dirname: './assets/images'
+      adapter: require('skipper-s3'),
+      key: process.env.AWS_ACCESS_KEY_ID,
+      secret: process.env.AWS_SECRET_ACCESS_KEY,
+      bucket: 'subzapp'
     }, function(err, uploadedFiles) {
       if (err) {
+        sails.log.debug("Upload error " + (JSON.stringify(err)));
         return res.negotiate(err);
+      } else {
+        sails.log.debug("Upload waheeeey " + (JSON.stringify(uploadedFiles)));
+        return res.json({
+          files: uploadedFiles,
+          textParams: req.params.all()
+        });
       }
-      return res.json({
-        message: uploadedFiles.length + ' file(s) uploaded successfully!'
-      });
     });
   }
 };
