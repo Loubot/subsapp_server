@@ -108,5 +108,9 @@ module.exports.routes = {
   'get /get-invite': {
     controller: 'InviteController',
     action: 'get_invite'
+  },
+  'post /upload-file': {
+    controller: 'FileController',
+    action: 'upload'
   }
 };

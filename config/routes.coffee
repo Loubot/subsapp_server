@@ -129,6 +129,10 @@ module.exports.routes =
         controller:             'InviteController'
         action:                 'get_invite'
 
+  'post /upload-file':
+        controller:             'FileController'
+        action:                 'upload'
+
   # #Mail controller
 
   # 'post /send-mail':          #
