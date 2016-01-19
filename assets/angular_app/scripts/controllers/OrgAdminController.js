@@ -8,9 +8,9 @@ angular.module('subzapp').controller('OrgAdminController', [
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
+        message.error('You are not a club admin. Contact subzapp admin team for assitance');
+        return false;
       }
-      message.error('You are not a club admin. Contact subzapp admin team for assitance');
-      return false;
     };
     console.log('OrgAdmin Controller');
     user_token = window.localStorage.getItem('user_token');
