@@ -15,7 +15,7 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     controller: "UserController"
   });
   $stateProvider.state("edit-user", {
-    url: "/edit-user",
+    url: "/user/edit",
     templateUrl: 'angular_app/views/user/edit_user.html',
     controller: "EditUserController"
   });
@@ -64,10 +64,20 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'angular_app/views/team/team_manager.html',
     controller: 'TeamController'
   });
-  return $stateProvider.state('event', {
+  $stateProvider.state('event', {
     url: '/event',
     templateUrl: 'angular_app/views/event/event.html',
     controller: 'EventController'
+  });
+  $stateProvider.state('password-reminder', {
+    url: '/password/remind',
+    templateUrl: 'angular_app/views/password_reminder/password_reminder.html',
+    controller: 'PasswordReminderController'
+  });
+  return $stateProvider.state('password-reset', {
+    url: '/password/reset',
+    templateUrl: 'angular_app/views/password_reminder/password_reset.html',
+    controller: 'PasswordReminderController'
   });
 });
 

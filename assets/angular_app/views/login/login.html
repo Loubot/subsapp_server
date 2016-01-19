@@ -11,37 +11,54 @@
             ng-submit="login_submit()" 
             method="post" enctype="application/x-www-form-urlencoded">
 
+          
+     
       <div class="form-group">
         <label class="col-sm-3">Email: </label>
-        <div class="col-sm-9">
-          <input type="email" name="email" ng-model="login_form_data.email" class="form-control" id="user_email" placholder:'email'>
-        </div> <!-- end of col-sm-10 -->
-      </div> <!-- end of form-group -->
+          <div class="col-sm-9">
+            <input type="email" name="email" ng-model="login_form_data.email" class="form-control" id="user_email" placeholder='email'>
+          </div> <!-- end of col-sm-10 -->
+      <!-- </div> end of form-group -->
 
-      <div class="form-group">
+        <br><br><br>
+     <!--  <div class="form-group"> -->
         <label class="col-sm-3">Password: </label>
         <div class="col-sm-9">
-          <input type="password" name="password" ng-model="login_form_data.password" class="form-control user_password" id="user_password"  placholder:'password'>
+          <input type="password" name="password" ng-model="login_form_data.password" class="form-control user_password" id="user_password"  placeholder='password'>
         </div> <!-- end of col-sm-10 -->
-      </div> <!-- end of form-group -->
-
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <input type="submit" value="Sign in" class="btn btn-default btn btn-success btn-lg login">
+     <!--  </div> end of form-group
+ --> <br><br><br>
+      <!-- <div class="form-group"> -->
+        <div class="form-group text-center">
+          <input type="submit" id ="login" value="Sign in" class="btn btn-default btn btn-success btn-lg login">
           
         </div>  <!-- end of col-sm-offset-2 col-sm-10 -->
-      </div> <!-- end of form-group -->
-      <div class="form-group text-center">
-        <a href="#/register" class="btn btn-default btn btn-info btn-lg login">Register</a>
-        
-      </div>
 
-      <div class="message">
+       
+
+         <div class="form-group text-center">
+            <a href="#/register" id="register" class="btn btn-default btn btn-info btn-lg login">Register</a>
+        
+        </div>
+
+
+
+        <div  class="form-group text-center" id = "reference">
+        
+          <a href="#/password/remind">Forgot your password?</a> 
+        </div>
+
+
+      
+      </div> <!-- end of form-group -->
+
+     
+
+      
+
+     <!--  <div class="message">
         
         Click <a href="#/register">here</a> to register
-      </div>
+      </div> -->
     </form>
-  </div> <!-- end of col-xs-9 -->
-
-
-</div> <!-- end of container-fluid -->
+ </div>

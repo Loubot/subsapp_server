@@ -8,7 +8,7 @@
  */
 module.exports = {
   edit_user: function(req, res) {
-    sails.log.debug("Hit the User controller/edit_user");
+    sails.log.debug("Hit the User controller/edit-user");
     sails.log.debug("params " + (JSON.stringify(req.body)));
     return User.update({
       id: req.body.id
