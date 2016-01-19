@@ -36,24 +36,23 @@ module.exports = {
     return res.json('Hrllo');
   },
   parse_users: function(req, res) {
-    var fs, http, xlsx;
+    var file, fs, http, request, xlsx;
     sails.log.debug("Hit the FileController/parse_users");
     http = require('http');
     fs = require('fs');
     xlsx = require('node-xlsx');
-    req = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', function(res) {
-      var xml;
-      xml = '';
-      res.on('data', function(chunk) {
-        xml += chunk;
+    file = fs.createWriteStream('./assets/excel_sheets/bla.xls');
+    return request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', function(response) {
+      response.pipe(file);
+      return file.on('finish', function() {
+        return file.close(function() {
+          var obj;
+          sails.log.debug('yippee');
+          obj = xlsx.parse('./assets/excel_sheets/bla.xls');
+          sails.log.debug("Object " + (JSON.stringify(obj)));
+          return res.json('Hrllo', obj);
+        });
       });
-      res.on('end', function() {
-        var obj;
-        obj = xlsx.parse(xml);
-      });
-    });
-    return req.on('error', function(err) {
-      return Return;
     });
   }
 };
