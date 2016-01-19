@@ -14,8 +14,7 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
     user.get_user().then((function(res) {
       check_club_admin(res.data);
       $scope.user = res.data;
-      $scope.orgs = window.USER.orgs;
-      return $scope.org = return_org($scope.orgs, $location.search());
+      return $scope.orgs = window.USER.orgs;
     }));
     console.log($location.search().id);
     $http({

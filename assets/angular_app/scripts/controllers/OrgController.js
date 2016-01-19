@@ -2,7 +2,8 @@
 'use strict';
 angular.module('subzapp').controller('OrgController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'message', 'RESOURCES', function($scope, $state, $http, $window, $location, user, message, RESOURCES) {
-    var check_club_admin;
+    var check_club_admin, user_token;
+    user_token = window.localStorage.getItem('user_token');
     check_club_admin = function(user) {
       if (!user.team_admin) {
         $state.go('login');
@@ -12,14 +13,30 @@ angular.module('subzapp').controller('OrgController', [
     };
     console.log('Org Controller');
     if (!(window.USER != null)) {
-      return user.get_user().then((function(res) {}), function(errResponse) {
+      user.get_user().then((function(res) {}), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
         return window.USER = null;
       });
     } else {
       console.log("USER already defined");
       $scope.org = window.USER.orgs[0];
-      return $scope.teams = return_teams(window.USER.teams, $location.search().id);
+      $scope.teams = return_teams(window.USER.teams, $location.search().id);
     }
+    return $scope.parse_users = function() {
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/parse-users",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        }
+      }).then((function(res) {
+        console.log("parse users response");
+        return console.log(res);
+      }), function(errResponse) {
+        console.log("Parse users error");
+        return console.log(errResponse);
+      });
+    };
   }
 ]);

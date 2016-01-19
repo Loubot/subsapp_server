@@ -24,7 +24,7 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       # console.log "Got user #{ JSON.stringify res }"
       $scope.user = res.data
       $scope.orgs = window.USER.orgs
-      $scope.org = return_org($scope.orgs, $location.search())
+      
     )
     console.log $location.search().id
 

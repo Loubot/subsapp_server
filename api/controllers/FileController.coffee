@@ -47,9 +47,28 @@ module.exports = {
     #   res.json message: uploadedFiles.length + ' file(s) uploaded successfully!'
  
    
-    # xlsx = require('node-xlsx')
-    # obj = xlsx.parse(uploadFile)
-    # sails.log.debug "xls #{ JSON.stringify obj }"
-    # res.json 'Hrllo'
-    
+    xlsx = require('node-xlsx')
+    obj = xlsx.parse(uploadFile)
+    sails.log.debug "xls #{ JSON.stringify obj }"
+    res.json 'Hrllo'
+ 
+  parse_users: ( req, res ) ->
+    sails.log.debug "Hit the FileController/parse_users"
+    http = require('http')
+    fs = require('fs')
+
+    file = fs.createWriteStream('./assets/excel_sheets/bla.xls')
+    request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
+      response.pipe file
+      file.on 'finish', ->
+        file.close ->
+          sails.log.debug 'yippee'
+          res.json 'Hrllo'
+        # close() is async, call callback after close completes.
+        
+     
+    )
+
+     
+
 }

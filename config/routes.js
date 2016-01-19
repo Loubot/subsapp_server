@@ -112,5 +112,9 @@ module.exports.routes = {
   'post /upload-file': {
     controller: 'FileController',
     action: 'upload'
+  },
+  'get /parse-users': {
+    controller: 'FileController',
+    action: 'parse_users'
   }
 };

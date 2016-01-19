@@ -10,6 +10,8 @@ angular.module('subzapp').controller('OrgController', [
   'message'
   'RESOURCES'
   ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->
+    user_token = window.localStorage.getItem 'user_token'
+    
     check_club_admin = ( user ) ->
       $state.go 'login' if !user.team_admin
       message.error 'You are not a club admin. Contact subzapp admin team for assitance'
@@ -31,6 +33,17 @@ angular.module('subzapp').controller('OrgController', [
         
       $scope.teams = return_teams(window.USER.teams, $location.search().id)
 
+    $scope.parse_users = ->
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/parse-users"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+      ).then ( ( res ) ->
+        console.log "parse users response"
+        console.log res
+      ), ( errResponse ) ->
+        console.log "Parse users error"
+        console.log errResponse
     
 
 ])
