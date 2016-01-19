@@ -14,6 +14,8 @@ module.exports = {
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,
+      dirName: 'Lakewood',
+      saveAs: 'Lakewood/Louisblabla.xls',
       bucket: 'subzapp'
     }, function(err, uploadedFiles) {
       if (err) {
