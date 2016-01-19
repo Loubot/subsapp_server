@@ -8,10 +8,10 @@
  */
 module.exports = {
   upload: function(req, res) {
-    var obj, xlsx;
+    var uploadFile;
     sails.log.debug("Hit FileController/upload");
     sails.log.debug(req.file);
-    req.file('uploadFile').upload({
+    return uploadFile = req.file('uploadFile').upload({
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,
@@ -30,10 +30,6 @@ module.exports = {
         });
       }
     });
-    xlsx = require('node-xlsx');
-    obj = xlsx.parse(uploadFile);
-    sails.log.debug("xls " + (JSON.stringify(obj)));
-    return res.json('Hrllo');
   },
   parse_users: function(req, res) {
     var file, fs, http, request, xlsx;

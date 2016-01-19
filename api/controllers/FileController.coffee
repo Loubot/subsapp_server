@@ -24,7 +24,7 @@ module.exports = {
     #   #   file: files
     #   return
 
-    req.file('uploadFile').upload {
+    uploadFile= req.file('uploadFile').upload {
       adapter: require('skipper-s3')
       key: process.env.AWS_ACCESS_KEY_ID
       secret: process.env.AWS_SECRET_ACCESS_KEY
@@ -47,10 +47,10 @@ module.exports = {
     #   res.json message: uploadedFiles.length + ' file(s) uploaded successfully!'
  
    
-    xlsx = require('node-xlsx')
-    obj = xlsx.parse(uploadFile)
-    sails.log.debug "xls #{ JSON.stringify obj }"
-    res.json 'Hrllo'
+    # xlsx = require('node-xlsx')
+    # obj = xlsx.parse(uploadFile)
+    # sails.log.debug "xls #{ JSON.stringify obj }"
+    # res.json 'Hrllo'
  
   parse_users: ( req, res ) ->
     sails.log.debug "Hit the FileController/parse_users"
