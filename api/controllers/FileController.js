@@ -32,24 +32,21 @@ module.exports = {
     });
   },
   parse_users: function(req, res) {
-    var file, fs, http, request, xlsx;
+    var fs, http, mkdirp, obj, xlsx;
     sails.log.debug("Hit the FileController/parse_users");
     http = require('http');
     fs = require('fs');
     xlsx = require('node-xlsx');
-    fs.mkdirSync('./tmp/excel_sheets/bla.xls');
-    file = fs.createWriteStream('./tmp/excel_sheets/bla.xls');
-    return request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', function(response) {
-      response.pipe(file);
-      return file.on('finish', function() {
-        return file.close(function() {
-          var obj;
-          sails.log.debug('yippee');
-          obj = xlsx.parse('./assets/excel_sheets/bla.xls');
-          sails.log.debug("Object " + (JSON.stringify(obj)));
-          return res.json('Hrllo', obj);
-        });
-      });
+    mkdirp = require('mkdirp');
+    mkdirp('./tmp/excel_sheets/bla.xls', function(err) {
+      if (err) {
+        sails.log.debug(err);
+      } else {
+        sails.log.debug('pow!');
+      }
     });
+    obj = xlsx.parse('./assets/excel_sheets/bla.xls');
+    sails.log.debug("Object " + (JSON.stringify(obj)));
+    return res.json('Hrllo', obj);
   }
 };
