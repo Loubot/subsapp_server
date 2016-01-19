@@ -4,18 +4,51 @@ var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
   '$scope', '$state', '$http', '$window', 'message', 'user', '$location', 'RESOURCES', function($scope, $state, $http, $window, message, user, $location, RESOURCES) {
-    var user_token;
+    var check_club_admin, user_token;
+    check_club_admin = function(user) {
+      if (!user.club_admin) {
+        $state.go('login');
+      }
+      message.error('You are not a club admin. Contact subzapp admin team for assitance');
+      return false;
+    };
     console.log('OrgAdmin Controller');
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
-      console.log("Got user ");
-      console.log(res);
+      check_club_admin(window.USER);
+      console.log(window.USER.orgs.length === 0);
       $scope.org = window.USER.orgs[0];
       $scope.user = res.data;
-      return $scope.orgs = window.USER.orgs;
+      $scope.orgs = window.USER.orgs;
+      return $scope.show_team_admin = window.USER.orgs.length === 0;
     }));
+    $scope.org_create = function() {
+      user_token = window.localStorage.getItem('user_token');
+      $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
+      console.log(JSON.stringify($scope.business_form_data));
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/create-business",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: $scope.business_form_data
+      }).then((function(response) {
+        console.log("Business create return ");
+        console.log(response);
+        $scope.orgs = response.data;
+        $('.business_name').val("");
+        return $('.business_address').val("");
+      }), function(errResponse) {
+        console.log("Business create error response " + (JSON.stringify(errResponse)));
+        return $state.go('login');
+      });
+    };
     $scope.edit_org = function(id) {
-      $scope.show_team_admin = true;
+      $scope.org_id = id;
+      console.log("Org id " + $scope.org_id);
+      $scope.show_team_admin = false;
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/org-admins",
@@ -37,7 +70,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.team_create = function() {
-      $scope.team_form_data.org_id = $location.search().id;
+      console.log("Org id " + $scope.org_id);
+      $scope.team_form_data.org_id = $scope.org_id;
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/create-team",

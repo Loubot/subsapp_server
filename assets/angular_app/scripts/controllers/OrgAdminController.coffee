@@ -10,20 +10,52 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$location'
   'RESOURCES'
   ( $scope, $state, $http, $window, message, user, $location, RESOURCES ) ->
+    check_club_admin = ( user ) ->
+      $state.go 'login' if !user.club_admin
+      message.error 'You are not a club admin. Contact subzapp admin team for assitance'
+      return false 
+    
     console.log 'OrgAdmin Controller'
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
-      console.log "Got user "
-      console.log res
+      # console.log "Got user "
+      check_club_admin(window.USER)
+      console.log window.USER.orgs.length == 0
       $scope.org = window.USER.orgs[0]
       $scope.user = res.data
       $scope.orgs = window.USER.orgs
+      $scope.show_team_admin = ( window.USER.orgs.length == 0 )
       # $scope.org = return_org($scope.orgs, $location.search())
     )
 
+    $scope.org_create = ->
+      # console.log "create #{JSON.stringify user}"
+      user_token = window.localStorage.getItem 'user_token'
+      $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
+      console.log JSON.stringify $scope.business_form_data
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/create-business"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: 
+          $scope.business_form_data
+      ).then ( (response) ->
+
+        console.log "Business create return "
+        console.log response
+        $scope.orgs = response.data
+        # $scope.business_form.$setPristine()
+        $('.business_name').val ""
+        $('.business_address').val ""
+
+      ), ( errResponse ) ->
+        console.log "Business create error response #{ JSON.stringify errResponse }"
+        $state.go 'login'
 
     $scope.edit_org = ( id ) ->
-      $scope.show_team_admin = true
+      $scope.org_id = id
+      console.log "Org id #{ $scope.org_id }"
+      $scope.show_team_admin = false
       $http(
         method: 'GET'
         url: "#{ RESOURCES.DOMAIN }/org-admins"
@@ -33,6 +65,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       ).then ( ( response ) ->
         console.log "get org-admins"
         console.log response
+        
         $scope.admins = response.data.admins
         $scope.teams = response.data.teams
       ), ( errResponse ) ->
@@ -42,7 +75,8 @@ angular.module('subzapp').controller('OrgAdminController', [
     
 
     $scope.team_create = ->
-      $scope.team_form_data.org_id = $location.search().id
+      console.log "Org id #{ $scope.org_id }"
+      $scope.team_form_data.org_id = $scope.org_id
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/create-team"
@@ -75,6 +109,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       ), ( errResponse ) ->
         console.log "Team delete error"
         console.log errResponse
+    
+    
 
 ])
 
@@ -83,6 +119,8 @@ return_org = ( orgs, search) ->
   for org in orgs    
     if parseInt( org.id ) == parseInt( search.id )
       return org
+
+
 
 
 # $http(
