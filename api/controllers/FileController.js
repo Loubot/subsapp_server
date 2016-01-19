@@ -8,12 +8,17 @@
  */
 module.exports = {
   upload: function(req, res) {
-    var obj, xlsx;
     sails.log.debug("Hit FileController/upload");
     sails.log.debug(req.file);
-    xlsx = require('node-xlsx');
-    obj = xlsx.parse('./assets/excel_sheets/file.xls');
-    sails.log.debug("xls " + (JSON.stringify(obj)));
-    return res.json('Hrllo');
+    return req.file('uploadFile').upload({
+      dirname: './assets/images'
+    }, function(err, uploadedFiles) {
+      if (err) {
+        return res.negotiate(err);
+      }
+      return res.json({
+        message: uploadedFiles.length + ' file(s) uploaded successfully!'
+      });
+    });
   }
 };

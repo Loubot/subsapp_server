@@ -38,6 +38,7 @@
     "sails-disk": "~0.10.0",
     "sails-mysql": "^0.11.1",
     "sails-postgresql": "^0.10.17",
+    "skipper-s3": "^0.5.6",
     "stripe": "^4.1.0",
     "winston": "^2.1.0"
   },
