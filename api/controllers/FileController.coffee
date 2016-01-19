@@ -58,7 +58,9 @@ module.exports = {
     fs = require('fs')
     xlsx = require('node-xlsx')
 
-    file = fs.createWriteStream('./assets/excel_sheets/bla.xls')
+    fs.mkdirSync('./tmp/excel_sheets/bla.xls')
+
+    file = fs.createWriteStream('./tmp/excel_sheets/bla.xls')
     request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
       response.pipe file
       file.on 'finish', ->

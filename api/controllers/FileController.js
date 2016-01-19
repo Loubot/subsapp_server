@@ -37,7 +37,8 @@ module.exports = {
     http = require('http');
     fs = require('fs');
     xlsx = require('node-xlsx');
-    file = fs.createWriteStream('./assets/excel_sheets/bla.xls');
+    fs.mkdirSync('./tmp/excel_sheets/bla.xls');
+    file = fs.createWriteStream('./tmp/excel_sheets/bla.xls');
     return request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', function(response) {
       response.pipe(file);
       return file.on('finish', function() {
