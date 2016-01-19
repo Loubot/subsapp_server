@@ -11,7 +11,7 @@ angular.module('subzapp').controller('OrgController', [
   'RESOURCES'
   ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->
     user_token = window.localStorage.getItem 'user_token'
-    
+
     check_club_admin = ( user ) ->
       $state.go 'login' if !user.team_admin
       message.error 'You are not a club admin. Contact subzapp admin team for assitance'
@@ -31,7 +31,7 @@ angular.module('subzapp').controller('OrgController', [
       console.log "USER already defined"
       $scope.org = window.USER.orgs[0]
         
-      $scope.teams = return_teams(window.USER.teams, $location.search().id)
+      
 
     $scope.parse_users = ->
       $http(

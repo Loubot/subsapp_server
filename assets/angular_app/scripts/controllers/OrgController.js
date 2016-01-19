@@ -20,7 +20,6 @@ angular.module('subzapp').controller('OrgController', [
     } else {
       console.log("USER already defined");
       $scope.org = window.USER.orgs[0];
-      $scope.teams = return_teams(window.USER.teams, $location.search().id);
     }
     return $scope.parse_users = function() {
       return $http({

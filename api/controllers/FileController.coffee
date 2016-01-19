@@ -56,18 +56,26 @@ module.exports = {
     sails.log.debug "Hit the FileController/parse_users"
     http = require('http')
     fs = require('fs')
+    xlsx = require('node-xlsx')
 
-    file = fs.createWriteStream('./assets/excel_sheets/bla.xls')
-    request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
-      response.pipe file
-      file.on 'finish', ->
-        file.close ->
-          sails.log.debug 'yippee'
-          res.json 'Hrllo'
-        # close() is async, call callback after close completes.
-        
-     
+    req = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (res) ->
+      # save the data
+      xml = ''
+      res.on 'data', (chunk) ->
+        xml += chunk
+        return
+      res.on 'end', ->
+        # sails.log.debug "Finished #{ JSON.stringify xml }"
+        obj = xlsx.parse(xml)
+        # parse xml
+        return
+      # or you can pipe the data to a parser
+      # res.pipe dest
+      return
     )
+    req.on 'error', (err) ->
+      # debug error
+      Return
 
      
 
