@@ -15,7 +15,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $state.go 'login' 
         message.error 'You are not a club admin. Contact subzapp admin team for assitance'
         return false 
-    
+
     console.log 'OrgAdmin Controller'
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
