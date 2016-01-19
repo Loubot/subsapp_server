@@ -5,11 +5,10 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
     var check_club_admin, user_token;
     console.log('OrgAdminTeam Controller');
     check_club_admin = function(user) {
-      if (!user.team_admin) {
+      if (!user.club_admin) {
         $state.go('login');
+        return message.error('You are not a club admin. Contact subzapp admin team for assitance');
       }
-      message.error('You are not a club admin. Contact subzapp admin team for assitance');
-      return false;
     };
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {

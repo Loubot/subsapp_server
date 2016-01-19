@@ -14,13 +14,13 @@ angular.module('subzapp').controller('OrgAdminController', [
       if !user.club_admin
         $state.go 'login' 
         message.error 'You are not a club admin. Contact subzapp admin team for assitance'
-        return false 
+        
 
     console.log 'OrgAdmin Controller'
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
       # console.log "Got user "
-      check_club_admin(res.data)
+      check_club_admin(window.USER)
       console.log window.USER.orgs.length == 0
       $scope.org = window.USER.orgs[0]
       $scope.user = window.USER
@@ -86,7 +86,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       ).then ( ( response ) ->
         console.log "Team create"
         console.log response
-        message.success = response.data.message
+        message.success response.data.message
         $scope.teams = response.data
         $scope.team_form.$setPristine()
         $scope.team_form_data = ''
