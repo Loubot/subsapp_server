@@ -54,7 +54,7 @@ module.exports = {
               var obj;
               tempFile.end();
               sails.log.debug('yippee');
-              obj = xlsx.parse('./assets/excel_sheets/bla.xls');
+              obj = xlsx.parse('./.tmp/excel_sheets/bla.xls');
               sails.log.debug("Object " + (JSON.stringify(obj)));
               return res.json(obj);
             });

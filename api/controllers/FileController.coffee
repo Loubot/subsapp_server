@@ -78,7 +78,7 @@ module.exports = {
               tempFile.end()
 
               sails.log.debug 'yippee'
-              obj = xlsx.parse('./assets/excel_sheets/bla.xls')
+              obj = xlsx.parse('./.tmp/excel_sheets/bla.xls')
               sails.log.debug "Object #{ JSON.stringify obj }"
               res.json obj
               # fs.renameSync './assets/excel_sheets/bla.xls', filepath
