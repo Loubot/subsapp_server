@@ -119,4 +119,5 @@ nbproject
 logfile.log
 config/log.js
 assets/excel_sheets/
+.tmp/
 
