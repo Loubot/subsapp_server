@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "angular-ui-router": "^0.2.15",
+    "aws-sdk": "^2.2.31",
     "bcrypt-nodejs": "0.0.3",
     "coffee-script": "~1.10",
     "connect": "^3.4.0",
