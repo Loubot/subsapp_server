@@ -139,6 +139,10 @@ module.exports.routes =
         controller:             'FileController'
         action:                 'parse_users'
 
+  'get /aws':
+        controller:             'FileController'
+        action:                 'aws'
+
   # End of file controller
 
   # #Mail controller

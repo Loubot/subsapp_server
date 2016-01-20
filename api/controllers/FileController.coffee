@@ -24,12 +24,12 @@ module.exports = {
     #   #   file: files
     #   return
 
-    uploadFile= req.file('uploadFile').upload {
+    uploadFile = req.file('uploadFile').upload {
       adapter: require('skipper-s3')
       key: process.env.AWS_ACCESS_KEY_ID
       secret: process.env.AWS_SECRET_ACCESS_KEY
-      dirName: 'Lakewood'
-      saveAs: 'Lakewood/Louisblabla.xls'
+      # dirName: 'Lakewood'
+      saveAs: 'x.xls'
       bucket: 'subzapp'
     }, (err, uploadedFiles) ->
       if err
@@ -83,23 +83,47 @@ module.exports = {
               res.json obj
               # fs.renameSync './assets/excel_sheets/bla.xls', filepath
           
+  
+  aws: ( req, res ) ->
+    sails.log.debug "Hit the file controller/aws"
+    fs = require('fs')
+    xlsx = require('node-xlsx')
+    mkdirp = require('mkdirp')
+    AWS = require('aws-sdk')
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
     
 
-    
+    mkdirp './.tmp/excel_sheets', ( err ) ->
+      if err
+        sails.log.debug "Can't create dir #{ JSON.stringify err }"
+      else
+        sails.log.debug "Dir created waheeeey"
+        fs.closeSync fs.openSync('./.tmp/excel_sheets/bla.xls', 'w')
 
-    # file = fs.createWriteStream('./tmp/excel_sheets/bla.xls')
-    # request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
-    #   response.pipe file
-    #   file.on 'finish', ->
-    #     file.close ->
-    #       sails.log.debug 'yippee'
+        tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls')
+        tempFile.on 'open', (fd) ->
+          (new (AWS.S3)).getObject {
+              Bucket: 'subzapp'
+              Key: 'x.xls'
+            }, (err, data) ->
+              sails.log.debug "AWS error #{ JSON.stringify err }" if err?
+              tempFile.write data.Body if !err?
 
+              sails.log.debug 'yippee'
+              # obj = xlsx.parse('./.tmp/excel_sheets/bla.xls')
+              # sails.log.debug "Object #{ JSON.stringify obj }"
+              # res.json obj
 
-          
-        # close() is async, call callback after close completes.
-        
-        
-    # )
+      # (new (AWS.S3)).getObject {
+      #   Bucket: 'subzapp'
+      #   Key: 'Louisblabla.xls'
+      # }, (err, data) ->
+      #   sails.log.debug "AWS error #{ JSON.stringify err }" if err?
+      #   # sails.log.debug "AWS file #{ data.Body.toString() }"
+
+      #   obj = xlsx.parse(data)
+      #   sails.log.debug "Object #{ JSON.stringify obj }"
+
 
      
 

@@ -116,5 +116,9 @@ module.exports.routes = {
   'get /parse-users': {
     controller: 'FileController',
     action: 'parse_users'
+  },
+  'get /aws': {
+    controller: 'FileController',
+    action: 'aws'
   }
 };

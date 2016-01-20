@@ -21,7 +21,7 @@ angular.module('subzapp').controller('OrgController', [
       console.log("USER already defined");
       $scope.org = window.USER.orgs[0];
     }
-    return $scope.parse_users = function() {
+    $scope.parse_users = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/parse-users",
@@ -34,6 +34,22 @@ angular.module('subzapp').controller('OrgController', [
         return console.log(res);
       }), function(errResponse) {
         console.log("Parse users error");
+        return console.log(errResponse);
+      });
+    };
+    return $scope.aws = function() {
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/aws",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        }
+      }).then((function(res) {
+        console.log("aws response");
+        return console.log(res);
+      }), function(errResponse) {
+        console.log("aws error");
         return console.log(errResponse);
       });
     };

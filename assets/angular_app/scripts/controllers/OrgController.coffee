@@ -44,6 +44,19 @@ angular.module('subzapp').controller('OrgController', [
       ), ( errResponse ) ->
         console.log "Parse users error"
         console.log errResponse
+
+    $scope.aws = ->
+      
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/aws"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+      ).then ( ( res ) ->
+        console.log "aws response"
+        console.log res
+      ), ( errResponse ) ->
+        console.log "aws error"
+        console.log errResponse
     
 
 ])

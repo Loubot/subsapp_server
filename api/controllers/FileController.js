@@ -15,8 +15,7 @@ module.exports = {
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,
-      dirName: 'Lakewood',
-      saveAs: 'Lakewood/Louisblabla.xls',
+      saveAs: 'x.xls',
       bucket: 'subzapp'
     }, function(err, uploadedFiles) {
       if (err) {
@@ -58,6 +57,42 @@ module.exports = {
               sails.log.debug("Object " + (JSON.stringify(obj)));
               return res.json(obj);
             });
+          });
+        });
+      }
+    });
+  },
+  aws: function(req, res) {
+    var AWS, fs, mkdirp, xlsx;
+    sails.log.debug("Hit the file controller/aws");
+    fs = require('fs');
+    xlsx = require('node-xlsx');
+    mkdirp = require('mkdirp');
+    AWS = require('aws-sdk');
+    AWS.config.update({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    });
+    return mkdirp('./.tmp/excel_sheets', function(err) {
+      var tempFile;
+      if (err) {
+        return sails.log.debug("Can't create dir " + (JSON.stringify(err)));
+      } else {
+        sails.log.debug("Dir created waheeeey");
+        fs.closeSync(fs.openSync('./.tmp/excel_sheets/bla.xls', 'w'));
+        tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls');
+        return tempFile.on('open', function(fd) {
+          return (new AWS.S3).getObject({
+            Bucket: 'subzapp',
+            Key: 'x.xls'
+          }, function(err, data) {
+            if (err != null) {
+              sails.log.debug("AWS error " + (JSON.stringify(err)));
+            }
+            if (err == null) {
+              tempFile.write(data.Body);
+            }
+            return sails.log.debug('yippee');
           });
         });
       }
