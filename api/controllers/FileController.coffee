@@ -58,16 +58,26 @@ module.exports = {
     fs = require('fs')
     xlsx = require('node-xlsx')
 
+    obj = null
 
-    mkdirp = require('mkdirp')
-    mkdirp './tmp/excel_sheets/bla.xls', (err) ->
-      if err
-        sails.log.debug err
-      else
-        sails.log.debug 'pow!'
-      return
+    tempFile = fs.createWriteStream('./assets/excel_sheets/bla.xls')
+    tempFile.on 'open', (fd) ->
+      http.get 'http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
+        response.on('data', (chunk) ->
+          tempFile.write chunk
+          return
+        ).on 'end', ->          
+          tempFile.end()
 
-    # fs.mkdirSync('./tmp/excel_sheets/bla.xls')
+          sails.log.debug 'yippee'
+          obj = xlsx.parse('./assets/excel_sheets/bla.xls')
+          sails.log.debug "Object #{ JSON.stringify obj }"
+          res.json obj
+          # fs.renameSync './assets/excel_sheets/bla.xls', filepath
+          
+    
+
+    
 
     # file = fs.createWriteStream('./tmp/excel_sheets/bla.xls')
     # request = http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
@@ -80,10 +90,8 @@ module.exports = {
           
         # close() is async, call callback after close completes.
         
-    obj = xlsx.parse('./assets/excel_sheets/bla.xls')
-    sails.log.debug "Object #{ JSON.stringify obj }"
-    res.json 'Hrllo', obj
-  
+        
+    # )
 
      
 
