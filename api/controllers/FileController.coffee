@@ -57,23 +57,31 @@ module.exports = {
     http = require('http')
     fs = require('fs')
     xlsx = require('node-xlsx')
+    mkdirp = require('mkdirp')
 
-    obj = null
+    mkdirp './.tmp/excel_sheets', ( err ) ->
+      if err
+        sails.log.debug "Can't create dir #{ JSON.stringify err }"
+      else
+        sails.log.debug "Dir created waheeeey"
+        fs.closeSync fs.openSync('./.tmp/excel_sheets/bla.xls', 'w')
 
-    tempFile = fs.createWriteStream('./assets/excel_sheets/bla.xls')
-    tempFile.on 'open', (fd) ->
-      http.get 'http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
-        response.on('data', (chunk) ->
-          tempFile.write chunk
-          return
-        ).on 'end', ->          
-          tempFile.end()
+    
 
-          sails.log.debug 'yippee'
-          obj = xlsx.parse('./assets/excel_sheets/bla.xls')
-          sails.log.debug "Object #{ JSON.stringify obj }"
-          res.json obj
-          # fs.renameSync './assets/excel_sheets/bla.xls', filepath
+        tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls')
+        tempFile.on 'open', (fd) ->
+          http.get 'http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', (response) ->
+            response.on('data', (chunk) ->
+              tempFile.write chunk
+              return
+            ).on 'end', ->          
+              tempFile.end()
+
+              sails.log.debug 'yippee'
+              obj = xlsx.parse('./assets/excel_sheets/bla.xls')
+              sails.log.debug "Object #{ JSON.stringify obj }"
+              res.json obj
+              # fs.renameSync './assets/excel_sheets/bla.xls', filepath
           
     
 

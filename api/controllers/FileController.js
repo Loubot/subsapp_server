@@ -32,25 +32,35 @@ module.exports = {
     });
   },
   parse_users: function(req, res) {
-    var fs, http, obj, tempFile, xlsx;
+    var fs, http, mkdirp, xlsx;
     sails.log.debug("Hit the FileController/parse_users");
     http = require('http');
     fs = require('fs');
     xlsx = require('node-xlsx');
-    obj = null;
-    tempFile = fs.createWriteStream('./assets/excel_sheets/bla.xls');
-    return tempFile.on('open', function(fd) {
-      return http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', function(response) {
-        return response.on('data', function(chunk) {
-          tempFile.write(chunk);
-        }).on('end', function() {
-          tempFile.end();
-          sails.log.debug('yippee');
-          obj = xlsx.parse('./assets/excel_sheets/bla.xls');
-          sails.log.debug("Object " + (JSON.stringify(obj)));
-          return res.json(obj);
+    mkdirp = require('mkdirp');
+    return mkdirp('./.tmp/excel_sheets', function(err) {
+      var tempFile;
+      if (err) {
+        return sails.log.debug("Can't create dir " + (JSON.stringify(err)));
+      } else {
+        sails.log.debug("Dir created waheeeey");
+        fs.closeSync(fs.openSync('./.tmp/excel_sheets/bla.xls', 'w'));
+        tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls');
+        return tempFile.on('open', function(fd) {
+          return http.get('http://s3.amazonaws.com/subzapp/Lakewood/Louisblabla.xls', function(response) {
+            return response.on('data', function(chunk) {
+              tempFile.write(chunk);
+            }).on('end', function() {
+              var obj;
+              tempFile.end();
+              sails.log.debug('yippee');
+              obj = xlsx.parse('./assets/excel_sheets/bla.xls');
+              sails.log.debug("Object " + (JSON.stringify(obj)));
+              return res.json(obj);
+            });
+          });
         });
-      });
+      }
     });
   }
 };
