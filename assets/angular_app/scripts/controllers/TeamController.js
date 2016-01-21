@@ -28,7 +28,8 @@ angular.module('subzapp').controller('TeamController', [
         url: RESOURCES.DOMAIN + "/get-team-info",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         params: {
           team_id: $location.search().id
@@ -51,7 +52,8 @@ angular.module('subzapp').controller('TeamController', [
         url: RESOURCES.DOMAIN + "/create-event",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         data: $scope.create_event_data
       }).then((function(res) {

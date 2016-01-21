@@ -17,6 +17,9 @@ angular.module('subzapp').controller('RegisterController', [
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/auth/signup"
+        headers: {
+                  'Content-Type': 'application/json'
+                  }
         data: $scope.register_form_data
       ).then ( (response) ->
         console.log "Registration successfull #{ JSON.stringify response }"

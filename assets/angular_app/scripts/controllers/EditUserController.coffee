@@ -34,7 +34,10 @@ angular.module('subzapp').controller('EditUserController', [
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/edit-user"
-        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
         data: 
           id: $scope.user.id
           firstName: $scope.user.firstName

@@ -4,14 +4,17 @@
 <div class="row">
   <h1 class="text-center">Hello {{ user.email }}</h1>
   <h4 class="text-center"></h4>
+  <div class="container-fluid">
+    <div class="col-xs-9">
+      <div class="message">
+      </div> <!-- end of message -->
+    </div>
+  </div>
   <div class="col-xs-1">
 
   </div>
 
-  <div class="message">
-          
-          
-  </div> <!-- end of message -->
+  
 
   <div class="col-xs-9" ng-show="show_team_admin">
     <form class="form-horizontal" 
@@ -39,10 +42,6 @@
         </div>  <!-- end of col-sm-offset-2 col-sm-10 -->
       </div> <!-- end of form-group -->
 
-      <div class="login_error">
-        
-        
-      </div>
     </form>
     
   

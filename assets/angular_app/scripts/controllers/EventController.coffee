@@ -31,7 +31,10 @@ angular.module('subzapp').controller('EventController', [
     $http(
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/get-event-members"
-      headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+      headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
       params:
         event_id: $location.search().id
     ).then ( (res) ->

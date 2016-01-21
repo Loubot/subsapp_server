@@ -17,6 +17,9 @@ angular.module('subzapp').controller('RegisterManagerController', [
     $http(
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/get-invite"
+      headers: { 
+                  'Content-Type': 'application/json'
+                }
       params:
         invite_id: $location.search().id
     ).then ( ( response ) ->
@@ -41,6 +44,9 @@ angular.module('subzapp').controller('RegisterManagerController', [
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/auth/team_manager_signup"
+        headers: { 
+                  'Content-Type': 'application/json'
+                  }
         data: $scope.register_manager_form_data
       ).then ( (response) ->
         console.log "Registration successfull "

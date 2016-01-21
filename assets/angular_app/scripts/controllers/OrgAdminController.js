@@ -19,7 +19,27 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.org = window.USER.orgs[0];
       $scope.user = window.USER;
       $scope.orgs = window.USER.orgs;
-      return $scope.show_team_admin = window.USER.orgs.length === 0;
+      $scope.show_team_admin = window.USER.orgs.length === 0;
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/get-teams",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        },
+        params: {
+          org_id: $scope.org.id
+        }
+      }).then((function(org_and_teams) {
+        console.log("Get org and teams");
+        console.log(org_and_teams.data.teams);
+        return $scope.teams = org_and_teams.data.teams;
+      }), function(errResponse) {
+        console.log("Get teams failed");
+        console.log(errResponse);
+        return message.error('Failed to fetch teams');
+      });
     }));
     $scope.org_create = function() {
       user_token = window.localStorage.getItem('user_token');
@@ -30,7 +50,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         url: RESOURCES.DOMAIN + "/create-business",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         data: $scope.business_form_data
       }).then((function(response) {
@@ -45,18 +66,18 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.edit_org = function(id) {
-      $scope.org_id = id;
-      console.log("Org id " + $scope.org_id);
+      console.log("Org id " + $scope.org.id);
       $scope.show_team_admin = false;
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/org-admins",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         params: {
-          org_id: id
+          org_id: $scope.org.id
         }
       }).then((function(response) {
         console.log("get org-admins");
@@ -69,21 +90,22 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.team_create = function() {
-      console.log("Org id " + $scope.org_id);
-      $scope.team_form_data.org_id = $scope.org_id;
+      console.log("Org id " + $scope.org.id);
+      $scope.team_form_data.org_id = $scope.org.id;
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/create-team",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         data: $scope.team_form_data
       }).then((function(response) {
         console.log("Team create");
         console.log(response);
         message.success(response.data.message);
-        $scope.teams = response.data;
+        $scope.teams = response.data.org.teams;
         $scope.team_form.$setPristine();
         return $scope.team_form_data = '';
       }), function(errResponse) {
@@ -98,7 +120,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         method: 'DELETE',
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         data: {
           team_id: id,

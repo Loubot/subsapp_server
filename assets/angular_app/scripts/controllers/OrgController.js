@@ -27,11 +27,13 @@ angular.module('subzapp').controller('OrgController', [
         url: RESOURCES.DOMAIN + "/parse-users",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         }
       }).then((function(res) {
         console.log("parse users response");
-        return console.log(res);
+        console.log(res);
+        return $scope.parsed_data = res;
       }), function(errResponse) {
         console.log("Parse users error");
         return console.log(errResponse);
@@ -43,7 +45,8 @@ angular.module('subzapp').controller('OrgController', [
         url: RESOURCES.DOMAIN + "/aws",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         }
       }).then((function(res) {
         console.log("aws response");

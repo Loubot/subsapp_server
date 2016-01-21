@@ -42,7 +42,10 @@ angular.module('subzapp').controller('TeamController', [
       $http(
         method: 'GET'
         url: "#{ RESOURCES.DOMAIN }/get-team-info"
-        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
         params:
           team_id: $location.search().id
       ).then ( (res) ->
@@ -61,7 +64,10 @@ angular.module('subzapp').controller('TeamController', [
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/create-event"
-        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
         data: $scope.create_event_data
       ).then ( (res) ->
         # console.log "Create event response"

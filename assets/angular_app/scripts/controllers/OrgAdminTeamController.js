@@ -22,7 +22,8 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       url: RESOURCES.DOMAIN + "/get-team",
       headers: {
         'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       params: {
         team_id: $location.search().id
@@ -43,7 +44,8 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
         url: RESOURCES.DOMAIN + "/invite-manager",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         data: {
           org_id: $scope.org.id,

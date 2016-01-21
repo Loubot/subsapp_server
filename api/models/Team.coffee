@@ -25,6 +25,7 @@ module.exports =
 
     main_org: 
       model: 'org'
+      required: true
 
     manager:
       model: 'user'

@@ -5,7 +5,6 @@
  * @description :: Model for storing teams
  */
 module.exports = {
-  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -18,7 +17,8 @@ module.exports = {
       unique: true
     },
     main_org: {
-      model: 'org'
+      model: 'org',
+      required: true
     },
     manager: {
       model: 'user'

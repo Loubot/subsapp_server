@@ -7,6 +7,9 @@ angular.module('subzapp').controller('LoginController', [
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/auth/signin",
+        headers: {
+          'Content-Type': 'application/json'
+        },
         data: $scope.login_form_data
       }).then((function(response) {
         console.log("User id " + response.data.user);

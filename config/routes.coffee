@@ -88,6 +88,10 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'get_team_info'
 
+  'get /get-teams':
+        controller:             'TeamController'
+        action:                 'get_teams'
+
   # end of Team controller
 
   # PaymentController

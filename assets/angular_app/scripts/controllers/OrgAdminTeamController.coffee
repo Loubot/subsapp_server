@@ -31,7 +31,10 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
     $http(
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/get-team"
-      headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+      headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
       params:
         team_id: $location.search().id
     ).then ( ( res ) ->
@@ -48,7 +51,10 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/invite-manager"
-        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
         data:
           org_id: $scope.org.id
           team_id: $location.search().id

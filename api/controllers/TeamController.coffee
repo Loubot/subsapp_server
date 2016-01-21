@@ -10,19 +10,22 @@ module.exports = {
   create_team: (req, res) ->
     sails.log.debug "Hit the team controller/create_team ***************"
     sails.log.debug "Data #{ JSON.stringify req.body }"
-    params = req.body
-    Team.create( { name: params.name, main_org: params.org_id, manager: params.user_id }).then( ( team ) ->
-      sails.log.debug "Team create #{ JSON.stringify team }"
-    ).catch( (err) ->
+    
+    Team.create( name: req.body.name, main_org: req.body.org_id, manager: req.body.user_id ).then( ( team ) ->
+      sails.log.debug "Team created #{ JSON.stringify team }"
+      
+      Org.findOne( id: req.body.org_id ).populate('teams').exec( ( err, org ) ->
+        sails.log.debug "Org find error #{ JSON.stringify err }" if err?
+        sails.log.debug "Org find  #{ JSON.stringify org }" 
+        res.json org: org, message: 'Team created ok'
+      )
+
+    ).catch( ( err ) ->
       sails.log.debug "Team create error #{ JSON.stringify err }"
-    ).done ->
-      sails.log.debug "Team create done"
+      res.serverError err
+    )
 
-      Team.find().where( main_org: params.org_id).populateAll().exec (e, teams) ->
-        sails.log.debug "Populate result #{ JSON.stringify teams }"
-        sails.log.debug "Populate error #{ JSON.stringify e }"
-
-        res.send teams
+      
 
   destroy_team: (req, res) ->
     sails.log.debug "Hit the team controller/destroy_team"
@@ -32,6 +35,7 @@ module.exports = {
       sails.log.debug "Team destroy response #{ JSON.stringify team }"
     ).catch( (err) ->
       sails.log.debug "Team destroy error #{ JSON.stringify err }"
+      res.serverError err
     ).done ->
       sails.log.debug "Team destroy done"
 
@@ -43,10 +47,11 @@ module.exports = {
       team.save (err, s) ->
         sails.log.debug "Add team to team #{ JSON.stringify s }"
         sails.log.debug "Add team to team err #{ JSON.stringify err }"
-        res.send s
+        res.json s
 
     ).catch( (err) ->
       sails.log.debug "Join team find user error #{ JSON.stringify err }"
+      res.serverError err
     ).done ->
       sails.log.debug "Join team find user done"
 
@@ -56,11 +61,22 @@ module.exports = {
     sails.log.debug "Hit the team controller/get_team"
     Team.findOne( { id: req.query.team_id } ).populate('events').populate('main_org').then( (team) ->
       sails.log.debug "Get team response #{ JSON.stringify team }"
-      res.send team
+      res.json team
     ).catch( (err) ->
       sails.log.debug "Get team error #{ JSON.stringify err }"
+      res.serverError err
     ).done ->
       sails.log.debug "Team get team main org done"
+
+  get_teams: ( req, res ) -> #return all teams from an org
+    sails.log.debug "Hit the team conroller/get_teams"
+    Org.findOne( id: req.query.org_id ).populate('teams').then( ( org_and_teams ) ->
+      sails.log.debug "Org and teams #{ JSON.stringify org_and_teams }"
+      res.json org_and_teams
+    ).catch( ( err ) ->
+      sails.log.debug "Get org and teams error"
+      res.serverError err
+    )
 
 
   get_team_info: (req, res) ->
@@ -69,9 +85,10 @@ module.exports = {
 
     Team.findOne( id: req.query.team_id ).populate('team_members').populate('events').then( (mems) ->
       sails.log.debug "Get team response #{ JSON.stringify mems }"
-      res.send mems
+      res.json mems
     ).catch( (err) ->
       sails.log.debug "Get team error #{ JSON.stringify err }"
+      res.serverError err
     ).done ->
       sails.log.debug "Team get team main org done"
 }
