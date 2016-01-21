@@ -41,6 +41,7 @@ angular.module('subzapp').controller('OrgController', [
       ).then ( ( res ) ->
         console.log "parse users response"
         console.log res
+        $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "Parse users error"
         console.log errResponse
