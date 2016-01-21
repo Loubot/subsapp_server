@@ -54,6 +54,7 @@ angular.module('subzapp').controller('OrgController', [
       ).then ( ( res ) ->
         console.log "aws response"
         console.log res
+        $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "aws error"
         console.log errResponse

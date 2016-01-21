@@ -47,7 +47,8 @@ angular.module('subzapp').controller('OrgController', [
         }
       }).then((function(res) {
         console.log("aws response");
-        return console.log(res);
+        console.log(res);
+        return $scope.parsed_data = res;
       }), function(errResponse) {
         console.log("aws error");
         return console.log(errResponse);
