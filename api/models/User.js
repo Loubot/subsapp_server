@@ -5,7 +5,6 @@
  * @description :: Model for storing users
  */
 module.exports = {
-  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -78,5 +77,13 @@ module.exports = {
   beforeCreate: function(values, next) {
     CipherService.hashPassword(values);
     next();
+  },
+  create_players: function(player_array, cb) {
+    var i, len, player;
+    for (i = 0, len = player_array.length; i < len; i++) {
+      player = player_array[i];
+      sails.log.debug(player);
+    }
+    return cb(null, 'hello');
   }
 };

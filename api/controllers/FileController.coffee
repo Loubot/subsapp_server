@@ -111,8 +111,15 @@ module.exports = {
 
               sails.log.debug 'yippee'
               obj = xlsx.parse(data.Body)
-              sails.log.debug "Object #{ JSON.stringify obj }"
-              res.json obj
+              
+              player_array = obj[0].data
+              player_array.splice(0,1)
+              # sails.log.debug "Array #{ JSON.stringify player_array }"
+              User.create_players( player_array, ( err, players ) ->
+                sails.log.debug "Players #{ JSON.stringify players }"
+                sails.log.debug "Players error #{ JSON.stringify err }" if err?
+              )
+              res.json obj[0].data
 
       # (new (AWS.S3)).getObject {
       #   Bucket: 'subzapp'

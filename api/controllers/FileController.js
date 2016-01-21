@@ -86,7 +86,7 @@ module.exports = {
             Bucket: 'subzapp',
             Key: 'x.xls'
           }, function(err, data) {
-            var obj;
+            var obj, player_array;
             if (err != null) {
               sails.log.debug("AWS error " + (JSON.stringify(err)));
             }
@@ -95,8 +95,15 @@ module.exports = {
             }
             sails.log.debug('yippee');
             obj = xlsx.parse(data.Body);
-            sails.log.debug("Object " + (JSON.stringify(obj)));
-            return res.json(obj);
+            player_array = obj[0].data;
+            player_array.splice(0, 1);
+            User.create_players(player_array, function(err, players) {
+              sails.log.debug("Players " + (JSON.stringify(players)));
+              if (err != null) {
+                return sails.log.debug("Players error " + (JSON.stringify(err)));
+              }
+            });
+            return res.json(obj[0].data);
           });
         });
       }
