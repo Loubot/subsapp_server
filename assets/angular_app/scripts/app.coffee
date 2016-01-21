@@ -151,6 +151,8 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
           console.log "No user data"
           return false
         else
+          console.log "Got user"
+          console.log data
           window.USER = data
           return data
         

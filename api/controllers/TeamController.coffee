@@ -30,8 +30,15 @@ module.exports = {
     
     Team.destroy( id: req.body.team_id).then( (team) ->
       sails.log.debug "Team destroy response #{ JSON.stringify team }"
+
+    ).then(
+      Org.findOne( id: req.body.org_id ).populate('teams').exec ( err, org ) ->
+        sails.log.debug "Failed to find org #{ JSON.stringify err }" if err?
+        sails.log.debug "Org found #{ JSON.stringify org }"
+        res.json org
     ).catch( (err) ->
       sails.log.debug "Team destroy error #{ JSON.stringify err }"
+      res.serverError err
     ).done ->
       sails.log.debug "Team destroy done"
 

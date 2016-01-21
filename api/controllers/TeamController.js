@@ -42,8 +42,17 @@ module.exports = {
       id: req.body.team_id
     }).then(function(team) {
       return sails.log.debug("Team destroy response " + (JSON.stringify(team)));
-    })["catch"](function(err) {
-      return sails.log.debug("Team destroy error " + (JSON.stringify(err)));
+    }).then(Org.findOne({
+      id: req.body.org_id
+    }).populate('teams').exec(function(err, org) {
+      if (err != null) {
+        sails.log.debug("Failed to find org " + (JSON.stringify(err)));
+      }
+      sails.log.debug("Org found " + (JSON.stringify(org)));
+      return res.json(org);
+    }))["catch"](function(err) {
+      sails.log.debug("Team destroy error " + (JSON.stringify(err)));
+      return res.serverError(err);
     }).done(function() {
       return sails.log.debug("Team destroy done");
     });
