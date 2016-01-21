@@ -110,9 +110,9 @@ module.exports = {
               tempFile.write data.Body if !err?
 
               sails.log.debug 'yippee'
-              # obj = xlsx.parse('./.tmp/excel_sheets/bla.xls')
-              # sails.log.debug "Object #{ JSON.stringify obj }"
-              # res.json obj
+              obj = xlsx.parse(data.Body)
+              sails.log.debug "Object #{ JSON.stringify obj }"
+              res.json obj
 
       # (new (AWS.S3)).getObject {
       #   Bucket: 'subzapp'

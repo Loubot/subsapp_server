@@ -86,13 +86,17 @@ module.exports = {
             Bucket: 'subzapp',
             Key: 'x.xls'
           }, function(err, data) {
+            var obj;
             if (err != null) {
               sails.log.debug("AWS error " + (JSON.stringify(err)));
             }
             if (err == null) {
               tempFile.write(data.Body);
             }
-            return sails.log.debug('yippee');
+            sails.log.debug('yippee');
+            obj = xlsx.parse(data.Body);
+            sails.log.debug("Object " + (JSON.stringify(obj)));
+            return res.json(obj);
           });
         });
       }
