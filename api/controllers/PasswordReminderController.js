@@ -3,34 +3,54 @@
 /**
  * InviteController
  *
- * @description :: Server-side logic for managing passwordrest
+ * @description :: Server-side logic for managing passwordReminder
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 module.exports = {
   post_remind: function(req, res) {
-    sails.log.debug("Hit Invite controller/post_remind");
+    var makePasswordReminderToken;
+    sails.log.debug("Hit PasswordReminder controller/post_remind");
     sails.log.debug("params " + (JSON.stringify(req.body)));
-    return Remind.create({
-      user_email: req.body.user_email,
-      token: req.body.user_token
-    }).then(function(invite) {
-      sails.log.debug("Invite created " + (JSON.stringify(user)));
-      MandrillService.send_mail(req.body.user_email);
-      return res.json(user);
-    })["catch"](function(err) {
-      sails.log.debug("User failure " + (JSON.stringify(err)));
-      return res.serverError("User create failed", JSON.stringify(err));
+    User.findOne({
+      email: req.body.user_email
+    }).then(function(user) {
+      var reminderToken;
+      sails.log.debug("Found user " + (JSON.stringify(user)));
+      if (user != null) {
+        reminderToken = makePasswordReminderToken();
+        return PasswordReminder.create({
+          email: req.body.user_email,
+          remind_password_token: reminderToken
+        }).exec((function(err, password) {
+          sails.log.debug("User exists " + (JSON.stringify(user)));
+          res.json({
+            user: user,
+            message: 'User already exists'
+          });
+          sails.log.debug("Password reminder created " + (JSON.stringify(password)));
+          return MandrillService.password_remind(reminderToken, user.email);
+        }));
+      } else {
+        sails.log.debug("Password reminder Not created " + (JSON.stringify(password)));
+        if (typeof err !== "undefined" && err !== null) {
+          sails.log.debug("Password reminder err " + (JSON.stringify(err)));
+        }
+        return res.json({
+          user: user,
+          message: 'No user in database exists'
+        });
+      }
     });
-  },
-  get_invite: function(req, res) {
-    sails.log.debug("Hit the invite controller/get_invite");
-    return Invite.findOne({
-      id: req.query.invite_id
-    }).then(function(invite) {
-      sails.log.debug("Invite found " + (JSON.stringify(invite)));
-      return res.json(invite);
-    })["catch"](function(err) {
-      return sails.log.debug("Get invite failure " + (JSON.stringify(invite)));
-    });
+    return makePasswordReminderToken = function() {
+      var i, possible, text;
+      text = '';
+      possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      i = 0;
+      while (i < 60) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+        i++;
+      }
+      return text;
+    };
   }
 };

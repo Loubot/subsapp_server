@@ -3,6 +3,7 @@ module.exports.policies =
   AuthController: '*': true
   WebController: '*': true
   InviteController: '*': true
+  PasswordReminderController: '*': true
   # BusinessController: '*': true
 
 # ---

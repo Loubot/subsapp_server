@@ -23,10 +23,10 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       # console.log "Got user #{ JSON.stringify res }"
       $scope.user = res.data
       $scope.orgs = window.USER.orgs
-      $scope.org = return_org($scope.orgs, $location.search())
+      
     )
     console.log $location.search().id
-
+"https://ie-mg42.mail.yahoo.com/neo/launch?.rand=3kv9scfolg9ma#"
     $http(
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/get-team"
@@ -36,7 +36,7 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
     ).then ( ( res ) ->
       console.log "Get team result"
       console.log res
-      $scope.org = res.data.main_org.name
+      $scope.org = res.data.main_org
       $scope.team = res.data
     ), ( errResponse ) ->
       console.log "Get team error"

@@ -109,19 +109,15 @@ module.exports.routes = {
     controller: 'InviteController',
     action: 'get_invite'
   },
-  'get /': {
-    controller: 'PasswordReminderController',
-    action: 'get_remind'
-  },
-  'post /': {
+  'post /post_remind': {
     controller: 'PasswordReminderController',
     action: 'post_remind'
   },
-  'get /reset/{token}': {
+  'get /get_reset': {
     controller: 'PasswordReminderController',
     action: 'get_reset'
   },
-  'post /reset': {
+  'post /post_reset': {
     controller: 'PasswordReminderController',
     action: 'post_reset'
   }

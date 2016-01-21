@@ -9,5 +9,8 @@ module.exports.policies = {
   },
   InviteController: {
     '*': true
+  },
+  PasswordReminderController: {
+    '*': true
   }
 };
