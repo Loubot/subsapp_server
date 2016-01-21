@@ -40,6 +40,11 @@ module.exports = {
       required: true,
       defaultsTo: false
     },
+    under_age: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
+    },
     orgs: {
       collection: 'org',
       via: 'admins'
@@ -79,11 +84,23 @@ module.exports = {
     next();
   },
   create_players: function(player_array, cb) {
-    var i, len, player;
+    var i, len, player, x;
+    x = new Array();
     for (i = 0, len = player_array.length; i < len; i++) {
       player = player_array[i];
-      sails.log.debug(player);
+      User.create({
+        email: player[4],
+        firstName: player[0],
+        lastName: player[1]
+      }).then(function(user) {
+        sails.log.debug("User created " + (JSON.stringify(user)));
+        return x.push(player);
+      })["catch"](function(err) {
+        sails.log.debug("User create error " + (JSON.stringify(err)));
+        cb(err);
+        return false;
+      });
     }
-    return cb(null, 'hello');
+    return cb(null, x);
   }
 };

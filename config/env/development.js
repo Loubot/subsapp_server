@@ -19,6 +19,7 @@ module.exports = {
 
   models: {
     connection: 'subsapp_db'
+    // connection: 'subsapp_db_prod'
     
   }
 

@@ -44,7 +44,12 @@ module.exports =
     team_admin:
       type: 'boolean'
       required: true
-      defaultsTo: false  
+      defaultsTo: false
+
+    under_age:
+      type: 'boolean'
+      required: true
+      defaultsTo: false
 
     orgs:
       collection: 'org'
@@ -103,6 +108,15 @@ module.exports =
 #3=DOB
 #4=Email
   create_players: ( player_array, cb ) ->
+    x = new Array()
     for player in player_array
-      sails.log.debug player
-    cb(null, 'hello')
+      User.create( email: player[4], firstName: player[0], lastName: player[1]).then( ( user ) ->
+        sails.log.debug "User created #{ JSON.stringify user }"
+        x.push player
+
+      ).catch( ( err ) ->
+        sails.log.debug "User create error #{ JSON.stringify err }"
+        cb( err )
+        return false
+      )
+    cb(null, x)
