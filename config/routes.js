@@ -129,13 +129,6 @@ module.exports.routes = {
     controller: 'PasswordReminderController',
     action: 'post_remind'
   },
-<<<<<<< HEAD
-  'get /reset/{reminder_token}': {
-    controller: 'PasswordReminderController',
-    action: 'get_reset'
-  },
-=======
->>>>>>> margarita
   'post /reset': {
     controller: 'PasswordReminderController',
     action: 'post_reset'
