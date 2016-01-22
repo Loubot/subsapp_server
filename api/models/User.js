@@ -91,7 +91,8 @@ module.exports = {
       User.create({
         email: player[4],
         firstName: player[0],
-        lastName: player[1]
+        lastName: player[1],
+        under_age: true
       }).then(function(user) {
         sails.log.debug("User created " + (JSON.stringify(user)));
         return x.push(player);

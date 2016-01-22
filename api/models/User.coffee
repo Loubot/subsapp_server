@@ -110,7 +110,7 @@ module.exports =
   create_players: ( player_array, cb ) ->
     x = new Array()
     for player in player_array
-      User.create( email: player[4], firstName: player[0], lastName: player[1]).then( ( user ) ->
+      User.create( email: player[4], firstName: player[0], lastName: player[1], under_age: true).then( ( user ) ->
         sails.log.debug "User created #{ JSON.stringify user }"
         x.push player
 

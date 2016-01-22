@@ -15,7 +15,8 @@ angular.module('subzapp').controller('OrgController', [
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {}), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
-        return window.USER = null;
+        window.USER = null;
+        return $state.go('login');
       });
     } else {
       console.log("USER already defined");

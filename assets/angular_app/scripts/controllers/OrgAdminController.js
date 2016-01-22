@@ -20,26 +20,28 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.user = window.USER;
       $scope.orgs = window.USER.orgs;
       $scope.show_team_admin = window.USER.orgs.length === 0;
-      return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/get-teams",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
-        },
-        params: {
-          org_id: $scope.org.id
-        }
-      }).then((function(org_and_teams) {
-        console.log("Get org and teams");
-        console.log(org_and_teams.data.teams);
-        return $scope.teams = org_and_teams.data.teams;
-      }), function(errResponse) {
-        console.log("Get teams failed");
-        console.log(errResponse);
-        return message.error('Failed to fetch teams');
-      });
+      if ($scope.org != null) {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/get-teams",
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json",
+            'Content-Type': 'application/json'
+          },
+          params: {
+            org_id: $scope.org.id
+          }
+        }).then((function(org_and_teams) {
+          console.log("Get org and teams");
+          console.log(org_and_teams.data.teams);
+          return $scope.teams = org_and_teams.data.teams;
+        }), function(errResponse) {
+          console.log("Get teams failed");
+          console.log(errResponse);
+          return message.error('Failed to fetch teams');
+        });
+      }
     }));
     $scope.org_create = function() {
       user_token = window.localStorage.getItem('user_token');
