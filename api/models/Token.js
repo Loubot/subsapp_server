@@ -5,7 +5,6 @@
  * @description :: Model for storing tokens
  */
 module.exports = {
-  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,

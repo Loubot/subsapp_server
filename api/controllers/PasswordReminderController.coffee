@@ -54,30 +54,36 @@ module.exports = {
     #   )
 
 
-    # post_reset: (req, res) ->
-    # sails.log.debug "Hit PasswordReminder controller/post_reset"
-    # sails.log.debug "params #{ JSON.stringify req.body }"
+    post_reset: (req, res) ->
+    sails.log.debug "Hit PasswordReminder controller/reset"
+    sails.log.debug "params #{ JSON.stringify req.body }"
 
-    # PasswordReminder.findOne( remind_password_token: req.body.reminder_token ).then( ( passwordReminder ) ->
-    #   sails.log.debug "Found user #{ JSON.stringify passwordReminder }"
-    
-    #   User.findOne( email: passwordReminder.email ).then( ( user ) ->
-    #     sails.log.debug "Found user #{ JSON.stringify user }"
+    PasswordReminder.findOne( remind_password_token: req.body.reminder_password_token ).then( ( passwordReminder ) ->
+      sails.log.debug "Found PasswordReminder #{ JSON.stringify passwordReminder }"
+      message: 'Password Reminder found'
+      
 
-    #     if user?
-    #       User.Update( password:req.body.password).exec ( ( err, password ) ->  
-    #         sails.log.debug "User exists #{JSON.stringify user}"
-    #         res.json user: user, message: 'User is Updated'
-    #         sails.log.debug "Password reminder created #{ JSON.stringify password }"
-           
-    #       )  
-    #     else
-    #         sails.log.debug "User Not Updated #{ JSON.stringify user }"
-    #         sails.log.debug "User Update err #{ JSON.stringify err }" if err?
-    #         res.json user: user, message: 'No user in database exists'
-        
-    #   )
-    # )
+      if passwordReminder?
+        User.findOne( email: passwordReminder.email ).then( ( user ) ->
+          sails.log.debug "Found user #{ JSON.stringify user }"
+          hashedPassword = CipherService.hashPassword password
+          message: 'User found'
+
+          if user?
+            User.Update( password:hashedPassword).exec ( ( err, password ) ->  
+              sails.log.debug "User exists #{JSON.stringify user}"
+              res.json user: user, message: 'User is Updated'
+              sails.log.debug "Password reminder created #{ JSON.stringify password }"
+             
+            )  
+          else
+              sails.log.debug "User Not Updated #{ JSON.stringify user }"
+              sails.log.debug "User Update err #{ JSON.stringify err }" if err?
+              res.json user: user, message: 'No user in database exists'
+
+          
+      )
+    )
 
   }
 

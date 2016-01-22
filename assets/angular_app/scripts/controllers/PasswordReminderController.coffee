@@ -12,55 +12,45 @@ angular.module('subzapp').controller('PasswordReminderController', [
   ( $scope, $state, $http, $window, message, user, $location, RESOURCES ) ->
     console.log 'PasswordReminder Controller'
     user_token = window.localStorage.getItem 'user_token'
-    remind_password_token = $location.search().remind_password_token
-
-   # $http(
-   #    method: 'GET'
-   #    url: "#{ RESOURCES.DOMAIN }/get_reset"
-   #    params:
-   #      remind_password_token: $location.search().remind_password_token
-   #  ).then ( ( response ) ->
-   #    console.log "Get Reset response"
-   #    console.log response.data
-   #    # $scope.register_manager_form_data = response.data
-   #    # $scope.register_manager_form_data.invited_email = response.data.invited_email
-   #    $scope.post_reset_form_data = response.data
-   #    $scope.post_reset_form_data.email = response.data.email
-   #    $scope.post_reset_form.remind_password_token = response.data.remind_password_token
-
-   #  ), ( errResponse ) ->
-   #    console.log "Get Reset error"
-   #    console.log errResponse
+    #reminder_token = window.location.search.href
+    console.log window.location.search.substring 1
+    
 
 
-    # $scope.post_reset = ->
-    #   console.log JSON.stringify $scope.post_reset_form_data
+    $scope.post_reset = ->
+      console.log JSON.stringify $scope.post_reset_form_data
       
-    #   console.log $scope.post_reset_form_data
+      console.log $scope.post_reset_form_data 
+      
 
-    #   if ($scope.post_reset_form_data.password == $scope.post_reset_form_data.password_confirm )
-    #     validated_password = $scope.post_reset_form_data.password
 
-    #   $http(
-    #     method: 'POST'
-    #     url: "#{ RESOURCES.DOMAIN }/post_reset"
-    #     data: 
+      if ($scope.post_reset_form_data.password == $scope.post_reset_form_data.password_confirm )
+        validated_password = $scope.post_reset_form_data.password
+      else
+        validate_password = null
 
-    #       password: validated_password
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/reset"
+        headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
+        data: 
+          remind_password_token: window.location.search.substring 1
+          password: validated_password
           
-    #   ).then ( (response) ->      
-    #     console.log "Password Reset successfull "
-    #     console.log response
-    #     #window.localStorage.setItem 'user_token', response.data.data.token
-    #     # console.log "user_token " + window.localStorage.getItem 'user_token'
-    #     #window.localStorage.setItem 'user_id', response.data.data.user.id
-    #     $state.go 'login'
-    #   ), ( errResponse ) ->
-    #     console.log "Password Reset failed "
-    #     setTimeout ( ->
-    #       $state.go 'login' 
-    #     ), 5000
-    #     console.log errResponse
+      ).then ( (response) ->      
+        console.log "Password Reset successfull "
+        console.log response
+        console.log message "Remind password token" + remind_password_token
+        #window.localStorage.setItem 'user_token', response.data.data.token
+        # console.log "user_token " + window.localStorage.getItem 'user_token'
+        #window.localStorage.setItem 'user_id', response.data.data.user.id
+        $state.go 'login'
+      ), ( errResponse ) ->
+        console.log "Password Reset failed "
+        setTimeout ( ->
+          $state.go 'login' 
+        ), 5000
+        console.log errResponse
    
 
     $scope.password_remind = ->

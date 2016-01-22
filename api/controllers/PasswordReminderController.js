@@ -41,7 +41,7 @@ module.exports = {
         });
       }
     });
-    return makePasswordReminderToken = function() {
+    makePasswordReminderToken = function() {
       var i, possible, text;
       text = '';
       possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -52,5 +52,51 @@ module.exports = {
       }
       return text;
     };
+    ({
+      post_reset: function(req, res) {}
+    });
+    sails.log.debug("Hit PasswordReminder controller/reset");
+    sails.log.debug("params " + (JSON.stringify(req.body)));
+    return PasswordReminder.findOne({
+      remind_password_token: req.body.reminder_password_token
+    }).then(function(passwordReminder) {
+      sails.log.debug("Found PasswordReminder " + (JSON.stringify(passwordReminder)));
+      ({
+        message: 'Password Reminder found'
+      });
+      if (passwordReminder != null) {
+        return User.findOne({
+          email: passwordReminder.email
+        }).then(function(user) {
+          var hashedPassword;
+          sails.log.debug("Found user " + (JSON.stringify(user)));
+          hashedPassword = CipherService.hashPassword(password);
+          ({
+            message: 'User found'
+          });
+          if (user != null) {
+            return User.Update({
+              password: hashedPassword
+            }).exec((function(err, password) {
+              sails.log.debug("User exists " + (JSON.stringify(user)));
+              res.json({
+                user: user,
+                message: 'User is Updated'
+              });
+              return sails.log.debug("Password reminder created " + (JSON.stringify(password)));
+            }));
+          } else {
+            sails.log.debug("User Not Updated " + (JSON.stringify(user)));
+            if (typeof err !== "undefined" && err !== null) {
+              sails.log.debug("User Update err " + (JSON.stringify(err)));
+            }
+            return res.json({
+              user: user,
+              message: 'No user in database exists'
+            });
+          }
+        });
+      }
+    });
   }
 };

@@ -144,9 +144,9 @@ module.exports.routes =
         controller:             'PasswordReminderController'
         action:                 'post_remind'
 
-  'get /reset/{reminder_token}':
-        controller:             'PasswordReminderController'
-        action:                 'get_reset'
+  # 'get /reset/{reminder_token}':
+  #       controller:             'PasswordReminderController'
+  #       action:                 'get_reset'
 
   'post /reset':
         controller:             'PasswordReminderController'

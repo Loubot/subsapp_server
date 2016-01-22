@@ -2,10 +2,43 @@
 'use strict';
 angular.module('subzapp').controller('PasswordReminderController', [
   '$scope', '$state', '$http', '$window', 'message', 'user', '$location', 'RESOURCES', function($scope, $state, $http, $window, message, user, $location, RESOURCES) {
-    var remind_password_token, user_token;
+    var user_token;
     console.log('PasswordReminder Controller');
     user_token = window.localStorage.getItem('user_token');
-    remind_password_token = $location.search().remind_password_token;
+    console.log(window.location.search.substring(1));
+    $scope.post_reset = function() {
+      var validate_password, validated_password;
+      console.log(JSON.stringify($scope.post_reset_form_data));
+      console.log($scope.post_reset_form_data);
+      if ($scope.post_reset_form_data.password === $scope.post_reset_form_data.password_confirm) {
+        validated_password = $scope.post_reset_form_data.password;
+      } else {
+        validate_password = null;
+      }
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/reset",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        data: {
+          remind_password_token: window.location.search.substring(1),
+          password: validated_password
+        }
+      }).then((function(response) {
+        console.log("Password Reset successfull ");
+        console.log(response);
+        console.log(message("Remind password token" + remind_password_token));
+        return $state.go('login');
+      }), function(errResponse) {
+        console.log("Password Reset failed ");
+        setTimeout((function() {
+          return $state.go('login');
+        }), 5000);
+        return console.log(errResponse);
+      });
+    };
     return $scope.password_remind = function() {
       console.log($scope.password_remind_data);
       return $http({
