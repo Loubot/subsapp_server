@@ -44,9 +44,6 @@ module.exports = {
       id: req.body.team_id
     }).then(function(team) {
       return sails.log.debug("Team destroy response " + (JSON.stringify(team)));
-<<<<<<< HEAD
-    })["catch"](function(err) {
-=======
     }).then(Org.findOne({
       id: req.body.org_id
     }).populate('teams').exec(function(err, org) {
@@ -56,7 +53,6 @@ module.exports = {
       sails.log.debug("Org found " + (JSON.stringify(org)));
       return res.json(org);
     }))["catch"](function(err) {
->>>>>>> margarita
       sails.log.debug("Team destroy error " + (JSON.stringify(err)));
       return res.serverError(err);
     }).done(function() {

@@ -63,37 +63,5 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       console.log(errResponse);
       return message.error(errResponse.message);
     });
-<<<<<<< HEAD
-    return $scope.invite_manager = function() {
-      console.log($scope.invite_manager_data);
-      return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/invite-manager",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
-        },
-        data: {
-          org_id: $scope.org.id,
-          team_id: $location.search().id,
-          club_admin: $scope.user.id,
-          club_admin_email: $scope.user.email,
-          invited_email: $scope.invite_manager_data.invited_email,
-          main_org_name: $scope.org.name,
-          team_name: $scope.team.name
-        }
-      }).then((function(response) {
-        console.log("Send invite mail");
-        console.log(response);
-        return message.success("Invite sent ok");
-      }), function(errResponse) {
-        console.log("Send invite mail");
-        console.log(errResponse);
-        return message.error(errResponse.message);
-      });
-    };
-=======
->>>>>>> margarita
   }
 ]);
