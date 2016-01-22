@@ -38,8 +38,7 @@ angular.module('subzapp').controller('OrgController', [
         method: 'GET'
         url: "#{ RESOURCES.DOMAIN }/parse-users"
         headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
       ).then ( ( res ) ->
         console.log "parse users response"
@@ -55,8 +54,7 @@ angular.module('subzapp').controller('OrgController', [
         method: 'GET'
         url: "#{ RESOURCES.DOMAIN }/aws"
         headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
       ).then ( ( res ) ->
         console.log "aws response"

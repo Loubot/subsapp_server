@@ -25,8 +25,7 @@ angular.module('subzapp').controller('EditUserController', [
         url: RESOURCES.DOMAIN + "/edit-user",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         data: {
           id: $scope.user.id,

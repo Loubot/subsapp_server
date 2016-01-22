@@ -27,7 +27,7 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       
     )
     console.log $location.search().id
-"https://ie-mg42.mail.yahoo.com/neo/launch?.rand=3kv9scfolg9ma#"
+# "https://ie-mg42.mail.yahoo.com/neo/launch?.rand=3kv9scfolg9ma#"
     $http(
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/get-team"
@@ -51,8 +51,7 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/invite-manager"
         headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
         data:
           org_id: $scope.org.id

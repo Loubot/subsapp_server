@@ -26,8 +26,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           url: RESOURCES.DOMAIN + "/get-teams",
           headers: {
             'Authorization': "JWT " + user_token,
-            "Content-Type": "application/json",
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
           },
           params: {
             org_id: $scope.org.id
@@ -44,6 +43,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       }
     }));
     $scope.org_create = function() {
+      console.log(RESOURCES.DOMAIN + "/create-business");
       user_token = window.localStorage.getItem('user_token');
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log(JSON.stringify($scope.business_form_data));
@@ -52,8 +52,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         url: RESOURCES.DOMAIN + "/create-business",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         data: $scope.business_form_data
       }).then((function(response) {
@@ -75,8 +74,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         url: RESOURCES.DOMAIN + "/org-admins",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         params: {
           org_id: $scope.org.id
@@ -99,8 +97,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         url: RESOURCES.DOMAIN + "/create-team",
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         data: $scope.team_form_data
       }).then((function(response) {
@@ -122,8 +119,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         method: 'DELETE',
         headers: {
           'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         data: {
           team_id: id,

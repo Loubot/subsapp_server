@@ -49,7 +49,7 @@ module.exports.routes =
 
   # Business controller
 
-  'post /create_business' : # Create new org. See org.coffee for attributes
+  'post /create-business' : # Create new org. See org.coffee for attributes
         controller:             'OrgController'
         action:                 'create_business'
 

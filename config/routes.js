@@ -41,7 +41,7 @@ module.exports.routes = {
     controller: 'UserController',
     action: 'get_user_teams'
   },
-  'post /create_business': {
+  'post /create-business': {
     controller: 'OrgController',
     action: 'create_business'
   },
