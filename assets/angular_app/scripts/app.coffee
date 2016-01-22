@@ -90,7 +90,7 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       templateUrl : 'angular_app/views/password_reminder/password_reminder.html'
       controller : 'PasswordReminderController'
 
-    $stateProvider.state 'password-reset',
+    $stateProvider.state 'post_reset',
       url: '/password/reset'
       templateUrl : 'angular_app/views/password_reminder/password_reset.html'
       controller : 'PasswordReminderController'

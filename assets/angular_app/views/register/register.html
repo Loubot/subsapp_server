@@ -1,6 +1,6 @@
-<div class="container-fluid text-center">
+<!-- <div class="container-fluid text-center">
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
-</div>
+</div> -->
 <div class="row">
 
   <div class="col-xs-2">
@@ -8,27 +8,32 @@
   </div>
   <div class="col-xs-8">    
 
-    <form class="form-horizontal register_form" 
+    <form class="form-horizontal register_form" id="login_form"
             ng-submit="register_submit()" 
             method="post" enctype="application/x-www-form-urlencoded">
 
       <div class="form-group">
-        <label class="col-sm-2">Email: </label>
-        <div class="col-sm-10">
+        <label class="col-sm-3">Email: </label>
+        <div class="col-sm-8">
           <input type="email" name="email" ng-model="register_form_data.email" class="form-control" placeholder='email' required>
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
       <div class="form-group">
-        <label class="col-sm-2">Password: </label>
-        <div class="col-sm-10">
+        <label class="col-sm-3">Password: </label>
+        <div class="col-sm-8">
           <input type="password" name="password" ng-model="register_form_data.password" class="form-control user_password"   placeholder='password' required>
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
       <div class="form-group text-center">
-        <input type="submit" value="Register" class="btn btn-default btn btn-success btn-lg register">
-        <a href="#/" class="btn btn-default btn btn-info btn-lg login">Go home</a>
+        <div class="col-sm-5">
+          <input type="submit" value="Register" class="btn btn-default btn btn-success btn-lg register">
+        </div>
+
+        <div class="col-sm-7">
+          <a href="#/" class="btn btn-default btn btn-info btn-lg login">Go home</a>
+        </div>
       </div> <!-- end of form-group text-center -->
 
       <div class="message">
