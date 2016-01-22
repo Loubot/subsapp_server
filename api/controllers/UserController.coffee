@@ -7,7 +7,7 @@
 
 module.exports = {
   edit_user: (req, res) ->
-    sails.log.debug "Hit the User controller/edit_user"      
+    sails.log.debug "Hit the User controller/edit-user"      
     sails.log.debug "params #{ JSON.stringify req.body }"
     User.update( id: req.body.id, { firstName: req.body.firstName, lastName: req.body.lastName }).then( (result) ->
       sails.log.debug "User update response #{ JSON.stringify result }"
@@ -29,6 +29,20 @@ module.exports = {
       sails.log.debug "Teams find error #{ JSON.stringify err }"
       res.serverError err
     )
+
+
+  # password_remind: ( req, res ) ->
+  #   sails.log.debug "Hit the UserController/get_user_teams"
+  #   sails.log.debug "Data #{ JSON.stringify req.query }"
+  #   User.find( { id: req.query.user } ).populate('token').then( ( users ) ->
+  #     sails.log.debug "Teams find #{ JSON.stringify user }"
+  #     res.ok teams
+  #   ).catch( ( err ) ->
+  #     sails.log.debug "Teams find error #{ JSON.stringify err }"
+  #     res.serverError err
+  #   )
+
+
 
     # Post.findOne(req.param('id')).populate('user').populate('comments').then((post) ->
     #   commentUsers = User.find(id: _.pluck(post.comments, 'user')).then((commentUsers) ->

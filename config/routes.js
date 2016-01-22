@@ -22,7 +22,7 @@
  * http://sailsjs.org/#!/documentation/concepts/Routes/RouteTargetSyntax.html
  */
 module.exports.routes = {
-  'post /auth/team_manager_signup': {
+  'post /auth/signup/team_manager': {
     controller: 'AuthController',
     action: 'team_manager_signup'
   },
@@ -33,7 +33,7 @@ module.exports.routes = {
     controller: 'WebController',
     action: 'login'
   },
-  'post /edit-user': {
+  'post /user/edit': {
     controller: 'UserController',
     action: 'edit_user'
   },
@@ -41,7 +41,7 @@ module.exports.routes = {
     controller: 'UserController',
     action: 'get_user_teams'
   },
-  'post /create-business': {
+  'post /create_business': {
     controller: 'OrgController',
     action: 'create_business'
   },
@@ -124,5 +124,17 @@ module.exports.routes = {
   'get /aws': {
     controller: 'FileController',
     action: 'aws'
+  },
+  'post /post_remind': {
+    controller: 'PasswordReminderController',
+    action: 'post_remind'
+  },
+  'get /reset/{reminder_token}': {
+    controller: 'PasswordReminderController',
+    action: 'get_reset'
+  },
+  'post /reset': {
+    controller: 'PasswordReminderController',
+    action: 'post_reset'
   }
 };

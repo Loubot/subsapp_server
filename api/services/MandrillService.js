@@ -30,5 +30,29 @@ module.exports = {
       sails.log.debug('A mandrill error occurred: ' + e.name + ' - ' + e.message);
       res.serverError("Error sending email", e.message);
     });
+  },
+  password_remind: function(remind_password_token, email) {
+    var async, message;
+    message = {
+      'html': "<a href='http://localhost:1337/#/password/reset?remind_password_token=" + remind_password_token + "'>Click here to Reset your password</a>",
+      'text': email,
+      'subject': 'Reset Your Password',
+      'from_email': 'loubot@subzapp.ie',
+      'to': [
+        {
+          'email': email
+        }
+      ]
+    };
+    async = false;
+    return m.messages.send({
+      'message': message,
+      'async': async
+    }, (function(result) {
+      sails.log.debug("result " + JSON.stringify(result));
+    }), function(e) {
+      sails.log.debug('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+      res.serverError("Error sending email", e.message);
+    });
   }
 };

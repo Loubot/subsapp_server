@@ -10,7 +10,11 @@ module.exports.policies = {
   InviteController: {
     '*': true
   },
+<<<<<<< HEAD
   FileController: {
+=======
+  PasswordReminderController: {
+>>>>>>> margarita
     '*': true
   }
 };

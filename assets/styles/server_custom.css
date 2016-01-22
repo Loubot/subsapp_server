@@ -12,8 +12,17 @@ body{
 }
 
 
+.form-group{
+
+  background:#528B8B  ;
+  padding:15px 15px 15px 15px;
+}
+
+
 .subs_app_logo{
   margin: 0 auto;
+  margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 .user_page{
@@ -93,3 +102,31 @@ body{
 .black_text{
   color: #111 !important;
 }
+
+.btn{
+
+  width: 50%;
+}
+
+#reference a:link {
+    text-decoration: none;
+    color:#ffffff;
+    font-size: 1em;
+   
+    font-weight: bold;
+}
+
+#reference a:visited {
+    text-decoration: none;
+    color:#fff;
+}
+
+#reference a:hover {
+    text-decoration: underline;
+    color:#000;
+}
+
+#reference a:active {
+    text-decoration: underline;
+}
+};

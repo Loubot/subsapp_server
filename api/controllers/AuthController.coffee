@@ -56,6 +56,8 @@ module.exports =
       }
     ).then(res.created).catch res.serverError
     return
+
+    
   signin: (req, res) ->
     passport.authenticate('local', _onPassportAuth.bind(this, req, res)) req, res
     return

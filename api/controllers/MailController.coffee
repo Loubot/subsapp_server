@@ -6,9 +6,7 @@
 ###
 
 module.exports = {
-    
-  
- 
+     
   send_mail: (req, res) ->
     sails.log.debug "Mandrill" +  MandrillService.m
     sails.log.debug "Params #{ JSON.stringify req.body }"
@@ -20,6 +18,35 @@ module.exports = {
       'from_email': 'loubot@subzapp.ie'
       'to': [ {
         'email': req.body.manager_email
+        }
+      ]
+    async = false
+    m.messages.send {
+      'message': message
+      'async': async
+    }, ((result) ->
+      sails.log.debug "result " +  JSON.stringify result
+      res.ok "Email delivered ok"
+      return
+    ), (e) ->
+      # Mandrill returns the error as an object with name and message keys
+      sails.log.debug 'A mandrill error occurred: ' + e.name + ' - ' + e.message
+      # A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+      res.serverError "Error sending email", e.message
+      return
+
+
+  password_remind:(req,res)->
+    sails.log.debug "Mandrill" +  MandrillService.m
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    m = MandrillService.m
+    message = 
+      'html': "<a href='#{ req.body.url }'>Click here to reset your password</a>"
+      'text': req.body.url
+      'subject': 'Reset Your Password'
+      'from_email': 'loubot@subzapp.ie'
+      'to': [ {
+        'email': req.body.user_email
         }
       ]
     async = false

@@ -26,7 +26,7 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       controller : "UserController"
 
     $stateProvider.state "edit-user",
-      url : "/edit-user"
+      url : "/user/edit"
       templateUrl : 'angular_app/views/user/edit_user.html'
       controller : "EditUserController"
 
@@ -73,6 +73,8 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       url: '/team-manager-home'
       templateUrl : 'angular_app/views/team/team_manager_home.html'
       controller : 'TeamController'
+
+      
     $stateProvider.state 'team_manager',
       url: '/team-manager'
       templateUrl : 'angular_app/views/team/team_manager.html'
@@ -82,6 +84,17 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       url: '/event'
       templateUrl : 'angular_app/views/event/event.html'
       controller : 'EventController'
+
+    $stateProvider.state 'password-reminder',
+      url: '/password/remind'
+      templateUrl : 'angular_app/views/password_reminder/password_reminder.html'
+      controller : 'PasswordReminderController'
+
+    $stateProvider.state 'password-reset',
+      url: '/password/reset'
+      templateUrl : 'angular_app/views/password_reminder/password_reset.html'
+      controller : 'PasswordReminderController'
+
 
 
 angular.module('subzapp').constant 'RESOURCES', do ->

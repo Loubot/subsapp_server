@@ -21,7 +21,12 @@
 ###
 
 module.exports.routes = 
-  'post /auth/team_manager_signup' :
+
+   # 'post /auth/signup' :
+   #      controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
+   #      action :                 'signup'
+
+  'post /auth/signup/team_manager' :
         controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
         action :                 'team_manager_signup'
         
@@ -31,7 +36,7 @@ module.exports.routes =
         action :                'login'
 
   # User controller   update user attributes. See user.coffee
-  'post /edit-user' :
+  'post /user/edit' :
         controller:             'UserController'
         action:                 'edit_user'
 
@@ -44,7 +49,7 @@ module.exports.routes =
 
   # Business controller
 
-  'post /create-business' : # Create new org. See org.coffee for attributes
+  'post /create_business' : # Create new org. See org.coffee for attributes
         controller:             'OrgController'
         action:                 'create_business'
 
@@ -133,6 +138,7 @@ module.exports.routes =
         controller:             'InviteController'
         action:                 'get_invite'
 
+
   # File controller
 
   'post /upload-file':
@@ -148,6 +154,25 @@ module.exports.routes =
         action:                 'aws'
 
   # End of file controller
+
+  #Password reminder routes
+
+  # 'get /get_remind':
+  #       controller:             'PasswordReminderController'
+  #       action:                 'get_remind'
+
+  'post /post_remind':
+        controller:             'PasswordReminderController'
+        action:                 'post_remind'
+
+  'get /reset/{reminder_token}':
+        controller:             'PasswordReminderController'
+        action:                 'get_reset'
+
+  'post /reset':
+        controller:             'PasswordReminderController'
+        action:                 'post_reset'
+
 
   # #Mail controller
 
