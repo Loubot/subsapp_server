@@ -5,10 +5,10 @@ angular.module('subzapp').controller('RegisterManagerController', [
   '$state'
   '$http'
   '$window'
-  'message'
+  'alertify'
   '$location'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, $location, RESOURCES ) ->
+  ( $scope, $state, $http, $window, alertify, $location, RESOURCES ) ->
     console.log 'Register Manager Controller'
     $scope.register_manager_form_data = $location.search()
 

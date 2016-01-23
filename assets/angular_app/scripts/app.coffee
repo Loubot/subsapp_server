@@ -11,10 +11,11 @@ angular.module('subzapp', [
     'ui.router'
     'ngRoute'
     'ui.bootstrap.datetimepicker'
+    "ngAlertify"
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')
-
+  
 #routes, using angular-ui-router
 angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
 
@@ -108,25 +109,7 @@ angular.module('subzapp').constant 'RESOURCES', do ->
     # USERS_API: resource + '/users'
     # BASIC_INFO: resource + '/api/info'
   }
-
-angular.module('subzapp').factory 'message', ->
-  error: (mes) ->
-    $('.message').removeClass 'success_message'
-    $('.message').addClass 'error_message'
-    $('.message').text mes
-    $('.message').show 'slide', { direction: 'right' }, 1000
-    setTimeout ( ->
-      $('.message').hide 'slide', { direction: 'left' }, 1000
-    ), 10000
-
-  success: ( mes ) ->
-    $('.message').removeClass 'error_message'
-    $('.message').addClass 'success_message'
-    $('.message').text mes
-    $('.message').show 'slide', { direction: 'right' }, 1000
-    setTimeout ( ->
-      $('.message').hide 'slide', { direction: 'left' }, 1000
-    ), 10000
+  
   
 
 angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->

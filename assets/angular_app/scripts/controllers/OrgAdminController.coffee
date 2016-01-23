@@ -5,17 +5,20 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$state'
   '$http'
   '$window'
-  'message'
   'user'
   '$location'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, user, $location, RESOURCES ) ->
+  'alertify'
+  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify ) ->
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
-        message.error 'You are not a club admin. Contact subzapp admin team for assitance'
+        alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
 
     console.log 'OrgAdmin Controller'
+
+    alertify.success("Success log message")
+
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
       # console.log "Got user "
@@ -42,7 +45,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         ), ( errResponse ) ->
           console.log "Get teams failed"
           console.log  errResponse
-          message.error 'Failed to fetch teams'
+          alertify.error 'Failed to fetch teams'
     )
 
     $scope.org_create = ->
@@ -109,14 +112,14 @@ angular.module('subzapp').controller('OrgAdminController', [
       ).then ( ( response ) ->
         console.log "Team create"
         console.log response
-        message.success response.data.message
+        alertify.success response.data.message
         $scope.teams = response.data.org.teams
         $scope.team_form.$setPristine()
         $scope.team_form_data = ''
       ), ( errResponse ) ->
         console.log "Team create error"
         console.log errResponse
-        message.error errResponse
+        alertify.error errResponse
 
     $scope.delete_team = ( id ) ->
       $http(

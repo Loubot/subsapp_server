@@ -5,11 +5,11 @@ angular.module('subzapp').controller('PasswordReminderController', [
   '$state'
   '$http'
   '$window'
-  'message'
   'user'
   '$location'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, user, $location, RESOURCES ) ->
+  'alertify'
+  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify ) ->
     console.log 'PasswordReminder Controller'
     user_token = window.localStorage.getItem 'user_token'
     remind_password_token = $location.search().remind_password_token
@@ -76,11 +76,11 @@ angular.module('subzapp').controller('PasswordReminderController', [
       ).then ( ( response ) ->
         console.log "Send password reminder mail"
         console.log response
-        message.success "Password Reminder sent ok"
+        alertify.success "Password Reminder sent ok"
       ), ( errResponse ) ->
         console.log "Send Password Reminder email"
         console.log errResponse
-        message.error errResponse.message
+        alertify.error errResponse.message
         $state.go 'password-reminder' 
 ])
 

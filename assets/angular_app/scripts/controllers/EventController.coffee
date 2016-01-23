@@ -6,10 +6,10 @@ angular.module('subzapp').controller('EventController', [
   '$http'
   '$location'
   '$window'
-  'message'
   'user'
   'RESOURCES'
-  ( $scope, $state, $http, $location, $window, message, user, RESOURCES ) ->
+  'alertify'
+  ( $scope, $state, $http, $location, $window, user, RESOURCES, alertify ) ->
     console.log 'Event Controller'
     user_token = window.localStorage.getItem 'user_token'
 

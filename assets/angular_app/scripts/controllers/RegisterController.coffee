@@ -5,9 +5,9 @@ angular.module('subzapp').controller('RegisterController', [
   '$state'
   '$http'
   '$window'
-  'message'
+  'alertify'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, RESOURCES ) ->
+  ( $scope, $state, $http, $window, alertify, RESOURCES ) ->
     console.log 'Register Controller'
 
     $scope.register_submit = ->
@@ -35,7 +35,7 @@ angular.module('subzapp').controller('RegisterController', [
         console.log errResponse
         console.log errResponse.data.invalidAttributes.email[0].message        
        
-        message.error errResponse.data.invalidAttributes.email[0].message
+        alertify.error errResponse.data.invalidAttributes.email[0].message
        
         
 ])

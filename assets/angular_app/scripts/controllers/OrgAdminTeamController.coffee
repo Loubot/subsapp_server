@@ -5,16 +5,16 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
   '$state'
   '$http'
   '$window'
-  'message'
   'user'
   '$location'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, user, $location, RESOURCES ) ->
+  'alertify'
+  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify ) ->
     console.log 'OrgAdminTeam Controller'
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
-        message.error 'You are not a club admin. Contact subzapp admin team for assitance'
+        alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
         
 
     user_token = window.localStorage.getItem 'user_token'
@@ -64,10 +64,10 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       ).then ( ( response ) ->
         console.log "Send invite mail"
         console.log response
-        message.success "Invite sent ok"
+        alertify.success "Invite sent ok"
       ), ( errResponse ) ->
         console.log "Send invite mail"
         console.log errResponse
-        message.error errResponse.message 
+        alertify.error errResponse.message 
 ])
 

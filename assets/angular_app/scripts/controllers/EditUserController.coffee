@@ -5,10 +5,10 @@ angular.module('subzapp').controller('EditUserController', [
   '$state'
   '$http'
   '$window'
-  'message'
   'user'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, user, RESOURCES ) ->
+  'alertify'
+  ( $scope, $state, $http, $window, user, RESOURCES, alertify ) ->
     console.log 'User Controller'
   
     user_token = window.localStorage.getItem 'user_token'
@@ -43,9 +43,9 @@ angular.module('subzapp').controller('EditUserController', [
           lastName: $scope.user.lastName
       ).then ( (response) ->
         console.log "Edit user response #{ JSON.stringify response }"
-        message.success('User updated ok')
+        alertify.success('User updated ok')
       ), ( errResponse ) ->
         console.log "Edit user error #{ JSON.stringify errResponse }"
-
+        alertify.error "User not updated"
 
 ])

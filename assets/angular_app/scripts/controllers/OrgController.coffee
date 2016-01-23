@@ -7,14 +7,14 @@ angular.module('subzapp').controller('OrgController', [
   '$window'
   '$location'
   'user'
-  'message'
   'RESOURCES'
-  ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->
+  'alertify'
+  ( $scope, $state, $http, $window, $location, user, RESOURCES, alertify ) ->
     user_token = window.localStorage.getItem 'user_token'
 
     check_club_admin = ( user ) ->
       $state.go 'login' if !user.team_admin
-      message.error 'You are not a club admin. Contact subzapp admin team for assitance'
+      alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
       return false 
 
     console.log 'Org Controller'

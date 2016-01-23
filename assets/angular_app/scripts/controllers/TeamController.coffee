@@ -7,9 +7,9 @@ angular.module('subzapp').controller('TeamController', [
   '$window'
   '$location'
   'user'
-  'message'
+  'alertify'
   'RESOURCES'
-  ( $scope, $state, $http, $window, $location, user, message, RESOURCES ) ->    
+  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
@@ -71,12 +71,12 @@ angular.module('subzapp').controller('TeamController', [
         data: $scope.create_event_data
       ).then ( (res) ->
         # console.log "Create event response"
-        message.success("Event created")
+        alertify.success("Event created")
         console.log res.data
         $scope.events = res.data
       ), ( errResponse ) ->
         console.log "Create event error"
-        message.error "Create event failed"
+        alertify.error "Create event failed"
         console.log errResponse
   
 

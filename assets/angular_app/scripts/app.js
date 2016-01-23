@@ -3,7 +3,7 @@ window.USER = null;
 
 'use strict';
 
-angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker']);
+angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify"]);
 
 angular.module('subzapp').constant('API', 'api/v1/');
 
@@ -89,37 +89,6 @@ angular.module('subzapp').constant('RESOURCES', (function() {
     DOMAIN: url
   };
 })());
-
-angular.module('subzapp').factory('message', function() {
-  return {
-    error: function(mes) {
-      $('.message').removeClass('success_message');
-      $('.message').addClass('error_message');
-      $('.message').text(mes);
-      $('.message').show('slide', {
-        direction: 'right'
-      }, 1000);
-      return setTimeout((function() {
-        return $('.message').hide('slide', {
-          direction: 'left'
-        }, 1000);
-      }), 10000);
-    },
-    success: function(mes) {
-      $('.message').removeClass('error_message');
-      $('.message').addClass('success_message');
-      $('.message').text(mes);
-      $('.message').show('slide', {
-        direction: 'right'
-      }, 1000);
-      return setTimeout((function() {
-        return $('.message').hide('slide', {
-          direction: 'left'
-        }, 1000);
-      }), 10000);
-    }
-  };
-});
 
 angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
   console.log("user service");

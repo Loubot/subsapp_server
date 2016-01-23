@@ -3,15 +3,16 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', '$window', 'message', 'user', '$location', 'RESOURCES', function($scope, $state, $http, $window, message, user, $location, RESOURCES) {
+  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify) {
     var check_club_admin, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
-        return message.error('You are not a club admin. Contact subzapp admin team for assitance');
+        return alertify.error('You are not a club admin. Contact subzapp admin team for assitance');
       }
     };
     console.log('OrgAdmin Controller');
+    alertify.success("Success log message");
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
       check_club_admin(window.USER);
@@ -38,7 +39,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         }), function(errResponse) {
           console.log("Get teams failed");
           console.log(errResponse);
-          return message.error('Failed to fetch teams');
+          return alertify.error('Failed to fetch teams');
         });
       }
     }));
@@ -103,14 +104,14 @@ angular.module('subzapp').controller('OrgAdminController', [
       }).then((function(response) {
         console.log("Team create");
         console.log(response);
-        message.success(response.data.message);
+        alertify.success(response.data.message);
         $scope.teams = response.data.org.teams;
         $scope.team_form.$setPristine();
         return $scope.team_form_data = '';
       }), function(errResponse) {
         console.log("Team create error");
         console.log(errResponse);
-        return message.error(errResponse);
+        return alertify.error(errResponse);
       });
     };
     return $scope.delete_team = function(id) {
