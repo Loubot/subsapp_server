@@ -4,6 +4,10 @@
  * User
  * @description :: Model for storing users
  */
+var moment;
+
+moment = require('moment');
+
 module.exports = {
   autoUpdatedAt: true,
   autoCreatedAt: true,
@@ -25,6 +29,10 @@ module.exports = {
     },
     address: {
       type: 'text',
+      defaultsTo: ''
+    },
+    dob: {
+      type: 'date',
       defaultsTo: ''
     },
     password: {
@@ -84,23 +92,15 @@ module.exports = {
     next();
   },
   create_players: function(player_array, cb) {
-    var i, len, player, x;
+    var i, len, p, player, x;
     x = new Array();
     for (i = 0, len = player_array.length; i < len; i++) {
       player = player_array[i];
-      User.create({
-        email: player[4],
-        firstName: player[0],
-        lastName: player[1],
-        under_age: true
-      }).then(function(user) {
-        sails.log.debug("User created " + (JSON.stringify(user)));
-        return x.push(player);
-      })["catch"](function(err) {
-        sails.log.debug("User create error " + (JSON.stringify(err)));
-        cb(err);
-        return false;
-      });
+      sails.log.debug("PLayer dob " + player[3]);
+      x = moment.utc(player[3], "DD-MM-YYYY");
+      sails.log.debug("hopefull " + x);
+      p = x.format("DD-MM-YYYY ");
+      sails.log.debug("date again " + p);
     }
     return cb(null, x);
   }
