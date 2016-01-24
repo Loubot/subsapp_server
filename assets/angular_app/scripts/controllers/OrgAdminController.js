@@ -68,7 +68,6 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.edit_org = function(id) {
-      console.log("Org id " + $scope.org.id);
       $scope.show_team_admin = false;
       return $http({
         method: 'GET',
@@ -78,7 +77,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           "Content-Type": "application/json"
         },
         params: {
-          org_id: $scope.org.id
+          org_id: id
         }
       }).then((function(response) {
         console.log("get org-admins");

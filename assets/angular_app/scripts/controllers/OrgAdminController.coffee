@@ -77,7 +77,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.edit_org = ( id ) ->
       # $scope.org_id = id
-      console.log "Org id #{ $scope.org.id }"
+      # console.log "Org id #{ $scope.org.id }"
       $scope.show_team_admin = false
       $http(
         method: 'GET'
@@ -86,7 +86,7 @@ angular.module('subzapp').controller('OrgAdminController', [
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
         params:
-          org_id: $scope.org.id
+          org_id: id
       ).then ( ( response ) ->
         console.log "get org-admins"
         console.log response
