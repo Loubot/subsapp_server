@@ -78,7 +78,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           "Content-Type": "application/json"
         },
         params: {
-          org_id: $scope.org.id
+          org_id: id
         }
       }).then((function(response) {
         console.log("get org-admins");
