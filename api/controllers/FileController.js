@@ -97,13 +97,13 @@ module.exports = {
             obj = xlsx.parse(data.Body);
             player_array = obj[0].data;
             player_array.splice(0, 1);
-            return User.create_players(player_array, function(err, players) {
+            User.create_players(player_array, function(err, players) {
               sails.log.debug("Players " + (JSON.stringify(players)));
               if (err != null) {
-                sails.log.debug("Players error " + (JSON.stringify(err)));
+                return sails.log.debug("Players error " + (JSON.stringify(err)));
               }
-              return res.json(players);
             });
+            return res.json(obj[0].data);
           });
         });
       }

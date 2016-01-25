@@ -5,10 +5,9 @@ angular.module('subzapp').controller('UserController', [
   '$state'
   '$http'
   '$window'
-  'message'
   'user'
   'RESOURCES'
-  ( $scope, $state, $http, $window, message, user, RESOURCES ) ->
+  ( $scope, $state, $http, $window, user, RESOURCES ) ->
     console.log 'User Controller'
     
     user.get_user().then ( (res) ->

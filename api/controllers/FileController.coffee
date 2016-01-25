@@ -118,9 +118,8 @@ module.exports = {
               User.create_players( player_array, ( err, players ) ->
                 sails.log.debug "Players #{ JSON.stringify players }"
                 sails.log.debug "Players error #{ JSON.stringify err }" if err?
-                res.json players
               )
-              
+              res.json obj[0].data
 
       # (new (AWS.S3)).getObject {
       #   Bucket: 'subzapp'
