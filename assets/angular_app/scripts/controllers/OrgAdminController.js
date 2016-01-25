@@ -12,7 +12,6 @@ angular.module('subzapp').controller('OrgAdminController', [
       }
     };
     console.log('OrgAdmin Controller');
-    alertify.success("Success log message");
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
       check_club_admin(window.USER);
@@ -68,7 +67,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.edit_org = function(id) {
-      console.log("Org id " + $scope.org.id);
+      $scope.org_id = $scope.org.id;
+      console.log("Org id " + id);
       $scope.show_team_admin = false;
       return $http({
         method: 'GET',
@@ -91,7 +91,6 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.team_create = function() {
-      console.log("Org id " + $scope.org.id);
       $scope.team_form_data.org_id = $scope.org.id;
       return $http({
         method: 'POST',
