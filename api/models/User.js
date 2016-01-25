@@ -4,6 +4,10 @@
  * User
  * @description :: Model for storing users
  */
+var moment;
+
+moment = require('moment');
+
 module.exports = {
   autoUpdatedAt: true,
   autoCreatedAt: true,
@@ -26,6 +30,14 @@ module.exports = {
     address: {
       type: 'text',
       defaultsTo: ''
+    },
+    dob: {
+      type: 'string',
+      defaultsTo: ''
+    },
+    dob_stamp: {
+      type: 'datetime',
+      defaultsTo: null
     },
     password: {
       type: 'string'
@@ -92,10 +104,12 @@ module.exports = {
         email: player[4],
         firstName: player[0],
         lastName: player[1],
+        dob: player[3],
+        dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString(),
         under_age: true
       }).then(function(user) {
         sails.log.debug("User created " + (JSON.stringify(user)));
-        return x.push(player);
+        return x.push(user);
       })["catch"](function(err) {
         sails.log.debug("User create error " + (JSON.stringify(err)));
         cb(err);

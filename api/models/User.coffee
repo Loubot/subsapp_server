@@ -2,7 +2,7 @@
 # User
 # @description :: Model for storing users
 ###
-
+moment = require('moment')
 module.exports =
   # migrate: 'alter'
   # adapter: 'mysql',
@@ -33,6 +33,14 @@ module.exports =
     address: 
       type: 'text'
       defaultsTo: ''
+
+    dob:
+      type: 'string'
+      defaultsTo: ''
+
+    dob_stamp:
+      type: 'datetime'
+      defaultsTo: null
 
     password: type: 'string'
 
@@ -110,13 +118,25 @@ module.exports =
   create_players: ( player_array, cb ) ->
     x = new Array()
     for player in player_array
-      User.create( email: player[4], firstName: player[0], lastName: player[1], under_age: true).then( ( user ) ->
+      
+      User.create( 
+        email: player[4]
+        firstName: player[0] 
+        lastName: player[1]
+        dob: player[3]
+        dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString()
+        under_age: true
+      ).then( ( user ) ->
         sails.log.debug "User created #{ JSON.stringify user }"
-        x.push player
+        x.push user
 
       ).catch( ( err ) ->
         sails.log.debug "User create error #{ JSON.stringify err }"
         cb( err )
         return false
       )
+    #   d = moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"])
+    #   sails.log.debug "Date #{ d }"
+    #   c = d.unix()
+    #   sails.log.debug c
     cb(null, x)

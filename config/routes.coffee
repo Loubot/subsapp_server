@@ -100,7 +100,7 @@ module.exports.routes =
   # end of Team controller
 
   # PaymentController
-  'post /create-payment':     #Requires stripe token user id. Creates charge reduces users tokens amount. Returns user tokens amount
+  'post /create-payment':     #Requires stripe token user id, amount. Creates charge reduces users tokens amount. Returns user tokens amount
         controller:             'PaymentController'
         action:                 'create_payment'
 

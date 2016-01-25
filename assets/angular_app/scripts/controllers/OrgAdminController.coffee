@@ -17,7 +17,6 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     console.log 'OrgAdmin Controller'
 
-    alertify.success("Success log message")
 
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
@@ -76,8 +75,11 @@ angular.module('subzapp').controller('OrgAdminController', [
         $state.go 'login'
 
     $scope.edit_org = ( id ) ->
-      # $scope.org_id = id
-      # console.log "Org id #{ $scope.org.id }"
+
+      $scope.org_id = id
+
+      console.log "Org id #{ id }"
+
       $scope.show_team_admin = false
       $http(
         method: 'GET'
@@ -100,7 +102,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     
 
     $scope.team_create = ->
-      console.log "Org id #{ $scope.org.id }"
+      # console.log "Org id #{ $scope.org.id }"
       $scope.team_form_data.org_id = $scope.org.id
       $http(
         method: 'POST'
