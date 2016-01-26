@@ -1,0 +1,15 @@
+{
+  "name": "angular-file",
+  "homepage": "https://github.com/radify/angular-file",
+  "version": "0.1.1",
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.1",
+    "commit": "145f95b3a4920a220202f90a2712b6e13be9d909"
+  },
+  "_source": "https://github.com/radify/angular-file.git",
+  "_target": "~0.1.1",
+  "_originalSource": "https://github.com/radify/angular-file.git",
+  "_direct": true
+}

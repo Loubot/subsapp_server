@@ -9,7 +9,7 @@ module.exports = {
   
   upload: ( req, res ) ->
     sails.log.debug "Hit FileController/upload"
-    sails.log.debug req.file
+    sails.log.debug req.body
 
     # uploadFile = req.file('uploadFile')
     # sails.log.debug "uploaded file #{ JSON.stringify uploadFile }"
@@ -29,7 +29,7 @@ module.exports = {
       key: process.env.AWS_ACCESS_KEY_ID
       secret: process.env.AWS_SECRET_ACCESS_KEY
       # dirName: 'Lakewood'
-      saveAs: 'Lakewood/b.xls'  #folder/file
+      saveAs: 'Lakewood/z.xls'  #folder/file
       bucket: 'subzapp'
     }, (err, uploadedFiles) ->
       if err
@@ -37,9 +37,7 @@ module.exports = {
         res.negotiate err
       else
         sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles }"
-        res.json
-          files: uploadedFiles
-          textParams: req.params.all()
+        res.json 'Files uploaded ok'
 
     # req.file('uploadFile').upload { dirname: './assets/images' }, (err, uploadedFiles) ->
     #   if err
@@ -107,6 +105,10 @@ module.exports = {
               Key: 'x.xls'
             }, (err, data) ->
               sails.log.debug "AWS error #{ JSON.stringify err }" if err?
+              if err?
+                res.serverError err.message
+                return false
+
               tempFile.write data.Body if !err?
 
               sails.log.debug 'yippee'

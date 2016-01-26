@@ -21,7 +21,7 @@ angular.module('subzapp').controller('OrgController', [
     if !(window.USER?)
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify window.USER }"
-        
+        $scope.org = window.USER.orgs[0]
 
       ), ( errResponse ) ->
         console.log "User get error #{ JSON.stringify errResponse }"
@@ -48,6 +48,12 @@ angular.module('subzapp').controller('OrgController', [
         console.log "Parse users error"
         console.log errResponse
 
+    $scope.uploadComplete = (content) ->
+        $scope.response = JSON.parse(content)
+        console.log "Upload response "
+        console.log content
+
+        
     $scope.aws = ->
       
       $http(
@@ -57,13 +63,13 @@ angular.module('subzapp').controller('OrgController', [
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
       ).then ( ( res ) ->
-        console.log "aws response"
+        console.log "aws responses"
         console.log res
         $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "aws error"
         console.log errResponse
-    
+        alertify.error errResponse.data
 
 ])
 

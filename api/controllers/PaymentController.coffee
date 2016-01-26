@@ -29,7 +29,7 @@ module.exports = {
           token.save ( err, token ) ->
             sails.log.debug "Token saved #{ JSON.stringify token }"
             sails.log.debug "Token saved error #{ JSON.stringify err }" if (err?)
-            res.ok token: token, message: 'Tokens purchased successfully'
+            res.json token: token, message: 'Tokens purchased successfully'
 
 
       ).catch( ( err ) ->

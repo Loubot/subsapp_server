@@ -20,6 +20,10 @@ module.exports = {
       required: true,
       defaultsTo: null
     },
+    org: {
+      model: 'org',
+      columnName: 'org_id'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();

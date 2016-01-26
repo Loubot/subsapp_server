@@ -28,6 +28,7 @@
     "ionic-datepicker": "~0.9.0",
     "angular-bootstrap-datetimepicker": "~0.4.0",
     "moment": "~2.10.6",
-    "alertify.js": "alertifyjs#~1.0.8"
+    "alertify.js": "alertifyjs#~1.0.8",
+    "ngUpload": "https://github.com/twilson63/ngUpload.git#~0.5.18"
   }
 }

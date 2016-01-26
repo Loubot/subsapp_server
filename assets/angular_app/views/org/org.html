@@ -8,12 +8,9 @@
 
   </div>
   <div class="col-xs-9">
-    <form id="uploadForm"
-      enctype="multipart/form-data"
-      action="/file/upload"
-      method="post">
+    <form ng-upload="uploadComplete(content)" enctype="multipart/form-data" action="/file/upload" method="post">
       <input type="file" name="uploadFile" />
-      <input type="submit" value="submit" class="btn btn-lg btn-success"/>
+      <input type="submit" class="btn" value="Submit" ng-disabled="$isUploading"  />
     </form>
 
     <br><br>

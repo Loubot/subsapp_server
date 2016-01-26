@@ -5,7 +5,6 @@
  * @description :: Model for storing orgs
  */
 module.exports = {
-  migrate: 'alter',
   autoUpdatedAt: true,
   autoCreatedAt: true,
   autoPK: true,
@@ -32,6 +31,11 @@ module.exports = {
     org_members: {
       collection: 'user',
       via: 'user_orgs'
+    },
+    files: {
+      collection: 'filetracker',
+      via: 'org',
+      columnName: 'filetracker_id'
     },
     toJSON: function() {
       var obj;

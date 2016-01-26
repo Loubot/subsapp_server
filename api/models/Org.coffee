@@ -39,6 +39,11 @@ module.exports =
       collection: 'user'
       via: 'user_orgs'
 
+    files:
+      collection: 'filetracker'
+      via: 'org'
+      columnName: 'filetracker_id'
+
     
 
 

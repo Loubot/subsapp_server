@@ -32,7 +32,7 @@ module.exports = {
           if ((err != null)) {
             sails.log.debug("Token saved error " + (JSON.stringify(err)));
           }
-          return res.ok({
+          return res.json({
             token: token,
             message: 'Tokens purchased successfully'
           });

@@ -13,7 +13,9 @@ angular.module('subzapp').controller('OrgController', [
     };
     console.log('Org Controller');
     if (!(window.USER != null)) {
-      user.get_user().then((function(res) {}), function(errResponse) {
+      user.get_user().then((function(res) {
+        return $scope.org = window.USER.orgs[0];
+      }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
         window.USER = null;
         return $state.go('login');
@@ -39,6 +41,11 @@ angular.module('subzapp').controller('OrgController', [
         return console.log(errResponse);
       });
     };
+    $scope.uploadComplete = function(content) {
+      $scope.response = JSON.parse(content);
+      console.log("Upload response ");
+      return console.log(content);
+    };
     return $scope.aws = function() {
       return $http({
         method: 'GET',
@@ -48,12 +55,13 @@ angular.module('subzapp').controller('OrgController', [
           "Content-Type": "application/json"
         }
       }).then((function(res) {
-        console.log("aws response");
+        console.log("aws responses");
         console.log(res);
         return $scope.parsed_data = res;
       }), function(errResponse) {
         console.log("aws error");
-        return console.log(errResponse);
+        console.log(errResponse);
+        return alertify.error(errResponse.data);
       });
     };
   }

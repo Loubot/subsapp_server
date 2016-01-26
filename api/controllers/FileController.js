@@ -10,12 +10,12 @@ module.exports = {
   upload: function(req, res) {
     var uploadFile;
     sails.log.debug("Hit FileController/upload");
-    sails.log.debug(req.file);
+    sails.log.debug(req.body);
     return uploadFile = req.file('uploadFile').upload({
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,
-      saveAs: 'Lakewood/b.xls',
+      saveAs: 'Lakewood/z.xls',
       bucket: 'subzapp'
     }, function(err, uploadedFiles) {
       if (err) {
@@ -23,10 +23,7 @@ module.exports = {
         return res.negotiate(err);
       } else {
         sails.log.debug("Upload waheeeey " + (JSON.stringify(uploadedFiles)));
-        return res.json({
-          files: uploadedFiles,
-          textParams: req.params.all()
-        });
+        return res.json('Files uploaded ok');
       }
     });
   },
@@ -89,6 +86,10 @@ module.exports = {
             var obj, player_array;
             if (err != null) {
               sails.log.debug("AWS error " + (JSON.stringify(err)));
+            }
+            if (err != null) {
+              res.serverError(err.message);
+              return false;
             }
             if (err == null) {
               tempFile.write(data.Body);

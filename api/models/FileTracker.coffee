@@ -21,6 +21,9 @@ module.exports =
       required: true
       defaultsTo: null
    
+    org:
+      model: 'org'
+      columnName: 'org_id'
 
     
     toJSON: ->
