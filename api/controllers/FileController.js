@@ -10,8 +10,8 @@ module.exports = {
   upload: function(req, res) {
     var uploadFile;
     sails.log.debug("Hit FileController/upload");
-    sails.log.debug(req.body);
-    return uploadFile = req.file('uploadFile').upload({
+    sails.log.debug(JSON.stringify(req.file));
+    return uploadFile = req.file('file').upload({
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,

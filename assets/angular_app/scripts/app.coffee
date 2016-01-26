@@ -12,6 +12,7 @@ angular.module('subzapp', [
     'ngRoute'
     'ui.bootstrap.datetimepicker'
     "ngAlertify"
+    'ngFileUpload'
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')

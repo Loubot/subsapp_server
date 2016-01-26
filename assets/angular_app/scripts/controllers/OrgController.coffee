@@ -9,8 +9,29 @@ angular.module('subzapp').controller('OrgController', [
   'user'
   'RESOURCES'
   'alertify'
-  ( $scope, $state, $http, $window, $location, user, RESOURCES, alertify ) ->
+  'Upload'
+  ( $scope, $state, $http, $window, $location, user, RESOURCES, alertify , Upload) ->
     user_token = window.localStorage.getItem 'user_token'
+
+    $scope.submit = ->
+      
+      $scope.upload $scope.file
+
+    $scope.upload = (file) ->
+      console.log file
+      Upload.upload(
+        method: 'post'
+        url: '/file/upload'
+        file: file).then ((resp) ->
+        console.log 'Success ' + resp + 'uploaded. Response: ' + resp.data
+        return
+      ), ((resp) ->
+        console.log 'Error status: ' + resp.status
+        return
+      ), (evt) ->
+        progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
+        console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
+        
 
     check_club_admin = ( user ) ->
       $state.go 'login' if !user.team_admin
@@ -47,11 +68,6 @@ angular.module('subzapp').controller('OrgController', [
       ), ( errResponse ) ->
         console.log "Parse users error"
         console.log errResponse
-
-    $scope.uploadComplete = (content) ->
-        $scope.response = JSON.parse(content)
-        console.log "Upload response "
-        console.log content
 
         
     $scope.aws = ->

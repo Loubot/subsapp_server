@@ -8,9 +8,13 @@
 
   </div>
   <div class="col-xs-9">
-    <form ng-upload="uploadComplete(content)" enctype="multipart/form-data" action="/file/upload" method="post">
-      <input type="file" name="uploadFile" />
-      <input type="submit" class="btn" value="Submit" ng-disabled="$isUploading"  />
+    <form name="form">
+      Single Image with validations
+      <div class="button btn btn-success" ngf-select ng-model="file" name="file" 
+         ngf-max-size="20MB" >Select</div>
+      
+      
+      <button type="submit" class="btn btn-success" ng-click="submit()">submit</button>
     </form>
 
     <br><br>
