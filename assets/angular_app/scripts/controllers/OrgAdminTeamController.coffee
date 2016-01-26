@@ -32,8 +32,8 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       method: 'GET'
       url: "#{ RESOURCES.DOMAIN }/get-team"
       headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
+                'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                }
       params:
         team_id: $location.search().id
     ).then ( ( res ) ->

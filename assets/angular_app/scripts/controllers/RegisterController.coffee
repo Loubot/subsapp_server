@@ -26,6 +26,7 @@ angular.module('subzapp').controller('RegisterController', [
         window.localStorage.setItem 'user_token', response.data.data.token
         # console.log "user_token " + window.localStorage.getItem 'user_token'
         window.localStorage.setItem 'user_id', response.data.data.user.id
+        alertify.success 'Welcome'
         $state.go 'org_admin'
       ), ( errResponse ) ->
         console.log "Registration failed "
