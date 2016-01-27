@@ -11,6 +11,11 @@ body{
   margin-bottom: 100px;
 }
 
+.make_space{
+  height: 15px !important;
+  width: 100% !important;
+}
+
 
 .form-group{
 
