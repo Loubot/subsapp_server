@@ -109,7 +109,7 @@ module.exports = {
     sails.log.debug("Hit the team controller/get_team_members " + req.query.team_id);
     return Team.findOne({
       id: req.query.team_id
-    }).populate('team_members').populate('events').then(function(mems) {
+    }).populate('team_members').populate('events').populate('main_org').then(function(mems) {
       sails.log.debug("Get team response " + (JSON.stringify(mems)));
       return res.json(mems);
     })["catch"](function(err) {

@@ -22,6 +22,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.org = window.USER.orgs[0]
         $scope.teams = window.USER.teams
         return_team( USER.teams, $location.search().id )
+        $scope.show_upload = window.USER.club_admin
         # if $location.$$path == '/team-manager'
 
         
@@ -34,6 +35,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.user = window.USER
       $scope.org = window.USER.orgs[0]
       $scope.teams = window.USER.teams
+      $scope.user = window.USER
     
   
     # get team members
@@ -49,13 +51,13 @@ angular.module('subzapp').controller('TeamController', [
       params:
         team_id: window.localStorage.getItem 'team_id'
     ).then ( (res) ->
-       console.log "Get team members response"
+       console.log "Get team info response"
        console.log res
        $scope.team = res.data
        $scope.members = res.data.team_members
        $scope.events = res.data.events
     ), ( errResponse ) ->
-      console.log "Get team members error #{ JSON.stringify errResponse }"
+      console.log "Get team info error #{ JSON.stringify errResponse }"
   
       
     $scope.create_event = ->
@@ -91,21 +93,25 @@ angular.module('subzapp').controller('TeamController', [
       Upload.upload(
         method: 'post'
         url: '/file/upload'
+        file: file
         data:
-          filename: file.name
-          org_id: $scope.org.id
-        file: file).then ((resp) ->
-        console.log 'Success ' + resp + 'uploaded. Response: ' + resp.data
-        console.log resp
-        alertify.success 'File uploaded ok'
+          org_id: $scope.team.main_org.id
+          team_id: $scope.team.id
+          team_name: $scope.team.name
+          
+      ).then ((resp) ->
+        console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
+        alertify.success "File uploaded ok"
         return
       ), ((resp) ->
         console.log 'Error status: ' + resp.status
-        alertify.error "File couldn't be uploaded"
+        alertify.error "File failed to upload"
+        alertify.error resp
         return
       ), (evt) ->
         progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
         console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
+
   
 
 ])

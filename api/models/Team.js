@@ -31,6 +31,11 @@ module.exports = {
       collection: 'event',
       via: 'event_team'
     },
+    files: {
+      collection: 'filetracker',
+      via: 'team',
+      columnName: 'filetracker_id'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();

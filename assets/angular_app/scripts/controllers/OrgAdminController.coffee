@@ -24,6 +24,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       check_club_admin(window.USER)
       console.log window.USER.orgs.length == 0
       $scope.org = window.USER.orgs[0]
+      console.log "org id #{ JSON.stringify $scope.org }"
       $scope.user = window.USER
       $scope.orgs = window.USER.orgs
       $scope.show_team_admin = ( window.USER.orgs.length == 0 )
@@ -39,7 +40,7 @@ angular.module('subzapp').controller('OrgAdminController', [
             org_id: $scope.org.id
         ).then ( ( org_and_teams ) ->
           console.log "Get org and teams"
-          console.log org_and_teams.data.teams
+          console.log org_and_teams
           $scope.teams = org_and_teams.data.teams
         ), ( errResponse ) ->
           console.log "Get teams failed"
@@ -80,9 +81,9 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.edit_org = ( id ) ->
 
-      $scope.org_id = id
+      $scope.org_id = $scope.org.id
 
-      console.log "Org id #{ id }"
+      console.log "Org id #{ $scope.org_id }"
 
       $scope.show_team_admin = false
       $http(
@@ -144,6 +145,24 @@ angular.module('subzapp').controller('OrgAdminController', [
       ), ( errResponse ) ->
         console.log "Team delete error"
         console.log errResponse
+
+    $scope.aws = ->
+      
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/parse-players"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+      ).then ( ( res ) ->
+        console.log "aws responses"
+        console.log res
+        $scope.parsed_data = res
+      ), ( errResponse ) ->
+        console.log "aws error"
+        console.log errResponse
+        alertify.error errResponse.data
+
     
     
 

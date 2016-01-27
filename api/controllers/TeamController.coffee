@@ -89,7 +89,7 @@ module.exports = {
     sails.log.debug "Hit the team controller/get_team_members"
     sails.log.debug "Hit the team controller/get_team_members #{ req.query.team_id }"
 
-    Team.findOne( id: req.query.team_id ).populate('team_members').populate('events').then( (mems) ->
+    Team.findOne( id: req.query.team_id ).populate('team_members').populate('events').populate('main_org').then( (mems) ->
       sails.log.debug "Get team response #{ JSON.stringify mems }"
       res.json mems
     ).catch( (err) ->

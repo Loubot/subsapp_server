@@ -108,19 +108,4 @@
     </ul>
   </div> <!-- end of ng-hide="show_team_admin" -->
 
-  <div class="col-xs-12 make_space"></div> <!-- end of spacer -->
-  <div class="col-xs-12 text-center black_text" ng-show="show_team_admin">
-    <div class="well">
-      <h2><strong>Select an excel file below and click submit to upload.</strong></h2>
-      <h4><strong>We will process your form and register your players soon. </strong></h4>
-      <form name="form">
-      
-        <div class="button btn btn-success" ngf-select ng-model="file" name="file" accept=".xls"
-           ngf-max-size="20MB" >Select club sheet</div>
-        <p ngf-src="file">{{ file.name }}</p>
-        
-        <button type="submit" class="btn btn-success" ng-click="submit()">submit</button>
-      </form>
-    </div>
-  </div> <!-- end of col-xs-12 -->
 </div> <!-- row-->

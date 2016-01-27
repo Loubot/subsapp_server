@@ -38,6 +38,11 @@ module.exports =
       collection: 'event'
       via: 'event_team'
 
+    files:
+      collection: 'filetracker'
+      via: 'team'
+      columnName: 'filetracker_id'
+
     
 
 

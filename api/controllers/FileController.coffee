@@ -16,7 +16,7 @@ module.exports = {
       key: process.env.AWS_ACCESS_KEY_ID
       secret: process.env.AWS_SECRET_ACCESS_KEY
       # dirName: 'Lakewood'
-      saveAs: 'Lakewood/z.xls'  #folder/file
+      saveAs: "#{ req.body.org_id }/#{ req.body.team_id}/#{ JSON.stringify req.body.team_name }.xls" #folder/file
       bucket: 'subzapp'
     }, (err, uploadedFiles) ->
       if err
@@ -64,46 +64,52 @@ module.exports = {
               # fs.renameSync './assets/excel_sheets/bla.xls', filepath
           
   
-  aws: ( req, res ) ->
+  parse_players: ( req, res ) ->
     sails.log.debug "Hit the file controller/aws"
     fs = require('fs')
     xlsx = require('node-xlsx')
     mkdirp = require('mkdirp')
     AWS = require('aws-sdk')
+    decode = require('urldecode')
     AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
     
 
-    mkdirp './.tmp/excel_sheets', ( err ) ->
-      if err
-        sails.log.debug "Can't create dir #{ JSON.stringify err }"
-      else
-        sails.log.debug "Dir created waheeeey"
-        fs.closeSync fs.openSync('./.tmp/excel_sheets/bla.xls', 'w')
+    # mkdirp './.tmp/excel_sheets', ( err ) ->
+    #   if err
+    #     sails.log.debug "Can't create dir #{ JSON.stringify err }"
+    #   else
+    #     sails.log.debug "Dir created waheeeey"
+    #     fs.closeSync fs.openSync('./.tmp/excel_sheets/bla.xls', 'w')
 
-        tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls')
-        tempFile.on 'open', (fd) ->
-          (new (AWS.S3)).getObject {
-              Bucket: 'subzapp'
-              Key: 'x.xls'
-            }, (err, data) ->
-              sails.log.debug "AWS error #{ JSON.stringify err }" if err?
-              if err?
-                res.serverError err.message
-                return false
+    #     tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls')
+    #     tempFile.on 'open', (fd) ->
 
-              tempFile.write data.Body if !err?
+    FileTracker.findOne( id: 4 ).then( ( filet ) ->
+      sails.log.debug "File tracker #{ JSON.stringify filet }"
+      sails.log.debug "url #{ decode filet.url }"
+    )
+    (new (AWS.S3)).getObject {
+        Bucket: 'subzapp'
+        Key: 'x.xls'
+      }, (err, data) ->
+        sails.log.debug "AWS error #{ JSON.stringify err }" if err?
+        if err?
+          res.serverError err.message
+          return false
 
-              sails.log.debug 'yippee'
-              obj = xlsx.parse(data.Body)
-              
-              player_array = obj[0].data
-              player_array.splice(0,1)
-              # sails.log.debug "Array #{ JSON.stringify player_array }"
-              User.create_players( player_array, ( err, players ) ->
-                sails.log.debug "Players #{ JSON.stringify players }"
-                sails.log.debug "Players error #{ JSON.stringify err }" if err?
-              )
-              res.json obj[0].data
+        tempFile.write data.Body if !err?
+
+        sails.log.debug 'yippee'
+        obj = xlsx.parse(data.Body)
+        
+        player_array = obj[0].data
+        player_array.splice(0,1)
+        # sails.log.debug "Array #{ JSON.stringify player_array }"
+        User.create_players( player_array, ( err, players ) ->
+          sails.log.debug "Players #{ JSON.stringify players }"
+          sails.log.debug "Players error #{ JSON.stringify err }" if err?
+        )
+        res.json obj[0].data
 
       # (new (AWS.S3)).getObject {
       #   Bucket: 'subzapp'

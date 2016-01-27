@@ -121,9 +121,9 @@ module.exports.routes = {
     controller: 'FileController',
     action: 'parse_users'
   },
-  'get /aws': {
+  'get /parse-players': {
     controller: 'FileController',
-    action: 'aws'
+    action: 'parse_players'
   },
   'post /post_remind': {
     controller: 'PasswordReminderController',

@@ -30,6 +30,10 @@ module.exports =
       model: 'org'
       columnName: 'org_id'
 
+    team:
+      model: 'team'
+      columnName: 'team_id'
+
     
     toJSON: ->
       obj = @toObject()

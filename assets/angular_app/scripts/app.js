@@ -106,12 +106,12 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
           "Content-Type": "application/json"
         }
       }).success(function(data) {
-        console.log(data);
         if (!(data != null)) {
           $state.go('login');
           console.log("No user data");
           return false;
         } else {
+          console.log("Got user");
           window.USER = data;
           return data;
         }

@@ -17,6 +17,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       check_club_admin(window.USER);
       console.log(window.USER.orgs.length === 0);
       $scope.org = window.USER.orgs[0];
+      console.log("org id " + (JSON.stringify($scope.org)));
       $scope.user = window.USER;
       $scope.orgs = window.USER.orgs;
       $scope.show_team_admin = window.USER.orgs.length === 0;
@@ -33,7 +34,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           }
         }).then((function(org_and_teams) {
           console.log("Get org and teams");
-          console.log(org_and_teams.data.teams);
+          console.log(org_and_teams);
           return $scope.teams = org_and_teams.data.teams;
         }), function(errResponse) {
           console.log("Get teams failed");
@@ -71,8 +72,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.edit_org = function(id) {
-      $scope.org_id = id;
-      console.log("Org id " + id);
+      $scope.org_id = $scope.org.id;
+      console.log("Org id " + $scope.org_id);
       $scope.show_team_admin = false;
       return $http({
         method: 'GET',
@@ -117,7 +118,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return alertify.error(errResponse);
       });
     };
-    return $scope.delete_team = function(id) {
+    $scope.delete_team = function(id) {
       return $http({
         url: RESOURCES.DOMAIN + "/delete-team",
         method: 'DELETE',
@@ -136,6 +137,24 @@ angular.module('subzapp').controller('OrgAdminController', [
       }), function(errResponse) {
         console.log("Team delete error");
         return console.log(errResponse);
+      });
+    };
+    return $scope.aws = function() {
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/parse-players",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        }
+      }).then((function(res) {
+        console.log("aws responses");
+        console.log(res);
+        return $scope.parsed_data = res;
+      }), function(errResponse) {
+        console.log("aws error");
+        console.log(errResponse);
+        return alertify.error(errResponse.data);
       });
     };
   }

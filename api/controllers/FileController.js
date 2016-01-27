@@ -15,7 +15,7 @@ module.exports = {
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,
-      saveAs: 'Lakewood/z.xls',
+      saveAs: req.body.org_id + "/" + req.body.team_id + "/" + (JSON.stringify(req.body.team_name)) + ".xls",
       bucket: 'subzapp'
     }, function(err, uploadedFiles) {
       if (err) {
@@ -65,55 +65,50 @@ module.exports = {
       }
     });
   },
-  aws: function(req, res) {
-    var AWS, fs, mkdirp, xlsx;
+  parse_players: function(req, res) {
+    var AWS, decode, fs, mkdirp, xlsx;
     sails.log.debug("Hit the file controller/aws");
     fs = require('fs');
     xlsx = require('node-xlsx');
     mkdirp = require('mkdirp');
     AWS = require('aws-sdk');
+    decode = require('urldecode');
     AWS.config.update({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     });
-    return mkdirp('./.tmp/excel_sheets', function(err) {
-      var tempFile;
-      if (err) {
-        return sails.log.debug("Can't create dir " + (JSON.stringify(err)));
-      } else {
-        sails.log.debug("Dir created waheeeey");
-        fs.closeSync(fs.openSync('./.tmp/excel_sheets/bla.xls', 'w'));
-        tempFile = fs.createWriteStream('./.tmp/excel_sheets/bla.xls');
-        return tempFile.on('open', function(fd) {
-          return (new AWS.S3).getObject({
-            Bucket: 'subzapp',
-            Key: 'x.xls'
-          }, function(err, data) {
-            var obj, player_array;
-            if (err != null) {
-              sails.log.debug("AWS error " + (JSON.stringify(err)));
-            }
-            if (err != null) {
-              res.serverError(err.message);
-              return false;
-            }
-            if (err == null) {
-              tempFile.write(data.Body);
-            }
-            sails.log.debug('yippee');
-            obj = xlsx.parse(data.Body);
-            player_array = obj[0].data;
-            player_array.splice(0, 1);
-            User.create_players(player_array, function(err, players) {
-              sails.log.debug("Players " + (JSON.stringify(players)));
-              if (err != null) {
-                return sails.log.debug("Players error " + (JSON.stringify(err)));
-              }
-            });
-            return res.json(obj[0].data);
-          });
-        });
+    FileTracker.findOne({
+      id: 4
+    }).then(function(filet) {
+      sails.log.debug("File tracker " + (JSON.stringify(filet)));
+      return sails.log.debug("url " + (decode(filet.url)));
+    });
+    return (new AWS.S3).getObject({
+      Bucket: 'subzapp',
+      Key: 'x.xls'
+    }, function(err, data) {
+      var obj, player_array;
+      if (err != null) {
+        sails.log.debug("AWS error " + (JSON.stringify(err)));
       }
+      if (err != null) {
+        res.serverError(err.message);
+        return false;
+      }
+      if (err == null) {
+        tempFile.write(data.Body);
+      }
+      sails.log.debug('yippee');
+      obj = xlsx.parse(data.Body);
+      player_array = obj[0].data;
+      player_array.splice(0, 1);
+      User.create_players(player_array, function(err, players) {
+        sails.log.debug("Players " + (JSON.stringify(players)));
+        if (err != null) {
+          return sails.log.debug("Players error " + (JSON.stringify(err)));
+        }
+      });
+      return res.json(obj[0].data);
     });
   }
 };

@@ -28,6 +28,10 @@ module.exports = {
       model: 'org',
       columnName: 'org_id'
     },
+    team: {
+      model: 'team',
+      columnName: 'team_id'
+    },
     toJSON: function() {
       var obj;
       obj = this.toObject();
