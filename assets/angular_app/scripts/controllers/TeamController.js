@@ -3,7 +3,7 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES) {
+  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload) {
     var user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
@@ -22,29 +22,26 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0];
       $scope.teams = window.USER.teams;
     }
-    if ($location.search().hasOwnProperty('id')) {
-      $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/get-team-info",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json",
-          'Content-Type': 'application/json'
-        },
-        params: {
-          team_id: $location.search().id
-        }
-      }).then((function(res) {
-        console.log("Get team members response");
-        console.log(res);
-        $scope.team = res.data;
-        $scope.members = res.data.team_members;
-        return $scope.events = res.data.events;
-      }), function(errResponse) {
-        return console.log("Get team members error " + (JSON.stringify(errResponse)));
-      });
-    }
-    return $scope.create_event = function() {
+    $http({
+      method: 'GET',
+      url: RESOURCES.DOMAIN + "/get-team-info",
+      headers: {
+        'Authorization': "JWT " + user_token,
+        "Content-Type": "application/json"
+      },
+      params: {
+        team_id: window.localStorage.getItem('team_id')
+      }
+    }).then((function(res) {
+      console.log("Get team members response");
+      console.log(res);
+      $scope.team = res.data;
+      $scope.members = res.data.team_members;
+      return $scope.events = res.data.events;
+    }), function(errResponse) {
+      return console.log("Get team members error " + (JSON.stringify(errResponse)));
+    });
+    $scope.create_event = function() {
       $scope.create_event_data.team_id = $location.search().id;
       console.log($scope.create_event_data);
       return $http({
@@ -64,6 +61,32 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Create event error");
         alertify.error("Create event failed");
         return console.log(errResponse);
+      });
+    };
+    $scope.submit = function() {
+      return $scope.upload($scope.file);
+    };
+    return $scope.upload = function(file) {
+      console.log(file);
+      return Upload.upload({
+        method: 'post',
+        url: '/file/upload',
+        data: {
+          filename: file.name,
+          org_id: $scope.org.id
+        },
+        file: file
+      }).then((function(resp) {
+        console.log('Success ' + resp + 'uploaded. Response: ' + resp.data);
+        console.log(resp);
+        alertify.success('File uploaded ok');
+      }), (function(resp) {
+        console.log('Error status: ' + resp.status);
+        alertify.error("File couldn't be uploaded");
+      }), function(evt) {
+        var progressPercentage;
+        progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        return console.log('progress: ' + progressPercentage + '% ' + evt.config.data);
       });
     };
   }

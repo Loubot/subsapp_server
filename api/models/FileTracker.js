@@ -20,6 +20,10 @@ module.exports = {
       required: true,
       defaultsTo: null
     },
+    s3_object: {
+      type: 'text',
+      defaultsTo: null
+    },
     org: {
       model: 'org',
       columnName: 'org_id'

@@ -10,7 +10,7 @@ module.exports = {
   upload: function(req, res) {
     var uploadFile;
     sails.log.debug("Hit FileController/upload");
-    sails.log.debug(JSON.stringify(req.file));
+    sails.log.debug(JSON.stringify(req.body));
     return uploadFile = req.file('file').upload({
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
@@ -23,7 +23,13 @@ module.exports = {
         return res.negotiate(err);
       } else {
         sails.log.debug("Upload waheeeey " + (JSON.stringify(uploadedFiles)));
-        return res.json('Files uploaded ok');
+        FileService.store_file_info(uploadedFiles[0], req.body.org_id, function(err, ft) {
+          sails.log.debug("Callback " + (JSON.stringify(ft)));
+          if (err != null) {
+            return sails.log.debug("Callback err " + (JSON.stringify(err)));
+          }
+        });
+        return res.json(uploadedFiles);
       }
     });
   },

@@ -9,7 +9,8 @@ angular.module('subzapp').controller('TeamController', [
   'user'
   'alertify'
   'RESOURCES'
-  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES ) ->    
+  'Upload'
+  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
@@ -37,25 +38,24 @@ angular.module('subzapp').controller('TeamController', [
   
     # get team members
     # console.log $location.search()
-    if $location.search().hasOwnProperty('id')
+    
 
-      $http(
-        method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/get-team-info"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
-                  }
-        params:
-          team_id: $location.search().id
-      ).then ( (res) ->
-         console.log "Get team members response"
-         console.log res
-         $scope.team = res.data
-         $scope.members = res.data.team_members
-         $scope.events = res.data.events
-      ), ( errResponse ) ->
-        console.log "Get team members error #{ JSON.stringify errResponse }"
+    $http(
+      method: 'GET'
+      url: "#{ RESOURCES.DOMAIN }/get-team-info"
+      headers: { 
+                'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                }
+      params:
+        team_id: window.localStorage.getItem 'team_id'
+    ).then ( (res) ->
+       console.log "Get team members response"
+       console.log res
+       $scope.team = res.data
+       $scope.members = res.data.team_members
+       $scope.events = res.data.events
+    ), ( errResponse ) ->
+      console.log "Get team members error #{ JSON.stringify errResponse }"
   
       
     $scope.create_event = ->
@@ -78,6 +78,34 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Create event error"
         alertify.error "Create event failed"
         console.log errResponse
+
+
+    # upload file
+
+    $scope.submit = ->
+      
+      $scope.upload $scope.file
+
+    $scope.upload = (file) ->
+      console.log file
+      Upload.upload(
+        method: 'post'
+        url: '/file/upload'
+        data:
+          filename: file.name
+          org_id: $scope.org.id
+        file: file).then ((resp) ->
+        console.log 'Success ' + resp + 'uploaded. Response: ' + resp.data
+        console.log resp
+        alertify.success 'File uploaded ok'
+        return
+      ), ((resp) ->
+        console.log 'Error status: ' + resp.status
+        alertify.error "File couldn't be uploaded"
+        return
+      ), (evt) ->
+        progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
+        console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
   
 
 ])

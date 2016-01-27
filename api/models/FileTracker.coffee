@@ -20,6 +20,11 @@ module.exports =
       type: 'string'
       required: true
       defaultsTo: null
+
+    s3_object:
+      type: 'text'
+      # required: true
+      defaultsTo: null
    
     org:
       model: 'org'

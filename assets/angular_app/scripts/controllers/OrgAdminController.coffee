@@ -47,6 +47,10 @@ angular.module('subzapp').controller('OrgAdminController', [
           alertify.error 'Failed to fetch teams'
     )
 
+    $scope.view_team = ( id ) -> # go to team page
+      window.localStorage.setItem 'team_id', id
+      $state.go 'team_manager'
+
     $scope.org_create = ->
       # console.log "create #{JSON.stringify user}"
       console.log "#{ RESOURCES.DOMAIN }/create-business"

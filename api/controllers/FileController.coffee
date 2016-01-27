@@ -9,20 +9,7 @@ module.exports = {
   
   upload: ( req, res ) ->
     sails.log.debug "Hit FileController/upload"
-    sails.log.debug JSON.stringify req.file
-
-    # uploadFile = req.file('uploadFile')
-    # sails.log.debug "uploaded file #{ JSON.stringify uploadFile }"
-    # uploadFile.upload (err, files) ->
-    #   # Files will be uploaded to .tmp/uploads
-    #   if err
-    #     return res.serverError(err)
-    #   # IF ERROR Return and send 500 error with error
-    #   sails.log.debug files
-    #   # res.json
-    #   #   status: 200
-    #   #   file: files
-    #   return
+    sails.log.debug JSON.stringify req.body
 
     uploadFile = req.file('file').upload {
       adapter: require('skipper-s3')
@@ -37,18 +24,13 @@ module.exports = {
         res.negotiate err
       else
         sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles }"
-        res.json 'Files uploaded ok'
+        FileService.store_file_info( uploadedFiles[0], req.body.org_id, ( err, ft ) ->
+          sails.log.debug "Callback #{ JSON.stringify ft }"
+          sails.log.debug "Callback err #{ JSON.stringify err }" if err?
+        )
+        res.json uploadedFiles
 
-    # req.file('uploadFile').upload { dirname: './assets/images' }, (err, uploadedFiles) ->
-    #   if err
-    #     return res.negotiate(err)
-    #   res.json message: uploadedFiles.length + ' file(s) uploaded successfully!'
- 
-   
-    # xlsx = require('node-xlsx')
-    # obj = xlsx.parse(uploadFile)
-    # sails.log.debug "xls #{ JSON.stringify obj }"
-    # res.json 'Hrllo'
+
  
   parse_users: ( req, res ) ->
     sails.log.debug "Hit the FileController/parse_users"

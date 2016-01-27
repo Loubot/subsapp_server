@@ -81,7 +81,7 @@
         <input type="search" ng-model="q" placeholder="filter teams..." aria-label="filter friends" class="black_text" />
         <br>Teams in this club
         <li class="animate-repeat org_list" ng-repeat="team in teams | filter:q as results">
-          <a href="/#org_admin_team?id={{team.id}}" >[{{$index + 1}}] {{team.name}}.</a>
+          <a href="" ng-click="view_team(team.id)">[{{$index + 1}}] {{team.name}}.</a>
           <button class="btn btn-danger btn-sm pull-right" ng-click="delete_team( team.id )">Remove team?</button>     
         </li>
         <li class="animate-repeat" ng-if="orgs.length == 0">

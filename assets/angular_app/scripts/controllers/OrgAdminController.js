@@ -42,6 +42,10 @@ angular.module('subzapp').controller('OrgAdminController', [
         });
       }
     }));
+    $scope.view_team = function(id) {
+      window.localStorage.setItem('team_id', id);
+      return $state.go('team_manager');
+    };
     $scope.org_create = function() {
       console.log(RESOURCES.DOMAIN + "/create-business");
       user_token = window.localStorage.getItem('user_token');

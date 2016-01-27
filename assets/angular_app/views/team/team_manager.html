@@ -53,9 +53,6 @@
         
       </div> <!-- end of form-group text-center -->
 
-      <div class="message">
-               
-      </div>
     </form>
     
   
@@ -70,6 +67,15 @@
         <strong>No results found...</strong>
       </li>
     </ul>
+
+    <form name="form">
+      
+      <div class="button btn btn-success" ngf-select ng-model="file" name="file" accept=".xls"
+         ngf-max-size="20MB" >Select club sheet</div>
+      <p ngf-src="file">{{ file.name }}</p>
+      
+      <button type="submit" class="btn btn-success" ng-click="submit()">submit</button>
+    </form>
   </div> <!-- end of col-xs-9 -->
 
 
