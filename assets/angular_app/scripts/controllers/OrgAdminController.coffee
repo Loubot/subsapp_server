@@ -71,6 +71,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Business create return "
         console.log response
         $scope.orgs = response.data
+        $scope.org = response.data
         # $scope.business_form.$setPristine()
         $('.business_name').val ""
         $('.business_address').val ""
