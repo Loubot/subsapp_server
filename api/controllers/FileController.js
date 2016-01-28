@@ -11,13 +11,13 @@ module.exports = {
     var team_name, uploadFile;
     sails.log.debug("Hit FileController/upload");
     sails.log.debug(JSON.stringify(req.body));
-    team_name = req.body.team_name.replace(/\s+/g, '');
-    sails.log.debug("No space " + team_name);
+    team_name = req.body.team_name.replace(/\s+/g, '') + '.xls';
+    sails.log.debug("No space " + req.body.org_id + "/" + req.body.team_id + "/" + team_name);
     return uploadFile = req.file('file').upload({
       adapter: require('skipper-s3'),
       key: process.env.AWS_ACCESS_KEY_ID,
       secret: process.env.AWS_SECRET_ACCESS_KEY,
-      saveAs: req.body.org_id + "/" + req.body.team_id + "/" + (JSON.stringify(req.body.team_name)) + ".xls",
+      saveAs: req.body.org_id + "/" + req.body.team_id + "/" + team_name,
       bucket: 'subzapp'
     }, function(err, uploadedFiles) {
       if (err) {
@@ -25,13 +25,17 @@ module.exports = {
         return res.negotiate(err);
       } else {
         sails.log.debug("Upload waheeeey " + (JSON.stringify(uploadedFiles)));
-        FileService.store_file_info(uploadedFiles[0], req.body.org_id, function(err, ft) {
-          sails.log.debug("Callback " + (JSON.stringify(ft)));
+        return FileService.store_file_info(uploadedFiles[0], req.body.org_id, req.body.team_id, team_name, function(err, fts) {
           if (err != null) {
-            return sails.log.debug("Callback err " + (JSON.stringify(err)));
+            if (err != null) {
+              sails.log.debug("Callback err " + (JSON.stringify(err)));
+            }
+            return res.serverError(err);
+          } else {
+            sails.log.debug("Callback " + (JSON.stringify(fts)));
+            return res.json(fts);
           }
         });
-        return res.json(uploadedFiles);
       }
     });
   },

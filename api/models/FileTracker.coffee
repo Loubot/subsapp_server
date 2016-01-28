@@ -29,14 +29,16 @@ module.exports =
     org:
       model: 'org'
       columnName: 'org_id'
+      required: true
 
     team:
       model: 'team'
       columnName: 'team_id'
+      required: true
 
     
     toJSON: ->
       obj = @toObject()
-      delete obj.password
-      delete obj.socialProfiles
+      # delete obj.password
+      # delete obj.socialProfiles
       obj

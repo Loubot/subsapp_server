@@ -105,18 +105,27 @@ module.exports = {
     });
   },
   get_team_info: function(req, res) {
+    var Q;
+    Q = require('q');
     sails.log.debug("Hit the team controller/get_team_members");
     sails.log.debug("Hit the team controller/get_team_members " + req.query.team_id);
     return Team.findOne({
       id: req.query.team_id
-    }).populate('team_members').populate('events').populate('main_org').then(function(mems) {
-      sails.log.debug("Get team response " + (JSON.stringify(mems)));
-      return res.json(mems);
-    })["catch"](function(err) {
-      sails.log.debug("Get team error " + (JSON.stringify(err)));
-      return res.serverError(err);
-    }).done(function() {
-      return sails.log.debug("Team get team main org done");
+    }).populate('team_members').populate('events').populate('main_org').then(function(result) {
+      return Q.all([
+        result, FileTracker.find({
+          team_id: req.query.team_id
+        })
+      ]).spread(function(team, file_tracker) {
+        sails.log.debug("Team info " + (JSON.stringify(team)));
+        sails.log.debug("FileTracker " + (JSON.stringify(file_tracker)));
+        return res.json({
+          team: team,
+          file_tracker: file_tracker
+        });
+      });
+    }).fail(function(reason) {
+      return res.serverError(reason);
     });
   }
 };

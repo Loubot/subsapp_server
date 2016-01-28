@@ -37,9 +37,10 @@ angular.module('subzapp').controller('TeamController', [
     }).then((function(res) {
       console.log("Get team info response");
       console.log(res);
-      $scope.team = res.data;
-      $scope.members = res.data.team_members;
-      return $scope.events = res.data.events;
+      $scope.team = res.data.team;
+      $scope.members = res.data.team.team_members;
+      $scope.events = res.data.team.events;
+      return $scope.files = res.data.file_tracker;
     }), function(errResponse) {
       return console.log("Get team info error " + (JSON.stringify(errResponse)));
     });
@@ -81,6 +82,8 @@ angular.module('subzapp').controller('TeamController', [
         }
       }).then((function(resp) {
         console.log('Success ' + JSON.stringify(resp + 'uploaded. Response: ' + JSON.stringify(resp.data)));
+        console.log(resp);
+        $scope.files = resp.data;
         alertify.success("File uploaded ok");
       }), (function(resp) {
         console.log('Error status: ' + resp.status);

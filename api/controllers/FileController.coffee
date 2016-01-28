@@ -10,15 +10,15 @@ module.exports = {
   upload: ( req, res ) ->
     sails.log.debug "Hit FileController/upload"
     sails.log.debug JSON.stringify req.body
-    team_name = req.body.team_name.replace(/\s+/g, '')
-    sails.log.debug "No space #{ team_name }"
+    team_name = req.body.team_name.replace(/\s+/g, '') + '.xls'
+    sails.log.debug "No space #{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }"
 
     uploadFile = req.file('file').upload {
       adapter: require('skipper-s3')
       key: process.env.AWS_ACCESS_KEY_ID
       secret: process.env.AWS_SECRET_ACCESS_KEY
       # dirName: 'Lakewood'
-      saveAs: "#{ req.body.org_id }/#{ req.body.team_id}/#{ JSON.stringify req.body.team_name }.xls" #folder/file
+      saveAs: "#{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }" #folder/file
       bucket: 'subzapp'
     }, (err, uploadedFiles) ->
       if err
@@ -26,11 +26,16 @@ module.exports = {
         res.negotiate err
       else
         sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles }"
-        FileService.store_file_info( uploadedFiles[0], req.body.org_id, ( err, ft ) ->
-          sails.log.debug "Callback #{ JSON.stringify ft }"
-          sails.log.debug "Callback err #{ JSON.stringify err }" if err?
+        FileService.store_file_info( uploadedFiles[0], req.body.org_id, req.body.team_id, team_name, ( err, fts ) ->
+          if err?
+            sails.log.debug "Callback err #{ JSON.stringify err }" if err?
+            res.serverError err
+          else
+            sails.log.debug "Callback #{ JSON.stringify fts }"
+            res.json fts
+
         )
-        res.json uploadedFiles
+        
 
 
  

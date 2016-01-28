@@ -37,10 +37,6 @@ angular.module('subzapp').controller('TeamController', [
       $scope.teams = window.USER.teams
       $scope.user = window.USER
     
-  
-    # get team members
-    # console.log $location.search()
-    
 
     $http(
       method: 'GET'
@@ -53,9 +49,10 @@ angular.module('subzapp').controller('TeamController', [
     ).then ( (res) ->
        console.log "Get team info response"
        console.log res
-       $scope.team = res.data
-       $scope.members = res.data.team_members
-       $scope.events = res.data.events
+       $scope.team = res.data.team
+       $scope.members = res.data.team.team_members
+       $scope.events = res.data.team.events
+       $scope.files = res.data.file_tracker
     ), ( errResponse ) ->
       console.log "Get team info error #{ JSON.stringify errResponse }"
   
@@ -101,12 +98,15 @@ angular.module('subzapp').controller('TeamController', [
           
       ).then ((resp) ->
         console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
+        console.log resp
+        $scope.files = resp.data
         alertify.success "File uploaded ok"
         return
       ), ((resp) ->
         console.log 'Error status: ' + resp.status
         alertify.error "File failed to upload"
         console.log resp
+
         alertify.error "File upload failed. Status: #{ resp.status }"
         return
       ), (evt) ->
