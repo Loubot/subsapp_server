@@ -15,7 +15,6 @@ angular.module('subzapp').controller('OrgAdminController', [
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
       check_club_admin(window.USER);
-      console.log(window.USER.orgs.length === 0);
       $scope.org = window.USER.orgs[0];
       console.log("org id " + (JSON.stringify($scope.org)));
       $scope.user = window.USER;
@@ -61,10 +60,9 @@ angular.module('subzapp').controller('OrgAdminController', [
         },
         data: $scope.business_form_data
       }).then((function(response) {
-        console.log("Business create return ");
-        console.log(response);
         $scope.orgs = response.data;
-        $scope.org = response.data;
+        $scope.org = response.data[0];
+        console.log("Org set: " + (JSON.stringify($scope.org)));
         $('.business_name').val("");
         return $('.business_address').val("");
       }), function(errResponse) {
@@ -73,8 +71,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.edit_org = function(id) {
-      $scope.org_id = $scope.org.id;
-      console.log("Org id " + $scope.org_id);
+      console.log("Org " + (JSON.stringify($scope.org)));
       $scope.show_team_admin = false;
       return $http({
         method: 'GET',
@@ -97,7 +94,9 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.team_create = function() {
+      console.log("Org id " + (JSON.stringify($scope.org)));
       $scope.team_form_data.org_id = $scope.org.id;
+      console.log("Form data " + (JSON.stringify($scope.team_form_data)));
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/create-team",

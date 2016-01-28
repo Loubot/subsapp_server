@@ -22,7 +22,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     user.get_user().then ( (res) ->
       # console.log "Got user "
       check_club_admin(window.USER)
-      console.log window.USER.orgs.length == 0
+      # console.log window.USER.orgs.length == 0
       $scope.org = window.USER.orgs[0]
       console.log "org id #{ JSON.stringify $scope.org }"
       $scope.user = window.USER
@@ -58,7 +58,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       user_token = window.localStorage.getItem 'user_token'
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log JSON.stringify $scope.business_form_data
-      $http(
+      $http(  
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/create-business"
         headers: { 
@@ -68,10 +68,11 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.business_form_data
       ).then ( (response) ->
 
-        console.log "Business create return "
-        console.log response
+        # console.log "Business create return "
+        # console.log response
         $scope.orgs = response.data
-        $scope.org = response.data
+        $scope.org = response.data[0]
+        console.log "Org set: #{ JSON.stringify $scope.org }"
         # $scope.business_form.$setPristine()
         $('.business_name').val ""
         $('.business_address').val ""
@@ -82,9 +83,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.edit_org = ( id ) ->
 
-      $scope.org_id = $scope.org.id
-
-      console.log "Org id #{ $scope.org_id }"
+      console.log "Org #{ JSON.stringify $scope.org }"
 
       $scope.show_team_admin = false
       $http(
@@ -108,8 +107,9 @@ angular.module('subzapp').controller('OrgAdminController', [
     
 
     $scope.team_create = ->
-      # console.log "Org id #{ $scope.org.id }"
+      console.log "Org id #{ JSON.stringify $scope.org }"
       $scope.team_form_data.org_id = $scope.org.id
+      console.log "Form data #{ JSON.stringify $scope.team_form_data }"
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/create-team"
