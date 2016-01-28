@@ -11,6 +11,7 @@ module.exports = {
     sails.log.debug "Hit FileController/upload"
     sails.log.debug JSON.stringify req.body
     team_name = req.body.team_name.replace(/\s+/g, '')
+    sails.log.debug "No space #{ team_name }"
 
     uploadFile = req.file('file').upload {
       adapter: require('skipper-s3')

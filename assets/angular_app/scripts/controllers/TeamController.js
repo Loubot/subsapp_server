@@ -85,7 +85,8 @@ angular.module('subzapp').controller('TeamController', [
       }), (function(resp) {
         console.log('Error status: ' + resp.status);
         alertify.error("File failed to upload");
-        alertify.error(resp);
+        console.log(resp);
+        alertify.error("File upload failed. Status: " + resp.status);
       }), function(evt) {
         var progressPercentage;
         progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
