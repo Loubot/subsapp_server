@@ -20,23 +20,11 @@ module.exports = {
       required: true,
       defaultsTo: null
     },
-    s3_object: {
-      type: 'text',
-      defaultsTo: null
-    },
-    org: {
-      model: 'org',
-      columnName: 'org_id',
-      required: true
-    },
-    team: {
-      model: 'team',
-      columnName: 'team_id',
-      required: true
-    },
     toJSON: function() {
       var obj;
       obj = this.toObject();
+      delete obj.password;
+      delete obj.socialProfiles;
       return obj;
     }
   }
