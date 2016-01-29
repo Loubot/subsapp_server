@@ -1,5 +1,7 @@
 {
-  "verbose": true,
-  "ignore": ["assets"]
-  
+  "verbose": true, 
+  "events": {
+      "restart": "grunt compile"
+    }
 }
+/* "ignore": ["assets"],*/
