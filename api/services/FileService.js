@@ -6,8 +6,8 @@ module.exports = {
     return FileTracker.create({
       url: s3_object.extra.Location,
       file_name: file_name,
-      org_id: org_id,
-      team_id: team_id
+      org: org_id,
+      team: team_id
     }).then(function(filetrack) {
       sails.log.debug("File tracker create " + (JSON.stringify(filetrack)));
       return FileTracker.find({

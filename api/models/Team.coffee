@@ -41,7 +41,6 @@ module.exports =
     files:
       collection: 'filetracker'
       via: 'team'
-      columnName: 'filetracker_id'
 
     
 

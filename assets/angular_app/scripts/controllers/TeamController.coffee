@@ -52,7 +52,7 @@ angular.module('subzapp').controller('TeamController', [
        $scope.team = res.data.team
        $scope.members = res.data.team.team_members
        $scope.events = res.data.team.events
-       $scope.files = res.data.file_tracker
+       $scope.files = res.data.file_trackers
     ), ( errResponse ) ->
       console.log "Get team info error #{ JSON.stringify errResponse }"
   

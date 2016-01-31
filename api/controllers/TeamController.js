@@ -107,25 +107,29 @@ module.exports = {
   get_team_info: function(req, res) {
     var Q;
     Q = require('q');
-    sails.log.debug("Hit the team controller/get_team_members");
-    sails.log.debug("Hit the team controller/get_team_members " + req.query.team_id);
+    sails.log.debug("Hit the team controller/get_team_info");
+    sails.log.debug("Hit the team controller/get_team_info " + (JSON.stringify(req.query)));
     return Team.findOne({
       id: req.query.team_id
-    }).populate('team_members').populate('events').populate('main_org').then(function(result) {
+    }).populate('team_members').populate('events').populate('main_org').populate('files').then(function(result) {
       return Q.all([
         result, FileTracker.find({
           team_id: req.query.team_id
         })
-      ]).spread(function(team, file_tracker) {
+      ]).spread(function(team, file_trackers) {
         sails.log.debug("Team info " + (JSON.stringify(team)));
-        sails.log.debug("FileTracker " + (JSON.stringify(file_tracker)));
+        sails.log.debug("FileTracker " + (JSON.stringify(file_trackers)));
         return res.json({
-          team: team,
-          file_tracker: file_tracker
-        });
+          team: team
+        }, file_trackers, file_trackers);
       });
     }).fail(function(reason) {
-      return res.serverError(reason);
+      if (reason != null) {
+        sails.log.debug("get team info error " + reason);
+      }
+      if (reason != null) {
+        return res.serverError(reason);
+      }
     });
   }
 };

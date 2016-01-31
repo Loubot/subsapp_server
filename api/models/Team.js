@@ -33,8 +33,7 @@ module.exports = {
     },
     files: {
       collection: 'filetracker',
-      via: 'team',
-      columnName: 'filetracker_id'
+      via: 'team'
     },
     toJSON: function() {
       var obj;

@@ -1,9 +1,4 @@
 {
   "verbose": true, 
-  "ignore": ["assets"]
+  "ignore": ["assets", "js"]
 }
-
-
-// "events": {
-//       "restart": "grunt compile"
-//     }

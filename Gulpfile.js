@@ -9,14 +9,12 @@ var runSeq = require('run-sequence');
 
 
 gulp.task('coffee_compile_1', function() {
-  gulp.src('./assets/angular_app/scripts/controllers/*.coffee')
+  gulp.src('./assets/angular_app/scripts/**/*.coffee')
     .pipe(plumber())
     .pipe(coffee({bare:true}).on('error', gutil.log))
-    .pipe(gulp.dest('./output_folder_1'));
+    .pipe(gulp.dest('./assets/js/'));
 });
 
-
-// gulp.task('coffee_compile', function() {
-//   gulp.src('.assets/angular_app/scripts/controllers/*.coffee').pipe(plumber()).pipe(coffee{})
-
-// });
+gulp.task('watch', ['coffee_compile_1'], function() {
+  gulp.watch('./assets/angular_app/scripts/controllers/*.coffee', ['coffee_compile_1']);
+});

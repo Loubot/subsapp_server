@@ -11,8 +11,8 @@ module.exports = {
     FileTracker.create( 
       url: s3_object.extra.Location, 
       file_name: file_name,
-      org_id: org_id,
-      team_id: team_id
+      org: org_id,
+      team: team_id
       ).then( ( filetrack ) ->
       sails.log.debug "File tracker create #{ JSON.stringify filetrack }"
       FileTracker.find( team_id: team_id ).exec ( err, fts ) ->

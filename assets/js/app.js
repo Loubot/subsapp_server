@@ -99,7 +99,7 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
       id = window.localStorage.getItem('user_id');
       return $http({
         method: 'GET',
-        url: "" + RESOURCES.DOMAIN + "/user/" + id,
+        url: RESOURCES.DOMAIN + "/user/" + id,
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
@@ -121,5 +121,3 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
     }
   };
 });
-
-//# sourceMappingURL=app.js.map
