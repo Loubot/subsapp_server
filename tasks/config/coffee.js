@@ -17,5 +17,5 @@ module.exports = function(grunt) {
     }
   });
   grunt.loadNpmTasks('grunt-contrib-coffee');
-  return grunt.registerTask('compile', ['coffee']);
+  // return grunt.registerTask('compile', ['coffee']);
 };
