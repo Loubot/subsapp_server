@@ -6,12 +6,15 @@ var plumber = require('gulp-plumber');
 var debug = require('gulp-debug');
 var coffee = require('gulp-coffee');
 var runSeq = require('run-sequence');
+var sourcemaps = require('gulp-sourcemaps');
 
 
 gulp.task('coffee_compile_1', function() {
   gulp.src('./assets/angular_app/scripts/**/*.coffee')
+    .pipe(sourcemaps.init())
     .pipe(plumber())
     .pipe(coffee({bare:true}).on('error', gutil.log))
+    .pipe(sourcemaps.write('./maps/'))
     .pipe(gulp.dest('./assets/js/'));
 });
 

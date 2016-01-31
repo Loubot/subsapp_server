@@ -9,3 +9,5 @@ angular.module('subzapp').controller('UserController', [
     }));
   }
 ]);
+
+//# sourceMappingURL=../maps/controllers/UserController.js.map

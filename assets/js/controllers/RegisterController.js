@@ -31,3 +31,5 @@ angular.module('subzapp').controller('RegisterController', [
     };
   }
 ]);
+
+//# sourceMappingURL=../maps/controllers/RegisterController.js.map

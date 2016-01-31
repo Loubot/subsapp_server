@@ -121,3 +121,5 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
     }
   };
 });
+
+//# sourceMappingURL=maps/app.js.map

@@ -13,3 +13,5 @@ angular.module('subzapp').controller('NavController', [
     };
   }
 ]);
+
+//# sourceMappingURL=../maps/controllers/NavController.js.map

@@ -42,3 +42,5 @@ angular.module('subzapp').controller('OrgController', [
     };
   }
 ]);
+
+//# sourceMappingURL=../maps/controllers/OrgController.js.map

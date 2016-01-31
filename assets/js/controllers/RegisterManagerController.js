@@ -53,3 +53,5 @@ angular.module('subzapp').controller('RegisterManagerController', [
     };
   }
 ]);
+
+//# sourceMappingURL=../maps/controllers/RegisterManagerController.js.map

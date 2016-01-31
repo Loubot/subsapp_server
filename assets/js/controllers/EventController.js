@@ -35,3 +35,5 @@ angular.module('subzapp').controller('EventController', [
     });
   }
 ]);
+
+//# sourceMappingURL=../maps/controllers/EventController.js.map
