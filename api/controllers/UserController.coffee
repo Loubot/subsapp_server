@@ -64,4 +64,14 @@ module.exports = {
     # ).catch (err) ->
     #   res.serverError err
 
+    pick_kids: ( req, res ) ->
+      sails.log.debug "Hit the user controller/pick_kids"
+      sails.log.debug "Params #{ req.query }"
+
+      # Promise.resolve(
+      #   return [ User.findOne( id: req.query.id ) ]
+
+      # )
+
+
 }
