@@ -10,7 +10,7 @@ module.exports = {
   upload: ( req, res ) ->
     sails.log.debug "Hit FileController/upload"
     sails.log.debug JSON.stringify req.body
-    team_name = req.body.team_name.replace(/\s+/g, '') + '.xls'
+    team_name = 'bla.xls'
     sails.log.debug "No space #{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }"
 
     uploadFile = req.file('file').upload {
@@ -131,4 +131,21 @@ module.exports = {
 
      
 
+  download_file: ( req, res ) ->
+    sails.log.debug "Hit the FileController/download_file"
+    sails.log.debug "Query #{ req.query }"
+    AWS = require('aws-sdk')
+
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+
+    s3 = new (AWS.S3)
+    params = 
+      Bucket: 'subzapp'
+      Delimiter: '/'
+      Prefix: '1/1/'
+    s3.listObjects params, (err, data) ->
+      if err
+        throw err
+      sails.log.debug JSON.stringify data
+      return
 }

@@ -6,13 +6,15 @@ module.exports = {
 
     sails.log.debug "Hit the file tracker service/store_file_info"
     sails.log.debug "Data #{ s3_object  } #{ org_id  } #{ team_id } #{ file_name }"
-    
+    store_object = JSON.stringify s3_object
 
     FileTracker.create( 
-      url: s3_object.extra.Location, 
-      file_name: file_name,
-      org: org_id,
+      s3_object: store_object
+      url: s3_object.extra.Location 
+      file_name: file_name
+      org: org_id
       team: team_id
+      key: s3_object.Key
       ).then( ( filetrack ) ->
       sails.log.debug "File tracker create #{ JSON.stringify filetrack }"
       FileTracker.find( team_id: team_id ).exec ( err, fts ) ->

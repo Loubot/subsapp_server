@@ -90,6 +90,28 @@ module.exports = {
     sails.log.debug "Hit the team controller/get_team_info"
     sails.log.debug "Hit the team controller/get_team_info #{ JSON.stringify req.query }"
 
+    AWS = require('aws-sdk')
+
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+
+    s3 = new (AWS.S3)
+    params = 
+      Bucket: 'subzapp'
+      Delimiter: '/'
+      Prefix: '1/1/'
+
+    s3 = new (AWS.S3)
+    params = 
+      Bucket: 'subzapp'
+      Delimiter: '/'
+      Prefix: '1/1/'
+    s3.listObjects params, (err, data) ->
+      if err
+        throw err
+      sails.log.debug JSON.stringify data
+      return
+    
+
     Team.findOne(id: req.query.team_id )
     .populate('team_members')
     .populate('events')
@@ -97,11 +119,13 @@ module.exports = {
     .populate('files').then((result) ->
       Q.all([
         result
-        FileTracker.find( team_id: req.query.team_id )
-      ]).spread (team, file_trackers ) ->
+        s3.listObjects params
+      ]).spread (team, s3_things ) ->
         sails.log.debug "Team info #{ JSON.stringify team }"
-        sails.log.debug "FileTracker #{ JSON.stringify file_trackers }"
-        res.json team: team, file_trackers, file_trackers
+        sails.log.debug "FileTracker "
+        sails.log.debug s3_things
+        files = JSON.stringify s3_things
+        res.json team: team, file_trackers: files
     ).fail (reason) ->
       sails.log.debug "get team info error #{ reason }" if reason?
       res.serverError reason if reason?

@@ -125,6 +125,10 @@ module.exports.routes = {
     controller: 'FileController',
     action: 'parse_players'
   },
+  'get /download-file': {
+    controller: 'FileController',
+    action: 'download_file'
+  },
   'post /post_remind': {
     controller: 'PasswordReminderController',
     action: 'post_remind'

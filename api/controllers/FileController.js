@@ -11,7 +11,7 @@ module.exports = {
     var team_name, uploadFile;
     sails.log.debug("Hit FileController/upload");
     sails.log.debug(JSON.stringify(req.body));
-    team_name = req.body.team_name.replace(/\s+/g, '') + '.xls';
+    team_name = 'bla.xls';
     sails.log.debug("No space " + req.body.org_id + "/" + req.body.team_id + "/" + team_name);
     return uploadFile = req.file('file').upload({
       adapter: require('skipper-s3'),
@@ -115,6 +115,28 @@ module.exports = {
         }
       });
       return res.json(obj[0].data);
+    });
+  },
+  download_file: function(req, res) {
+    var AWS, params, s3;
+    sails.log.debug("Hit the FileController/download_file");
+    sails.log.debug("Query " + req.query);
+    AWS = require('aws-sdk');
+    AWS.config.update({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    });
+    s3 = new AWS.S3;
+    params = {
+      Bucket: 'subzapp',
+      Delimiter: '/',
+      Prefix: '1/1/'
+    };
+    return s3.listObjects(params, function(err, data) {
+      if (err) {
+        throw err;
+      }
+      sails.log.debug(JSON.stringify(data));
     });
   }
 };

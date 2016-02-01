@@ -114,6 +114,20 @@ angular.module('subzapp').controller('TeamController', [
         console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
 
   
+    $scope.download = ->
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/download-file"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+        
+      ).then ( (res) ->
+         console.log "Download response"
+         console.log res
+         
+      ), ( errResponse ) ->
+        console.log "DOwnload error #{ JSON.stringify errResponse }"
 
 ])
 

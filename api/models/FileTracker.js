@@ -20,6 +20,11 @@ module.exports = {
       required: true,
       defaultsTo: null
     },
+    key: {
+      type: 'string',
+      required: true,
+      defaultsTo: null
+    },
     s3_object: {
       type: 'text',
       defaultsTo: null

@@ -153,6 +153,10 @@ module.exports.routes =
         controller:             'FileController'
         action:                 'parse_players'
 
+  'get /download-file':
+        controller:             'FileController'
+        action:                 'download_file'
+
   # End of file controller
 
   #Password reminder routes
