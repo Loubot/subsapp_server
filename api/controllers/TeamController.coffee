@@ -96,23 +96,28 @@ module.exports = {
 
     s3 = Promise.promisifyAll(new AWS.S3())
     
-    params = 
-      Bucket: 'subzapp'
-      Delimiter: '/'
-      Prefix: '1/1/'
+    # params = 
+    #   Bucket: 'subzapp'
+    #   Delimiter: '/'
+    #   Prefix: '1/1/'
 
     Team.findOne( id: req.query.team_id ).populate('team_members')
     .populate('events')
     .populate('main_org')
     .populate('files').then((team) ->
       sails.log.debug "Team #{ JSON.stringify team }"
+      sails.log.debug "Prefix: #{ team.main_org.id }/#{ team.id }/"
+      params =
+        Bucket: 'subzapp'
+        Delimiter: '/'
+        Prefix: "#{ team.main_org.id }/#{ team.id }/"
       return [ team,  s3.listObjectsAsync( params ) ]
-      
+        
 
     ).spread ( ( team, s3_object ) ->
       sails.log.debug "Team #{ JSON.stringify team }"
       sails.log.debug "S3 #{ s3_object }"
-      res.json team: team, file_trackers: s3_object
+      res.json team: team, bucket_info: s3_object
 
     )
 

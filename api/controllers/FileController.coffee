@@ -9,8 +9,17 @@ module.exports = {
   
   upload: ( req, res ) ->
     sails.log.debug "Hit FileController/upload"
+    Promise = require('bluebird')
     sails.log.debug JSON.stringify req.body
-    team_name = 'bla.xls'
+    team_name = req.body.team_name
+    team_name = team_name.replace(/\s/g, "") 
+
+    AWS = require('aws-sdk')
+
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+
+    s3 = Promise.promisifyAll(new AWS.S3())
+
     sails.log.debug "No space #{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }"
 
     uploadFile = req.file('file').upload {
@@ -25,14 +34,24 @@ module.exports = {
         sails.log.debug "Upload error #{ JSON.stringify err }"
         res.negotiate err
       else
-        sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles }"
-        FileService.store_file_info( uploadedFiles[0], req.body.org_id, req.body.team_id, team_name, ( err, fts ) ->
-          if err?
-            sails.log.debug "Callback err #{ JSON.stringify err }" if err?
+        sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles[0] }"
+        Promise.resolve( 
+          FileService.store_file_info( uploadedFiles[0], req.body.org_id, req.body.team_id, team_name, ( err, fts ) ->
+            
+            sails.log.debug "FileService #{ JSON.stringify fts }"
+            params =
+              Bucket: 'subzapp'
+              Delimiter: '/'
+              Prefix: "#{ req.body.org_id }/#{ req.body.team_id }/"
+            return [ fts,  s3.listObjectsAsync( params ) ]
+            
+          ).spread( ( fts, s3_object ) ->
+            sails.log.debug "fts #{ JSON.stringify fts }"
+            sails.log.debug "s3 #{ JSON.stringify s3_object }"
+            res.json bucket_info: s3_object
+          ).catch ( err ) ->
+            sails.log.debug "Chain #{ err }"
             res.serverError err
-          else
-            sails.log.debug "Callback #{ JSON.stringify fts }"
-            res.json fts
 
         )
         

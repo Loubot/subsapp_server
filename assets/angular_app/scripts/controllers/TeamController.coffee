@@ -52,7 +52,7 @@ angular.module('subzapp').controller('TeamController', [
        $scope.team = res.data.team
        $scope.members = res.data.team.team_members
        $scope.events = res.data.team.events
-       $scope.files = res.data.file_trackers.Contents
+       $scope.files = res.data.bucket_info.Contents
     ), ( errResponse ) ->
       console.log "Get team info error #{ JSON.stringify errResponse }"
   
@@ -99,7 +99,7 @@ angular.module('subzapp').controller('TeamController', [
       ).then ((resp) ->
         console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
         console.log resp
-        $scope.files = resp.data
+        $scope.files = resp.data.bucket_info.Contents
         alertify.success "File uploaded ok"
         return
       ), ((resp) ->
