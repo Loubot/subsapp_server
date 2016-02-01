@@ -54,6 +54,10 @@ module.exports =
       required: true
       defaultsTo: false
 
+    parent_email:
+      type: 'string'
+      defaultsTo: ''
+
     under_age:
       type: 'boolean'
       required: true
