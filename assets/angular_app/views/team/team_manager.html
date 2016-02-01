@@ -97,7 +97,7 @@
 
   <div class="col-xs-12 black_text">
     <ul class="list-group">
-      <li class="list-group-item" ng-repeat="file in files">{{ file.file_name }}</li>
+      <li class="list-group-item" ng-repeat="file in files">{{ file.Key.substring( ( file.Key.lastIndexOf('/') +1 ), file.Key.length) }}</li>
     </ul> <!-- end of list-group -->
   </div> <!-- end of col-xs-12 -->
 </div> <!-- end of container-fluid -->

@@ -39,7 +39,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.team = res.data.team;
       $scope.members = res.data.team.team_members;
       $scope.events = res.data.team.events;
-      return $scope.files = res.data.file_trackers;
+      return $scope.files = res.data.file_trackers.Contents;
     }), function(errResponse) {
       return console.log("Get team info error " + (JSON.stringify(errResponse)));
     });
