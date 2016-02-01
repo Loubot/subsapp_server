@@ -24,12 +24,16 @@ angular.module('subzapp').controller('OrgController', [
       $scope.org = window.USER.orgs[0];
     }
     return $scope.parse_users = function() {
+      console.log('yep');
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/parse-players",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
+        },
+        params: {
+          team_id: 1
         }
       }).then((function(res) {
         console.log("parse users response");
