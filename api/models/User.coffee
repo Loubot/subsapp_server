@@ -123,7 +123,8 @@ module.exports =
     x = new Array()
     for player in player_array
       
-      User.create( 
+      User.create(
+        email: '***kid****'
         parent_email: player[4]
         firstName: player[0] 
         lastName: player[1]
