@@ -9,6 +9,7 @@ module.exports = {
   
   upload: ( req, res ) ->
     sails.log.debug "Hit FileController/upload"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
     Promise = require('bluebird')
     sails.log.debug JSON.stringify req.body
     team_name = req.body.team_name
