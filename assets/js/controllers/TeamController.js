@@ -69,6 +69,7 @@ angular.module('subzapp').controller('TeamController', [
       return $scope.upload($scope.file);
     };
     $scope.upload = function(file) {
+      console.log("Upload");
       console.log(file);
       console.log(JSON.stringify($scope.team.name));
       return Upload.upload({

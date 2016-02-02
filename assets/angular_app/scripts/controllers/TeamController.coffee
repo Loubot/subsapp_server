@@ -86,6 +86,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.upload $scope.file
 
     $scope.upload = (file) ->
+      console.log "Upload"
       console.log file
       console.log JSON.stringify $scope.team.name
       Upload.upload(
