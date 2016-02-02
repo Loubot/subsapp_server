@@ -35,7 +35,7 @@ angular.module('subzapp').controller('TeamController', [
       }
     }).then((function(res) {
       console.log("Get team info response");
-      console.log(res);
+      console.log(res.data.team);
       $scope.team = res.data.team;
       $scope.members = res.data.team.team_members;
       $scope.events = res.data.team.events;
@@ -70,6 +70,7 @@ angular.module('subzapp').controller('TeamController', [
     };
     $scope.upload = function(file) {
       console.log(file);
+      console.log(JSON.stringify($scope.team.name));
       return Upload.upload({
         method: 'post',
         url: '/file/upload',
