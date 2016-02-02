@@ -75,12 +75,12 @@ angular.module('subzapp').controller('TeamController', [
       return Upload.upload({
         method: 'post',
         url: '/file/upload',
-        file: file,
         data: {
           org_id: $scope.team.main_org.id,
           team_id: $scope.team.id,
           team_name: $scope.team.name
-        }
+        },
+        file: file
       }).then((function(resp) {
         console.log('Success ' + JSON.stringify(resp + 'uploaded. Response: ' + JSON.stringify(resp.data)));
         console.log(resp);
