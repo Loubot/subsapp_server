@@ -1,1 +1,1 @@
-web: nodemon app.coffee
+web: forever start -c coffee app.coffee
