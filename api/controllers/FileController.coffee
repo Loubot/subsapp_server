@@ -28,7 +28,7 @@ module.exports = {
       key: process.env.AWS_ACCESS_KEY_ID
       secret: process.env.AWS_SECRET_ACCESS_KEY
       # dirName: 'Lakewood'
-      saveAs: "#{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }" #folder/file
+      saveAs: "#{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }.xls" #folder/file
       bucket: 'subzapp'
     }, (err, uploadedFiles) ->
       if err
