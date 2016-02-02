@@ -27,7 +27,7 @@ module.exports = {
 
     Promise.all(
       [ User.findOne( id: req.query.id)
-       User.find( parent_email: req.body.email )
+       User.find( parent_email: req.query.email )
       ]
       ).spread ( parent, kids ) ->
         sails.log.debug "Parent #{ JSON.stringify parent}"
