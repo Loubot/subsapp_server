@@ -19,6 +19,23 @@ module.exports = {
     ).done ->
       sails.log.debug "Edit user done"
 
+  pick_kids: ( req, res ) ->
+    Promise = require('bluebird')
+    sails.log.debug JSON.stringif
+    sails.log.debug "Hit the UserController/pick_kids"
+    sails.log.debug "Params #{ JSON.stringify req.query }"
+
+    Promise.all(
+      [ User.findOne( id: req.query.id)
+       User.find( parent_email: 'louisangelini@gmail.com' )
+      ]
+      ).spread ( parent, kids ) ->
+        sails.log.debug "Parent #{ JSON.stringify parent}"
+        sails.log.debug "Kids #{ JSON.stringify kids}"
+    
+
+    
+
   get_user_teams: ( req, res ) ->
     sails.log.debug "Hit the UserController/get_user_teams"
     sails.log.debug "Data #{ JSON.stringify req.query }"
@@ -63,15 +80,5 @@ module.exports = {
     #   return
     # ).catch (err) ->
     #   res.serverError err
-
-    pick_kids: ( req, res ) ->
-      sails.log.debug "Hit the user controller/pick_kids"
-      sails.log.debug "Params #{ req.query }"
-
-      # Promise.resolve(
-      #   return [ User.findOne( id: req.query.id ) ]
-
-      # )
-
 
 }

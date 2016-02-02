@@ -19,7 +19,7 @@ module.exports =
 
     email:
       type: 'email'
-      required: true
+      # required: true
       unique: true
 
     firstName:
@@ -124,7 +124,6 @@ module.exports =
     for player in player_array
       
       User.create(
-        email: '***kid****'
         parent_email: player[4]
         firstName: player[0] 
         lastName: player[1]

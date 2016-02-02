@@ -164,6 +164,24 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log errResponse
         alertify.error errResponse.data
 
+    $scope.get_kids = () ->
+      console.log 'Kids'
+
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/user/pick-kids"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+        params: $scope.user
+      ).then ( ( res ) ->
+        console.log "Kids response"
+        console.log res
+      ), ( errResponse ) ->
+        console.log "Kids error"
+        console.log errResponse
+        alertify.error errResponse.data
+
     
     
 
