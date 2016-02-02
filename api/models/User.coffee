@@ -91,9 +91,15 @@ module.exports =
       collection: 'team'
       via: 'team_members'
 
-    # stripe_id: 
-    #   type: 'string'
-    #   defaultsTo: ''
+    kids:
+      collection: 'user'
+      via: 'parent'
+      columnName: 'kid_id'
+
+    parent:
+      collection: 'user'
+      via: 'kids'
+      columnName: 'parent_id'
 
     
     toJSON: ->
@@ -120,25 +126,44 @@ module.exports =
 #3=DOB
 #4=Email
   create_players: ( player_array, cb ) ->
+    Promise = require('bluebird')
     x = new Array()
     for player in player_array
-      
-      User.create(
-        parent_email: player[4]
-        firstName: player[0] 
-        lastName: player[1]
-        dob: player[3]
-        dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString()
-        under_age: true
-      ).then( ( user ) ->
-        sails.log.debug "User created #{ JSON.stringify user }"
-        x.push user
 
-      ).catch( ( err ) ->
-        sails.log.debug "User create error #{ JSON.stringify err }"
-        cb( err )
-        return false
-      )
+      Promise.all([
+        User.create(parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
+          dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString(),
+          under_age: true
+        )
+        User.findOne( email: player[4])
+        
+      ]).spread( ( kid, parent) ->
+        sails.log.debug "Kid created #{ JSON.stringify kid }"
+        sails.log.debug "Parent found #{ JSON.stringify parent }"
+        parent.kids.add( kid.id )
+        parent.save ( err, saved ) ->
+          sails.log.debug "Parent saved #{ JSON.stringify saved }"
+          sails.log.debug "Parent saved err  #{ JSON.stringify err }" if err?
+      ).catch ( err ) ->
+        sails.log.debug "Create player error #{ JSON.stringify err }"
+
+      
+      # User.create(
+      #   parent_email: player[4]
+      #   firstName: player[0] 
+      #   lastName: player[1]
+      #   dob: player[3]
+      #   dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString()
+      #   under_age: true
+      # ).then( ( user ) ->
+      #   sails.log.debug "User created #{ JSON.stringify user }"
+      #   x.push user
+
+      # ).catch( ( err ) ->
+      #   sails.log.debug "User create error #{ JSON.stringify err }"
+      #   cb( err )
+      #   return false
+      # )
     #   d = moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"])
     #   sails.log.debug "Date #{ d }"
     #   c = d.unix()
