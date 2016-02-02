@@ -145,7 +145,7 @@ module.exports =
           sails.log.debug "Parent saved #{ JSON.stringify saved }"
           sails.log.debug "Parent saved err  #{ JSON.stringify err }" if err?
       ).catch ( err ) ->
-        sails.log.debug "Create player error #{ JSON.stringify err }"
+        sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 
       
       # User.create(
