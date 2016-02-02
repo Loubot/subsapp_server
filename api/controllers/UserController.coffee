@@ -32,6 +32,7 @@ module.exports = {
       ).spread ( parent, kids ) ->
         sails.log.debug "Parent #{ JSON.stringify parent}"
         sails.log.debug "Kids #{ JSON.stringify kids}"
+        res.json parent: parent, kids: kids
     
 
     
