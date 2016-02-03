@@ -126,7 +126,7 @@ module.exports =
 #3=DOB
 #4=Email
   create_players: ( player_array, cb ) ->
-    Promise = require('bluebird')
+    Promise = require('q')
     x = new Array()
     for player in player_array
 
@@ -139,7 +139,8 @@ module.exports =
       ]).spread( ( kid, parent) ->
         sails.log.debug "Kid created #{ JSON.stringify kid }"
         sails.log.debug "Parent found #{ JSON.stringify parent }"
-        
+        parent.kids.add( kid )
+        parent.save()
       ).catch ( err ) ->
         sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 
