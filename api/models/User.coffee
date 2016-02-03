@@ -60,8 +60,6 @@ module.exports =
 
     under_age:
       type: 'boolean'
-      required: true
-      defaultsTo: false
 
     orgs:
       collection: 'org'
