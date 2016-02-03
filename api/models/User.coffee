@@ -132,18 +132,16 @@ module.exports =
 
       Promise.all([
         User.create(parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
-          dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString(),
+          dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(),
           under_age: true
         )
-        User.findOne( email: player[4])
+        User.findOne( email: player[4] )
         
       ]).spread( ( kid, parent) ->
         sails.log.debug "Kid created #{ JSON.stringify kid }"
         sails.log.debug "Parent found #{ JSON.stringify parent }"
         parent.kids.add( kid.id )
-        parent.save ( err, saved ) ->
-          sails.log.debug "Parent saved #{ JSON.stringify saved }"
-          sails.log.debug "Parent saved err  #{ JSON.stringify err }" if err?
+        parent.save()
       ).catch ( err ) ->
         sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 

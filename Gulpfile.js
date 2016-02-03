@@ -17,7 +17,16 @@ gulp.task('coffee_compile_1', function() {
     .pipe(sourcemaps.write('./maps/'))
     .pipe(gulp.dest('./assets/js/'));
 });
+gulp.task('coffee_compile_2', function() {
+  gulp.src('./assets/angular_app/scripts/*.coffee')
+    .pipe(sourcemaps.init())
+    .pipe(plumber())
+    .pipe(coffee({bare:true}).on('error', gutil.log))
+    .pipe(sourcemaps.write('./maps/'))
+    .pipe(gulp.dest('./assets/js/'));
+});
 
-gulp.task('watch', ['coffee_compile_1'], function() {
+gulp.task('watch', ['coffee_compile_1', 'coffee_compile_2'], function() {
   gulp.watch('./assets/angular_app/scripts/controllers/*.coffee', ['coffee_compile_1']);
+  gulp.watch('./assets/angular_app/scripts/*.coffee', ['coffee_compile_2']);
 });
