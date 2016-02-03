@@ -129,8 +129,9 @@ module.exports =
     Promise = require('q')
     x = new Array()
     for player in player_array
-
+      sails.log.debug "Parent email #{ player[4] }"
       Promise.all([
+        
         User.create(parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
           dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(), under_age: true
         )
