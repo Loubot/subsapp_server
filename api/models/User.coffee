@@ -140,7 +140,10 @@ module.exports =
         sails.log.debug "Kid created #{ JSON.stringify kid }"
         sails.log.debug "Parent found #{ JSON.stringify parent }"
         parent.kids.add( kid )
-        parent.save()
+        parent.save( ( err, saved ) ->
+          sails.log.debug "Parent saved #{ JSON.stringify saved }"
+          sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
+        )
       ).catch ( err ) ->
         sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 
