@@ -140,7 +140,7 @@ module.exports =
       ]).spread( ( kid, parent) ->
         sails.log.debug "Kid created #{ JSON.stringify kid }"
         sails.log.debug "Parent found #{ JSON.stringify parent }"
-        parent.kids.add( kid.id )
+        parent.kids.add( kid )
         parent.save()
       ).catch ( err ) ->
         sails.log.debug "Create player error #{ JSON.stringify err }" if err?
