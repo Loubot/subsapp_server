@@ -15,7 +15,6 @@
  */
 module.exports = function(data, options) {
   var req, res, sails;
-  sails.log.debug("Server eror " + (JSON.stringify(data)));
   req = this.req;
   res = this.res;
   sails = req._sails;
