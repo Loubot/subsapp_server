@@ -41,7 +41,7 @@ module.exports = {
       });
     })["catch"](function(err) {
       sails.log.debug("Charge error " + (JSON.stringify(err)));
-      return res.serverError("Charge err");
+      return res.serverError(err);
     });
   },
   get_transactions: function(req, res) {
