@@ -20,7 +20,7 @@ module.exports = {
       amount: parseInt( req.body.amount )  * 100
       currency: 'eur'
       }).then( ( charge ) ->
-        sails.log.debug "Charge response #{ JSON.stringify charge.amount }"
+        sails.log.debug "Charge response #{ JSON.stringify charge }"
         
 
         Token.findOne( { owner: req.body.user_id },  ).exec (err, token) ->
