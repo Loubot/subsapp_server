@@ -55,6 +55,9 @@ module.exports =
       type: 'string'
       defaultsTo: null
 
+    payee:
+      model: 'user'
+
    
     
     toJSON: ->

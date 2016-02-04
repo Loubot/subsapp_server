@@ -78,7 +78,7 @@ module.exports = {
     sails.log.debug "Hit the team conroller/get_teams"
     Org.findOne( id: req.query.org_id ).populate('teams').then( ( org_and_teams ) ->
       sails.log.debug "Org and teams #{ JSON.stringify org_and_teams }"
-      res.json org_and_teams
+      res.serverError org_and_teams
     ).catch( ( err ) ->
       sails.log.debug "Get org and teams error"
       res.serverError err

@@ -101,6 +101,10 @@ module.exports =
       via: 'kids'
       columnName: 'parent_id'
 
+    transactions:
+      collection: 'transaction'
+      via: 'payee'
+
     
     toJSON: ->
       obj = @toObject()
