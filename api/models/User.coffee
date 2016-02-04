@@ -60,7 +60,10 @@ module.exports =
 
     under_age:
       type: 'boolean'
+<<<<<<< HEAD
       defaultsTo: false
+=======
+>>>>>>> 468a940c35ba592a5392806294f528be36b2234f
 
     orgs:
       collection: 'org'
@@ -128,8 +131,9 @@ module.exports =
     Promise = require('q')
     x = new Array()
     for player in player_array
-
+      sails.log.debug "Parent email #{ player[4] }"
       Promise.all([
+
         User.create(under_age: true, parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
           dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString()
         )
@@ -139,7 +143,10 @@ module.exports =
         sails.log.debug "Kid created #{ JSON.stringify kid }"
         sails.log.debug "Parent found #{ JSON.stringify parent }"
         parent.kids.add( kid )
-        parent.save()
+        parent.save( ( err, saved ) ->
+          sails.log.debug "Parent saved #{ JSON.stringify saved }"
+          sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
+        )
       ).catch ( err ) ->
         sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 
