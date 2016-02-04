@@ -34,12 +34,12 @@ module.exports = {
 
       ).catch( ( err ) ->
         sails.log.debug "Charge error #{ JSON.stringify err }"
-        res.serverError JSON.stringify err
+        res.serverError err
       )
 
   get_transactions: ( req, res ) ->
     sails.log.debug "Hit the payment controller/get_transactions"
-    sails.log.debug "Params #{ JSON.stringify req.body }"
+    sails.log.debug "Params #{ JSON.stringify req.query }"
 
     Promise = require('q')
 
@@ -51,9 +51,12 @@ module.exports = {
         stripe_comm_euro: process.env.stripe_comm_euro
 
     ]).spread( ( user, charges ) ->
-
+      res.json 
+        user: user
+        charges: charges
     ).catch ( err ) ->
-      sails.log.debug 
+      sails.log.debug "User found err #{ JSON.stringify err }"
+      res.serverError err
 
 }
 
