@@ -33,15 +33,27 @@ module.exports = {
 
 
       ).catch( ( err ) ->
-        sails.log.debug "Charge err #{ JSON.stringify err }"
+        sails.log.debug "Charge error #{ JSON.stringify err }"
         res.serverError JSON.stringify err
       )
 
   get_transactions: ( req, res ) ->
     sails.log.debug "Hit the payment controller/get_transactions"
-    sails.log.debug ""
+    sails.log.debug "Params #{ JSON.stringify req.body }"
 
     Promise = require('q')
+
+    Promise.all([
+      User.findOne( id: req.body.id ).populate('tokens')
+      charges:
+        vat: process.env.vat
+        stripe_comm_precent: process.env.stripe_comm_precent
+        stripe_comm_euro: process.env.stripe_comm_euro
+
+    ]).spread( ( user, charges ) ->
+
+    ).catch ( err ) ->
+      sails.log.debug 
 
 }
 
