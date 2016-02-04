@@ -53,8 +53,7 @@ module.exports = {
       ).catch ( err ) ->
         if err?
           sails.log.debug "transaction create err #{ JSON.stringify err }"
-          res.status 500
-          res.json err
+          res.serverError err
     ).catch ( err ) ->
       if err?
         sails.log.debug "Stripe create error #{ JSON.stringify err }"

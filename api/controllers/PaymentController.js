@@ -54,8 +54,7 @@ module.exports = {
       })["catch"](function(err) {
         if (err != null) {
           sails.log.debug("transaction create err " + (JSON.stringify(err)));
-          res.status(500);
-          return res.json(err);
+          return res.serverError(err);
         }
       });
     })["catch"](function(err) {

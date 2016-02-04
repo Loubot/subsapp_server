@@ -24,9 +24,6 @@ module.exports = function(data, options) {
   } else {
     sails.log.error('Sending empty 500 ("Server Error") response');
   }
-  if (sails.config.environment === 'production') {
-    data = void 0;
-  }
   if (req.wantsJSON) {
     return res.jsonx(data);
   }
