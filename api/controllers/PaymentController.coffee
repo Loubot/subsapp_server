@@ -17,7 +17,7 @@ module.exports = {
     charge = Stripe.charges.create({
       source: req.body.stripe_token
       description: 'Example charge'
-      amount: parseInt( req.body.amount )  * 100 * 1.025
+      amount: parseInt( req.body.amount * 100 * 1.025 )
       currency: 'eur'
       }).then( ( charge ) ->
         sails.log.debug "Charge response #{ JSON.stringify charge }"
