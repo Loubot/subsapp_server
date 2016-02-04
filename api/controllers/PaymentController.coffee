@@ -34,7 +34,7 @@ module.exports = {
 
       ).catch( ( err ) ->
         sails.log.debug "Charge error #{ JSON.stringify err }"
-        res.serverError err
+        res.serverError JSON.stringify err
       )
 
   get_transactions: ( req, res ) ->
@@ -44,7 +44,7 @@ module.exports = {
     Promise = require('q')
 
     Promise.all([
-      User.findOne( id: req.query.id ).populate('tokens')
+      User.findOne( id: req.query.id ).populate('tokens').populate('transactions')
       charges:
         vat: sails.config.stripe.vat
         stripe_comm_precent: sails.config.stripe.stripe_comm_precent

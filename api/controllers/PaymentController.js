@@ -41,7 +41,7 @@ module.exports = {
       });
     })["catch"](function(err) {
       sails.log.debug("Charge error " + (JSON.stringify(err)));
-      return res.serverError(err);
+      return res.serverError(JSON.stringify(err));
     });
   },
   get_transactions: function(req, res) {
@@ -52,7 +52,7 @@ module.exports = {
     return Promise.all([
       User.findOne({
         id: req.query.id
-      }).populate('tokens'), {
+      }).populate('tokens').populate('transactions'), {
         charges: {
           vat: sails.config.stripe.vat,
           stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
