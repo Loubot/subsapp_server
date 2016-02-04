@@ -60,10 +60,8 @@ module.exports =
 
     under_age:
       type: 'boolean'
-<<<<<<< HEAD
       defaultsTo: false
-=======
->>>>>>> 468a940c35ba592a5392806294f528be36b2234f
+
 
     orgs:
       collection: 'org'
