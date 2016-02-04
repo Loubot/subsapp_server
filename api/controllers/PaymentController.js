@@ -35,13 +35,17 @@ module.exports = {
           }
           return res.json({
             token: token,
-            message: 'Tokens purchased successfully'
+            message: 'Tokens purchased successfully',
+            charge: charge
           });
         });
       });
     })["catch"](function(err) {
       sails.log.debug("Charge error " + (JSON.stringify(err)));
-      return res.serverError("charege error");
+      return res.json({
+        status: 401,
+        error: err
+      });
     });
   },
   get_transactions: function(req, res) {
