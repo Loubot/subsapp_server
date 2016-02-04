@@ -18,8 +18,7 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    // connection: 'subsapp_db_prod'
-    connection: 'heroku_postgres'
+    connection: 'subsapp_db_prod'
   }
 
   /***************************************************************************
