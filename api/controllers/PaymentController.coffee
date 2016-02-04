@@ -34,7 +34,7 @@ module.exports = {
 
       ).catch( ( err ) ->
         sails.log.debug "Charge err #{ JSON.stringify err }"
-        res.serverError err
+        res.serverError JSON.stringify err
       )
 
   get_transactions: ( req, res ) ->
