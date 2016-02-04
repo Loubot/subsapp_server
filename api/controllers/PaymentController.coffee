@@ -10,7 +10,7 @@ module.exports = {
 
   create_payment: ( req, res ) ->
     sails.log.debug "Hit the Payment controller/create_payment"
-    # sails.log.debug "Create payment params #{ JSON.stringify req.body }"
+    sails.log.debug "Create payment params #{ JSON.stringify req.body }"
     # sails.log.debug "config #{ sails.config.stripe.stripe_publish }"
     Stripe = require("stripe")(sails.config.stripe.stripe_secret)
 
@@ -25,7 +25,7 @@ module.exports = {
 
         Token.findOne( { owner: req.body.user_id },  ).exec (err, token) ->
           sails.log.debug "Token amount #{ token.amount }"
-          token.amount = token.amount + ( charge.amount / 100 )
+          token.amount = token.amount + ( charge.amount )
           token.save ( err, token ) ->
             sails.log.debug "Token saved #{ JSON.stringify token }"
             sails.log.debug "Token saved error #{ JSON.stringify err }" if (err?)
@@ -34,7 +34,7 @@ module.exports = {
 
       ).catch( ( err ) ->
         sails.log.debug "Charge error #{ JSON.stringify err }"
-        res.serverError err
+        res.serverError "Charge err"
       )
 
   get_transactions: ( req, res ) ->
@@ -44,13 +44,14 @@ module.exports = {
     Promise = require('q')
 
     Promise.all([
-      User.findOne( id: req.body.id ).populate('tokens')
+      User.findOne( id: req.query.id ).populate('tokens')
       charges:
-        vat: process.env.vat
-        stripe_comm_precent: process.env.stripe_comm_precent
-        stripe_comm_euro: process.env.stripe_comm_euro
+        vat: sails.config.stripe.vat
+        stripe_comm_precent: sails.config.stripe.stripe_comm_precent
+        stripe_comm_euro: sails.config.stripe.stripe_comm_euro
 
     ]).spread( ( user, charges ) ->
+      sails.log.debug "Sripte stuff #{ JSON.stringify charges }"
       res.json 
         user: user
         charges: charges

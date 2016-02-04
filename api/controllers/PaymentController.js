@@ -14,6 +14,7 @@ module.exports = {
   create_payment: function(req, res) {
     var Stripe, charge;
     sails.log.debug("Hit the Payment controller/create_payment");
+    sails.log.debug("Create payment params " + (JSON.stringify(req.body)));
     Stripe = require("stripe")(sails.config.stripe.stripe_secret);
     return charge = Stripe.charges.create({
       source: req.body.stripe_token,
@@ -26,7 +27,7 @@ module.exports = {
         owner: req.body.user_id
       }).exec(function(err, token) {
         sails.log.debug("Token amount " + token.amount);
-        token.amount = token.amount + (charge.amount / 100);
+        token.amount = token.amount + charge.amount;
         return token.save(function(err, token) {
           sails.log.debug("Token saved " + (JSON.stringify(token)));
           if ((err != null)) {
@@ -40,7 +41,7 @@ module.exports = {
       });
     })["catch"](function(err) {
       sails.log.debug("Charge error " + (JSON.stringify(err)));
-      return res.serverError(JSON.stringify(err));
+      return res.serverError("Charge err");
     });
   },
   get_transactions: function(req, res) {
@@ -50,15 +51,16 @@ module.exports = {
     Promise = require('q');
     return Promise.all([
       User.findOne({
-        id: req.body.id
+        id: req.query.id
       }).populate('tokens'), {
         charges: {
-          vat: process.env.vat,
-          stripe_comm_precent: process.env.stripe_comm_precent,
-          stripe_comm_euro: process.env.stripe_comm_euro
+          vat: sails.config.stripe.vat,
+          stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
+          stripe_comm_euro: sails.config.stripe.stripe_comm_euro
         }
       }
     ]).spread(function(user, charges) {
+      sails.log.debug("Sripte stuff " + (JSON.stringify(charges)));
       return res.json({
         user: user,
         charges: charges
