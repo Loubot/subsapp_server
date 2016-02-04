@@ -14,6 +14,7 @@
 
 module.exports = (data, options) ->
   # Get access to `req`, `res`, & `sails`
+  sails.log.debug "Server eror #{ JSON.stringify data }"
   req = @req
   res = @res
   sails = req._sails
