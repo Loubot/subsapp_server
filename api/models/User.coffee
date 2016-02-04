@@ -60,7 +60,6 @@ module.exports =
 
     under_age:
       type: 'boolean'
-      required: true
       defaultsTo: false
 
     orgs:
@@ -131,8 +130,8 @@ module.exports =
     for player in player_array
 
       Promise.all([
-        User.create(parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
-          dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(), under_age: true
+        User.create(under_age: true, parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
+          dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString()
         )
         User.findOne( email: player[4] )
         
