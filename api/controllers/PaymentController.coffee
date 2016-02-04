@@ -34,6 +34,7 @@ module.exports = {
 
       ).catch( ( err ) ->
         sails.log.debug "Charge error #{ JSON.stringify err }"
+        res.status 500
         res.json status: 401, error: err
       )
 

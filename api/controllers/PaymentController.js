@@ -42,6 +42,7 @@ module.exports = {
       });
     })["catch"](function(err) {
       sails.log.debug("Charge error " + (JSON.stringify(err)));
+      res.status(500);
       return res.json({
         status: 401,
         error: err
