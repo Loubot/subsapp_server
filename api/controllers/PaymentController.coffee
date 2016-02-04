@@ -36,5 +36,12 @@ module.exports = {
         sails.log.debug "Charge err #{ JSON.stringify err }"
         res.serverError err
       )
+
+  get_transactions: ( req, res ) ->
+    sails.log.debug "Hit the payment controller/get_transactions"
+    sails.log.debug ""
+
+    Promise = require('q')
+
 }
 
