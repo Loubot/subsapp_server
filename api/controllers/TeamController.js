@@ -98,7 +98,7 @@ module.exports = {
       id: req.query.org_id
     }).populate('teams').then(function(org_and_teams) {
       sails.log.debug("Org and teams " + (JSON.stringify(org_and_teams)));
-      return res.serverError();
+      return res.json(org_and_teams);
     })["catch"](function(err) {
       sails.log.debug("Get org and teams error");
       return res.serverError(err);
