@@ -46,10 +46,25 @@ module.exports = {
           status: stripe_charge.status,
           last4: stripe_charge.source.last4
         )
-      ]).spread( ( token, transaction ) ->
+        User.findOne( id: req.body.user_id )
+      ]).spread( ( token, transaction, user ) ->
         sails.log.debug "Token saved #{ JSON.stringify token }"
         sails.log.debug "Transaction saved #{ JSON.stringify transaction }"
-        res.json token: token, transaction: transaction
+
+        user.transactions.add( transaction )
+        user.save( ( err, user_saved ) ->
+          if err?
+            sails.log.debug "User populate error #{ JSON.stringify err }"
+            res.serverError err
+          else
+            User.findOne( req.body.user_id).populate('tokens').populate('transactions').then( ( user_pop ) ->
+              sails.log.debug "User populate #{ JSON.stringify user_saved }"
+              res.json user_pop
+            ).catch ( err ) ->
+              sails.log.debug "User find err #{ JSON.stringify err }"
+              res.serverError err
+        )
+
       ).catch ( err ) ->
         if err?
           sails.log.debug "transaction create err #{ JSON.stringify err }"
@@ -94,12 +109,14 @@ module.exports = {
 
     Promise.all([
       User.findOne( id: req.query.id ).populate('tokens').populate('transactions')
-      charges:
-        vat: sails.config.stripe.vat
-        stripe_comm_precent: sails.config.stripe.stripe_comm_precent
-        stripe_comm_euro: sails.config.stripe.stripe_comm_euro
+      { 
+        vat: sails.config.stripe.vat,
+        stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
+        stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
+      }
 
     ]).spread( ( user, charges ) ->
+      sails.log.debug "User #{ JSON.stringify user }"
       sails.log.debug "Sripte stuff #{ JSON.stringify charges }"
       res.json 
         user: user
