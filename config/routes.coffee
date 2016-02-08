@@ -48,7 +48,7 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'pick_kids'
         
-  'get /user/temp-user':
+  'get /user/temp-user/:id':
         controller:             'UserController'
         action:                 'temp_user'
 
