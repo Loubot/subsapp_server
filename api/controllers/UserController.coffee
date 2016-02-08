@@ -17,7 +17,7 @@ module.exports = {
         }
       res.json user, charges
         
-      }
+      
     ).catch ( err ) ->
       sails.log.debug "Find user error #{ JSON.stringify err }"
       res.serverError err
