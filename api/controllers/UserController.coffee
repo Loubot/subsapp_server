@@ -24,24 +24,7 @@ module.exports = {
       sails.log.debug "Find user error #{ JSON.stringify err }"
       res.serverError err
 
-      
-  temp_user: ( req, res ) ->
-    sails.log.debug "Hit the user controller/temp-user"
-    sails.log.debug "params #{ req.param('id') }"
-    User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
-      sails.log.debug "Found user #{ JSON.stringify user }"
-      charges = {
-        vat: sails.config.stripe.vat,
-        stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
-        stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
-        }
-      res.json { user, charges: charges }
-        
-      
-    ).catch ( err ) ->
-      sails.log.debug "Find user error #{ JSON.stringify err }"
-      res.serverError err
-      
+
   edit_user: (req, res) ->
     sails.log.debug "Hit the User controller/edit-user"      
     sails.log.debug "params #{ JSON.stringify req.body }"
