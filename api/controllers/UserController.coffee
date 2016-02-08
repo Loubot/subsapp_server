@@ -16,7 +16,7 @@ module.exports = {
         stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
         stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
         }
-      res.json user, charges
+      res.json user: user, charegs: charges
         
       
     ).catch ( err ) ->
