@@ -109,10 +109,11 @@ module.exports = {
 
     Promise.all([
       User.findOne( id: req.query.id ).populate('tokens').populate('transactions'),
-      charges:
+      {
         vat: sails.config.stripe.vat,
         stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
         stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
+      }
       
 
     ]).spread( ( user, charges ) ->
