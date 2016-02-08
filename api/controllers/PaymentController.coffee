@@ -19,7 +19,7 @@ module.exports = {
       Stripe.charges.create({
         source: req.body.stripe_token,
         description: 'Example charge',
-        amount: parseInt( req.body.amount ),
+        amount: parseInt( req.body.amount ) * 100,
         currency: 'eur'})
       Token.findOne( owner: req.body.user_id )
       
@@ -29,7 +29,7 @@ module.exports = {
       sails.log.debug "Token found #{ JSON.stringify token }"
 
       sails.log.debug "Token amount #{ token.amount }"
-      token.amount = token.amount + ( stripe_charge.amount )
+      token.amount = token.amount + ( ( stripe_charge.amount ) / 100 )
 
       Promise.all([
         token.save()
@@ -108,7 +108,7 @@ module.exports = {
     Promise = require('q')
 
     Promise.all([
-      User.findOne( id: req.query.id ).populate('tokens').populate('transactions')
+      User.findOne( id: req.query.id ).populate('tokens').populate('transactions'),
       { 
         vat: sails.config.stripe.vat,
         stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
