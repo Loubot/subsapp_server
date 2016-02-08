@@ -10,13 +10,13 @@ module.exports = {
     sails.log.debug "Hit the user controller/temp-user"
     User.findOne( id: req.query.id ).populateAll().then( ( user ) ->
       sails.log.debug "Found user #{ JSON.stringify user }"
-      res.json {
-        user,
-        charges: {
+      charges: {
         vat: sails.config.stripe.vat,
         stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
         stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
         }
+      res.json user, charges
+        
       }
     ).catch ( err ) ->
       sails.log.debug "Find user error #{ JSON.stringify err }"
