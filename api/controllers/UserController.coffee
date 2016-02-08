@@ -8,8 +8,8 @@
 module.exports = {
   temp_user: ( req, res ) ->
     sails.log.debug "Hit the user controller/temp-user"
-    sails.log.debug "params #{ JSON.stringify req.query }"
-    User.findOne( id: req.query.id ).populateAll().then( ( user ) ->
+    sails.log.debug "params #{ JSON.stringify req.allParams() }"
+    User.findOne( id: req.param('id' ).populateAll().then( ( user ) ->
       sails.log.debug "Found user #{ JSON.stringify user }"
       charges = {
         vat: sails.config.stripe.vat,
