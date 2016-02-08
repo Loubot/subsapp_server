@@ -126,7 +126,7 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
       # console.log "id #{ id }"
       $http(
         method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/user/temp-user/#{ id }"
+        url: "#{ RESOURCES.DOMAIN }/user/#{ id }"
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
       ).success( (data) ->
         console.log "Fetched user data"
@@ -138,8 +138,8 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
         else
           console.log "Got user"
           # console.log data
-          window.USER = data
-          return data
+          window.USER = data.user
+          return data.user
         
       ).error (err) ->
         console.log "Fetching user data error #{ JSON.stringify err }"
