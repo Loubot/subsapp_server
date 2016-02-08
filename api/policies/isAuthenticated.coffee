@@ -11,7 +11,12 @@ module.exports = (req, res, next) ->
       return res.serverError(error)
     if !user
       return res.unauthorized(null, info and info.code, info and info.message)
-    req.user = user
+    req.user = { user, charges: {
+        vat: sails.config.stripe.vat,
+        stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
+        stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
+      }
+    }
     next()
     return
   ) req, res
