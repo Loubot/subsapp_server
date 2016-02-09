@@ -134,11 +134,12 @@ module.exports =
     x = new Array()
     for player in player_array
       sails.log.debug "Parent email #{ player[4] }"
+      dob = moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] )
+      dob_stamped = dob.toISOString()
+      
       Promise.all([
-
-        User.create(under_age: true, parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3],
-          dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString()
-        )
+        sails.log.debug "dob stamp created #{ dob_stamped }"
+        User.create(dob_stamp: dob_stamped, under_age: true, parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3] )
         User.findOne( email: player[4] )
         
       ]).spread( ( kid, parent) ->

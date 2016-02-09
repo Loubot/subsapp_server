@@ -111,7 +111,7 @@ module.exports = {
       params = 
         Bucket: 'subzapp'
         Delimiter: '/'
-        Prefix: '2/1/'
+        Prefix: '1/1/'
 
       s3.listObjectsAsync( params ).then( ( stuff ) ->
         sails.log.debug "S3"
@@ -131,6 +131,7 @@ module.exports = {
         User.create_players( player_array, ( err, players ) ->
           sails.log.debug "Players #{ JSON.stringify players }"
           sails.log.debug "Players error #{ JSON.stringify err }" if err?
+          res.serverError err if err?
         )
         res.json obj[0].data
     )
