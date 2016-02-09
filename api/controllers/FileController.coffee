@@ -93,6 +93,7 @@ module.exports = {
   
   parse_players: ( req, res ) ->
     sails.log.debug "Hit the file controller/aws"
+    sails.log.debug "params #{ JSON.stringify req.query }"
     xlsx = require('node-xlsx')
     Promise = require('bluebird')
     sails.log.debug JSON.stringify req.body
@@ -128,7 +129,7 @@ module.exports = {
         player_array = obj[0].data
         player_array.splice(0,1)
         # sails.log.debug "Array #{ JSON.stringify player_array }"
-        User.create_players( player_array, ( err, players ) ->
+        User.create_players( player_array, req.query.team_id, ( err, players ) ->
           sails.log.debug "Players #{ JSON.stringify players }"
           sails.log.debug "Players error #{ JSON.stringify err }" if err?
           res.serverError err if err?
