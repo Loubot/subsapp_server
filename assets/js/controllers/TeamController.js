@@ -97,10 +97,29 @@ angular.module('subzapp').controller('TeamController', [
         return console.log('progress: ' + progressPercentage + '% ' + evt.config.data);
       });
     };
+    $scope.get_players_by_year = function(id) {
+      console.log("Find by date");
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/user/get-players-by-year",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        },
+        params: {
+          team_id: id
+        }
+      }).then((function(res) {
+        console.log("Download response");
+        return console.log(res);
+      }), function(errResponse) {
+        return console.log("DOwnload error " + (JSON.stringify(errResponse)));
+      });
+    };
     return $scope.download = function() {
       return $http({
         method: 'GET',
-        url: RESOURCES.DOMAIN + "/download-file",
+        url: RESOURCES.DOMAIN + "/user/download-file",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"

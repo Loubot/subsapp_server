@@ -4,7 +4,7 @@
 # @description :: Server-side logic for managing Users
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
-
+moment = require('moment')
 module.exports = {
 
   findOne: ( req, res ) ->
@@ -100,5 +100,18 @@ module.exports = {
     #   return
     # ).catch (err) ->
     #   res.serverError err
+
+  get_players_by_year: ( req, res ) ->
+    sails.log.debug "Hit the user controller/find_by_date"
+    date = moment().toISOString()
+    sails.log.debug "Current time #{ JSON.stringify date }"
+    User.find_in_year( date, req.query.team_id, ( err, users ) ->
+      if err?
+        sails.log.debug "Find user by date error #{ JSON.stringify err }"
+        res.serverError err
+      else
+        sails.log.debug "Find uers by date #{ JSON.stringify users }"
+        res.json users
+    )
 
 }

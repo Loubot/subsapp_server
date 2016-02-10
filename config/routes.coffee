@@ -48,6 +48,10 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'pick_kids'
 
+  'get /user/get-players-by-year':
+        controller:             'UserController'
+        action:                 'get_players_by_year'
+
 
   # End of user controller
 

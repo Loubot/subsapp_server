@@ -115,11 +115,28 @@ angular.module('subzapp').controller('TeamController', [
         progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
         console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
 
+    $scope.get_players_by_year = ( id ) ->
+      console.log "Find by date"
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/user/get-players-by-year"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+        params:
+          team_id: id
+      ).then ( (res) ->
+         console.log "Download response"
+         console.log res
+         
+      ), ( errResponse ) ->
+        console.log "DOwnload error #{ JSON.stringify errResponse }"
+
   
     $scope.download = ->
       $http(
         method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/download-file"
+        url: "#{ RESOURCES.DOMAIN }/user/download-file"
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }

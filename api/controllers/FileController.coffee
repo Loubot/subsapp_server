@@ -186,6 +186,7 @@ module.exports = {
     s3.listObjects params, (err, data) ->
       if err
         throw err
+      sails.log.debug "Got file"
       sails.log.debug JSON.stringify data
       return
 }
