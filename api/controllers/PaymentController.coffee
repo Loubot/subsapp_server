@@ -20,7 +20,7 @@ module.exports = {
         source: req.body.stripe_token,
         description: 'Example charge',
         amount: parseInt( req.body.amount ) * 100,
-        currency: 'eur'})
+        currency: 'eur' })
       Token.findOne( owner: req.body.user_id )
       
       
@@ -57,12 +57,13 @@ module.exports = {
             sails.log.debug "User populate error #{ JSON.stringify err }"
             res.serverError err
           else
-            User.findOne( req.body.user_id).populate('tokens').populate('transactions').then( ( user_pop ) ->
-              sails.log.debug "User populate #{ JSON.stringify user_saved }"
-              res.json user_pop
-            ).catch ( err ) ->
-              sails.log.debug "User find err #{ JSON.stringify err }"
-              res.serverError err
+          res.json stripe_charge
+            # User.findOne( req.body.user_id).populate('tokens').populate('transactions').then( ( user_pop ) ->
+            #   sails.log.debug "User populate #{ JSON.stringify user_saved }"
+            #   res.json user_pop
+            # ).catch ( err ) ->
+            #   sails.log.debug "User find err #{ JSON.stringify err }"
+            #   res.serverError err
         )
 
       ).catch ( err ) ->
