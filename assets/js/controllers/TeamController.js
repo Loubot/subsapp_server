@@ -44,7 +44,7 @@ angular.module('subzapp').controller('TeamController', [
       return console.log("Get team info error " + (JSON.stringify(errResponse)));
     });
     $scope.create_event = function() {
-      $scope.create_event_data.team_id = $location.search().id;
+      $scope.create_event_data.team_id = $scope.team.id;
       console.log($scope.create_event_data);
       return $http({
         method: 'POST',

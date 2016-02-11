@@ -17,14 +17,7 @@ module.exports = {
     ).catch((err) ->
       sails.log.debug "Create event error #{ JSON.stringify err }"
       res.serverError err
-    ).done ->
-      sails.log.debug "Create event done"
-
-      Event.find( event_team: req.body.team_id).exec ( e, events ) ->
-        sails.log.debug "Event created return all events #{ JSON.stringify events }"
-        sails.log.debug "Event creaed return all events error #{ JSON.stringify e }" if (err?)
-
-        res.send events
+    )
 
     
   join_event: ( req, res ) ->

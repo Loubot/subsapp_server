@@ -58,7 +58,7 @@ angular.module('subzapp').controller('TeamController', [
   
       
     $scope.create_event = ->
-      $scope.create_event_data.team_id = $location.search().id
+      $scope.create_event_data.team_id = $scope.team.id
       console.log $scope.create_event_data
       $http(
         method: 'POST'
