@@ -112,7 +112,7 @@ module.exports = {
       params = 
         Bucket: 'subzapp'
         Delimiter: '/'
-        Prefix: '1/1/'
+        Prefix: '2/1/'
 
       s3.listObjectsAsync( params ).then( ( stuff ) ->
         sails.log.debug "S3"
