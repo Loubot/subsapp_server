@@ -13,13 +13,16 @@ module.exports =
   attributes:      
     name:
       type: 'string'
-      defaultsTo: ''
+      defaultsTo: null
       required: true
 
     date:
       type: 'datetime'
-      required: true
-      defaultsTo: ''
+      defaultsTo: null
+
+    details:
+      type: 'text'
+      defaultsTo: null
 
     event_parent:
       model: 'user'

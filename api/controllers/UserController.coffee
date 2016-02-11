@@ -25,9 +25,12 @@ module.exports = {
     Promise = require('q')
     kids_array = new Array()
     sails.log.debug "Hit the UserController/social"
-    sails.log.debug "Params #{ req.param() }"
+    sails.log.debug "Params #{ JSON.stringify req.allParams() }"
 
-    User.findOne( id: req.param('id') ).populate('kids').then( ( user ) ->
+    User.findOne( id: req.param('id') )
+    .populate('kids')
+    .populate('parent_events', { sort: 'createdAt desc'})
+    .then( ( user ) ->
       sails.log.debug "User social find #{ JSON.stringify user }"
 
       for kid in user.kids

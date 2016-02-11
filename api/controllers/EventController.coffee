@@ -43,7 +43,10 @@ module.exports = {
       )
 
       user.tokens[0].save( ( saved_user ) ->
-        User.findOne( id: req.body.user_id ).populate('tokens').populate('user_events').exec ( err, user ) ->
+        User.findOne( id: req.body.user_id )
+        .populate('tokens')
+        .populate('user_events')
+        .exec ( err, user ) ->
           sails.log.debug "Populate user #{ JSON.stringify user }"
           sails.log.debug "Populate user error #{ JSON.stringify err }" if(err?)
           res.ok user: user, message: "You have joined this event"
@@ -65,5 +68,19 @@ module.exports = {
       sails.log.debug "Event find error #{ JSON.stringify err }"
       res.serverError err
     )
- 
+
+  create_parent_event: ( req, res ) ->
+    sails.log.debug "Hit the event controller/create_parent_event"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    ParentEvent.create( 
+      name: req.body.name, 
+      date: req.body.date, 
+      details: req.body.details, 
+      event_parent: req.body.event_parent
+    ).then( ( p_event) ->
+      sails.log.debug "Parent event created #{ JSON.stringify p_event }"
+      res.json p_event
+    ).catch ( err ) ->
+      sails.log.debug "Parent event create error #{ JSON.stringify err }"
+      res.serverError err
 }

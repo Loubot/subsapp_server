@@ -147,6 +147,10 @@ module.exports.routes =
         controller:             'EventController'
         action:                 'get_event_members'
 
+    # parent events
+    'post /event/parent/create-event':
+        controller:             'EventController'
+        action:                 'create_parent_event'
   # end of Event controller
 
   #Invite controller

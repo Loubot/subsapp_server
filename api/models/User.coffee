@@ -84,7 +84,7 @@ module.exports =
       via: 'event_user'
 
     parent_events:
-      collection: 'parentevents'
+      collection: 'parentevent'
       via: 'event_parent'
 
     tokens:
