@@ -83,6 +83,10 @@ module.exports =
       collection: 'event'
       via: 'event_user'
 
+    parent_events:
+      collection: 'parentevents'
+      via: 'event_parent'
+
     tokens:
       collection: 'token'
       via: 'owner'
