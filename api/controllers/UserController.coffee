@@ -36,7 +36,7 @@ module.exports = {
       sails.log.debug "Kids array #{ JSON.stringify kids_array }"
       User.find().where( id: kids_array ).populate('user_events').then( ( kids_with_events ) -> 
         sails.log.debug "Find kids with events #{ JSON.stringify kids_with_events }"
-        res.json { user, events: kids_with_events }
+        res.json { user, kids_with_events: kids_with_events }
 
       ).catch ( err ) ->
         sails.log.debug "Kis with events error #{ JSON.stringify err }"
