@@ -20,6 +20,10 @@ module.exports =
       type: 'integer'
       defaultsTo: null
 
+    token_amount:
+      type: 'integer'
+      defaultsTo: null
+
     amount_refunded:
       type: 'integer'
       defaultsTo: null

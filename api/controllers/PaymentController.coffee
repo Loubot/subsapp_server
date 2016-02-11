@@ -15,11 +15,14 @@ module.exports = {
     Stripe = require("stripe")(sails.config.stripe.stripe_secret)
     Promise = require('q')
 
+    total = StripeService.add_fees( req.body.amount )
+    sails.log.debug "Payment controller total #{ total }"
+
     Promise.all([      
       Stripe.charges.create({
         source: req.body.stripe_token,
         description: 'Example charge',
-        amount: parseInt( req.body.amount ) * 100,
+        amount: total,
         currency: 'eur' })
       Token.findOne( owner: req.body.user_id )
       
@@ -36,6 +39,7 @@ module.exports = {
         Transaction.create(
           user_id: req.body.user_id,
           amount: stripe_charge.amount,
+          token_amount: req.body.amount,
           amount_refunded: stripe_charge.amount_refunded,
           stripe_id: stripe_charge.id,
           created: stripe_charge.created,
