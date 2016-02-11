@@ -23,11 +23,24 @@ module.exports = {
 
   social: ( req, res ) ->
     Promise = require('q')
+    kids_array = new Array()
     sails.log.debug "Hit the UserController/social"
     sails.log.debug "Params #{ req.param() }"
 
     User.findOne( id: req.param('id') ).populate('kids').then( ( user ) ->
       sails.log.debug "User social find #{ JSON.stringify user }"
+
+      for kid in user.kids
+        kids_array.push kid.id
+
+      sails.log.debug "Kids array #{ JSON.stringify kids_array }"
+      User.find().where( id: kids_array ).populate('user_events').then( ( kids_with_events ) -> 
+        sails.log.debug "Find kids with events #{ JSON.stringify kids_with_events }"
+        res.json { user, events: kids_with_events }
+
+      ).catch ( err ) ->
+        sails.log.debug "Kis with events error #{ JSON.stringify err }"
+        res.serverError err
 
     ).catch ( err ) ->
       sails.log.debug "User social find error #{ JSON.stringify err }"
