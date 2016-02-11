@@ -52,6 +52,15 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'get_players_by_year'
 
+    # Parents urls
+      'get /parent/social/:id':
+        controller:             'UserController'
+        action:                 'social'
+
+      'get /parent/financial/:id':
+        controller:             'UserController'
+        action:                 'financial'
+
 
   # End of user controller
 

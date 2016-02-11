@@ -5,6 +5,7 @@
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
 moment = require('moment')
+
 module.exports = {
 
   findOne: ( req, res ) ->
@@ -12,16 +13,42 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
     User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
       sails.log.debug "Found user #{ JSON.stringify user }"
-      charges = {
-        vat: sails.config.stripe.vat,
-        stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
-        stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
-        }
-      res.json { user, charges: charges }
+      
+      res.json user
         
       
     ).catch ( err ) ->
       sails.log.debug "Find user error #{ JSON.stringify err }"
+      res.serverError err
+
+  social: ( req, res ) ->
+    Promise = require('q')
+    sails.log.debug "Hit the UserController/social"
+    sails.log.debug "Params #{ req.param() }"
+
+    User.findOne( id: req.param('id') ).populate('kids').then( ( user ) ->
+      sails.log.debug "User social find #{ JSON.stringify user }"
+
+    ).catch ( err ) ->
+      sails.log.debug "User social find error #{ JSON.stringify err }"
+      res.serverError err
+
+  financial: ( req, res ) ->
+    sails.log.debug "Hit the UserController/financial"
+    sails.log.debug "Parasm #{ req.param() }"
+    charges = {
+      vat: sails.config.stripe.vat,
+      stripe_comm_precent: sails.config.stripe.stripe_comm_precent,
+      stripe_comm_euro: sails.config.stripe.stripe_comm_euro 
+    }
+    User.findOne( id: req.param('id') )
+    .populate('tokens')
+    .populate('transactions')
+    .then( ( user ) ->
+      sails.log.debug "User find financial #{ JSON.stringify user }"
+      res.json { user, charges: charges }
+    ).catch ( err ) -> 
+      sails.log.debug "User find financial error #{ JSON.stringify err }"
       res.serverError err
 
 

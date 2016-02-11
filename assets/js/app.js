@@ -113,8 +113,8 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
           return false;
         } else {
           console.log("Got user");
-          window.USER = data.user;
-          return data.user;
+          window.USER = data;
+          return data;
         }
       }).error(function(err) {
         console.log("Fetching user data error " + (JSON.stringify(err)));

@@ -138,8 +138,8 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
         else
           console.log "Got user"
           # console.log data
-          window.USER = data.user
-          return data.user
+          window.USER = data
+          return data
         
       ).error (err) ->
         console.log "Fetching user data error #{ JSON.stringify err }"
