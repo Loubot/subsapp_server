@@ -48,7 +48,7 @@ angular.module('subzapp').controller('TeamController', [
         team_id: window.localStorage.getItem 'team_id'
     ).then ( (res) ->
        console.log "Get team info response"
-       console.log res.data.team
+       console.log res.data
        $scope.team = res.data.team
        $scope.members = res.data.team.team_members
        $scope.events = res.data.team.events

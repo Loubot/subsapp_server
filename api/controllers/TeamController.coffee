@@ -101,10 +101,7 @@ module.exports = {
     #   Delimiter: '/'
     #   Prefix: '1/1/'
 
-    Team.findOne( id: req.query.team_id ).populate('team_members')
-    .populate('events')
-    .populate('main_org')
-    .populate('files').then((team) ->
+    Team.findOne( id: req.query.team_id ).populateAll().then((team) ->
       sails.log.debug "Team #{ JSON.stringify team }"
       sails.log.debug "Prefix: #{ team.main_org.id }/#{ team.id }/"
       params =

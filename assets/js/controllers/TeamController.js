@@ -35,7 +35,7 @@ angular.module('subzapp').controller('TeamController', [
       }
     }).then((function(res) {
       console.log("Get team info response");
-      console.log(res.data.team);
+      console.log(res.data);
       $scope.team = res.data.team;
       $scope.members = res.data.team.team_members;
       $scope.events = res.data.team.events;
