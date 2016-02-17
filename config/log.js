@@ -40,5 +40,7 @@ module.exports.log = {
   ***************************************************************************/
 
 
-  level: 'silly'
+  level: 'silly',
+  custom: logger
+
 };

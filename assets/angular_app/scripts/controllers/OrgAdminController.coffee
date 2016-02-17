@@ -73,6 +73,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data
         $scope.org = response.data[0]
         console.log "Org set: #{ JSON.stringify $scope.org }"
+        alertify.success "Club created successfully"
         # $scope.business_form.$setPristine()
         $('.business_name').val ""
         $('.business_address').val ""

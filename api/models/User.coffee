@@ -137,36 +137,44 @@ module.exports =
     Promise = require('q')
     x = new Array()
     for player in player_array
-      sails.log.debug "Parent email #{ player[4] }"
-      Promise.all([
-
-        User.create(dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(),under_age: true, parent_email: player[4], firstName: player[0], lastName: player[1], dob: player[3]
-          
-        )
-        User.findOne( email: player[4] )
-        
-      ]).spread( ( kid, parent) ->
-        sails.log.debug "Kid created #{ JSON.stringify kid }"
-        sails.log.debug "Parent found #{ JSON.stringify parent }"
-
-        parent.kids.add( kid )
-        kid.user_teams.add( team )
+      
+      if ( player[0]? and player[1]? and player[3] and player[4]? )
+        parent_email = player[4].replace(/ /g,'')
+        sails.log.debug "Parent email #{parent_email}"
         Promise.all([
-          parent.save()
-          kid.save()
-        ]).spread( ( saved_parent, saved_kid ) ->
-          sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
-          sails.log.debug "Saved kid #{ JSON.stringify saved_kid }"
+
+          User.create(
+            dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(),
+            parent_email: parent_email, 
+            under_age: true,          
+            firstName: player[0], 
+            lastName: player[1], dob: player[3]          
+          )
+          User.findOne( email: parent_email )
+          
+        ]).spread( ( kid, parent) ->
+          sails.log.debug "Kid created #{ JSON.stringify kid }"
+          sails.log.debug "Parent found #{ JSON.stringify parent }"
+
+          
+          parent.kids.add( kid )
+          kid.user_teams.add( team )
+          Promise.all([
+            parent.save()
+            kid.save()
+          ]).spread( ( saved_parent, saved_kid ) ->
+            sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
+            sails.log.debug "Saved kid #{ JSON.stringify saved_kid }"
+          ).catch ( err ) ->
+            sails.log.debug "saved parent error #{ JSON.stringify err }"
+          
+            sails.log.debug "Parent saved #{ JSON.stringify saved }"
+            sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
+          
+
+
         ).catch ( err ) ->
-          sails.log.debug "saved parent error #{ JSON.stringify err }"
-        
-          sails.log.debug "Parent saved #{ JSON.stringify saved }"
-          sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
-        
-
-
-      ).catch ( err ) ->
-        sails.log.debug "Create player error #{ JSON.stringify err }" if err?
+          sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 
       
       # User.create(

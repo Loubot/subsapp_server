@@ -62,6 +62,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data;
         $scope.org = response.data[0];
         console.log("Org set: " + (JSON.stringify($scope.org)));
+        alertify.success("Club created successfully");
         $('.business_name').val("");
         return $('.business_address').val("");
       }), function(errResponse) {
