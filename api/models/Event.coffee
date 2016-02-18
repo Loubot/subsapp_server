@@ -16,10 +16,19 @@ module.exports =
       defaultsTo: ''
       required: true
 
-    date:
+    start_date:
       type: 'datetime'
       required: true
-      defaultsTo: ''
+      defaultsTo: null
+      
+    end_date:
+      type: 'datetime'
+      required: true
+      defaultsTo: null
+
+    details:
+      type: 'text'
+      defaultsTo: null
 
     price:
       type: 'integer'

@@ -202,6 +202,17 @@ module.exports.routes =
         controller:             'PasswordReminderController'
         action:                 'post_reset'
 
+  #TokenTransaction controller
+  'get /tokentransaction/:id':
+        controller:             'TokenTransactionController'
+        action:                 'find'
+
+  'post /tokentransaction/pay':
+        controller:              'TokenTransactionController'
+        action:                   'pay'
+
+  #End of TokenTransactionController
+
 
   # #Mail controller
 

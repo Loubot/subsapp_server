@@ -9,9 +9,15 @@ module.exports = {
   
   create_event: (req, res) ->
     sails.log.debug "Hit the events controller/create_event"
-    sails.log.debug req.body
-
-    Event.create( name: req.body.name, date: req.body.date, event_team: req.body.team_id, price: parseInt(req.body.price) ).then( (created) ->
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    Event.create( 
+      name: req.body.name 
+      start_date: req.body.start_date 
+      end_date: req.body.end_date 
+      event_team: req.body.team_id 
+      price: parseInt(req.body.price)
+      details: req.body.details        
+    ).then( (created) ->
       sails.log.debug "Event create response #{ JSON.stringify created }"
       res.json created
     ).catch((err) ->
@@ -73,9 +79,10 @@ module.exports = {
     sails.log.debug "Hit the event controller/create_parent_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     ParentEvent.create( 
-      name: req.body.name, 
-      date: req.body.date, 
-      details: req.body.details, 
+      name: req.body.name 
+      start_date: req.body.start_date 
+      end_date: req.body.end_date 
+      details: req.body.details 
       event_parent: req.body.event_parent
     ).then( ( p_event) ->
       sails.log.debug "Parent event created #{ JSON.stringify p_event }"

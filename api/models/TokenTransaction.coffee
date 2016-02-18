@@ -1,6 +1,6 @@
 ###*
-# Event
-# @description :: Model for storing parent events
+# Team
+# @description :: Model for storing token transactions
 ###
 
 module.exports =
@@ -10,27 +10,44 @@ module.exports =
   autoCreatedAt: true
   autoPK: true
   schema: true
-  attributes:      
-    name:
-      type: 'string'
-      defaultsTo: null
-      required: true
-
-    start_date:
-      type: 'datetime'
-      defaultsTo: null
-
-    end_date:
-      type: 'datetime'
-      defaultsTo: null
-
-    details:
-      type: 'text'
-      defaultsTo: null
-
-    event_parent:
-      model: 'user'
+  attributes:
+    # username:
+    #   type: 'string'
+    #   required: true
+    #   unique: true
+    #   alphanumericdashed: true
       
+    event_id: 
+      type: 'integer'
+      required: true
+      defaultsTo: null
+
+    user_id:
+      type: 'integer'
+      required: true
+      defaultsTo: null
+
+    parent_id:
+      type: 'integer'
+      required: true
+      defaultsTo: null
+
+    team_id: 
+      type: 'integer'
+      required: true
+      defaultsTo: null
+
+    token_amount:
+      type: 'integer'
+      required: true
+      defaultsTo: null
+
+    paid:
+      type: 'boolean'
+      required: true
+      defaultsTo: false   
+
+
     
     toJSON: ->
       obj = @toObject()

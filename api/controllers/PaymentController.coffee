@@ -32,7 +32,7 @@ module.exports = {
       sails.log.debug "Token found #{ JSON.stringify token }"
 
       sails.log.debug "Token amount #{ token.amount }"
-      token.amount = token.amount + ( ( stripe_charge.amount ) / 100 )
+      token.amount = token.amount + req.body.amount
 
       Promise.all([
         token.save()
@@ -78,33 +78,7 @@ module.exports = {
       if err?
         sails.log.debug "Stripe create error #{ JSON.stringify err }"
         res.status 500
-        res.json err 
-
-
-
-    # charge = Stripe.charges.create({
-    #   source: req.body.stripe_token
-    #   description: 'Example charge'
-    #   amount: parseInt( req.body.amount )
-    #   currency: 'eur'
-    #   }).then( ( charge ) ->
-    #     sails.log.debug "Charge response #{ JSON.stringify charge }"
-        
-
-    #     Token.findOne( { owner: req.body.user_id },  ).exec (err, token) ->
-    #       sails.log.debug "Token amount #{ token.amount }"
-    #       token.amount = token.amount + ( charge.amount )
-    #       token.save ( err, token ) ->
-    #         sails.log.debug "Token saved #{ JSON.stringify token }"
-    #         sails.log.debug "Token saved error #{ JSON.stringify err }" if (err?)
-    #         res.json token: token, message: 'Tokens purchased successfully', charge: charge
-
-
-    #   ).catch( ( err ) ->
-    #     sails.log.debug "Charge error #{ JSON.stringify err }"
-    #     res.status 500
-    #     res.json status: 401, error: err
-    #   )
+        res.json err
 
   get_transactions: ( req, res ) ->
     sails.log.debug "Hit the payment controller/get_transactions"
