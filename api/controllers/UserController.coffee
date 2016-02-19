@@ -27,10 +27,7 @@ module.exports = {
     sails.log.debug "Hit the UserController/social"
     sails.log.debug "Params #{ JSON.stringify req.allParams() }"
 
-    User.findOne( id: req.param('id') )
-    .populate('kids')
-    .populate('parent_events', { sort: 'createdAt desc'})
-    .then( ( user ) ->
+    User.findOne( id: req.param('id') ).populate('kids').populate('parent_events', { sort: 'createdAt desc'} ).then( ( user ) ->
       sails.log.debug "User social find #{ JSON.stringify user }"
 
       for kid in user.kids
@@ -41,7 +38,7 @@ module.exports = {
       Promise.all([
         User.find().where( id: kids_array ).populate('user_events').populate('user_teams')
         TokenTransaction.find().where( user_id: kids_array, parent_id: req.param('id') )
-      ]).spread ( ( kids_with_events, ttransactions )->
+      ]).spread ( ( kids_with_events, ttransactions ) ->
         sails.log.debug "kids with events  #{ JSON.stringify kids_with_events}"
         sails.log.debug "ttransactions  #{ JSON.stringify ttransactions }"
         res.json { user, kids_with_events: kids_with_events, token_transactions: ttransactions }

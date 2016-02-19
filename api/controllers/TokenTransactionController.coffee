@@ -10,7 +10,7 @@ module.exports = {
   find: ( req, res ) ->
     sails.log.debug "Hit the TokenTransactionController/findOne"
     sails.log.debug "Params #{ JSON.stringify req.query }"
-    TokenTransaction.find( user_id: req.query.user_id).then ( ( ttransaction ) ->
+    TokenTransaction.find( user_id: req.query.user_id ).then ( ( ttransaction ) ->
       res.json ttransaction
 
     ).catch ( err ) ->
