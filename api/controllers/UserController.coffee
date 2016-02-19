@@ -11,15 +11,25 @@ module.exports = {
   findOne: ( req, res ) ->
     sails.log.debug "Hit the user controller/findOne"
     sails.log.debug "Params #{ req.param('id') }"
-    User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
-      sails.log.debug "Found user #{ JSON.stringify user }"
+    User.query("select b.id, b.firstName, b.lastName, b.dob, b.parent_email, a.id as parent_id, c.team_team_members as team_id, d.name as team_name, d.main_org as club_id, e.name as club_name
+        from user a
+        inner join user b on a.email = b.parent_email
+        left outer join team_team_members__user_user_teams c on b.id = c.user_user_teams
+        left outer join team d on c.team_team_members = d.id
+        left outer join org e on d.main_org = e.id;", (err, results) ->
+      sails.log.debug  "results #{ JSON.stringify results}"
+      sails.log.debug "error #{ JSON.stringify err }"
+
+    )
+    # User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
+      # sails.log.debug "Found user #{ JSON.stringify user }"
       
-      res.json user
+      # res.json user
         
       
-    ).catch ( err ) ->
-      sails.log.debug "Find user error #{ JSON.stringify err }"
-      res.serverError err
+    # ).catch ( err ) ->
+    #   sails.log.debug "Find user error #{ JSON.stringify err }"
+    #   res.serverError err
 
   social: ( req, res ) ->
     Promise = require('q')
