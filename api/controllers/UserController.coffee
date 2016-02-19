@@ -56,7 +56,7 @@ module.exports = {
       #   res.serverError err
 
     ).catch ( err ) ->
-      sails.log.debug "User social find error #{ JSON.stringify err }"
+      # sails.log.debug "User social find error #{ JSON.stringify err }"
       res.serverError err
 
   financial: ( req, res ) ->
