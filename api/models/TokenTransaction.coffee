@@ -45,14 +45,17 @@ module.exports =
     paid:
       type: 'boolean'
       required: true
-      defaultsTo: false   
+      defaultsTo: false
+
+    declined: 
+      type: 'boolean'  
+      defaultsTo: false
 
 
     
     toJSON: ->
       obj = @toObject()
-      delete obj.password
-      delete obj.socialProfiles
+      
       obj
   # beforeUpdate: (values, next) ->
   #   CipherService.hashPassword values

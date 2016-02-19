@@ -37,16 +37,26 @@ module.exports = {
         kids_array.push kid.id
 
       sails.log.debug "Kids array #{ JSON.stringify kids_array }"
+
+      Promise.all([
+        User.find().where( id: kids_array ).populate('user_events').populate('user_teams')
+        TokenTransaction.find().where( user_id: kids_array, parent_id: req.param('id') )
+      ]).spread ( ( kids_with_events, ttransactions )->
+        sails.log.debug "kids with events  #{ JSON.stringify kids_with_events}"
+        sails.log.debug "ttransactions  #{ JSON.stringify ttransactions }"
+        res.json { user, kids_with_events: kids_with_events, token_transactions: ttransactions }
+      )
+
       
       
-      User.find().where( id: kids_array ).populate('user_events').populate('user_teams').then( ( kids_with_events ) -> 
-        sails.log.debug "Find kids with events #{ JSON.stringify kids_with_events }"
+      # User.find().where( id: kids_array ).populate('user_events').populate('user_teams').then( ( kids_with_events ) -> 
+      #   sails.log.debug "Find kids with events #{ JSON.stringify kids_with_events }"
 
-        res.json { user, kids_with_events: kids_with_events }
+      #   res.json { user, kids_with_events: kids_with_events }
 
-      ).catch ( err ) ->
-        sails.log.debug "Kis with events error #{ JSON.stringify err }"
-        res.serverError err
+      # ).catch ( err ) ->
+      #   sails.log.debug "Kis with events error #{ JSON.stringify err }"
+      #   res.serverError err
 
     ).catch ( err ) ->
       sails.log.debug "User social find error #{ JSON.stringify err }"
