@@ -61,6 +61,14 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'financial'
 
+      'get /parent/kids-with-parents':
+        controller:             'UserController'
+        action:                 'kids_with_parents'
+
+      'get /parent/parents-with-events':
+        controller:             'UserController'
+        action:                 'parents_with_events'
+
 
   # End of user controller
 
