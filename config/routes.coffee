@@ -82,6 +82,10 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'destroy_business'
 
+  'get /org/:id':           
+        controller:             'OrgController'
+        action:                 'findOne'
+
   'get /get-org':             #Require org.id. Returns details of org
         controller:             'OrgController'
         action:                 'get_org'

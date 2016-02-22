@@ -14,7 +14,8 @@ angular.module('subzapp').controller('RegisterController', [
         },
         data: $scope.register_form_data
       }).then((function(response) {
-        console.log("Registration successfull " + (JSON.stringify(response)));
+        console.log("Registration successfull");
+        console.log(response);
         window.localStorage.setItem('user_token', response.data.data.token);
         window.localStorage.setItem('user_id', response.data.data.user.id);
         alertify.success('Welcome');

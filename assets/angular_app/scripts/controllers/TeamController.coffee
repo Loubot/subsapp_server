@@ -14,6 +14,24 @@ angular.module('subzapp').controller('TeamController', [
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
+    check_if_admin = ->
+      
+      if $scope.user.club_admin
+        
+        $http(
+          method: 'GET'
+          url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
+          headers: { 
+                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                    }
+          
+        ).then ( (res) ->
+           console.log "Org findOne response"
+           console.log res
+           
+        ), ( errResponse ) ->
+          console.log "Org findOne error #{ JSON.stringify errResponse }" 
+
     if !(window.USER?)
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify res }"
@@ -23,6 +41,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = window.USER.teams
         return_team( USER.teams, $location.search().id )
         $scope.show_upload = window.USER.club_admin
+        check_if_admin()
         # if $location.$$path == '/team-manager'
 
         
@@ -36,6 +55,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0]
       $scope.teams = window.USER.teams
       $scope.user = window.USER
+      check_if_admin()
     
 
     $http(

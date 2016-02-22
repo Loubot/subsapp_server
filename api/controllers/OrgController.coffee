@@ -8,6 +8,11 @@
 passport = require('passport')
 module.exports = {
 
+  findOne: ( req, res ) ->
+    sails.log.debug "Hit the org controller/findOne "
+    sails.log.debug "Params #{ JSON.stringify req.param('id') }"
+    sails.log.debug "User #{ JSON.stringify req.user }"
+
   get_org: (req, res) ->
     sails.log.debug "Hit the business controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.query.org_id }"

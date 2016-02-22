@@ -3,16 +3,34 @@ var return_team;
 
 angular.module('subzapp').controller('TeamController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload) {
-    var user_token;
+    var check_if_admin, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
+    check_if_admin = function() {
+      if ($scope.user.club_admin) {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          console.log("Org findOne response");
+          return console.log(res);
+        }), function(errResponse) {
+          return console.log("Org findOne error " + (JSON.stringify(errResponse)));
+        });
+      }
+    };
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = window.USER;
         $scope.org = window.USER.orgs[0];
         $scope.teams = window.USER.teams;
         return_team(USER.teams, $location.search().id);
-        return $scope.show_upload = window.USER.club_admin;
+        $scope.show_upload = window.USER.club_admin;
+        return check_if_admin();
       }), function(errResponse) {
         return window.USER = null;
       });
@@ -22,6 +40,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0];
       $scope.teams = window.USER.teams;
       $scope.user = window.USER;
+      check_if_admin();
     }
     $http({
       method: 'GET',
