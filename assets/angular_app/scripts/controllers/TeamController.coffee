@@ -14,6 +14,40 @@ angular.module('subzapp').controller('TeamController', [
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
+    get_team_info = ->
+      if $scope.user.club_admin
+        $http(
+          method: 'GET'
+          url: "#{ RESOURCES.DOMAIN }/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"
+          headers: { 
+                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                    }
+          
+        ).then ( (res) ->
+           console.log "get_team_info response"
+           console.log res
+           $scope.team = res.data.team
+           $scope.files = res.data.bucket_info.Contents
+        ), ( errResponse ) ->
+          console.log "get_team_info error #{ JSON.stringify errResponse }"
+
+      else
+        $http(
+          method: 'GET'
+          url: "#{ RESOURCES.DOMAIN }/team/#{ window.localStorage.getItem 'team_id' }"
+          headers: { 
+                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                    }
+
+        ).then ( (res) ->
+           console.log "Get team info response"
+           console.log res.data
+           $scope.team = res.data
+           
+        ), ( errResponse ) ->
+          console.log "Get team info error #{ JSON.stringify errResponse }"
+          $state.go 'login'
+
     if !(window.USER?)
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify res }"
@@ -127,37 +161,7 @@ angular.module('subzapp').controller('TeamController', [
       ), ( errResponse ) ->
         console.log "DOwnload error #{ JSON.stringify errResponse }"
 
-    get_team_info = ->
-      if $scope.user.club_admin
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"
-          headers: { 
-                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                    }
-          
-        ).then ( (res) ->
-           console.log "get_team_info response"
-           console.log res
-           
-        ), ( errResponse ) ->
-          console.log "get_team_info error #{ JSON.stringify errResponse }"
-
-      else
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/team/#{ window.localStorage.getItem 'team_id' }"
-          headers: { 
-                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                    }
-
-        ).then ( (res) ->
-           console.log "Get team info response"
-           console.log res.data
-           $scope.team = res.data
-           
-        ), ( errResponse ) ->
-          console.log "Get team info error #{ JSON.stringify errResponse }"
+    
 ])
 
 return_team = ( teams, id ) ->

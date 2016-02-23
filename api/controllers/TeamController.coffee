@@ -23,29 +23,37 @@ module.exports = {
     Promise = require('bluebird')
     sails.log.debug "Hit the team controller/get_team_info"
     sails.log.debug "Hit the team controller/get_team_info #{ JSON.stringify req.query }"
+    if AuthService.check_club_admin( req.user, req.param('id') )
 
-    AWS = require('aws-sdk')
 
-    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+      AWS = require('aws-sdk')
 
-    s3 = Promise.promisifyAll(new AWS.S3())
-    
-    Team.findOne( id: req.param('id') ).populateAll().then((team) ->
-      sails.log.debug "Team #{ JSON.stringify team }"
-      sails.log.debug "Prefix: #{ team.main_org.id }/#{ team.id }/"
-      params =
-        Bucket: 'subzapp'
-        Delimiter: '/'
-        Prefix: "#{ team.main_org.id }/#{ team.id }/"
-      return [ team,  s3.listObjectsAsync( params ) ]
-        
+      AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
 
-    ).spread ( ( team, s3_object ) ->
-      sails.log.debug "Team #{ JSON.stringify team }"
-      sails.log.debug "S3 #{ s3_object }"
-      res.json team: team, bucket_info: s3_object
+      s3 = Promise.promisifyAll(new AWS.S3())
+      
+      Team.findOne( id: req.param('id') ).populateAll().then( (team) ->
+        sails.log.debug "Team #{ JSON.stringify team }"
+        sails.log.debug "Prefix: #{ team.main_org.id }/#{ team.id }/"
+        params =
+          Bucket: 'subzapp'
+          Delimiter: '/'
+          Prefix: "#{ team.main_org.id }/#{ team.id }/"
+        return [ 
+                  team
+                  s3.listObjectsAsync( params )
+                  Org.findOne( id: req.param('id') ).populateAll() 
+                ]
+          
 
-    )
+      ).spread ( ( team, s3_object, org ) ->
+        sails.log.debug "Team #{ JSON.stringify team }"
+        sails.log.debug "S3 #{ s3_object }"
+        sails.log.debug "org #{ JSON.stringify org }"
+
+        res.json team: team, bucket_info: s3_object, org: org
+
+      )
 
 
 

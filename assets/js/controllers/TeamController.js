@@ -6,6 +6,41 @@ angular.module('subzapp').controller('TeamController', [
     var get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
+    get_team_info = function() {
+      if ($scope.user.club_admin) {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/team/get-team-info/" + (window.localStorage.getItem('team_id')),
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          console.log("get_team_info response");
+          console.log(res);
+          $scope.team = res.data.team;
+          return $scope.files = res.data.bucket_info.Contents;
+        }), function(errResponse) {
+          return console.log("get_team_info error " + (JSON.stringify(errResponse)));
+        });
+      } else {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/team/" + (window.localStorage.getItem('team_id')),
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          console.log("Get team info response");
+          console.log(res.data);
+          return $scope.team = res.data;
+        }), function(errResponse) {
+          console.log("Get team info error " + (JSON.stringify(errResponse)));
+          return $state.go('login');
+        });
+      }
+    };
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = window.USER;
@@ -102,7 +137,7 @@ angular.module('subzapp').controller('TeamController', [
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    $scope.download = function() {
+    return $scope.download = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/user/download-file",
@@ -116,38 +151,6 @@ angular.module('subzapp').controller('TeamController', [
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
-    };
-    return get_team_info = function() {
-      if ($scope.user.club_admin) {
-        return $http({
-          method: 'GET',
-          url: RESOURCES.DOMAIN + "/team/get-team-info/" + (window.localStorage.getItem('team_id')),
-          headers: {
-            'Authorization': "JWT " + user_token,
-            "Content-Type": "application/json"
-          }
-        }).then((function(res) {
-          console.log("get_team_info response");
-          return console.log(res);
-        }), function(errResponse) {
-          return console.log("get_team_info error " + (JSON.stringify(errResponse)));
-        });
-      } else {
-        return $http({
-          method: 'GET',
-          url: RESOURCES.DOMAIN + "/team/" + (window.localStorage.getItem('team_id')),
-          headers: {
-            'Authorization': "JWT " + user_token,
-            "Content-Type": "application/json"
-          }
-        }).then((function(res) {
-          console.log("Get team info response");
-          console.log(res.data);
-          return $scope.team = res.data;
-        }), function(errResponse) {
-          return console.log("Get team info error " + (JSON.stringify(errResponse)));
-        });
-      }
     };
   }
 ]);
