@@ -6,11 +6,11 @@ angular.module('subzapp').controller('TeamController', [
     var check_if_admin, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
-    check_if_admin = function() {
+    check_if_admin = function(org_id) {
       if ($scope.user.club_admin) {
         return $http({
           method: 'GET',
-          url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
+          url: RESOURCES.DOMAIN + "/org/" + org_id,
           headers: {
             'Authorization': "JWT " + user_token,
             "Content-Type": "application/json"
@@ -30,7 +30,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = window.USER.teams;
         return_team(USER.teams, $location.search().id);
         $scope.show_upload = window.USER.club_admin;
-        return check_if_admin();
+        return check_if_admin($scope.org.id);
       }), function(errResponse) {
         return window.USER = null;
       });
@@ -40,7 +40,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0];
       $scope.teams = window.USER.teams;
       $scope.user = window.USER;
-      check_if_admin();
+      check_if_admin($scope.user.orgs[0].id);
     }
     $http({
       method: 'GET',

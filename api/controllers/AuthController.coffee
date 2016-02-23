@@ -54,11 +54,16 @@ module.exports =
           sails.log.debug "err #{ JSON.stringify team}" if err?
           team.manager = user.id
           team.save()
+          User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
+            sails.log.debug "User pop #{ JSON.stringify user_pop }"
+            res.json
+              data:
+                token: CipherService.createToken(user_pop)
+                user: user_pop
+            
+          )
       )
-      {
-        token: CipherService.createToken(user)
-        user: user
-      }
+      
     ).then(res.created).catch res.serverError
     return
 

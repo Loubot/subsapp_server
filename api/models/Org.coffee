@@ -42,7 +42,7 @@ module.exports =
     files:
       collection: 'filetracker'
       via: 'org'
-      columnName: 'filetracker_id'
+      # columnName: 'filetracker_id'
 
     
 

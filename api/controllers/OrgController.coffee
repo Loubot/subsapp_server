@@ -11,7 +11,20 @@ module.exports = {
   findOne: ( req, res ) ->
     sails.log.debug "Hit the org controller/findOne "
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
-    sails.log.debug "User #{ JSON.stringify req.user }"
+    sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
+
+    if parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') )
+      Org.findOne( { id: req.param('id') } ).populateAll().then( ( org ) ->
+        sails.log.debug "Org findOne #{ JSON.stringify org }" 
+        res.json org
+      ).catch( ( err ) ->
+        sails.log.debug "Org findOne err #{ err }"
+        res.serverError err
+      )
+    else
+      res.serverError "You are not the admin of this org"
+    
+    
 
   get_org: (req, res) ->
     sails.log.debug "Hit the business controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
