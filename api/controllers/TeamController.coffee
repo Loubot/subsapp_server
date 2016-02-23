@@ -7,6 +7,50 @@
 
 passport = require('passport')
 module.exports = {
+
+  findOne: ( req, res ) ->
+    sails.log.debug "hit the team controller/findOne"
+    sails.log.debug "Params #{ req.param('id') }"
+    Team.findOne( { id: req.param('id') } ).populateAll().then( ( team ) ->
+      console.log "Team findOne #{ JSON.stringify team }"
+      res.json team
+    ).catch( ( err ) ->
+      sails.log.debug "Team find one err #{ JSON.stringify err }"
+      res.serverError err
+    )
+
+    get_team_info: (req, res) -> #club admin team findOne
+    Promise = require('bluebird')
+    sails.log.debug "Hit the team controller/get_team_info"
+    sails.log.debug "Hit the team controller/get_team_info #{ JSON.stringify req.query }"
+
+    AWS = require('aws-sdk')
+
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+
+    s3 = Promise.promisifyAll(new AWS.S3())
+    
+    Team.findOne( id: req.param('id') ).populateAll().then((team) ->
+      sails.log.debug "Team #{ JSON.stringify team }"
+      sails.log.debug "Prefix: #{ team.main_org.id }/#{ team.id }/"
+      params =
+        Bucket: 'subzapp'
+        Delimiter: '/'
+        Prefix: "#{ team.main_org.id }/#{ team.id }/"
+      return [ team,  s3.listObjectsAsync( params ) ]
+        
+
+    ).spread ( ( team, s3_object ) ->
+      sails.log.debug "Team #{ JSON.stringify team }"
+      sails.log.debug "S3 #{ s3_object }"
+      res.json team: team, bucket_info: s3_object
+
+    )
+
+
+
+   
+
   create_team: (req, res) ->
     sails.log.debug "Hit the team controller/create_team ***************"
     sails.log.debug "Data #{ JSON.stringify req.body }"
@@ -85,79 +129,6 @@ module.exports = {
     )
 
 
-  get_team_info: (req, res) ->
-    Promise = require('bluebird')
-    sails.log.debug "Hit the team controller/get_team_info"
-    sails.log.debug "Hit the team controller/get_team_info #{ JSON.stringify req.query }"
-
-    AWS = require('aws-sdk')
-
-    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
-
-    s3 = Promise.promisifyAll(new AWS.S3())
-    
-    # params = 
-    #   Bucket: 'subzapp'
-    #   Delimiter: '/'
-    #   Prefix: '1/1/'
-
-    Team.findOne( id: req.query.team_id ).populateAll().then((team) ->
-      sails.log.debug "Team #{ JSON.stringify team }"
-      sails.log.debug "Prefix: #{ team.main_org.id }/#{ team.id }/"
-      params =
-        Bucket: 'subzapp'
-        Delimiter: '/'
-        Prefix: "#{ team.main_org.id }/#{ team.id }/"
-      return [ team,  s3.listObjectsAsync( params ) ]
-        
-
-    ).spread ( ( team, s3_object ) ->
-      sails.log.debug "Team #{ JSON.stringify team }"
-      sails.log.debug "S3 #{ s3_object }"
-      res.json team: team, bucket_info: s3_object
-
-    )
-
-    
-
-    # s3 = new (AWS.S3)
-    # params = 
-    #   Bucket: 'subzapp'
-    #   Delimiter: '/'
-    #   Prefix: '1/1/'
-    # s3.listObjects params, (err, data) ->
-    #   if !err?
-    #     Team.findOne( id: req.query.team_id ).populate('team_members')
-    #     .populate('events')
-    #     .populate('main_org')
-    #     .populate('files').then((team) ->
-    #       sails.log.debug "Team found #{ JSON.stringify team }"
-    #       res.json team: team, file_trackers: data
-    #     ).catch ( ( err ) ->
-    #       sails.log.debug "Team find error #{ JSON.stringify err }"
-    #       res.serverError err
-    #     )
-    #   else #err
-    #     sails.log.debug "Get s3 error #{ JSON.stringify err }"
-    #     res.serverError err
-    
-
-    # Team.findOne(id: req.query.team_id )
-    # .populate('team_members')
-    # .populate('events')
-    # .populate('main_org')
-    # .populate('files').then((result) ->
-    #   Q.all([
-    #     result
-    #     s3.listObjects params
-    #   ]).spread (team, s3_things ) ->
-    #     sails.log.debug "Team info #{ JSON.stringify team }"
-    #     sails.log.debug "FileTracker "
-    #     sails.log.debug s3_things
-    #     files = JSON.stringify s3_things
-    #     res.json team: team, file_trackers: files
-    # ).fail (reason) ->
-    #   sails.log.debug "get team info error #{ reason }" if reason?
-    #   res.serverError reason if reason?
-
+  
+  
 }

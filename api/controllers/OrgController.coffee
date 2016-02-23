@@ -13,7 +13,7 @@ module.exports = {
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
     sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
 
-    if parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') )
+    if AuthService.check_club_admin( req.user, req.param('id') )
       Org.findOne( { id: req.param('id') } ).populateAll().then( ( org ) ->
         sails.log.debug "Org findOne #{ JSON.stringify org }" 
         res.json org

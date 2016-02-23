@@ -118,7 +118,7 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'join_team'
 
-  'get /get-team-info':       #Requires team id. Returns team members and events
+  'get /team/get-team-info/:id':       #Requires team id. Returns team members and events
         controller:             'TeamController'
         action:                 'get_team_info'
 

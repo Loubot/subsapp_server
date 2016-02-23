@@ -14,24 +14,6 @@ angular.module('subzapp').controller('TeamController', [
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
-    check_if_admin = ( org_id ) ->
-      
-      if $scope.user.club_admin
-        
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/org/#{ org_id }"
-          headers: { 
-                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                    }
-          
-        ).then ( (res) ->
-           console.log "Org findOne response"
-           console.log res
-           
-        ), ( errResponse ) ->
-          console.log "Org findOne error #{ JSON.stringify errResponse }" 
-
     if !(window.USER?)
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify res }"
@@ -41,11 +23,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = window.USER.teams
         return_team( USER.teams, $location.search().id )
         $scope.show_upload = window.USER.club_admin
-        check_if_admin( $scope.org.id )
-        # if $location.$$path == '/team-manager'
-
-        
-        # console.log "f #{ JSON.stringify USER.teams }"
+        get_team_info() if $scope.user.club_admin
       ), ( errResponse ) ->
         window.USER = null
         # $state.go 'login'
@@ -55,26 +33,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0]
       $scope.teams = window.USER.teams
       $scope.user = window.USER
-      check_if_admin( $scope.user.orgs[0].id )
-    
-
-    $http(
-      method: 'GET'
-      url: "#{ RESOURCES.DOMAIN }/get-team-info"
-      headers: { 
-                'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                }
-      params:
-        team_id: window.localStorage.getItem 'team_id'
-    ).then ( (res) ->
-       console.log "Get team info response"
-       console.log res.data
-       $scope.team = res.data.team
-       $scope.members = res.data.team.team_members
-       $scope.events = res.data.team.events
-       $scope.files = res.data.bucket_info.Contents
-    ), ( errResponse ) ->
-      console.log "Get team info error #{ JSON.stringify errResponse }"
+      get_team_info() if $scope.user.club_admin
   
       
     $scope.create_event = ->
@@ -168,9 +127,44 @@ angular.module('subzapp').controller('TeamController', [
       ), ( errResponse ) ->
         console.log "DOwnload error #{ JSON.stringify errResponse }"
 
+    get_team_info = ->
+      if $scope.user.club_admin
+        $http(
+          method: 'GET'
+          url: "#{ RESOURCES.DOMAIN }/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"
+          headers: { 
+                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                    }
+          
+        ).then ( (res) ->
+           console.log "get_team_info response"
+           console.log res
+           
+        ), ( errResponse ) ->
+          console.log "get_team_info error #{ JSON.stringify errResponse }"
+
+      else
+        $http(
+          method: 'GET'
+          url: "#{ RESOURCES.DOMAIN }/team/#{ window.localStorage.getItem 'team_id' }"
+          headers: { 
+                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                    }
+
+        ).then ( (res) ->
+           console.log "Get team info response"
+           console.log res.data
+           $scope.team = res.data
+           
+        ), ( errResponse ) ->
+          console.log "Get team info error #{ JSON.stringify errResponse }"
 ])
 
 return_team = ( teams, id ) ->
   team = (team for team in teams when team.id is parseInt( id ))
   console.log "Team #{ JSON.stringify team }"
   return team
+
+ #  $scope.members = res.data.team.team_members
+ # $scope.events = res.data.team.events
+ # $scope.files = res.data.bucket_info.Contents

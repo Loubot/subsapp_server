@@ -3,26 +3,9 @@ var return_team;
 
 angular.module('subzapp').controller('TeamController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload) {
-    var check_if_admin, user_token;
+    var get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
-    check_if_admin = function(org_id) {
-      if ($scope.user.club_admin) {
-        return $http({
-          method: 'GET',
-          url: RESOURCES.DOMAIN + "/org/" + org_id,
-          headers: {
-            'Authorization': "JWT " + user_token,
-            "Content-Type": "application/json"
-          }
-        }).then((function(res) {
-          console.log("Org findOne response");
-          return console.log(res);
-        }), function(errResponse) {
-          return console.log("Org findOne error " + (JSON.stringify(errResponse)));
-        });
-      }
-    };
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = window.USER;
@@ -30,7 +13,9 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = window.USER.teams;
         return_team(USER.teams, $location.search().id);
         $scope.show_upload = window.USER.club_admin;
-        return check_if_admin($scope.org.id);
+        if ($scope.user.club_admin) {
+          return get_team_info();
+        }
       }), function(errResponse) {
         return window.USER = null;
       });
@@ -40,28 +25,10 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0];
       $scope.teams = window.USER.teams;
       $scope.user = window.USER;
-      check_if_admin($scope.user.orgs[0].id);
-    }
-    $http({
-      method: 'GET',
-      url: RESOURCES.DOMAIN + "/get-team-info",
-      headers: {
-        'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
-      },
-      params: {
-        team_id: window.localStorage.getItem('team_id')
+      if ($scope.user.club_admin) {
+        get_team_info();
       }
-    }).then((function(res) {
-      console.log("Get team info response");
-      console.log(res.data);
-      $scope.team = res.data.team;
-      $scope.members = res.data.team.team_members;
-      $scope.events = res.data.team.events;
-      return $scope.files = res.data.bucket_info.Contents;
-    }), function(errResponse) {
-      return console.log("Get team info error " + (JSON.stringify(errResponse)));
-    });
+    }
     $scope.create_event = function() {
       $scope.create_event_data.team_id = $scope.team.id;
       console.log($scope.create_event_data);
@@ -135,7 +102,7 @@ angular.module('subzapp').controller('TeamController', [
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    return $scope.download = function() {
+    $scope.download = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/user/download-file",
@@ -149,6 +116,38 @@ angular.module('subzapp').controller('TeamController', [
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
+    };
+    return get_team_info = function() {
+      if ($scope.user.club_admin) {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/team/get-team-info/" + (window.localStorage.getItem('team_id')),
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          console.log("get_team_info response");
+          return console.log(res);
+        }), function(errResponse) {
+          return console.log("get_team_info error " + (JSON.stringify(errResponse)));
+        });
+      } else {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/team/" + (window.localStorage.getItem('team_id')),
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          console.log("Get team info response");
+          console.log(res.data);
+          return $scope.team = res.data;
+        }), function(errResponse) {
+          return console.log("Get team info error " + (JSON.stringify(errResponse)));
+        });
+      }
     };
   }
 ]);
