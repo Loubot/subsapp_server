@@ -19,7 +19,7 @@ module.exports = {
       res.serverError err
     )
 
-    get_team_info: (req, res) -> #club admin team findOne
+  get_team_info: (req, res) -> #club admin team findOne
     Promise = require('bluebird')
     sails.log.debug "Hit the team controller/get_team_info"
     sails.log.debug "Hit the team controller/get_team_info #{ JSON.stringify req.query }"
