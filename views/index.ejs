@@ -29,6 +29,7 @@
         <script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="/bower/alertify.js/dist/js/ngAlertify.js"></script>
         <script src="/bower/ng-file-upload/ng-file-upload.min.js"></script>
+        <script src="/bower/sly/dist/sly.min.js"></script>
 
         <!-- app.js -->
         <script src="/js/app.js"></script>
@@ -52,9 +53,9 @@
   </head>
 
   <body>
-      <div ng-include="'/angular_app/views/nav/nav.html'" ng-controller="NavController"></div>
+      <div ng-include="'/angular_app/views/nav/nav.html'"  ng-controller="NavController"></div>
 
-      <div ui-view>
+      <div ui-view class="main">
         <!-- angular app injection here -->
       </div>
         <!-- JJ added, ui-view is what the angular-ui-router uses instead of ng-view -->

@@ -19,9 +19,12 @@ angular.module('subzapp').controller('TeamController', [
           console.log("get_team_info response");
           console.log(res);
           $scope.team = res.data.team;
-          return $scope.files = res.data.bucket_info.Contents;
+          $scope.files = res.data.bucket_info.Contents;
+          return $scope.org_members = res.data.org.org_members;
         }), function(errResponse) {
-          return console.log("get_team_info error " + (JSON.stringify(errResponse)));
+          console.log("get_team_info error");
+          console.log(errResponse);
+          return stroll.bind('.stroll_list');
         });
       } else {
         return $http({

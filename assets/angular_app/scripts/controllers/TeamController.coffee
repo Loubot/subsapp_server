@@ -28,9 +28,11 @@ angular.module('subzapp').controller('TeamController', [
            console.log res
            $scope.team = res.data.team
            $scope.files = res.data.bucket_info.Contents
+           $scope.org_members = res.data.org.org_members
         ), ( errResponse ) ->
-          console.log "get_team_info error #{ JSON.stringify errResponse }"
-
+          console.log "get_team_info error"
+          console.log errResponse
+          stroll.bind( '.stroll_list' )
       else
         $http(
           method: 'GET'

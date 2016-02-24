@@ -109,6 +109,9 @@ module.exports =
       collection: 'transaction'
       via: 'payee'
 
+    getFullName: ->
+      _.str.trim (@firstName or '') + ' ' + (@lastName or '')
+
     
     toJSON: ->
       obj = @toObject()
@@ -127,6 +130,7 @@ module.exports =
     CipherService.hashPassword values
     next()
     return
+
 
 #0=First name
 #1=Last name
