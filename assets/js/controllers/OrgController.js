@@ -33,7 +33,7 @@ angular.module('subzapp').controller('OrgController', [
           "Content-Type": "application/json"
         },
         params: {
-          team_id: 1
+          org_id: 1
         }
       }).then((function(res) {
         console.log("parse users response");
