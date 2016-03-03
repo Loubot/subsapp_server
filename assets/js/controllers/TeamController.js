@@ -20,7 +20,10 @@ angular.module('subzapp').controller('TeamController', [
           console.log(res);
           $scope.team = res.data.team;
           $scope.files = res.data.bucket_info.Contents;
-          return $scope.org_members = res.data.org.org_members;
+          $scope.org_members = res.data.org.org_members;
+          return $scope.team_members_array = res.data.team.team_members.map(function(member) {
+            return member.id;
+          });
         }), function(errResponse) {
           console.log("get_team_info error");
           console.log(errResponse);
@@ -140,7 +143,7 @@ angular.module('subzapp').controller('TeamController', [
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    return $scope.download = function() {
+    $scope.download = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/user/download-file",
@@ -154,6 +157,14 @@ angular.module('subzapp').controller('TeamController', [
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
+    };
+    $scope.animateElementIn = function($el) {
+      $el.removeClass('hidden');
+      $el.addClass('animated fadeInUp');
+    };
+    return $scope.animateElementOut = function($el) {
+      $el.addClass('hidden');
+      $el.removeClass('animated fadeInUp');
     };
   }
 ]);

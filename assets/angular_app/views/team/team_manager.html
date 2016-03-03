@@ -93,10 +93,15 @@
 
     
   </div> <!-- end of col-xs-8 -->
-  <div class="frame col-xs-4">
-    <ul class="slidee" ng-repeat="memb in org_members">
-      <li>{{ memb.firstName }} {{ memb.lastName }}</li>
-    </ul>
+  <div class="col-xs-12">
+    <form>
+      <div ng-repeat="memb in org_members">
+        <label >
+          <input type="checkbox" checklist-value="memb.id" checklist-model="team_members_array"> {{ memb.firstName }} {{ memb.lastName }} {{ memb.id }}
+        </label>
+      </div>  
+    </form>
+    
   </div>
   
 

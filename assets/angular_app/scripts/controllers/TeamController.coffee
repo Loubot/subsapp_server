@@ -29,6 +29,9 @@ angular.module('subzapp').controller('TeamController', [
            $scope.team = res.data.team
            $scope.files = res.data.bucket_info.Contents
            $scope.org_members = res.data.org.org_members
+           $scope.team_members_array = res.data.team.team_members.map( ( member ) ->
+            member.id
+          )
         ), ( errResponse ) ->
           console.log "get_team_info error"
           console.log errResponse
@@ -162,6 +165,18 @@ angular.module('subzapp').controller('TeamController', [
          
       ), ( errResponse ) ->
         console.log "DOwnload error #{ JSON.stringify errResponse }"
+
+    $scope.animateElementIn = ($el) ->
+      $el.removeClass 'hidden'
+      $el.addClass 'animated fadeInUp'
+      # this example leverages animate.css classes
+      return
+
+    $scope.animateElementOut = ($el) ->
+      $el.addClass 'hidden'
+      $el.removeClass 'animated fadeInUp'
+      # this example leverages animate.css classes
+      return
 
     
 ])

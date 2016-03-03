@@ -13,6 +13,7 @@ angular.module('subzapp', [
     'ui.bootstrap.datetimepicker'
     "ngAlertify"
     'ngFileUpload'
+    "checklist-model"
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')
