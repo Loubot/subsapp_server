@@ -137,7 +137,7 @@ angular.module('subzapp').controller('TeamController', [
       console.log "Find by date"
       $http(
         method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/user/get-players-by-year"
+        url: "#{ RESOURCES.DOMAIN }/team/get-players-by-year/#{ $scope.team.id }"
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
@@ -181,9 +181,11 @@ angular.module('subzapp').controller('TeamController', [
       ).then ( ( res ) ->
         console.log "Update team members"
         console.log res
+        alertify.success "Team members added successfully"
       ), ( errResponse ) ->
         console.log "Update team members error "
         console.log errResponse
+        alertify.error "Failed to add team members"
 
     
 ])

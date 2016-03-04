@@ -214,17 +214,3 @@ module.exports =
     #   c = d.unix()
     #   sails.log.debug c
     cb(null, x)
-
-  find_in_year: ( date, club_id, cb) ->
-    matching_players = new Array()
-
-    User.find( { where: dob_stamp: '<': date } ).then( ( users ) ->
-      sails.log.debug "User find by stamp #{ JSON.stringify users }"
-      cb( null, users )
-    ).catch ( err ) ->
-      sails.log.debug "User find by stamp err #{ JSON.stringify err }"
-      cb( err )
-
-    
-      
-

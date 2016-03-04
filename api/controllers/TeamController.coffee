@@ -4,7 +4,7 @@
 # @description :: Server-side logic for managing Teams
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
-
+moment = require('moment')
 passport = require('passport')
 module.exports = {
 
@@ -115,41 +115,33 @@ module.exports = {
     ).done ->
       sails.log.debug "Join team find user done"
 
+
+  get_players_by_year: ( req, res ) ->
+    sails.log.debug "Hit the user controller/find_by_date"
+    date = moment().toISOString()
+    sails.log.debug "Current time #{ JSON.stringify date }"
+    Org.findOne( id: req.param('id') ).populate('org_members', { where: dob_stamp: '<': date } ).then( ( members ) ->
+      sails.log.debug "Get players by year #{ JSON.stringify members }"
+      res.json members
+    ).catch( ( err ) ->
+      sails.log.debug "Get playsers by year error #{ JSON.stringify err }"
+      res.serverError err
+    )
+
   update_members: ( req, res ) ->
-    sails.log.debug "Hit the TeamController/update_members"
-    sails.log.debug "Params #{ JSON.stringify req.body }"
-    sails.log.debug "Param #{ req.param('id') }"
+    if AuthService.check_club_admin( req.user, req.param('id') )
+      sails.log.debug "Hit the TeamController/update_members"
+      sails.log.debug "Params #{ JSON.stringify req.body }"
+      sails.log.debug "Param #{ req.param('id') }"
 
-    Team.update({ id: 1 }, 'team_members': req.body.team_members ).exec (err, updated) ->
-      if err
-        sails.log.debug "Error #{ JSON.stringify err }"
+      Team.update( { id: req.param('id') }, 'team_members': req.body.team_members ).then( ( updated ) ->
+        sails.log.debug "Team members update #{ JSON.stringify updated }"
+        res.ok "Team members added successfully"
+      ).catch( ( err ) ->
+        sails.log.debug "Team update members error #{ JSON.stringify err }"
         res.serverError err
-        return
-      sails.log.debug "Team updated #{ JSON.stringify updated }"
-      Team.findOne( id: req.param('id') ).populate('team_members').then( ( team ) ->
-        sails.log.debug "Team find one #{ JSON.stringify team }"
-        res.json team
-      ).catch( ( error ) ->
-        sails.log.debug "Find one error #{ JSON.stringify error }"
-        res.serverError error
       )
-      
-      return
 
-    # Team.findOne( req.param('id') ).populate('team_members').then( ( team ) ->
-    #   sails.log.debug "Update members team find #{ JSON.stringify team }"
-    #   team.team_members.update( req.body.team_members ).then( ( updated_team ) ->
-    #     sails.log.debug "Update team #{ JSON.stringify updated_tea }"
-    #     res.json updated_team
-    #   ).catch ( update_err ) ->
-    #     sails.log.debug "Updated team error #{ JSON.stringify update_err }"
-    #     res.serverError update_err
-    # ).catch ( err ) ->
-    #   sails.log.debug "Update members team find err #{ JSON.stringify err }"
-    #   res.serverError err
-
-
-#//////////////////// end of joining team logic
 
 
 

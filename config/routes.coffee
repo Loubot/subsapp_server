@@ -48,10 +48,6 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'pick_kids'
 
-  'get /user/get-players-by-year':
-        controller:             'UserController'
-        action:                 'get_players_by_year'
-
     # Parents urls
       'get /parent/social/:id':
         controller:             'UserController'
@@ -121,6 +117,10 @@ module.exports.routes =
   'get /team/get-team-info/:id':       #Requires team id. Returns team members and events
         controller:             'TeamController'
         action:                 'get_team_info'
+
+  'get /team/get-players-by-year/:id':
+        controller:             'TeamController'
+        action:                 'get_players_by_year'
 
   'post /team/update-members/:id':     #Requires team id in url and takes array of members ids. Updates team members to the new array. (Old associations destroyed)
         controller:              'TeamController'
