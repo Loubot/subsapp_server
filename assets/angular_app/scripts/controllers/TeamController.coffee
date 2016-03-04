@@ -166,17 +166,8 @@ angular.module('subzapp').controller('TeamController', [
       ), ( errResponse ) ->
         console.log "DOwnload error #{ JSON.stringify errResponse }"
 
-    $scope.animateElementIn = ($el) ->
-      $el.removeClass 'hidden'
-      $el.addClass 'animated fadeInUp'
-      # this example leverages animate.css classes
-      return
-
-    $scope.animateElementOut = ($el) ->
-      $el.addClass 'hidden'
-      $el.removeClass 'animated fadeInUp'
-      # this example leverages animate.css classes
-      return
+    $scope.update_members = ->
+      
 
     
 ])

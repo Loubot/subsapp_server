@@ -122,7 +122,11 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'get_team_info'
 
-  'get /get-teams':           #Require ord_id, returns all teams associated with an org
+  'post /team/update-members/:id':     #Requires team id in url and takes array of members ids. Updates team members to the new array. (Old associations destroyed)
+        controller:              'TeamController'
+        action:                  'update_members'
+
+  'get /get-teams':           #Require org_id, returns all teams associated with an org
         controller:             'TeamController'
         action:                 'get_teams' # Move to org controller..
 

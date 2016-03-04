@@ -97,6 +97,8 @@ module.exports = {
     ).done ->
       sails.log.debug "Team destroy done"
 
+#/////////////////////////////// Joining team logic
+
   join_team: (req, res) ->
     sails.log.debug "Hit the team controller/join_team"
     Team.findOne( { id: req.body.team_id } ).then( ( team ) ->
@@ -112,6 +114,20 @@ module.exports = {
       res.serverError err
     ).done ->
       sails.log.debug "Join team find user done"
+
+  update_members: ( req, res ) ->
+    sails.log.debug "Hit the TeamController/update_members"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+
+    Team.findOne( req.param('id') ).populate('team_members').then( ( team ) ->
+      sails.log.debug "Update members team find #{ JSON.stringify team }"
+      res.json team
+    ).catch ( err ) ->
+      sails.log.debug "Update members team find err #{ JSON.stringify err }"
+      res.serverError err
+
+
+#//////////////////// end of joining team logic
 
 
 

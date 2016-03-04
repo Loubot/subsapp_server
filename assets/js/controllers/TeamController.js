@@ -158,14 +158,7 @@ angular.module('subzapp').controller('TeamController', [
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    $scope.animateElementIn = function($el) {
-      $el.removeClass('hidden');
-      $el.addClass('animated fadeInUp');
-    };
-    return $scope.animateElementOut = function($el) {
-      $el.addClass('hidden');
-      $el.removeClass('animated fadeInUp');
-    };
+    return $scope.update_members = function() {};
   }
 ]);
 
