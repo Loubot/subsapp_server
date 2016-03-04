@@ -42,6 +42,10 @@ module.exports =
       collection: 'filetracker'
       via: 'team'
 
+    eligible_date:
+      type: 'date'
+      defaultsTo: null
+
     
 
 

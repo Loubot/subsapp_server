@@ -26,8 +26,7 @@ angular.module('subzapp').controller('TeamController', [
           });
         }), function(errResponse) {
           console.log("get_team_info error");
-          console.log(errResponse);
-          return stroll.bind('.stroll_list');
+          return console.log(errResponse);
         });
       } else {
         return $http({
@@ -132,12 +131,9 @@ angular.module('subzapp').controller('TeamController', [
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
-        },
-        params: {
-          team_id: id
         }
       }).then((function(res) {
-        console.log("Download response");
+        console.log("Playsers by age response");
         return console.log(res);
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
@@ -158,7 +154,7 @@ angular.module('subzapp').controller('TeamController', [
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    return $scope.update_members = function() {
+    $scope.update_members = function() {
       console.log("team id " + $scope.team.id);
       return $http({
         method: 'POST',
@@ -179,6 +175,30 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Update team members error ");
         console.log(errResponse);
         return alertify.error("Failed to add team members");
+      });
+    };
+    return $scope.update_eligible_date = function() {
+      console.log('yep');
+      console.log($scope.update_eligible_date.eligible_date);
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/team/update/" + $scope.team.id,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        },
+        data: {
+          eligible_date: $scope.update_eligible_date.eligible_date
+        }
+      }).then((function(res) {
+        console.log("Update team date");
+        console.log(res);
+        return alertify.success("Eligible date updated");
+      }), function(errResponse) {
+        console.log("Update date error ");
+        console.log(errResponse);
+        return alertify.error("Update failed");
       });
     };
   }

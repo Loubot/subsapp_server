@@ -134,6 +134,26 @@
   </div> <!-- end of col-xs-12 -->
 </div> <!-- end of container-fluid -->
 
+<form ng-submit="update_eligible_date()" 
+      method="post" enctype="application/x-www-form-urlencoded">
+  <div class="form-group">
+    <label class="col-sm-2">Eligible date: </label>
+    <div class="col-sm-10 black_text">
+      <div class="dropdown">
+        <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="">
+          <div class="input-group"><input type="text" class="form-control" data-ng-model="update_eligible_date.eligible_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <datetimepicker data-ng-model="update_eligible_date.eligible_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown3', startView: 'year', minView: 'day' }"/>
+        </ul>
+      </div>
+      
+    </div> <!-- end of col-sm-10 -->
+  </div> <!-- end of form-group -->
+  <input type="submit" value="Update date" class="btn btn-default btn btn-success btn-lg register">
+</form>
+
 
 <button class="btn btn-warning btn-lg" ng-click="get_players_by_year(team.id)">Get players!</button><br>
 <button class="btn btn-info btn-lg" ng-click="download()">Download </button>

@@ -35,7 +35,6 @@ angular.module('subzapp').controller('TeamController', [
         ), ( errResponse ) ->
           console.log "get_team_info error"
           console.log errResponse
-          stroll.bind( '.stroll_list' )
       else
         $http(
           method: 'GET'
@@ -141,10 +140,10 @@ angular.module('subzapp').controller('TeamController', [
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
-        params:
-          team_id: id
+        # params:
+        #   team_id: id
       ).then ( (res) ->
-         console.log "Download response"
+         console.log "Playsers by age response"
          console.log res
          
       ), ( errResponse ) ->
@@ -186,6 +185,28 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Update team members error "
         console.log errResponse
         alertify.error "Failed to add team members"
+
+    $scope.update_eligible_date = () ->
+      console.log 'yep'
+      console.log $scope.update_eligible_date.eligible_date
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/team/update/#{ $scope.team.id }"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
+        data:
+          eligible_date: $scope.update_eligible_date.eligible_date
+      ).then ( ( res ) ->
+        console.log "Update team date"
+        console.log res
+        alertify.success "Eligible date updated"
+      ), ( errResponse ) ->
+        console.log "Update date error "
+        console.log errResponse
+        alertify.error "Update failed"
+
 
     
 ])

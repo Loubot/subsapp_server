@@ -19,6 +19,21 @@ module.exports = {
       res.serverError err
     )
 
+  update: ( req, res ) ->
+    sails.log.debug "Hit the team controller/update"
+    sails.log.debug "Param #{ req.param('id') }"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    if AuthService.check_club_admin( req.user, req.param('id') )
+      Team.update( { id: req.param('id') }, eligible_date: req.body.eligible_date ).then( ( team ) -> 
+        sails.log.debug "Team updated #{ JSON.stringify team }"
+        res.json team
+      ).catch( ( err ) ->
+        sails.log.debug "Team update error #{ JSON.stringify err }"
+        res.serverError err
+      )
+    else
+      res.serverError "You are not authorised"
+
   get_team_info: (req, res) -> #club admin team findOne
     Promise = require('bluebird')
     sails.log.debug "Hit the team controller/get_team_info"
@@ -54,6 +69,8 @@ module.exports = {
         res.json team: team, bucket_info: s3_object, org: org
 
       )
+    else
+      res.serverError "You are not authorised"
 
 
 
@@ -141,6 +158,8 @@ module.exports = {
         sails.log.debug "Team update members error #{ JSON.stringify err }"
         res.serverError err
       )
+    else
+      res.serverError "You are not authorised"
 
 
 

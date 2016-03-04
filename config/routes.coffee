@@ -97,6 +97,10 @@ module.exports.routes =
   # end of org controller
 
   # Team controller
+
+  'post /team/update/:id':
+        controller:             'TeamController'
+        action:                 'update'
   
   'post /create-team' :       #Requires name, main_org id, user_id. 
         controller:             'TeamController'
