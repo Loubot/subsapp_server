@@ -158,7 +158,27 @@ angular.module('subzapp').controller('TeamController', [
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    return $scope.update_members = function() {};
+    return $scope.update_members = function() {
+      console.log("team id " + $scope.team.id);
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/team/update-members/" + $scope.team.id,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        },
+        data: {
+          team_members: $scope.team_members_array
+        }
+      }).then((function(res) {
+        console.log("Update team members");
+        return console.log(res);
+      }), function(errResponse) {
+        console.log("Update team members error ");
+        return console.log(errResponse);
+      });
+    };
   }
 ]);
 

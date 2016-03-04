@@ -167,7 +167,23 @@ angular.module('subzapp').controller('TeamController', [
         console.log "DOwnload error #{ JSON.stringify errResponse }"
 
     $scope.update_members = ->
-      
+      console.log "team id #{ $scope.team.id }"
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/team/update-members/#{ $scope.team.id }"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
+
+        data:
+          team_members: $scope.team_members_array
+      ).then ( ( res ) ->
+        console.log "Update team members"
+        console.log res
+      ), ( errResponse ) ->
+        console.log "Update team members error "
+        console.log errResponse
 
     
 ])
