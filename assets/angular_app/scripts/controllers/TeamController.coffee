@@ -209,7 +209,8 @@ angular.module('subzapp').controller('TeamController', [
         console.log errResponse
         alertify.error "Update failed"
 
-
+    $('#select_player_modal').on 'shown.bs.modal', (e) ->
+      alert 'a'
     
 ])
 
@@ -221,3 +222,5 @@ return_team = ( teams, id ) ->
  #  $scope.members = res.data.team.team_members
  # $scope.events = res.data.team.events
  # $scope.files = res.data.bucket_info.Contents
+
+

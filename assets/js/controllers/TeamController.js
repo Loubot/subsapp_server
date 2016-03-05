@@ -178,7 +178,7 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.error("Failed to add team members");
       });
     };
-    return $scope.update_eligible_date = function() {
+    $scope.update_eligible_date = function() {
       console.log('yep');
       console.log($scope.team.eligible_date);
       return $http({
@@ -202,6 +202,9 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.error("Update failed");
       });
     };
+    return $('#select_player_modal').on('shown.bs.modal', function(e) {
+      return alert('a');
+    });
   }
 ]);
 
