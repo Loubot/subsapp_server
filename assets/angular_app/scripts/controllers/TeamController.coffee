@@ -10,7 +10,8 @@ angular.module('subzapp').controller('TeamController', [
   'alertify'
   'RESOURCES'
   'Upload'
-  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload ) ->    
+  '$filter'
+  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
@@ -24,11 +25,12 @@ angular.module('subzapp').controller('TeamController', [
                     }
           
         ).then ( (res) ->
-           console.log "get_team_info response"
+           console.log "get_team_info response club admin"
            console.log res
            $scope.team = res.data.team
            $scope.files = res.data.bucket_info.Contents
            $scope.org_members = res.data.org.org_members
+           $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd')
            $scope.team_members_array = res.data.team.team_members.map( ( member ) ->
             member.id
           )
@@ -188,7 +190,7 @@ angular.module('subzapp').controller('TeamController', [
 
     $scope.update_eligible_date = () ->
       console.log 'yep'
-      console.log $scope.update_eligible_date.eligible_date
+      console.log $scope.team.eligible_date
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/team/update/#{ $scope.team.id }"
@@ -197,7 +199,7 @@ angular.module('subzapp').controller('TeamController', [
                   'Content-Type': 'application/json'
                   }
         data:
-          eligible_date: $scope.update_eligible_date.eligible_date
+          eligible_date: $scope.team.eligible_date
       ).then ( ( res ) ->
         console.log "Update team date"
         console.log res

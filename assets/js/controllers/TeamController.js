@@ -2,7 +2,7 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload) {
+  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', '$filter', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter) {
     var get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
@@ -16,11 +16,12 @@ angular.module('subzapp').controller('TeamController', [
             "Content-Type": "application/json"
           }
         }).then((function(res) {
-          console.log("get_team_info response");
+          console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
           $scope.files = res.data.bucket_info.Contents;
           $scope.org_members = res.data.org.org_members;
+          $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd');
           return $scope.team_members_array = res.data.team.team_members.map(function(member) {
             return member.id;
           });
@@ -179,7 +180,7 @@ angular.module('subzapp').controller('TeamController', [
     };
     return $scope.update_eligible_date = function() {
       console.log('yep');
-      console.log($scope.update_eligible_date.eligible_date);
+      console.log($scope.team.eligible_date);
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/team/update/" + $scope.team.id,
@@ -189,7 +190,7 @@ angular.module('subzapp').controller('TeamController', [
           'Content-Type': 'application/json'
         },
         data: {
-          eligible_date: $scope.update_eligible_date.eligible_date
+          eligible_date: $scope.team.eligible_date
         }
       }).then((function(res) {
         console.log("Update team date");
