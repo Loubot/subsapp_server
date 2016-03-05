@@ -194,7 +194,8 @@ angular.module('subzapp').controller('TeamController', [
         }
       }).then((function(res) {
         console.log("Update team date");
-        console.log(res);
+        console.log(res.data[0].eligible_date);
+        $scope.team.eligible_date = $filter('date')(res.data[0].eligible_date, "yyyy-MM-dd");
         return alertify.success("Eligible date updated");
       }), function(errResponse) {
         console.log("Update date error ");

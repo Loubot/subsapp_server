@@ -202,7 +202,8 @@ angular.module('subzapp').controller('TeamController', [
           eligible_date: $scope.team.eligible_date
       ).then ( ( res ) ->
         console.log "Update team date"
-        console.log res
+        console.log res.data[0].eligible_date
+        $scope.team.eligible_date = $filter('date')(res.data[0].eligible_date, "yyyy-MM-dd" )
         alertify.success "Eligible date updated"
       ), ( errResponse ) ->
         console.log "Update date error "
