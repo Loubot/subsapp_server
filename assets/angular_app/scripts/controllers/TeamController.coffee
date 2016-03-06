@@ -31,7 +31,7 @@ angular.module('subzapp').controller('TeamController', [
            $scope.team = res.data.team
            $scope.files = res.data.bucket_info.Contents
            $scope.org_members = res.data.org.org_members
-           $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd')
+           $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
            
           
         ), ( errResponse ) ->
@@ -204,14 +204,15 @@ angular.module('subzapp').controller('TeamController', [
       ).then ( ( res ) ->
         console.log "Update team date"
         console.log res.data[0].eligible_date
-        $scope.team.eligible_date = $filter('date')(res.data[0].eligible_date, "yyyy-MM-dd" )
+        $scope.team.eligible_date =  moment(res.data[0].eligible_date).format('YYYY-MM-DD')
         alertify.success "Eligible date updated"
       ), ( errResponse ) ->
         console.log "Update date error "
         console.log errResponse
         alertify.error "Update failed"
 
-    $('#select_player_modal').on 'shown.bs.modal', (e) ->
+    $('#select_player_modal').on 'shown.bs.modal', (e) -> #get team players when modal is opened
+      
       usSpinnerService.spin('spinner-1')
       $http(
         method: 'GET'
@@ -220,7 +221,8 @@ angular.module('subzapp').controller('TeamController', [
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
                   'Content-Type': 'application/json'
                   }
-       
+        params:
+          date: moment( $scope.team.eligible_date, "YYYY-MM-DD").toISOString()
       ).then ( ( res ) ->
         console.log "Get org info "
         console.log res.data

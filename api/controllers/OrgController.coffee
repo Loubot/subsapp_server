@@ -6,6 +6,7 @@
 ###
 
 passport = require('passport')
+moment = require('moment')
 module.exports = {
 
   findOne: ( req, res ) ->
@@ -28,10 +29,13 @@ module.exports = {
 
   get_org: (req, res) ->
     sails.log.debug "Hit the org controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    sails.log.debug "Data #{ JSON.stringify req.query.org_id }"
+    sails.log.debug "Data #{ JSON.stringify req.query }"
+    
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.findOne( { id: req.param('id') } ).populateAll().then( ( org ) ->
-        sails.log.debug "Find response #{ JSON.stringify org }" 
+      Org.findOne( { id: req.param('id') } )
+      .populate('org_members', { dob_stamp: '<': req.query.date } )
+      .then( ( org ) ->
+        sails.log.debug "Find response " 
         res.json org
           
         return

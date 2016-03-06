@@ -21,7 +21,7 @@ angular.module('subzapp').controller('TeamController', [
           $scope.team = res.data.team;
           $scope.files = res.data.bucket_info.Contents;
           $scope.org_members = res.data.org.org_members;
-          return $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd');
+          return $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD');
         }), function(errResponse) {
           console.log("get_team_info error");
           return console.log(errResponse);
@@ -193,7 +193,7 @@ angular.module('subzapp').controller('TeamController', [
       }).then((function(res) {
         console.log("Update team date");
         console.log(res.data[0].eligible_date);
-        $scope.team.eligible_date = $filter('date')(res.data[0].eligible_date, "yyyy-MM-dd");
+        $scope.team.eligible_date = moment(res.data[0].eligible_date).format('YYYY-MM-DD');
         return alertify.success("Eligible date updated");
       }), function(errResponse) {
         console.log("Update date error ");
@@ -210,6 +210,9 @@ angular.module('subzapp').controller('TeamController', [
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json",
           'Content-Type': 'application/json'
+        },
+        params: {
+          date: moment($scope.team.eligible_date, "YYYY-MM-DD").toISOString()
         }
       }).then((function(res) {
         console.log("Get org info ");
