@@ -15,7 +15,7 @@ angular.module('subzapp').controller('TeamController', [
   ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
-
+   
     get_team_info = ->
       if $scope.user.club_admin
         $http(
@@ -213,6 +213,24 @@ angular.module('subzapp').controller('TeamController', [
 
     $('#select_player_modal').on 'shown.bs.modal', (e) ->
       usSpinnerService.spin('spinner-1')
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/org/get-org/#{ $scope.team.main_org.id }"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
+                  'Content-Type': 'application/json'
+                  }
+       
+      ).then ( ( res ) ->
+        console.log "Get org info "
+        console.log res
+        usSpinnerService.stop('spinner-1')
+        alertify.success "Got players info"
+      ), ( errResponse ) ->
+        console.log "Get org info error "
+        usSpinnerService.stop('spinner-1')
+        console.log errResponse
+        alertify.error "Couldn't get players info"
     
 ])
 

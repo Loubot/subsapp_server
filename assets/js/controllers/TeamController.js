@@ -204,7 +204,26 @@ angular.module('subzapp').controller('TeamController', [
       });
     };
     return $('#select_player_modal').on('shown.bs.modal', function(e) {
-      return usSpinnerService.spin('spinner-1');
+      usSpinnerService.spin('spinner-1');
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/org/get-org/" + $scope.team.main_org.id,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        }
+      }).then((function(res) {
+        console.log("Get org info ");
+        console.log(res);
+        usSpinnerService.stop('spinner-1');
+        return alertify.success("Got players info");
+      }), function(errResponse) {
+        console.log("Get org info error ");
+        usSpinnerService.stop('spinner-1');
+        console.log(errResponse);
+        return alertify.error("Couldn't get players info");
+      });
     });
   }
 ]);

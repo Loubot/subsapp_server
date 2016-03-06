@@ -82,7 +82,7 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'findOne'
 
-  'get /get-org':             #Require org.id. Returns details of org
+  'get /org/get-org/:id':             #Require. Returns details of org. !Must be admin!
         controller:             'OrgController'
         action:                 'get_org'
 
