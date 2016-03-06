@@ -11,7 +11,8 @@ angular.module('subzapp').controller('TeamController', [
   'RESOURCES'
   'Upload'
   '$filter'
-  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter ) ->    
+  'usSpinnerService'
+  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
@@ -211,7 +212,7 @@ angular.module('subzapp').controller('TeamController', [
         alertify.error "Update failed"
 
     $('#select_player_modal').on 'shown.bs.modal', (e) ->
-      alert 'a'
+      usSpinnerService.spin('spinner-1')
     
 ])
 

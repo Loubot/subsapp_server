@@ -14,6 +14,7 @@ angular.module('subzapp', [
     "ngAlertify"
     'ngFileUpload'
     "checklist-model"
+    'angularSpinner'
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')

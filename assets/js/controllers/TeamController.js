@@ -2,7 +2,7 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', '$filter', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter) {
+  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', '$filter', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService) {
     var get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
@@ -204,7 +204,7 @@ angular.module('subzapp').controller('TeamController', [
       });
     };
     return $('#select_player_modal').on('shown.bs.modal', function(e) {
-      return alert('a');
+      return usSpinnerService.spin('spinner-1');
     });
   }
 ]);

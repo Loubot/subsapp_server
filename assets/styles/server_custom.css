@@ -16,6 +16,12 @@ body{
   width: 100% !important;
 }
 
+.spinner{
+  z-index: 999999999999999999999999999999 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+}
+
 
 .form-group{
 
