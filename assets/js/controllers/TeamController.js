@@ -168,7 +168,8 @@ angular.module('subzapp').controller('TeamController', [
       }).then((function(res) {
         console.log("Update team members");
         console.log(res);
-        return alertify.success("Team members added successfully");
+        $('#select_player_modal').modal('hide');
+        return alertify.success("Team members updated successfully");
       }), function(errResponse) {
         console.log("Update team members error ");
         console.log(errResponse);
@@ -214,7 +215,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Get org info ");
         console.log(res.data);
         $scope.org_members = res.data.org_members;
-        $scope.team_members_array = $scope.team_members_array = res.data.org_members.map(function(member) {
+        $scope.team_members_array = $scope.team_members_array = $scope.team.team_members.map(function(member) {
           return member.id;
         });
         usSpinnerService.stop('spinner-1');

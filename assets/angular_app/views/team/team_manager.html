@@ -4,28 +4,7 @@
 <div class="row text-center main">
   <h2 >Viewing: {{ team.main_org.name }}</h2>
   <h3> {{ team.name }}</h3>
-  <form ng-show="user.club_admin" ng-submit="update_eligible_date()" 
-      method="post" enctype="application/x-www-form-urlencoded">
-        <label class="col-sm-2">Eligible date: </label>
-    <div>
-      
-      <div class="col-sm-10 black_text" ng-show"user.club_admin">
-        <div class="dropdown">
-          <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="">
-            <div class="input-group"><input type="text" class="form-control" value="{{ team.eligible_date | date:'MM/dd/yyyy @ h:mma'}}" 
-              data-ng-model="team.eligible_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-            </div>
-          </a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <datetimepicker value="{{ team.eligible_date | date:'MM/dd/yyyy @ h:mma'}}" data-ng-model="team.eligible_date" 
-            data-datetimepicker-config="{ dropdownSelector: '#dropdown3', startView: 'year', minView: 'day' }"/>
-          </ul>
-        </div>
-        
-      </div> <!-- end of col-sm-10 -->
-    </div> <!-- end of form-group -->
-    <input type="submit" value="Update date" class="btn btn-default btn btn-success btn-lg register">
-  </form>
+  
 
   <div class="col-xs-12">
     
@@ -136,13 +115,13 @@
 
 
 
-<button class="btn btn-warning btn-lg" ng-click="get_players_by_year(team.id)">Get players!</button><br>
-<button class="btn btn-info btn-lg" ng-click="download()">Download </button>
+<!-- <button class="btn btn-warning btn-lg" ng-click="get_players_by_year(team.id)">Get players!</button><br>
+<button class="btn btn-info btn-lg" ng-click="download()">Download </button> -->
 
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#select_player_modal">
-  Select players
+  Manage players
 </button>
 
 <!-- Modal -->
@@ -154,7 +133,34 @@
         <h4 class="modal-title" id="myModalLabel">Select players for this team</h4>
       </div>
       <div class="modal-body">
-        <div class="col-xs-12">
+        <div class="col-xs-12"> <!-- update date form -->
+          <div class="update_date_form">
+            <form ng-show="user.club_admin" ng-submit="update_eligible_date()" 
+                method="post" enctype="application/x-www-form-urlencoded">
+                  <label class="col-sm-2">Eligible date: </label>
+              <div>
+                
+                <div class="col-sm-10 black_text" ng-show"user.club_admin">
+                  <div class="dropdown">
+                    <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="">
+                      <div class="input-group"><input type="text" class="form-control" value="{{ team.eligible_date | date:'MM/dd/yyyy @ h:mma'}}" 
+                        data-ng-model="team.eligible_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker value="{{ team.eligible_date | date:'MM/dd/yyyy @ h:mma'}}" data-ng-model="team.eligible_date" 
+                      data-datetimepicker-config="{ dropdownSelector: '#dropdown3', startView: 'year', minView: 'day' }"/>
+                    </ul>
+                  </div>
+                  
+                </div> <!-- end of col-sm-10 -->
+              </div> <!-- end of form-group -->
+              <input type="submit" value="Update date" class="btn btn-default btn btn-success btn-lg register">
+            </form>
+          </div> <!-- end of update_date_form -->
+        </div> <!-- end of col-xs-12 -->
+ 
+        <div class="col-xs-12"> <!-- update members form -->
           <form ng-submit="update_members()" method="post" enctype="application/x-www-form-urlencoded">
             <div ng-repeat="memb in org_members">
               <label >
@@ -166,7 +172,7 @@
           
         </div> <!-- end of col-xs-12 -->
       </div> <!-- end of modal-body -->
-      <div class="modal-footer">
+      <div class="modal-footer no_border">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div> <!-- end of modal-footer -->
     </div> <!-- end of modal-content -->

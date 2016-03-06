@@ -19,7 +19,7 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 99999; }
+  z-index: 999999; }
   .alertify.hide {
     opacity: 0;
     pointer-events: none; }
@@ -94,7 +94,7 @@
 
 .alertify-logs {
   position: fixed;
-  z-index: 100; }
+  z-index: 1051; }
   .alertify-logs.bottom, .alertify-logs:not(.top) {
     bottom: 16px; }
   .alertify-logs.left, .alertify-logs:not(.right) {

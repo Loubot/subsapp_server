@@ -22,6 +22,10 @@ body{
   bottom: 0 !important;
 }
 
+.no_border{
+  border: none;
+}
+
 .modal-backdrop {
   z-index: -1;
 }
@@ -149,13 +153,11 @@ body{
 }
 
 /* team_manager page*/
-.player_list{
-  max-height: 60%;
-  overflow: scroll;
-  background-color: #e7e7e7;
+.update_date_form{
+  padding:10px;
+  border: #cdcdcd medium solid;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;  
 }
-
-.frame { width: 100%; height: 160px; padding: 0; }
-.frame .slidee { margin: 0; padding: 0; height: 100%; list-style: none; }
-.frame .slidee li { float: left; margin: 0 5px 0 0; padding: 0; width: 120px; height: 100%; }
 /* end of team_manager page*/

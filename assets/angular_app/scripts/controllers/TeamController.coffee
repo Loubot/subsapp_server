@@ -182,7 +182,8 @@ angular.module('subzapp').controller('TeamController', [
       ).then ( ( res ) ->
         console.log "Update team members"
         console.log res
-        alertify.success "Team members added successfully"
+        $('#select_player_modal').modal('hide')
+        alertify.success "Team members updated successfully"
       ), ( errResponse ) ->
         console.log "Update team members error "
         console.log errResponse
@@ -224,7 +225,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Get org info "
         console.log res.data
         $scope.org_members = res.data.org_members
-        $scope.team_members_array = $scope.team_members_array = res.data.org_members.map( ( member ) ->
+        $scope.team_members_array = $scope.team_members_array = $scope.team.team_members.map( ( member ) ->
             member.id )
         usSpinnerService.stop('spinner-1')
         alertify.success "Got players info"
