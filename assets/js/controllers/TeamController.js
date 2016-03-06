@@ -21,10 +21,7 @@ angular.module('subzapp').controller('TeamController', [
           $scope.team = res.data.team;
           $scope.files = res.data.bucket_info.Contents;
           $scope.org_members = res.data.org.org_members;
-          $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd');
-          return $scope.team_members_array = res.data.team.team_members.map(function(member) {
-            return member.id;
-          });
+          return $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd');
         }), function(errResponse) {
           console.log("get_team_info error");
           return console.log(errResponse);
@@ -215,8 +212,11 @@ angular.module('subzapp').controller('TeamController', [
         }
       }).then((function(res) {
         console.log("Get org info ");
-        console.log(res.data.org_members);
-        $scope.team_members_array = res.data.org_members;
+        console.log(res.data);
+        $scope.org_members = res.data.org_members;
+        $scope.team_members_array = $scope.team_members_array = res.data.org_members.map(function(member) {
+          return member.id;
+        });
         usSpinnerService.stop('spinner-1');
         return alertify.success("Got players info");
       }), function(errResponse) {

@@ -33,7 +33,7 @@ angular.module('subzapp').controller('TeamController', [
            $scope.org_members = res.data.org.org_members
            $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd')
            
-          )
+          
         ), ( errResponse ) ->
           console.log "get_team_info error"
           console.log errResponse
@@ -222,9 +222,10 @@ angular.module('subzapp').controller('TeamController', [
        
       ).then ( ( res ) ->
         console.log "Get org info "
-        console.log res.data.org_members
+        console.log res.data
+        $scope.org_members = res.data.org_members
         $scope.team_members_array = $scope.team_members_array = res.data.org_members.map( ( member ) ->
-            member.id
+            member.id )
         usSpinnerService.stop('spinner-1')
         alertify.success "Got players info"
       ), ( errResponse ) ->
