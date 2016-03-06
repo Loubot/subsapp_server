@@ -215,7 +215,8 @@ angular.module('subzapp').controller('TeamController', [
         }
       }).then((function(res) {
         console.log("Get org info ");
-        console.log(res);
+        console.log(res.data.org_members);
+        $scope.team_members_array = res.data.org_members;
         usSpinnerService.stop('spinner-1');
         return alertify.success("Got players info");
       }), function(errResponse) {

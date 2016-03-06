@@ -15,7 +15,7 @@ angular.module('subzapp').controller('TeamController', [
   ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
-   
+
     get_team_info = ->
       if $scope.user.club_admin
         $http(
@@ -32,8 +32,7 @@ angular.module('subzapp').controller('TeamController', [
            $scope.files = res.data.bucket_info.Contents
            $scope.org_members = res.data.org.org_members
            $scope.team.eligible_date = $filter('date')($scope.team.eligible_date, 'yyyy-MM-dd')
-           $scope.team_members_array = res.data.team.team_members.map( ( member ) ->
-            member.id
+           
           )
         ), ( errResponse ) ->
           console.log "get_team_info error"
@@ -223,7 +222,9 @@ angular.module('subzapp').controller('TeamController', [
        
       ).then ( ( res ) ->
         console.log "Get org info "
-        console.log res
+        console.log res.data.org_members
+        $scope.team_members_array = $scope.team_members_array = res.data.org_members.map( ( member ) ->
+            member.id
         usSpinnerService.stop('spinner-1')
         alertify.success "Got players info"
       ), ( errResponse ) ->

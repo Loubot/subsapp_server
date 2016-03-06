@@ -22,6 +22,10 @@ body{
   bottom: 0 !important;
 }
 
+.modal-backdrop {
+  z-index: -1;
+}
+
 
 .form-group{
 
