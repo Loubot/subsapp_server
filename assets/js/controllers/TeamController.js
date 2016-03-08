@@ -3,10 +3,11 @@ var return_team;
 
 angular.module('subzapp').controller('TeamController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', '$filter', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService) {
-    var get_team_info, user_token;
+    var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
     get_team_info = function() {
+      usSpinnerService.spin('spinner-1');
       if ($scope.user.club_admin) {
         return $http({
           method: 'GET',
@@ -16,6 +17,7 @@ angular.module('subzapp').controller('TeamController', [
             "Content-Type": "application/json"
           }
         }).then((function(res) {
+          usSpinnerService.stop('spinner-1');
           console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
@@ -23,6 +25,7 @@ angular.module('subzapp').controller('TeamController', [
           $scope.org_members = res.data.org.org_members;
           return $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD');
         }), function(errResponse) {
+          usSpinnerService.stop('spinner-1');
           console.log("get_team_info error");
           return console.log(errResponse);
         });
@@ -35,10 +38,12 @@ angular.module('subzapp').controller('TeamController', [
             "Content-Type": "application/json"
           }
         }).then((function(res) {
+          usSpinnerService.stop('spinner-1');
           console.log("Get team info response");
           console.log(res.data);
           return $scope.team = res.data;
         }), function(errResponse) {
+          usSpinnerService.stop('spinner-1');
           console.log("Get team info error " + (JSON.stringify(errResponse)));
           return $state.go('login');
         });
@@ -177,7 +182,7 @@ angular.module('subzapp').controller('TeamController', [
       });
     };
     $scope.update_eligible_date = function() {
-      console.log('yep');
+      usSpinnerService.stop('spinner-1');
       console.log($scope.team.eligible_date);
       return $http({
         method: 'POST',
@@ -192,16 +197,21 @@ angular.module('subzapp').controller('TeamController', [
         }
       }).then((function(res) {
         console.log("Update team date");
-        console.log(res.data[0].eligible_date);
+        console.log(res.data);
         $scope.team.eligible_date = moment(res.data[0].eligible_date).format('YYYY-MM-DD');
+        get_org_and_members();
         return alertify.success("Eligible date updated");
       }), function(errResponse) {
+        usSpinnerService.stop('spinner-1');
         console.log("Update date error ");
         console.log(errResponse);
         return alertify.error("Update failed");
       });
     };
-    return $('#select_player_modal').on('shown.bs.modal', function(e) {
+    $('#select_player_modal').on('shown.bs.modal', function(e) {
+      return get_org_and_members();
+    });
+    return get_org_and_members = function() {
       usSpinnerService.spin('spinner-1');
       return $http({
         method: 'GET',
@@ -229,7 +239,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log(errResponse);
         return alertify.error("Couldn't get players info");
       });
-    });
+    };
   }
 ]);
 

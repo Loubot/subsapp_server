@@ -39,7 +39,7 @@ module.exports =
       defaultsTo: ''
 
     dob_stamp:
-      type: 'datetime'
+      type: 'date'
       defaultsTo: null
 
     password: type: 'string'

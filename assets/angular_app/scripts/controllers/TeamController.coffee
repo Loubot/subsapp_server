@@ -17,6 +17,7 @@ angular.module('subzapp').controller('TeamController', [
     user_token = window.localStorage.getItem 'user_token'
 
     get_team_info = ->
+      usSpinnerService.spin('spinner-1')
       if $scope.user.club_admin
         $http(
           method: 'GET'
@@ -26,15 +27,17 @@ angular.module('subzapp').controller('TeamController', [
                     }
           
         ).then ( (res) ->
-           console.log "get_team_info response club admin"
-           console.log res
-           $scope.team = res.data.team
-           $scope.files = res.data.bucket_info.Contents
-           $scope.org_members = res.data.org.org_members
-           $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
+          usSpinnerService.stop('spinner-1')
+          console.log "get_team_info response club admin"
+          console.log res
+          $scope.team = res.data.team
+          $scope.files = res.data.bucket_info.Contents
+          $scope.org_members = res.data.org.org_members
+          $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
            
           
         ), ( errResponse ) ->
+          usSpinnerService.stop('spinner-1')
           console.log "get_team_info error"
           console.log errResponse
       else
@@ -46,11 +49,13 @@ angular.module('subzapp').controller('TeamController', [
                     }
 
         ).then ( (res) ->
-           console.log "Get team info response"
-           console.log res.data
-           $scope.team = res.data
+          usSpinnerService.stop('spinner-1')
+          console.log "Get team info response"
+          console.log res.data
+          $scope.team = res.data
            
         ), ( errResponse ) ->
+          usSpinnerService.stop('spinner-1')
           console.log "Get team info error #{ JSON.stringify errResponse }"
           $state.go 'login'
 
@@ -190,7 +195,7 @@ angular.module('subzapp').controller('TeamController', [
         alertify.error "Failed to add team members"
 
     $scope.update_eligible_date = () ->
-      console.log 'yep'
+      usSpinnerService.stop('spinner-1')
       console.log $scope.team.eligible_date
       $http(
         method: 'POST'
@@ -203,16 +208,22 @@ angular.module('subzapp').controller('TeamController', [
           eligible_date: $scope.team.eligible_date
       ).then ( ( res ) ->
         console.log "Update team date"
-        console.log res.data[0].eligible_date
+        console.log res.data
         $scope.team.eligible_date =  moment(res.data[0].eligible_date).format('YYYY-MM-DD')
+        get_org_and_members()
         alertify.success "Eligible date updated"
       ), ( errResponse ) ->
+        usSpinnerService.stop('spinner-1')
         console.log "Update date error "
         console.log errResponse
         alertify.error "Update failed"
 
     $('#select_player_modal').on 'shown.bs.modal', (e) -> #get team players when modal is opened
+      get_org_and_members()
       
+
+
+    get_org_and_members = ->
       usSpinnerService.spin('spinner-1')
       $http(
         method: 'GET'

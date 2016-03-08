@@ -33,7 +33,7 @@ module.exports = {
     
     if AuthService.check_club_admin( req.user, req.param('id') )
       Org.findOne( { id: req.param('id') } )
-      .populate('org_members', { dob_stamp: '<': req.query.date } )
+      .populate('org_members', { dob_stamp: '<=': req.query.date } )
       .then( ( org ) ->
         sails.log.debug "Find response " 
         res.json org
