@@ -34,6 +34,7 @@ angular.module('subzapp').controller('TeamController', [
           $scope.files = res.data.bucket_info.Contents
           $scope.org_members = res.data.org.org_members
           $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
+          $scope.team.eligible_date_end = moment($scope.team.eligible_date_end).format('YYYY-MM-DD')
            
           
         ), ( errResponse ) ->
@@ -212,6 +213,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Update team date"
         console.log res.data
         $scope.team.eligible_date =  moment(res.data[0].eligible_date).format('YYYY-MM-DD')
+        $scope.team.eligible_date_end =  moment(res.data[0].eligible_date_end).format('YYYY-MM-DD')
         get_org_and_members()
         alertify.success "Eligible date updated"
       ), ( errResponse ) ->

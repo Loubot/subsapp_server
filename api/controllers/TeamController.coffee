@@ -27,7 +27,7 @@ module.exports = {
       Team.update( 
         { id: req.param('id') }
         eligible_date: req.body.eligible_date
-        eligible_period: req.body.eligible_period
+        eligible_date_end: req.body.eligible_date_end
         ).then( ( team ) -> 
         sails.log.debug "Team updated #{ JSON.stringify team }"
         res.json team

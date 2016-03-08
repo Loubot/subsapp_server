@@ -137,9 +137,10 @@
           <div class="update_date_form">
             <form ng-show="user.club_admin" ng-submit="update_eligible_date()" class="form-horizontal"
                 method="post" enctype="application/x-www-form-urlencoded">
-              <label class="col-sm-3">Eligible date: </label>             
+                       
                 
               <div class="form-group">
+                <label class="col-sm-3">Eligible date: </label>    
                 <div class="col-sm-9 black_text" ng-show"user.club_admin">
                   <div class="dropdown">
                     <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="">
@@ -157,14 +158,30 @@
                   </div> <!-- end of dropdown -->
                   
                 </div> <!-- end of col-sm-10 -->
-              </div> <!-- end of form-group -->
+              </div> <!-- end of form-group --> 
 
               <div class="form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Eligible period (years)</label>
-                <div class="col-sm-9">
-                  <input type="number" class="form-control" ng-model="team.eligible_period" id="eliglble_period" placeholder="E.G. 1" required>
-                </div>
+                <label class="col-sm-3">Closing date: </label>    
+                <div class="col-sm-9 black_text" ng-show"user.club_admin">
+                  <div class="dropdown">
+                    <a class="dropdown-toggle" id="dropdown4" role="button" data-toggle="dropdown" data-target="#" href="">
+                      <div class="input-group">
+                        <input type="text" class="form-control" value="{{ team.eligible_date_end | date:'MM/dd/yyyy @ h:mma'}}" 
+                        data-ng-model="team.eligible_date_end" required>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                      </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker value="{{ team.eligible_date_end | date:'MM/dd/yyyy @ h:mma'}}" data-ng-model="team.eligible_date_end" 
+                      data-datetimepicker-config="{ dropdownSelector: '#dropdown4', startView: 'year', minView: 'day' }"
+                      required />
+                    </ul>
+                  </div> <!-- end of dropdown -->
+                  
+                </div> <!-- end of col-sm-10 -->
               </div> <!-- end of form-group -->
+
+              
               
               <input type="submit" value="Update date" class="btn btn-default btn btn-success btn-lg register">
             </form>

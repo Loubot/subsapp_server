@@ -23,7 +23,8 @@ angular.module('subzapp').controller('TeamController', [
           $scope.team = res.data.team;
           $scope.files = res.data.bucket_info.Contents;
           $scope.org_members = res.data.org.org_members;
-          return $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD');
+          $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD');
+          return $scope.team.eligible_date_end = moment($scope.team.eligible_date_end).format('YYYY-MM-DD');
         }), function(errResponse) {
           usSpinnerService.stop('spinner-1');
           console.log("get_team_info error");
@@ -199,6 +200,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Update team date");
         console.log(res.data);
         $scope.team.eligible_date = moment(res.data[0].eligible_date).format('YYYY-MM-DD');
+        $scope.team.eligible_date_end = moment(res.data[0].eligible_date_end).format('YYYY-MM-DD');
         get_org_and_members();
         return alertify.success("Eligible date updated");
       }), function(errResponse) {
