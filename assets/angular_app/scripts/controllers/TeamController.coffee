@@ -187,7 +187,10 @@ angular.module('subzapp').controller('TeamController', [
       ).then ( ( res ) ->
         console.log "Update team members"
         console.log res
-        $('#select_player_modal').modal('hide')
+        $scope.team_members_array = res.data.team_members.map( ( member ) ->
+          member.id
+        )
+        # $('#select_player_modal').modal('hide')
         alertify.success "Team members updated successfully"
       ), ( errResponse ) ->
         console.log "Update team members error "
@@ -196,7 +199,7 @@ angular.module('subzapp').controller('TeamController', [
 
     $scope.update_eligible_date = () ->
       usSpinnerService.stop('spinner-1')
-      console.log $scope.team.eligible_date
+      console.log $scope.team
       $http(
         method: 'POST'
         url: "#{ RESOURCES.DOMAIN }/team/update/#{ $scope.team.id }"
@@ -204,8 +207,7 @@ angular.module('subzapp').controller('TeamController', [
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
                   'Content-Type': 'application/json'
                   }
-        data:
-          eligible_date: $scope.team.eligible_date
+        data: $scope.team
       ).then ( ( res ) ->
         console.log "Update team date"
         console.log res.data
@@ -219,11 +221,11 @@ angular.module('subzapp').controller('TeamController', [
         alertify.error "Update failed"
 
     $('#select_player_modal').on 'shown.bs.modal', (e) -> #get team players when modal is opened
-      get_org_and_members()
+      get_org_and_members() #update eligible player list. 
       
 
 
-    get_org_and_members = ->
+    get_org_and_members = -> #fetch org info with members. Only members under the teams eligible age. 
       usSpinnerService.spin('spinner-1')
       $http(
         method: 'GET'
@@ -238,8 +240,8 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Get org info "
         console.log res.data
         $scope.org_members = res.data.org_members
-        $scope.team_members_array = $scope.team_members_array = $scope.team.team_members.map( ( member ) ->
-            member.id )
+        $scope.team_members_array = $scope.team.team_members.map( ( member ) ->
+            member.id ) #create array containing team members user.id
         usSpinnerService.stop('spinner-1')
         alertify.success "Got players info"
       ), ( errResponse ) ->

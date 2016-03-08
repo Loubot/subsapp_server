@@ -173,7 +173,9 @@ angular.module('subzapp').controller('TeamController', [
       }).then((function(res) {
         console.log("Update team members");
         console.log(res);
-        $('#select_player_modal').modal('hide');
+        $scope.team_members_array = res.data.team_members.map(function(member) {
+          return member.id;
+        });
         return alertify.success("Team members updated successfully");
       }), function(errResponse) {
         console.log("Update team members error ");
@@ -183,7 +185,7 @@ angular.module('subzapp').controller('TeamController', [
     };
     $scope.update_eligible_date = function() {
       usSpinnerService.stop('spinner-1');
-      console.log($scope.team.eligible_date);
+      console.log($scope.team);
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/team/update/" + $scope.team.id,
@@ -192,9 +194,7 @@ angular.module('subzapp').controller('TeamController', [
           "Content-Type": "application/json",
           'Content-Type': 'application/json'
         },
-        data: {
-          eligible_date: $scope.team.eligible_date
-        }
+        data: $scope.team
       }).then((function(res) {
         console.log("Update team date");
         console.log(res.data);
@@ -228,7 +228,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Get org info ");
         console.log(res.data);
         $scope.org_members = res.data.org_members;
-        $scope.team_members_array = $scope.team_members_array = $scope.team.team_members.map(function(member) {
+        $scope.team_members_array = $scope.team.team_members.map(function(member) {
           return member.id;
         });
         usSpinnerService.stop('spinner-1');

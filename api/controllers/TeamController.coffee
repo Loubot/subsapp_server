@@ -24,7 +24,11 @@ module.exports = {
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Team.update( { id: req.param('id') }, eligible_date: req.body.eligible_date ).then( ( team ) -> 
+      Team.update( 
+        { id: req.param('id') }
+        eligible_date: req.body.eligible_date
+        eligible_period: req.body.eligible_period
+        ).then( ( team ) -> 
         sails.log.debug "Team updated #{ JSON.stringify team }"
         res.json team
       ).catch( ( err ) ->
@@ -153,7 +157,13 @@ module.exports = {
 
       Team.update( { id: req.param('id') }, 'team_members': req.body.team_members ).then( ( updated ) ->
         sails.log.debug "Team members update #{ JSON.stringify updated }"
-        res.ok "Team members added successfully"
+        Team.findOne( id: req.param('id') ).populate('team_members').then( ( updated_team_found ) ->
+          sails.log.debug "Updated team found #{ JSON.stringify updated_team_found }"
+          res.json updated_team_found
+        ).catch( ( updated_team_found_err ) ->
+          sails.log.debug "Upated team found error #{ JSON.stringify updated_team_found_err }"
+          res.serverError updated_team_found_err
+        )
       ).catch( ( err ) ->
         sails.log.debug "Team update members error #{ JSON.stringify err }"
         res.serverError err

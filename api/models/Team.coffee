@@ -46,6 +46,10 @@ module.exports =
       type: 'date'
       defaultsTo: null
 
+    eligible_period:
+      type: 'integer'
+      defaultsTo: null
+
     
 
 
