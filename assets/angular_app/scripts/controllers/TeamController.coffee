@@ -33,8 +33,6 @@ angular.module('subzapp').controller('TeamController', [
           $scope.team = res.data.team
           $scope.files = res.data.bucket_info.Contents
           $scope.org_members = res.data.org.org_members
-          $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
-          $scope.team.eligible_date_end = moment($scope.team.eligible_date_end).format('YYYY-MM-DD')
            
           
         ), ( errResponse ) ->
@@ -223,7 +221,16 @@ angular.module('subzapp').controller('TeamController', [
         alertify.error "Update failed"
 
     $('#select_player_modal').on 'shown.bs.modal', (e) -> #get team players when modal is opened
-      get_org_and_members() #update eligible player list. 
+      if $scope.team.eligible_date?
+        $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
+        $scope.team.eligible_date_end = moment($scope.team.eligible_date_end).format('YYYY-MM-DD')
+        console.log $scope.team.eligible_date
+        get_org_and_members() #update eligible player list. 
+      else
+        alertify.log("Please set the eligible date of this team. Click to dismiss", "", 0)
+        
+      
+      
       
 
 
@@ -236,8 +243,7 @@ angular.module('subzapp').controller('TeamController', [
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
                   'Content-Type': 'application/json'
                   }
-        params:
-          date: moment( $scope.team.eligible_date, "YYYY-MM-DD").toISOString()
+        params: $scope.team
       ).then ( ( res ) ->
         console.log "Get org info "
         console.log res.data

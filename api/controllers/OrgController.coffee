@@ -30,10 +30,12 @@ module.exports = {
   get_org: (req, res) ->
     sails.log.debug "Hit the org controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.query }"
+    sails.log.debug "QUERY DATE #{ moment( req.query.eligible_date ).toISOString() }"
+    sails.log.debug "QUERY END DATE #{ moment( req.query.eligible_date_end ).add( 364, 'days' ).toISOString() }"
     
     if AuthService.check_club_admin( req.user, req.param('id') )
       Org.findOne( { id: req.param('id') } )
-      .populate('org_members', { dob_stamp: '<=': req.query.date } )
+      .populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
       .then( ( org ) ->
         sails.log.debug "Find response " 
         res.json org

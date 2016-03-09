@@ -167,14 +167,14 @@
                     <a class="dropdown-toggle" id="dropdown4" role="button" data-toggle="dropdown" data-target="#" href="">
                       <div class="input-group">
                         <input type="text" class="form-control" value="{{ team.eligible_date_end | date:'MM/dd/yyyy @ h:mma'}}" 
-                        data-ng-model="team.eligible_date_end" required>
+                        data-ng-model="team.eligible_date_end" >
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                       </div>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                       <datetimepicker value="{{ team.eligible_date_end | date:'MM/dd/yyyy @ h:mma'}}" data-ng-model="team.eligible_date_end" 
                       data-datetimepicker-config="{ dropdownSelector: '#dropdown4', startView: 'year', minView: 'day' }"
-                      required />
+                       />
                     </ul>
                   </div> <!-- end of dropdown -->
                   
