@@ -44,9 +44,9 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'get_user_teams'
 
-  'get /user/pick-kids':
-        controller:             'UserController'
-        action:                 'pick_kids'
+  # 'get /user/pick-kids':
+  #       controller:             'UserController'
+  #       action:                 'pick_kids'
 
     # Parents urls
       'get /parent/social/:id':

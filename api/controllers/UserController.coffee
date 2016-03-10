@@ -116,20 +116,20 @@ module.exports = {
     ).done ->
       sails.log.debug "Edit user done"
 
-  pick_kids: ( req, res ) ->
-    Promise = require('bluebird')
-    sails.log.debug JSON.stringif
-    sails.log.debug "Hit the UserController/pick_kids"
-    sails.log.debug "Params #{ JSON.stringify req.query }"
+  # pick_kids: ( req, res ) ->
+  #   Promise = require('bluebird')
+  #   sails.log.debug JSON.stringif
+  #   sails.log.debug "Hit the UserController/pick_kids"
+  #   sails.log.debug "Params #{ JSON.stringify req.query }"
 
-    Promise.all(
-      [ User.findOne( id: req.query.id)
-       User.find( parent_email: req.query.email )
-      ]
-      ).spread ( parent, kids ) ->
-        sails.log.debug "Parent #{ JSON.stringify parent}"
-        sails.log.debug "Kids #{ JSON.stringify kids}"
-        res.json parent: parent, kids: kids
+  #   Promise.all(
+  #     [ User.findOne( id: req.query.id)
+  #      User.find( parent_email: req.query.email )
+  #     ]
+  #     ).spread ( parent, kids ) ->
+  #       sails.log.debug "Parent #{ JSON.stringify parent}"
+  #       sails.log.debug "Kids #{ JSON.stringify kids}"
+  #       res.json parent: parent, kids: kids
     
 
     

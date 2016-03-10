@@ -99,11 +99,13 @@ module.exports =
       collection: 'user'
       via: 'parent'
       columnName: 'kid_id'
+      unique: true
 
     parent:
       collection: 'user'
       via: 'kids'
       columnName: 'parent_id'
+      unique: true
 
     transactions:
       collection: 'transaction'

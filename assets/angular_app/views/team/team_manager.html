@@ -86,33 +86,6 @@
 
 </div> <!-- end of container-fluid -->
 
-<div class="container-fluid" ng-show="user.club_admin">
-  <div class="col-xs-12 make_space"></div> <!-- end of spacer -->
-  <div class="col-xs-12 text-center black_text" >
-    <div class="well">
-
-      <h2><strong>Select an excel file below and click submit to upload.</strong></h2>
-      <h4><strong>We will process your form and register your players soon. </strong></h4>
-      <form name="form">
-      
-        <div class="button btn btn-success" ngf-select ng-model="file" name="file" accept=".xls"
-           ngf-max-size="20MB" >Select club sheet</div>
-        <p ngf-src="file">{{ file.name }}</p>
-        
-        <button type="submit" class="btn btn-success" ng-click="submit()">submit</button>
-      </form>
-    </div> <!-- end of well -->
-    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
-  </div> <!-- end of col-xs-12 -->
-
-
-  <div class="col-xs-12 black_text">
-    <ul class="list-group">
-      <li class="list-group-item" ng-repeat="file in files">{{ file.Key.substring( ( file.Key.lastIndexOf('/') +1 ), file.Key.length) }}</li>
-    </ul> <!-- end of list-group -->
-  </div> <!-- end of col-xs-12 -->
-</div> <!-- end of container-fluid -->
-
 
 
 <!-- <button class="btn btn-warning btn-lg" ng-click="get_players_by_year(team.id)">Get players!</button><br>
