@@ -130,7 +130,7 @@ module.exports.routes =
         controller:              'TeamController'
         action:                  'update_members'
 
-  'get /get-teams':           #Require org_id, returns all teams associated with an org
+  'get /team/get-teams':           #Require org_id, returns all teams associated with an org
         controller:             'TeamController'
         action:                 'get_teams' # Move to org controller..
 

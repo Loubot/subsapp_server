@@ -32,7 +32,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       if $scope.org?
         $http(
           method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/get-teams"
+          url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
           headers: { 
                     'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                     }
@@ -41,7 +41,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         ).then ( ( org_and_teams ) ->
           console.log "Get org and teams"
           console.log org_and_teams
-          $scope.teams = org_and_teams.data.teams
+          $scope.teams = org_and_teams.data.org.teams
         ), ( errResponse ) ->
           console.log "Get teams failed"
           console.log  errResponse

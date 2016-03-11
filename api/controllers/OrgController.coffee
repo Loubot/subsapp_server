@@ -10,17 +10,31 @@ moment = require('moment')
 module.exports = {
 
   findOne: ( req, res ) ->
+    Promise = require('bluebird')
+    AWS = require('aws-sdk')
+
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+    s3 = Promise.promisifyAll(new AWS.S3())
+
     sails.log.debug "Hit the org controller/findOne "
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
     sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
 
+    params = 
+      Bucket: 'subzapp'
+      Marker: req.param('id')
+
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.findOne( { id: req.param('id') } ).then( ( org ) ->
+      Org.findOne( { id: req.param('id') } ).populateAll().then( ( org ) ->
         sails.log.debug "Org findOne #{ JSON.stringify org }" 
-        res.json org
-      ).catch( ( err ) ->
-        sails.log.debug "Org findOne err #{ err }"
-        res.serverError err
+        return  [
+                  org
+                  s3.listObjectsAsync( params )
+                ]
+      ).spread( ( org, s3_object ) ->
+        sails.log.debug "Org findOne #{ JSON.stringify org }"
+        sails.log.debug "Org findOne s3 #{ JSON.stringify s3_object }"
+        res.json org: org, s3_object: s3_object
       )
     else
       res.serverError "You are not the admin of this org"
