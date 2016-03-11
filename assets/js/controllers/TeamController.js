@@ -21,7 +21,6 @@ angular.module('subzapp').controller('TeamController', [
           console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
-          $scope.files = res.data.bucket_info.Contents;
           return $scope.org_members = res.data.org.org_members;
         }), function(errResponse) {
           usSpinnerService.stop('spinner-1');
@@ -91,38 +90,6 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Create event error");
         alertify.error("Create event failed");
         return console.log(errResponse);
-      });
-    };
-    $scope.submit = function() {
-      return $scope.upload($scope.file);
-    };
-    $scope.upload = function(file) {
-      console.log("Upload");
-      console.log(file);
-      console.log(JSON.stringify($scope.team.name));
-      return Upload.upload({
-        method: 'post',
-        url: '/file/upload',
-        data: {
-          org_id: $scope.team.main_org.id,
-          team_id: $scope.team.id,
-          team_name: $scope.team.name
-        },
-        file: file
-      }).then((function(resp) {
-        console.log('Success ' + JSON.stringify(resp + 'uploaded. Response: ' + JSON.stringify(resp.data)));
-        console.log(resp);
-        $scope.files = resp.data.bucket_info.Contents;
-        alertify.success("File uploaded ok");
-      }), (function(resp) {
-        console.log('Error status: ' + resp.status);
-        alertify.error("File failed to upload");
-        console.log(resp);
-        alertify.error("File upload failed. Status: " + resp.status);
-      }), function(evt) {
-        var progressPercentage;
-        progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        return console.log('progress: ' + progressPercentage + '% ' + evt.config.data);
       });
     };
     $scope.get_players_by_year = function(id) {

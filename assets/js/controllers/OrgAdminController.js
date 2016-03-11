@@ -33,7 +33,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         }).then((function(org_and_teams) {
           console.log("Get org and teams");
           console.log(org_and_teams);
-          return $scope.teams = org_and_teams.data.org.teams;
+          $scope.teams = org_and_teams.data.org.teams;
+          return $scope.files = org_and_teams.data.s3_object.Contents;
         }), function(errResponse) {
           console.log("Get teams failed");
           console.log(errResponse);
@@ -139,7 +140,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return console.log(errResponse);
       });
     };
-    return $scope.aws = function() {
+    $scope.aws = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/parse-players",
@@ -156,6 +157,18 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log(errResponse);
         return alertify.error(errResponse.data);
       });
+    };
+    $scope.submit = function() {
+      return $scope.upload($scope.file);
+    };
+    $scope.upload = function(file) {
+      console.log("Upload");
+      return console.log("File " + (JSON.stringify($scope.file)));
+    };
+    return $scope.convert_date = function(date) {
+      console.log("date " + date);
+      console.log("New date " + (moment(date).format("DD-MM-YYYY")));
+      return moment(date).format("DD-MM-YYYY");
     };
   }
 ]);

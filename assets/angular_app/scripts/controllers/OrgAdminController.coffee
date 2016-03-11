@@ -42,6 +42,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           console.log "Get org and teams"
           console.log org_and_teams
           $scope.teams = org_and_teams.data.org.teams
+          $scope.files = org_and_teams.data.s3_object.Contents
         ), ( errResponse ) ->
           console.log "Get teams failed"
           console.log  errResponse
@@ -165,8 +166,47 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log errResponse
         alertify.error errResponse.data
 
+    # upload file
+
+    $scope.submit = ->
+      
+      $scope.upload $scope.file
+
+    $scope.upload = (file) ->
+      console.log "Upload"
+      # console.log file
+      console.log "File #{ JSON.stringify $scope.file }"
+      # Upload.upload(
+      #   method: 'post'
+      #   url: '/file/upload'
+      #   data:
+      #     org_id: $scope.team.main_org.id
+      #     team_id: $scope.team.id
+      #     team_name: $scope.team.name
+      #   file: file        
+          
+      # ).then ((resp) ->
+      #   console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
+      #   console.log resp
+      #   $scope.files = resp.data.bucket_info.Contents
+      #   alertify.success "File uploaded ok"
+      #   return
+      # ), ((resp) ->
+      #   console.log 'Error status: ' + resp.status
+      #   alertify.error "File failed to upload"
+      #   console.log resp
+
+      #   alertify.error "File upload failed. Status: #{ resp.status }"
+      #   return
+      # ), (evt) ->
+      #   progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
+      #   console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
+
     
-    
+    $scope.convert_date = ( date ) ->
+      console.log "date #{ date }"
+      console.log "New date #{ moment( date ).format( "DD-MM-YYYY" ) }"
+      return moment( date ).format( "DD-MM-YYYY" )
 
 ])
 

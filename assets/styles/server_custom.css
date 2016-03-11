@@ -125,6 +125,10 @@ body{
   color: #111 !important;
 }
 
+.white_text{
+  color: #FFF !important;
+}
+
 .btn{
 
   width: 50%;
@@ -161,3 +165,25 @@ body{
   -webkit-border-radius: 10px;  
 }
 /* end of team_manager page*/
+
+/*org_admin page*/
+.file_selection{
+  background-color: #3c7f33;
+  color: #111;
+}
+
+/*styled select*/
+.styled-select select {
+  background-color: #337f76 !important;
+  background: transparent;
+  width: 268px;
+  padding: 5px;
+  font-size: 16px;
+  line-height: 1;
+  border: 0;
+  border-radius: 0;
+  height: 34px;
+  /*-webkit-appearance: none;*/
+  display: block;
+  margin: 0 auto;
+ }

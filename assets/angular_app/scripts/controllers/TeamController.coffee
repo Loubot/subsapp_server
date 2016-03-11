@@ -31,7 +31,7 @@ angular.module('subzapp').controller('TeamController', [
           console.log "get_team_info response club admin"
           console.log res
           $scope.team = res.data.team
-          $scope.files = res.data.bucket_info.Contents
+          
           $scope.org_members = res.data.org.org_members
            
           
@@ -101,42 +101,6 @@ angular.module('subzapp').controller('TeamController', [
         alertify.error "Create event failed"
         console.log errResponse
 
-
-    # upload file
-
-    $scope.submit = ->
-      
-      $scope.upload $scope.file
-
-    $scope.upload = (file) ->
-      console.log "Upload"
-      console.log file
-      console.log JSON.stringify $scope.team.name
-      Upload.upload(
-        method: 'post'
-        url: '/file/upload'
-        data:
-          org_id: $scope.team.main_org.id
-          team_id: $scope.team.id
-          team_name: $scope.team.name
-        file: file        
-          
-      ).then ((resp) ->
-        console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
-        console.log resp
-        $scope.files = resp.data.bucket_info.Contents
-        alertify.success "File uploaded ok"
-        return
-      ), ((resp) ->
-        console.log 'Error status: ' + resp.status
-        alertify.error "File failed to upload"
-        console.log resp
-
-        alertify.error "File upload failed. Status: #{ resp.status }"
-        return
-      ), (evt) ->
-        progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
-        console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
 
     $scope.get_players_by_year = ( id ) ->
       console.log "Find by date"

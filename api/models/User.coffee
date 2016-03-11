@@ -149,7 +149,7 @@ module.exports =
         sails.log.debug "Parent email #{parent_email}"
         sails.log.debug "org #{org}"
 
-        User.create(
+        User.findOrCreate(
           dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(), parent_email: parent_email, under_age: true, firstName: player[0], lastName: player[1], dob: player[3]).then( ( user ) ->
           sails.log.debug "User created #{ JSON.stringify user }"
           user.user_orgs.add( org )
