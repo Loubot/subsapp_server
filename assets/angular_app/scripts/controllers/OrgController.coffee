@@ -43,7 +43,7 @@ angular.module('subzapp').controller('OrgController', [
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
         params:
-          team_id: 1
+          org_id: 1
       ).then ( ( res ) ->
         console.log "parse users response"
         console.log res

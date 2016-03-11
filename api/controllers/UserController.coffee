@@ -116,20 +116,20 @@ module.exports = {
     ).done ->
       sails.log.debug "Edit user done"
 
-  pick_kids: ( req, res ) ->
-    Promise = require('bluebird')
-    sails.log.debug JSON.stringif
-    sails.log.debug "Hit the UserController/pick_kids"
-    sails.log.debug "Params #{ JSON.stringify req.query }"
+  # pick_kids: ( req, res ) ->
+  #   Promise = require('bluebird')
+  #   sails.log.debug JSON.stringif
+  #   sails.log.debug "Hit the UserController/pick_kids"
+  #   sails.log.debug "Params #{ JSON.stringify req.query }"
 
-    Promise.all(
-      [ User.findOne( id: req.query.id)
-       User.find( parent_email: req.query.email )
-      ]
-      ).spread ( parent, kids ) ->
-        sails.log.debug "Parent #{ JSON.stringify parent}"
-        sails.log.debug "Kids #{ JSON.stringify kids}"
-        res.json parent: parent, kids: kids
+  #   Promise.all(
+  #     [ User.findOne( id: req.query.id)
+  #      User.find( parent_email: req.query.email )
+  #     ]
+  #     ).spread ( parent, kids ) ->
+  #       sails.log.debug "Parent #{ JSON.stringify parent}"
+  #       sails.log.debug "Kids #{ JSON.stringify kids}"
+  #       res.json parent: parent, kids: kids
     
 
     
@@ -179,17 +179,5 @@ module.exports = {
     # ).catch (err) ->
     #   res.serverError err
 
-  get_players_by_year: ( req, res ) ->
-    sails.log.debug "Hit the user controller/find_by_date"
-    date = moment().toISOString()
-    sails.log.debug "Current time #{ JSON.stringify date }"
-    User.find_in_year( date, req.query.team_id, ( err, users ) ->
-      if err?
-        sails.log.debug "Find user by date error #{ JSON.stringify err }"
-        res.serverError err
-      else
-        sails.log.debug "Find uers by date #{ JSON.stringify users }"
-        res.json users
-    )
 
 }

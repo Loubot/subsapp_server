@@ -39,7 +39,7 @@ module.exports =
       defaultsTo: ''
 
     dob_stamp:
-      type: 'datetime'
+      type: 'date'
       defaultsTo: null
 
     password: type: 'string'
@@ -99,15 +99,20 @@ module.exports =
       collection: 'user'
       via: 'parent'
       columnName: 'kid_id'
+      unique: true
 
     parent:
       collection: 'user'
       via: 'kids'
       columnName: 'parent_id'
+      unique: true
 
     transactions:
       collection: 'transaction'
       via: 'payee'
+
+    getFullName: ->
+      _.str.trim (@firstName or '') + ' ' + (@lastName or '')
 
     
     toJSON: ->
@@ -128,12 +133,13 @@ module.exports =
     next()
     return
 
+
 #0=First name
 #1=Last name
 #2= Phone number
 #3=DOB
 #4=Email
-  create_players: ( player_array, team, cb ) ->
+  create_players: ( player_array, org, cb ) ->
     Promise = require('q')
     x = new Array()
     for player in player_array
@@ -141,40 +147,52 @@ module.exports =
       if ( player[0]? and player[1]? and player[3] and player[4]? )
         parent_email = player[4].replace(/ /g,'')
         sails.log.debug "Parent email #{parent_email}"
-        Promise.all([
+        sails.log.debug "org #{org}"
 
-          User.create(
-            dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(),
-            parent_email: parent_email, 
-            under_age: true,          
-            firstName: player[0], 
-            lastName: player[1], dob: player[3]          
-          )
-          User.findOne( email: parent_email )
-          
-        ]).spread( ( kid, parent) ->
-          sails.log.debug "Kid created #{ JSON.stringify kid }"
-          sails.log.debug "Parent found #{ JSON.stringify parent }"
-
-          
-          parent.kids.add( kid )
-          kid.user_teams.add( team )
-          Promise.all([
-            parent.save()
-            kid.save()
-          ]).spread( ( saved_parent, saved_kid ) ->
-            sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
-            sails.log.debug "Saved kid #{ JSON.stringify saved_kid }"
-          ).catch ( err ) ->
-            sails.log.debug "saved parent error #{ JSON.stringify err }"
-          
-            sails.log.debug "Parent saved #{ JSON.stringify saved }"
-            sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
-          
-
-
+        User.create(
+          dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(), parent_email: parent_email, under_age: true, firstName: player[0], lastName: player[1], dob: player[3]).then( ( user ) ->
+          sails.log.debug "User created #{ JSON.stringify user }"
+          user.user_orgs.add( org )
+          user.save ( err, saved) ->
+            sails.log.debug "User save error #{ JSON.stringify err }" if err?
+            sails.log.debug "User save  #{ JSON.stringify saved }" 
+            x.push user
         ).catch ( err ) ->
-          sails.log.debug "Create player error #{ JSON.stringify err }" if err?
+          sails.log.debug "User created err #{ JSON.stringify err }"
+        # Promise.all([
+
+        #   User.create(
+        #     dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(),
+        #     parent_email: parent_email, 
+        #     under_age: true,          
+        #     firstName: player[0], 
+        #     lastName: player[1], dob: player[3]          
+        #   )
+        #   User.findOne( email: parent_email )
+          
+        # ]).spread( ( kid, parent) ->
+        #   sails.log.debug "Kid created #{ JSON.stringify kid }"
+        #   sails.log.debug "Parent found #{ JSON.stringify parent }"
+
+          
+        #   parent.kids.add( kid )
+        #   kid.user_orgs.add( org )
+        #   Promise.all([
+        #     parent.save()
+        #     kid.save()
+        #   ]).spread( ( saved_parent, saved_kid ) ->
+        #     sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
+        #     sails.log.debug "Saved kid #{ JSON.stringify saved_kid }"
+        #   ).catch ( err ) ->
+        #     sails.log.debug "saved parent error #{ JSON.stringify err }"
+          
+        #     sails.log.debug "Parent saved #{ JSON.stringify saved }"
+        #     sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
+          
+
+
+        # ).catch ( err ) ->
+        #   sails.log.debug "Create player error #{ JSON.stringify err }" if err?
 
       
       # User.create(
@@ -198,17 +216,3 @@ module.exports =
     #   c = d.unix()
     #   sails.log.debug c
     cb(null, x)
-
-  find_in_year: ( date, club_id, cb) ->
-    matching_players = new Array()
-
-    User.find( { where: dob_stamp: '<': date } ).then( ( users ) ->
-      sails.log.debug "User find by stamp #{ JSON.stringify users }"
-      cb( null, users )
-    ).catch ( err ) ->
-      sails.log.debug "User find by stamp err #{ JSON.stringify err }"
-      cb( err )
-
-    
-      
-

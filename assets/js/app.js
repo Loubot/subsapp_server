@@ -2,7 +2,7 @@ window.USER = null;
 
 'use strict';
 
-angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload']);
+angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner']);
 
 angular.module('subzapp').constant('API', 'api/v1/');
 
@@ -92,6 +92,9 @@ angular.module('subzapp').constant('RESOURCES', (function() {
 angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
   console.log("user service");
   return {
+    check_if_org_admin: function(user, id) {
+      return parseInt(user.orgs[0].id) === parseInt(id);
+    },
     get_user: function() {
       var id, user_token;
       console.log("yyyyyyyyyyyyyyyyyyy");

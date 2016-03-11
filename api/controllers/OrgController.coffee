@@ -6,24 +6,49 @@
 ###
 
 passport = require('passport')
+moment = require('moment')
 module.exports = {
 
+  findOne: ( req, res ) ->
+    sails.log.debug "Hit the org controller/findOne "
+    sails.log.debug "Params #{ JSON.stringify req.param('id') }"
+    sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
+
+    if AuthService.check_club_admin( req.user, req.param('id') )
+      Org.findOne( { id: req.param('id') } ).then( ( org ) ->
+        sails.log.debug "Org findOne #{ JSON.stringify org }" 
+        res.json org
+      ).catch( ( err ) ->
+        sails.log.debug "Org findOne err #{ err }"
+        res.serverError err
+      )
+    else
+      res.serverError "You are not the admin of this org"
+    
+    
+
   get_org: (req, res) ->
-    sails.log.debug "Hit the business controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    sails.log.debug "Data #{ JSON.stringify req.query.org_id }"
-    Org.findOne( { id: req.query.org_id } ).then( ( org ) ->
-      sails.log.debug "Find response #{ JSON.stringify org }" 
-      Team.find().where( { main_org: req.query.org_id }).exec (e, teams) ->
-        sails.log.debug "Team results #{ JSON.stringify teams[0] }"
-        res.json { org: org, teams: teams[0] }
+    sails.log.debug "Hit the org controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    sails.log.debug "Data #{ JSON.stringify req.query }"
+    sails.log.debug "QUERY DATE #{ moment( req.query.eligible_date ).toISOString() }"
+    sails.log.debug "QUERY END DATE #{ moment( req.query.eligible_date_end ).add( 364, 'days' ).toISOString() }"
+    
+    if AuthService.check_club_admin( req.user, req.param('id') )
+      Org.findOne( { id: req.param('id') } )
+      .populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
+      .then( ( org ) ->
+        sails.log.debug "Find response " 
+        res.json org
+          
+        return
         
-      return
-      
-    ).catch( ( err ) ->
-      sails.log.debug "Find error response #{ JSON.stringify err }"
-    ).done ->
-      sails.log.debug "Find done"
-      return
+      ).catch( ( err ) ->
+        sails.log.debug "Find error response #{ JSON.stringify err }"
+      ).done ->
+        sails.log.debug "Find done"
+        return
+    else
+      res.serverError "You are not authorised"
 
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"

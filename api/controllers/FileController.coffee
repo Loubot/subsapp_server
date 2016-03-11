@@ -129,7 +129,7 @@ module.exports = {
         player_array = obj[0].data
         player_array.splice(0,1)
         # sails.log.debug "Array #{ JSON.stringify player_array }"
-        User.create_players( player_array, req.query.team_id, ( err, players ) ->
+        User.create_players( player_array, req.query.org_id, ( err, players ) ->
           sails.log.debug "Players #{ JSON.stringify players }"
           sails.log.debug "Players error #{ JSON.stringify err }" if err?
           res.serverError err if err?

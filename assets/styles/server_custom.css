@@ -16,13 +16,30 @@ body{
   width: 100% !important;
 }
 
+.spinner{
+  z-index: 999999999999999999999999999999 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+}
+
+.no_border{
+  border: none;
+}
+
+.modal-backdrop {
+  z-index: -1;
+}
+
 
 .form-group{
 
-  background:#528B8B  ;
+  /*background:#528B8B  ;*/
   padding:15px 15px 15px 15px;
 }
 
+.main{
+  height: 100%;
+}
 
 .subs_app_logo{
   margin: 0 auto;
@@ -134,4 +151,13 @@ body{
 #reference a:active {
     text-decoration: underline;
 }
-};
+
+/* team_manager page*/
+.update_date_form{
+  padding:10px;
+  border: #cdcdcd medium solid;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;  
+}
+/* end of team_manager page*/

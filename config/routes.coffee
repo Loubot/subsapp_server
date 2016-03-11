@@ -44,13 +44,9 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'get_user_teams'
 
-  'get /user/pick-kids':
-        controller:             'UserController'
-        action:                 'pick_kids'
-
-  'get /user/get-players-by-year':
-        controller:             'UserController'
-        action:                 'get_players_by_year'
+  # 'get /user/pick-kids':
+  #       controller:             'UserController'
+  #       action:                 'pick_kids'
 
     # Parents urls
       'get /parent/social/:id':
@@ -82,7 +78,11 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'destroy_business'
 
-  'get /get-org':             #Require org.id. Returns details of org
+  'get /org/:id':           
+        controller:             'OrgController'
+        action:                 'findOne'
+
+  'get /org/get-org/:id':             #Require. Returns details of org. !Must be admin!
         controller:             'OrgController'
         action:                 'get_org'
 
@@ -97,6 +97,10 @@ module.exports.routes =
   # end of org controller
 
   # Team controller
+
+  'post /team/update/:id':
+        controller:             'TeamController'
+        action:                 'update'
   
   'post /create-team' :       #Requires name, main_org id, user_id. 
         controller:             'TeamController'
@@ -114,11 +118,19 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'join_team'
 
-  'get /get-team-info':       #Requires team id. Returns team members and events
+  'get /team/get-team-info/:id':       #Requires team id. Returns team members and events
         controller:             'TeamController'
         action:                 'get_team_info'
 
-  'get /get-teams':           #Require ord_id, returns all teams associated with an org
+  'get /team/get-players-by-year/:id':
+        controller:             'TeamController'
+        action:                 'get_players_by_year'
+
+  'post /team/update-members/:id':     #Requires team id in url and takes array of members ids. Updates team members to the new array. (Old associations destroyed)
+        controller:              'TeamController'
+        action:                  'update_members'
+
+  'get /get-teams':           #Require org_id, returns all teams associated with an org
         controller:             'TeamController'
         action:                 'get_teams' # Move to org controller..
 

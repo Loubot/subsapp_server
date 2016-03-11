@@ -13,6 +13,8 @@ angular.module('subzapp', [
     'ui.bootstrap.datetimepicker'
     "ngAlertify"
     'ngFileUpload'
+    "checklist-model"
+    'angularSpinner'
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')
@@ -116,6 +118,10 @@ angular.module('subzapp').constant 'RESOURCES', do ->
 angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
   console.log "user service"
   {
+
+    check_if_org_admin: ( user, id ) -> #check if user is org admin of club referenced by id
+      return parseInt( user.orgs[0].id ) == parseInt( id )
+
     get_user: ->
       
       console.log "yyyyyyyyyyyyyyyyyyy"
@@ -146,15 +152,3 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
         $state.go 'login'
   }
     
-
-
-# angular.module('subzapp').service 'params', ->
-#   property = null
-#   {
-#     getProperty: ->
-#       property
-#     setProperty: (value) ->
-#       property = value
-#       return
-
-#   }

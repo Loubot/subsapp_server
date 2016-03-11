@@ -139,7 +139,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return console.log(errResponse);
       });
     };
-    $scope.aws = function() {
+    return $scope.aws = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/parse-players",
@@ -153,25 +153,6 @@ angular.module('subzapp').controller('OrgAdminController', [
         return $scope.parsed_data = res;
       }), function(errResponse) {
         console.log("aws error");
-        console.log(errResponse);
-        return alertify.error(errResponse.data);
-      });
-    };
-    return $scope.get_kids = function() {
-      console.log('Kids');
-      return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/user/pick-kids",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        },
-        params: $scope.user
-      }).then((function(res) {
-        console.log("Kids response");
-        return console.log(res);
-      }), function(errResponse) {
-        console.log("Kids error");
         console.log(errResponse);
         return alertify.error(errResponse.data);
       });

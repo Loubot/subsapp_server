@@ -2,17 +2,62 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload) {
-    var user_token;
+  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', '$filter', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService) {
+    var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
+    get_team_info = function() {
+      usSpinnerService.spin('spinner-1');
+      if ($scope.user.club_admin) {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/team/get-team-info/" + (window.localStorage.getItem('team_id')),
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          usSpinnerService.stop('spinner-1');
+          console.log("get_team_info response club admin");
+          console.log(res);
+          $scope.team = res.data.team;
+          $scope.files = res.data.bucket_info.Contents;
+          return $scope.org_members = res.data.org.org_members;
+        }), function(errResponse) {
+          usSpinnerService.stop('spinner-1');
+          console.log("get_team_info error");
+          return console.log(errResponse);
+        });
+      } else {
+        return $http({
+          method: 'GET',
+          url: RESOURCES.DOMAIN + "/team/" + (window.localStorage.getItem('team_id')),
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          }
+        }).then((function(res) {
+          usSpinnerService.stop('spinner-1');
+          console.log("Get team info response");
+          console.log(res.data);
+          return $scope.team = res.data;
+        }), function(errResponse) {
+          usSpinnerService.stop('spinner-1');
+          console.log("Get team info error " + (JSON.stringify(errResponse)));
+          return $state.go('login');
+        });
+      }
+    };
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = window.USER;
         $scope.org = window.USER.orgs[0];
         $scope.teams = window.USER.teams;
         return_team(USER.teams, $location.search().id);
-        return $scope.show_upload = window.USER.club_admin;
+        $scope.show_upload = window.USER.club_admin;
+        if ($scope.user.club_admin) {
+          return get_team_info();
+        }
       }), function(errResponse) {
         return window.USER = null;
       });
@@ -22,27 +67,10 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = window.USER.orgs[0];
       $scope.teams = window.USER.teams;
       $scope.user = window.USER;
-    }
-    $http({
-      method: 'GET',
-      url: RESOURCES.DOMAIN + "/get-team-info",
-      headers: {
-        'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
-      },
-      params: {
-        team_id: window.localStorage.getItem('team_id')
+      if ($scope.user.club_admin) {
+        get_team_info();
       }
-    }).then((function(res) {
-      console.log("Get team info response");
-      console.log(res.data);
-      $scope.team = res.data.team;
-      $scope.members = res.data.team.team_members;
-      $scope.events = res.data.team.events;
-      return $scope.files = res.data.bucket_info.Contents;
-    }), function(errResponse) {
-      return console.log("Get team info error " + (JSON.stringify(errResponse)));
-    });
+    }
     $scope.create_event = function() {
       $scope.create_event_data.team_id = $scope.team.id;
       console.log($scope.create_event_data);
@@ -101,22 +129,19 @@ angular.module('subzapp').controller('TeamController', [
       console.log("Find by date");
       return $http({
         method: 'GET',
-        url: RESOURCES.DOMAIN + "/user/get-players-by-year",
+        url: RESOURCES.DOMAIN + "/team/get-players-by-year/" + $scope.team.id,
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
-        },
-        params: {
-          team_id: id
         }
       }).then((function(res) {
-        console.log("Download response");
+        console.log("Playsers by age response");
         return console.log(res);
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
     };
-    return $scope.download = function() {
+    $scope.download = function() {
       return $http({
         method: 'GET',
         url: RESOURCES.DOMAIN + "/user/download-file",
@@ -129,6 +154,95 @@ angular.module('subzapp').controller('TeamController', [
         return console.log(res);
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
+      });
+    };
+    $scope.update_members = function() {
+      console.log("team id " + $scope.team.id);
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/team/update-members/" + $scope.team.id,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        },
+        data: {
+          team_members: $scope.team_members_array
+        }
+      }).then((function(res) {
+        console.log("Update team members");
+        console.log(res);
+        $scope.team_members_array = res.data.team_members.map(function(member) {
+          return member.id;
+        });
+        return alertify.success("Team members updated successfully");
+      }), function(errResponse) {
+        console.log("Update team members error ");
+        console.log(errResponse);
+        return alertify.error("Failed to add team members");
+      });
+    };
+    $scope.update_eligible_date = function() {
+      usSpinnerService.stop('spinner-1');
+      console.log($scope.team);
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/team/update/" + $scope.team.id,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        },
+        data: $scope.team
+      }).then((function(res) {
+        console.log("Update team date");
+        console.log(res.data);
+        $scope.team.eligible_date = moment(res.data[0].eligible_date).format('YYYY-MM-DD');
+        $scope.team.eligible_date_end = moment(res.data[0].eligible_date_end).format('YYYY-MM-DD');
+        get_org_and_members();
+        return alertify.success("Eligible date updated");
+      }), function(errResponse) {
+        usSpinnerService.stop('spinner-1');
+        console.log("Update date error ");
+        console.log(errResponse);
+        return alertify.error("Update failed");
+      });
+    };
+    $('#select_player_modal').on('shown.bs.modal', function(e) {
+      if ($scope.team.eligible_date != null) {
+        $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD');
+        $scope.team.eligible_date_end = moment($scope.team.eligible_date_end).format('YYYY-MM-DD');
+        console.log($scope.team.eligible_date);
+        return get_org_and_members();
+      } else {
+        return alertify.log("Please set the eligible date of this team. Click to dismiss", "", 0);
+      }
+    });
+    return get_org_and_members = function() {
+      usSpinnerService.spin('spinner-1');
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/org/get-org/" + $scope.team.main_org.id,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
+        },
+        params: $scope.team
+      }).then((function(res) {
+        console.log("Get org info ");
+        console.log(res.data);
+        $scope.org_members = res.data.org_members;
+        $scope.team_members_array = $scope.team.team_members.map(function(member) {
+          return member.id;
+        });
+        usSpinnerService.stop('spinner-1');
+        return alertify.success("Got players info");
+      }), function(errResponse) {
+        console.log("Get org info error ");
+        usSpinnerService.stop('spinner-1');
+        console.log(errResponse);
+        return alertify.error("Couldn't get players info");
       });
     };
   }

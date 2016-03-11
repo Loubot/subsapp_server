@@ -2,7 +2,7 @@
 # Team
 # @description :: Model for storing teams
 ###
-
+moment = require('moment')
 module.exports =
   # migrate: 'alter'
   # adapter: 'mysql',
@@ -42,6 +42,14 @@ module.exports =
       collection: 'filetracker'
       via: 'team'
 
+    eligible_date:
+      type: 'date'
+      defaultsTo: null
+
+    eligible_date_end:
+      type: 'date'
+      defaultsTo: null
+
     
 
 
@@ -59,6 +67,22 @@ module.exports =
   #   CipherService.hashPassword values
   #   next()
   #   return
+
+  beforeUpdate: ( values, next ) ->
+    sails.log.debug "Values #{ JSON.stringify values }"
+    # if values.eligible_date_end == null
+    sails.log.debug "eligible_date is null so defaulting to 1 year"
+    values.eligible_date_end = moment( values.eligible_date ).add( 364, 'days' ).toISOString()
+    
+    # Team.update( { id: values.id }, eligible_date_end: end_date ).exec( ( err, updated ) ->
+    #   if err?
+    #     sails.log.debug "Team update eligible_date error #{ JSON.stringify err }"
+    #     throw err
+    #   else 
+    #     sails.log.debug "Team update eligible_date #{ JSON.stringify updated }"
+    # )
+    sails.log.debug "Values updated #{ JSON.stringify values }"
+    next()
 
 
 # ---

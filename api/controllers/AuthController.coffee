@@ -27,14 +27,19 @@ _onPassportAuth = (req, res, error, user, info) ->
 module.exports =
   signup: (req, res) ->
     User.create(_.omit(req.allParams(), 'id')).then((user) ->
-      Token.create( owner: user.id).exec (err, token) ->
+      Token.create( owner: user.id ).exec (err, token) ->
         sails.log.debug "Token created #{ JSON.stringify token }"
         sails.log.debug "Token create error #{ JSON.stringify err }" if err?
-      {
-        token: CipherService.createToken(user)
-        user: user
-      }
-    ).then(res.created).catch res.serverError
+        User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
+          sails.log.debug "User pop #{ JSON.stringify user_pop }"
+          res.json
+            data:
+              token: CipherService.createToken(user_pop)
+              user: user_pop
+          
+        )
+      
+    )
     return
   team_manager_signup: (req, res) ->
     sails.log.debug "Body #{ JSON.stringify req.body }"
@@ -49,11 +54,16 @@ module.exports =
           sails.log.debug "err #{ JSON.stringify team}" if err?
           team.manager = user.id
           team.save()
+          User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
+            sails.log.debug "User pop #{ JSON.stringify user_pop }"
+            res.json
+              data:
+                token: CipherService.createToken(user_pop)
+                user: user_pop
+            
+          )
       )
-      {
-        token: CipherService.createToken(user)
-        user: user
-      }
+      
     ).then(res.created).catch res.serverError
     return
 
