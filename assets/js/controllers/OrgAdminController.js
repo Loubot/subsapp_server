@@ -2,7 +2,7 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify) {
+  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', 'Upload', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload) {
     var check_club_admin, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
@@ -162,8 +162,34 @@ angular.module('subzapp').controller('OrgAdminController', [
       return $scope.upload($scope.file);
     };
     $scope.upload = function(file) {
+      var file_info;
       console.log("Upload");
-      return console.log("File " + (JSON.stringify($scope.file)));
+      file_info = JSON.parse($scope.file.info);
+      console.log("File " + (JSON.stringify(file_info[1])));
+      return Upload.upload({
+        method: 'post',
+        url: '/file/upload',
+        data: {
+          team_id: file_info[0],
+          team_name: file_info[1],
+          org_id: $scope.org.id
+        },
+        file: file
+      }).then((function(resp) {
+        console.log('Success ' + JSON.stringify(resp + 'uploaded. Response: ' + JSON.stringify(resp.data)));
+        console.log(resp);
+        $scope.files = resp.data.bucket_info.Contents;
+        alertify.success("File uploaded ok");
+      }), (function(resp) {
+        console.log('Error status: ' + resp.status);
+        alertify.error("File failed to upload");
+        console.log(resp);
+        alertify.error("File upload failed. Status: " + resp.status);
+      }), function(evt) {
+        var progressPercentage;
+        progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        return console.log('progress: ' + progressPercentage + '% ' + evt.config.data);
+      });
     };
     return $scope.convert_date = function(date) {
       console.log("date " + date);

@@ -2,7 +2,7 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', 'Upload', '$filter', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService) {
+  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService) {
     var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');

@@ -9,10 +9,9 @@ angular.module('subzapp').controller('TeamController', [
   'user'
   'alertify'
   'RESOURCES'
-  'Upload'
   '$filter'
   'usSpinnerService'
-  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, Upload, $filter, usSpinnerService ) ->    
+  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 

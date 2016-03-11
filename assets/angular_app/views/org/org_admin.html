@@ -144,8 +144,11 @@
 
                 <div class="form-group">
                   <div class="styled-select white_text">
-                    <select class="form-control white_text" ng-model="file.team_name">
-                      <option ng-repeat="team in teams"  value="{{ team.name }}">{{ team.name }}</option>
+                    <select class="form-control white_text" ng-model="file.info">
+                      <option ng-repeat="team in teams" 
+                              value="{{ [ team.id, team.name ] }}">
+                        {{ team.name }}
+                      </option>
                     </select>
                   </div> <!-- end of styled-select -->
                 </div> <!-- end of form-group -->
@@ -161,15 +164,7 @@
           </div> <!-- end of col-xs-12 -->
 
 
-          <div class="col-xs-12 black_text">
-            <ul class="list-group">
-              <li class="list-group-item" ng-repeat="file in files">
-
-                {{ file.Key.substring( ( file.Key.lastIndexOf('/') +1 ), file.Key.length) }} 
-                <span class="pull-right">Updated: {{ convert_date( file.LastModified ) }}</span>
-              </li>
-            </ul> <!-- end of list-group -->
-          </div> <!-- end of col-xs-12 -->
+          
         </div> <!-- end of container-fluid -->
       </div>
       <div class="modal-footer">

@@ -9,7 +9,8 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$location'
   'RESOURCES'
   'alertify'
-  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify ) ->
+  'Upload'
+  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload ) ->
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -175,32 +176,35 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.upload = (file) ->
       console.log "Upload"
       # console.log file
-      console.log "File #{ JSON.stringify $scope.file }"
-      # Upload.upload(
-      #   method: 'post'
-      #   url: '/file/upload'
-      #   data:
-      #     org_id: $scope.team.main_org.id
-      #     team_id: $scope.team.id
-      #     team_name: $scope.team.name
-      #   file: file        
-          
-      # ).then ((resp) ->
-      #   console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
-      #   console.log resp
-      #   $scope.files = resp.data.bucket_info.Contents
-      #   alertify.success "File uploaded ok"
-      #   return
-      # ), ((resp) ->
-      #   console.log 'Error status: ' + resp.status
-      #   alertify.error "File failed to upload"
-      #   console.log resp
+      file_info = JSON.parse $scope.file.info
 
-      #   alertify.error "File upload failed. Status: #{ resp.status }"
-      #   return
-      # ), (evt) ->
-      #   progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
-      #   console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
+      console.log "File #{ JSON.stringify file_info[1] }"
+      Upload.upload(
+        method: 'post'
+        url: '/file/upload'
+        data:
+          team_id: file_info[0]
+          team_name: file_info[1]
+          org_id: $scope.org.id
+
+        file: file     
+          
+      ).then ((resp) ->
+        console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
+        console.log resp
+        $scope.files = resp.data.bucket_info.Contents
+        alertify.success "File uploaded ok"
+        return
+      ), ((resp) ->
+        console.log 'Error status: ' + resp.status
+        alertify.error "File failed to upload"
+        console.log resp
+
+        alertify.error "File upload failed. Status: #{ resp.status }"
+        return
+      ), (evt) ->
+        progressPercentage = parseInt(100.0 * evt.loaded / evt.total)
+        console.log 'progress: ' + progressPercentage + '% ' + evt.config.data
 
     
     $scope.convert_date = ( date ) ->
