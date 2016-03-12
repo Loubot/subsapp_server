@@ -32,7 +32,7 @@ module.exports = {
       # Mandrill returns the error as an object with name and message keys
       sails.log.debug 'A mandrill error occurred: ' + e.name + ' - ' + e.message
       # A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
-      res.serverError "Error sending email", e.message
+      res.negotiate "Error sending email", e.message
       return
 
 
@@ -61,7 +61,7 @@ module.exports = {
       # Mandrill returns the error as an object with name and message keys
       sails.log.debug 'A mandrill error occurred: ' + e.name + ' - ' + e.message
       # A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
-      res.serverError "Error sending email", e.message
+      res.negotiate "Error sending email", e.message
       return
 
 }

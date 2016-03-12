@@ -17,7 +17,7 @@ passport = require('passport')
 sails.log.silly()
 _onPassportAuth = (req, res, error, user, info) ->
   if error
-    return res.serverError(error)
+    return res.negotiate(error)
   if !user
     return res.unauthorized(null, info and info.code, info and info.message)
   res.ok
@@ -64,7 +64,7 @@ module.exports =
           )
       )
       
-    ).then(res.created).catch res.serverError
+    ).then(res.created).catch res.negotiate
     return
 
     

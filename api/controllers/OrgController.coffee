@@ -37,7 +37,7 @@ module.exports = {
         res.json org: org, s3_object: s3_object
       )
     else
-      res.serverError "You are not the admin of this org"
+      res.negotiate "You are not the admin of this org"
     
     
 
@@ -62,7 +62,7 @@ module.exports = {
         sails.log.debug "Find done"
         return
     else
-      res.serverError "You are not authorised"
+      res.negotiate "You are not authorised"
 
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
@@ -73,7 +73,7 @@ module.exports = {
     ).catch( ( err ) ->
       sails.log.debug "Get org admins error"
       sails.log.debug "#{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
 
@@ -82,7 +82,7 @@ module.exports = {
     sails.log.debug "Data #{ JSON.stringify req.body }"
     sails.log.debug "Data #{ JSON.stringify req.user }"
     if req.user.club_admin != true
-      res.serverError "You are not an admin"
+      res.negotiate "You are not an admin"
       return false
     business_data = req.body
     Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->

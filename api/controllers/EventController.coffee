@@ -22,7 +22,7 @@ module.exports = {
       res.json created
     ).catch((err) ->
       sails.log.debug "Create event error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
     
@@ -33,7 +33,7 @@ module.exports = {
       sails.log.debug "Join event user find/populate #{ JSON.stringify user.tokens }"
 
       if ( user.tokens[0].amount - req.body.event_price < 0 )
-        res.serverError "You don't have enough tokens" 
+        res.negotiate "You don't have enough tokens" 
         return false
       
       sails.log.debug "asdfasdfasdf #{  user.tokens[0].amount - req.body.event_price }"
@@ -59,7 +59,7 @@ module.exports = {
       )
     ).catch( ( err ) ->
       sails.log.debug "Join event user find error #{ JSON.stringify err }"
-      res.serverError "Payment failed"
+      res.negotiate "Payment failed"
     )
 
   get_event_members: ( req, res ) ->
@@ -72,7 +72,7 @@ module.exports = {
       
     ).catch( ( err ) ->
       sails.log.debug "Event find error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
   create_parent_event: ( req, res ) ->
@@ -89,5 +89,5 @@ module.exports = {
       res.json p_event
     ).catch ( err ) ->
       sails.log.debug "Parent event create error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 }

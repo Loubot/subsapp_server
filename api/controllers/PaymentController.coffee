@@ -59,7 +59,7 @@ module.exports = {
         user.save( ( err, user_saved ) ->
           if err?
             sails.log.debug "User populate error #{ JSON.stringify err }"
-            res.serverError err
+            res.negotiate err
           else
           res.json stripe_charge
             # User.findOne( req.body.user_id).populate('tokens').populate('transactions').then( ( user_pop ) ->
@@ -67,13 +67,13 @@ module.exports = {
             #   res.json user_pop
             # ).catch ( err ) ->
             #   sails.log.debug "User find err #{ JSON.stringify err }"
-            #   res.serverError err
+            #   res.negotiate err
         )
 
       ).catch ( err ) ->
         if err?
           sails.log.debug "transaction create err #{ JSON.stringify err }"
-          res.serverError err
+          res.negotiate err
     ).catch ( err ) ->
       if err?
         sails.log.debug "Stripe create error #{ JSON.stringify err }"
@@ -103,7 +103,7 @@ module.exports = {
         charges: charges
     ).catch ( err ) ->
       sails.log.debug "User found err #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 
 }
 

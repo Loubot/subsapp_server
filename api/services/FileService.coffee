@@ -52,6 +52,7 @@ module.exports = {
         cb( null, return_name )
       ).catch( ( err ) ->
         sails.log.debug "Org findOne error #{ JSON.stringify err }"
+        cb( err )
       )
      
 

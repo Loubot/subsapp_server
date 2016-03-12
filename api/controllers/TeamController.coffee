@@ -16,7 +16,7 @@ module.exports = {
       res.json team
     ).catch( ( err ) ->
       sails.log.debug "Team find one err #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
   update: ( req, res ) ->
@@ -33,10 +33,10 @@ module.exports = {
         res.json team
       ).catch( ( err ) ->
         sails.log.debug "Team update error #{ JSON.stringify err }"
-        res.serverError err
+        res.negotiate err
       )
     else
-      res.serverError "You are not authorised"
+      res.negotiate "You are not authorised"
 
   get_team_info: (req, res) -> #club admin team findOne
     Promise = require('bluebird')
@@ -74,7 +74,7 @@ module.exports = {
 
       )
     else
-      res.serverError "You are not authorised"
+      res.negotiate "You are not authorised"
 
 
 
@@ -95,7 +95,7 @@ module.exports = {
 
     ).catch( ( err ) ->
       sails.log.debug "Team create error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
       
@@ -114,7 +114,7 @@ module.exports = {
         res.json org
     ).catch( (err) ->
       sails.log.debug "Team destroy error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     ).done ->
       sails.log.debug "Team destroy done"
 
@@ -132,7 +132,7 @@ module.exports = {
 
     ).catch( (err) ->
       sails.log.debug "Join team find user error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     ).done ->
       sails.log.debug "Join team find user done"
 
@@ -146,7 +146,7 @@ module.exports = {
       res.json members
     ).catch( ( err ) ->
       sails.log.debug "Get playsers by year error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
   update_members: ( req, res ) ->
@@ -162,14 +162,14 @@ module.exports = {
           res.json updated_team_found
         ).catch( ( updated_team_found_err ) ->
           sails.log.debug "Upated team found error #{ JSON.stringify updated_team_found_err }"
-          res.serverError updated_team_found_err
+          res.negotiate updated_team_found_err
         )
       ).catch( ( err ) ->
         sails.log.debug "Team update members error #{ JSON.stringify err }"
-        res.serverError err
+        res.negotiate err
       )
     else
-      res.serverError "You are not authorised"
+      res.negotiate "You are not authorised"
 
 
 
@@ -181,7 +181,7 @@ module.exports = {
       res.json team
     ).catch( (err) ->
       sails.log.debug "Get team error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     ).done ->
       sails.log.debug "Team get team main org done"
 
@@ -192,7 +192,7 @@ module.exports = {
       res.json org_and_teams
     ).catch( ( err ) ->
       sails.log.debug "Get org and teams error"
-      res.serverError err
+      res.negotiate err
     )
 
 

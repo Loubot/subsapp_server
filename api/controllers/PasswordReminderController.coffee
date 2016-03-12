@@ -93,7 +93,7 @@ module.exports = {
     #       MandrillService.send_mail( req.body.user_email )
     #       res.json password
     #     else
-    #       res.serverError "Incorrect Email"
+    #       res.negotiate "Incorrect Email"
 
         
 
@@ -108,7 +108,7 @@ module.exports = {
     #   ).catch( ( err ) ->
     #     sails.log.debug "User failure #{ JSON.stringify err }"
     #     #sails.log.debug "User failure #{ JSON.stringify user }"
-    #     res.serverError "Password Reminder create failed", JSON.stringify err
+    #     res.negotiate "Password Reminder create failed", JSON.stringify err
     #   )
 
   # get_invite: (req, res) ->

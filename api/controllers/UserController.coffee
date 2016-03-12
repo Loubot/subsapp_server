@@ -19,7 +19,7 @@ module.exports = {
       
     ).catch ( err ) ->
       sails.log.debug "Find user error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 
   social: ( req, res ) ->
     Promise = require('q')
@@ -46,7 +46,7 @@ module.exports = {
 
     ).catch ( err ) ->
       sails.log.debug "User social find error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 
   kids_with_parents: ( req, res ) ->
     sails.log.debug "Hit the UserController/kids_with_parents"
@@ -58,7 +58,7 @@ module.exports = {
       left outer join org e on d.main_org = e.id;", ( err, results ) ->
         if err?          
           sails.log.debug "kids_with_parents results err #{ err }" 
-          res.serverError err
+          res.negotiate err
         else
           sails.log.debug "kids_with_parents results #{ JSON.stringify results }"
           res.json results
@@ -77,7 +77,7 @@ module.exports = {
       left outer join tokentransaction g on a.id = g.parent_id and f.id = g.event_id;", ( err, results ) ->
         if err?
           sails.log.debug "parents_with_events err #{ err }"
-          res.serverError err
+          res.negotiate err
         else
           sails.log.debug "parents_with_events #{ JSON.stringify results }"
           res.json results
@@ -100,7 +100,7 @@ module.exports = {
       res.json { user, charges: charges }
     ).catch ( err ) -> 
       sails.log.debug "User find financial error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 
 
   edit_user: (req, res) ->
@@ -112,7 +112,7 @@ module.exports = {
       res.send result
     ).catch( ( err ) ->
       sails.log.debug "Edit user error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     ).done ->
       sails.log.debug "Edit user done"
 
@@ -142,7 +142,7 @@ module.exports = {
       res.ok teams
     ).catch( ( err ) ->
       sails.log.debug "Teams find error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
     )
 
 
@@ -154,7 +154,7 @@ module.exports = {
   #     res.ok teams
   #   ).catch( ( err ) ->
   #     sails.log.debug "Teams find error #{ JSON.stringify err }"
-  #     res.serverError err
+  #     res.negotiate err
   #   )
 
 
@@ -177,7 +177,7 @@ module.exports = {
     #   res.json post
     #   return
     # ).catch (err) ->
-    #   res.serverError err
+    #   res.negotiate err
 
 
 }

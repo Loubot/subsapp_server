@@ -15,7 +15,7 @@ module.exports = {
 
     ).catch ( err ) ->
       sails.log.debug "Find TokenTransaction error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 
 
   pay: ( req, res ) ->
@@ -45,15 +45,15 @@ module.exports = {
             res.json ttransaction
         ).catch ( ttransaction_err ) ->
           sails.log.debug "TokenTransaction create error/event pay #{ JSON.stringify ttransaction_err }"
-          res.serverError ttransaction_err
+          res.negotiate ttransaction_err
 
       else
-        res.serverError "You don't have enough tokens. Please top up."
+        res.negotiate "You don't have enough tokens. Please top up."
         
       
     ).catch ( err ) ->
       sails.log.debug "Find parent error #{ JSON.stringify err }"
-      res.serverError err
+      res.negotiate err
 
     # User.findOne( id: req.body.parent_id ).populate('tokens').then ( ( parent ) ->
     #   sails.log.debug "Found parent #{ JSON.stringify parent }"
@@ -75,14 +75,14 @@ module.exports = {
     #         res.json ttransaction
     #     ).catch ( ttransaction_err ) ->
     #       sails.log.debug "TokenTransaction create error/event pay #{ JSON.stringify ttransaction_err }"
-    #       res.serverError ttransaction_err
+    #       res.negotiate ttransaction_err
 
     #   else
-    #     res.serverError "You don't have enough tokens. Please top up."
+    #     res.negotiate "You don't have enough tokens. Please top up."
 
     # ).catch( err ) ->
     #   sails.log.debug "Couldn't find parent #{ JSON.stringify err }"
-    #   res.serverError err
+    #   res.negotiate err
 
     
   

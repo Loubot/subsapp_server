@@ -22,7 +22,7 @@ module.exports = {
         res.json invite
       ).catch( ( err ) ->
         sails.log.debug "Invite failure #{ JSON.stringify err }"
-        res.serverError "Invite create failed", JSON.stringify err
+        res.negotiate "Invite create failed", JSON.stringify err
       )
 
   get_invite: (req, res) ->
