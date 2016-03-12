@@ -1,0 +1,19 @@
+{ "apps" : [
+    {
+      "name"      : "myapp",
+      "script"    : "app.js",
+      "instances"  : "1",
+      "error_file"    : "logfile.log",
+      "out_file"    : "logfile.log",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": 1337
+      },
+      "env_production" : {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+
+
+}

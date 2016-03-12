@@ -1,1 +1,1 @@
-web: nodemon app.coffee
+web: pm2 start ecosystem.json
