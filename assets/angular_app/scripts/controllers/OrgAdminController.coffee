@@ -175,17 +175,21 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.upload = (file) ->
       console.log "Upload"
-      # console.log file
-      file_info = JSON.parse $scope.file.info
+      if ( $scope.file.info )?
+        console.log "Defined #{ $scope.file.info }"
+        file_info = JSON.parse $scope.file.info
 
-      console.log "File #{ JSON.stringify file_info[1] }"
+      else
+        console.log "Not defined "
+        file_info = org_id: $scope.org.id
+      
+
+      # console.log "File #{ JSON.stringify file_info[1] }"
       Upload.upload(
         method: 'post'
         url: '/file/upload'
         data:
-          team_id: file_info[0]
-          team_name: file_info[1]
-          org_id: $scope.org.id
+          file_info
 
         file: file     
           

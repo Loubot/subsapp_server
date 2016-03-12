@@ -12,8 +12,7 @@ module.exports = {
     sails.log.debug "Params #{ JSON.stringify req.body }"
     Promise = require('bluebird')
     sails.log.debug JSON.stringify req.body
-    team_name = req.body.team_name
-    team_name = team_name.replace(/\s/g, "") 
+    
 
     AWS = require('aws-sdk')
 
@@ -21,40 +20,32 @@ module.exports = {
 
     s3 = Promise.promisifyAll(new AWS.S3())
 
-    sails.log.debug "No space #{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }"
+    file_name = FileService.get_file_and_bucket_name( req.body )
+    sails.log.debug "Filename #{ JSON.stringify file_name }"
+    # uploadFile = req.file('file').upload {
+    #   adapter: require('skipper-s3')
+    #   key: process.env.AWS_ACCESS_KEY_ID
+    #   secret: process.env.AWS_SECRET_ACCESS_KEY
+    #   # dirName: 'Lakewood'
+    #   saveAs: file_name
+    #   bucket: 'subzapp'
+    # }, (err, uploadedFiles) ->
+    #   if err
+    #     sails.log.debug "Upload error #{ JSON.stringify err }"
+    #     res.negotiate err
+    #   else
+    #     sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles[0] }"
+    #     Promise.resolve( [ s3.listObjectsAsync( params ) ] ).spread( ( s3_object ) ->
+    #       # sails.log.debug "fts #{ JSON.stringify fts }"
+    #       sails.log.debug "s3 #{ JSON.stringify s3_object }"
+    #       res.json bucket_info: s3_object
+    #     ).catch ( err ) ->
+    #       sails.log.debug "Chain #{ err }"
+    #       res.serverError err
 
-    uploadFile = req.file('file').upload {
-      adapter: require('skipper-s3')
-      key: process.env.AWS_ACCESS_KEY_ID
-      secret: process.env.AWS_SECRET_ACCESS_KEY
-      # dirName: 'Lakewood'
-      saveAs: "#{ req.body.org_id }/#{ req.body.team_id}/#{ team_name }.xls" #folder/file
-      bucket: 'subzapp'
-    }, (err, uploadedFiles) ->
-      if err
-        sails.log.debug "Upload error #{ JSON.stringify err }"
-        res.negotiate err
-      else
-        sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles[0] }"
-        Promise.resolve( 
-          FileService.store_file_info( uploadedFiles[0], req.body.org_id, req.body.team_id, team_name, ( err, fts ) ->
-            
-            sails.log.debug "FileService #{ JSON.stringify fts }"
-            params =
-              Bucket: 'subzapp'
-              Delimiter: '/'
-              Prefix: "#{ req.body.org_id }/#{ req.body.team_id }/"
-            return [ fts,  s3.listObjectsAsync( params ) ]
-            
-          ).spread( ( fts, s3_object ) ->
-            sails.log.debug "fts #{ JSON.stringify fts }"
-            sails.log.debug "s3 #{ JSON.stringify s3_object }"
-            res.json bucket_info: s3_object
-          ).catch ( err ) ->
-            sails.log.debug "Chain #{ err }"
-            res.serverError err
+    res.json file_name
 
-        )
+        
         
 
 
@@ -120,9 +111,9 @@ module.exports = {
         return [ 
                   stuff.Contents, 
                   s3.getObjectAsync( Bucket: 'subzapp', Key: stuff.Contents[0].Key ),
-                  Team.findOne( id: req.query.team_id )
+                  # Team.findOne( id: req.query.team_id )
                 ]
-      ).spread ( s3_bucket, s3_file, team ) ->
+      ).spread ( s3_bucket, s3_file ) ->
         sails.log.debug "Bucket #{ JSON.stringify s3_bucket }"
         sails.log.debug "Bucket #{ s3_file }"
         obj = xlsx.parse(s3_file.Body)

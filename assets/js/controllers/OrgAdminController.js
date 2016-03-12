@@ -164,16 +164,19 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.upload = function(file) {
       var file_info;
       console.log("Upload");
-      file_info = JSON.parse($scope.file.info);
-      console.log("File " + (JSON.stringify(file_info[1])));
+      if ($scope.file.info != null) {
+        console.log("Defined " + $scope.file.info);
+        file_info = JSON.parse($scope.file.info);
+      } else {
+        console.log("Not defined ");
+        file_info = {
+          org_id: $scope.org.id
+        };
+      }
       return Upload.upload({
         method: 'post',
         url: '/file/upload',
-        data: {
-          team_id: file_info[0],
-          team_name: file_info[1],
-          org_id: $scope.org.id
-        },
+        data: file_info,
         file: file
       }).then((function(resp) {
         console.log('Success ' + JSON.stringify(resp + 'uploaded. Response: ' + JSON.stringify(resp.data)));

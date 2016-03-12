@@ -149,70 +149,39 @@ module.exports =
         sails.log.debug "Parent email #{parent_email}"
         sails.log.debug "org #{org}"
 
-        User.findOrCreate(
-          dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(), parent_email: parent_email, under_age: true, firstName: player[0], lastName: player[1], dob: player[3]).then( ( user ) ->
-          sails.log.debug "User created #{ JSON.stringify user }"
-          user.user_orgs.add( org )
-          user.save ( err, saved) ->
-            sails.log.debug "User save error #{ JSON.stringify err }" if err?
-            sails.log.debug "User save  #{ JSON.stringify saved }" 
-            x.push user
-        ).catch ( err ) ->
-          sails.log.debug "User created err #{ JSON.stringify err }"
-        # Promise.all([
-
-        #   User.create(
-        #     dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString(),
-        #     parent_email: parent_email, 
-        #     under_age: true,          
-        #     firstName: player[0], 
-        #     lastName: player[1], dob: player[3]          
-        #   )
-        #   User.findOne( email: parent_email )
-          
-        # ]).spread( ( kid, parent) ->
-        #   sails.log.debug "Kid created #{ JSON.stringify kid }"
-        #   sails.log.debug "Parent found #{ JSON.stringify parent }"
-
-          
-        #   parent.kids.add( kid )
-        #   kid.user_orgs.add( org )
-        #   Promise.all([
-        #     parent.save()
-        #     kid.save()
-        #   ]).spread( ( saved_parent, saved_kid ) ->
-        #     sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
-        #     sails.log.debug "Saved kid #{ JSON.stringify saved_kid }"
-        #   ).catch ( err ) ->
-        #     sails.log.debug "saved parent error #{ JSON.stringify err }"
-          
-        #     sails.log.debug "Parent saved #{ JSON.stringify saved }"
-        #     sails.log.debug "Parent saved err #{ JSON.stringify err }" if err?
-          
+        Promise.all([
+          User.findOrCreate(
+            dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString()
+            parent_email: parent_email
+            under_age: true
+            firstName: player[0]
+            lastName: player[1]
+            dob: player[3]
+          )
+          User.findOne( email: parent_email )
+        ]).spread( ( kid, parent ) ->
+          sails.log.debug "Kid created or found #{ JSON.stringify kid }"
+          sails.log.debug "Parent found #{ JSON.stringify parent }"
+          kid.user_orgs.add( org )
+          parent.kids.add ( kid )
+          Promise.all([
+            kid.save()
+            parent.save()
+          ]).spread( ( kid, parent) ->
+            sails.log.debug "Kid saved #{ JSON.stringify kid }"
+            sails.log.debug "Parent saved #{ JSON.stringify parent }"
+            x.push( kid )
+          ).catch( ( parent_kid_save_err ) ->
+            sails.log.debug "Parent and kid save error #{ JSON.stringify parent_kid_save_err }"
+          )
 
 
-        # ).catch ( err ) ->
-        #   sails.log.debug "Create player error #{ JSON.stringify err }" if err?
+        ).catch( ( err ) ->
+          sails.log.debug "User findOrCreate error #{ JSON.stringify err }"
+          cb( err )
+          return false
+        )
 
-      
-      # User.create(
-      #   parent_email: player[4]
-      #   firstName: player[0] 
-      #   lastName: player[1]
-      #   dob: player[3]
-      #   dob_stamp: moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"]).toISOString()
-      #   under_age: true
-      # ).then( ( user ) ->
-      #   sails.log.debug "User created #{ JSON.stringify user }"
-      #   x.push user
 
-      # ).catch( ( err ) ->
-      #   sails.log.debug "User create error #{ JSON.stringify err }"
-      #   cb( err )
-      #   return false
-      # )
-    #   d = moment(player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"])
-    #   sails.log.debug "Date #{ d }"
-    #   c = d.unix()
-    #   sails.log.debug c
+       
     cb(null, x)
