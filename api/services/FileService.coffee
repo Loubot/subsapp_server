@@ -31,7 +31,7 @@ module.exports = {
       cb("No good boss")
     )
 
-  get_file_and_bucket_name: ( body ) ->
+  get_file_and_bucket_name: ( body, cb ) ->
     sails.log.debug "Hit the file service/get_file_and_bucket_name"
     sails.log.debug "Params #{ JSON.stringify body }"
 
@@ -42,14 +42,14 @@ module.exports = {
       sails.log.debug "No space #{ body.org_id }/#{ body.team_id}/#{ team_name }"
       return_name = "#{ body.org_id }/#{ body.team_id}/#{ team_name }.xls" #folder/file
       sails.log.debug "Return name #{ return_name }"
-      return_name
+      cb( null, return_name )
     else
       sails.log.debug "nope"
       Org.findOne( id: body.org_id ).then( ( org ) ->
         sails.log.debug "File service get_file_and_bucket/Org findOne #{ JSON.stringify org }"
         return_name = "#{ body.org_id }/#{ org.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s/g, "") }.xls"
         sails.log.debug "Return name #{ return_name }"
-        return_name
+        cb( null, return_name )
       ).catch( ( err ) ->
         sails.log.debug "Org findOne error #{ JSON.stringify err }"
       )

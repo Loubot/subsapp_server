@@ -20,31 +20,38 @@ module.exports = {
 
     s3 = Promise.promisifyAll(new AWS.S3())
 
-    file_name = FileService.get_file_and_bucket_name( req.body )
-    sails.log.debug "Filename #{ JSON.stringify file_name }"
-    # uploadFile = req.file('file').upload {
-    #   adapter: require('skipper-s3')
-    #   key: process.env.AWS_ACCESS_KEY_ID
-    #   secret: process.env.AWS_SECRET_ACCESS_KEY
-    #   # dirName: 'Lakewood'
-    #   saveAs: file_name
-    #   bucket: 'subzapp'
-    # }, (err, uploadedFiles) ->
-    #   if err
-    #     sails.log.debug "Upload error #{ JSON.stringify err }"
-    #     res.negotiate err
-    #   else
-    #     sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles[0] }"
-    #     Promise.resolve( [ s3.listObjectsAsync( params ) ] ).spread( ( s3_object ) ->
-    #       # sails.log.debug "fts #{ JSON.stringify fts }"
-    #       sails.log.debug "s3 #{ JSON.stringify s3_object }"
-    #       res.json bucket_info: s3_object
-    #     ).catch ( err ) ->
-    #       sails.log.debug "Chain #{ err }"
-    #       res.serverError err
+    file_name = FileService.get_file_and_bucket_name( req.body, ( err, file_name ) ->
+      sails.log.debug "Filename #{ JSON.stringify file_name }"
 
-    res.json file_name
+      params = 
+        Bucket: 'subzapp'
+        Marker: req.body.org_id
 
+      uploadFile = req.file('file').upload {
+        adapter: require('skipper-s3')
+        key: process.env.AWS_ACCESS_KEY_ID
+        secret: process.env.AWS_SECRET_ACCESS_KEY
+        # dirName: 'Lakewood'
+        saveAs: file_name
+        bucket: 'subzapp'
+      }, (err, uploadedFiles) ->
+        if err
+          sails.log.debug "Upload error #{ JSON.stringify err }"
+          res.negotiate err
+        else
+          sails.log.debug "Upload waheeeey #{ JSON.stringify uploadedFiles[0] }"
+          Promise.resolve( [ s3.listObjectsAsync( params ) ] ).spread( ( s3_object ) ->
+            # sails.log.debug "fts #{ JSON.stringify fts }"
+            sails.log.debug "s3 #{ JSON.stringify s3_object }"
+            res.json bucket_info: s3_object
+          ).catch ( err ) ->
+            sails.log.debug "Chain #{ err }"
+            res.serverError err
+
+
+
+    )
+    
         
         
 
