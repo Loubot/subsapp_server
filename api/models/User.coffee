@@ -142,46 +142,58 @@ module.exports =
   create_players: ( player_array, org, cb ) ->
     Promise = require('q')
     x = new Array()
-    for player in player_array
-      
-      if ( player[0]? and player[1]? and player[3] and player[4]? )
-        parent_email = player[4].replace(/ /g,'')
-        sails.log.debug "Parent email #{parent_email}"
-        sails.log.debug "org #{org}"
+    
 
-        Promise.all([
-          User.findOrCreate(
-            dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString()
-            parent_email: parent_email
-            under_age: true
-            firstName: player[0]
-            lastName: player[1]
-            dob: player[3]
-          )
-          User.findOne( email: parent_email )
-        ]).spread( ( kid, parent ) ->
-          sails.log.debug "Kid created or found #{ JSON.stringify kid }"
-          sails.log.debug "Parent found #{ JSON.stringify parent }"
-          kid.user_orgs.add( org )
-          parent.kids.add ( kid )
+    Org.findOne( id: org ).then( ( org ) ->
+      sails.log.debug "Kid create org find #{ JSON.stringify org }"
+      for player in player_array
+        if ( player[0]? and player[1]? and player[3] and player[4]? )
+          parent_email = player[4].replace(/ /g,'')
+          sails.log.debug "Parent email #{parent_email}"
+          sails.log.debug "org #{org}"
+
           Promise.all([
-            kid.save()
-            parent.save()
-          ]).spread( ( kid, parent) ->
-            sails.log.debug "Kid saved #{ JSON.stringify kid }"
-            sails.log.debug "Parent saved #{ JSON.stringify parent }"
-            x.push( kid )
-          ).catch( ( parent_kid_save_err ) ->
-            sails.log.debug "Parent and kid save error #{ JSON.stringify parent_kid_save_err }"
+            User.findOrCreate(
+              dob_stamp: moment( player[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY"] ).toISOString()
+              parent_email: parent_email
+              under_age: true
+              firstName: player[0]
+              lastName: player[1]
+              dob: player[3]
+            )
+            User.findOne( email: parent_email )
+           
+          ]).spread( ( kid, parent, org ) ->
+            sails.log.debug "Kid created or found #{ JSON.stringify kid }"
+            sails.log.debug "Parent found #{ JSON.stringify parent }"
+            org.org_members.add( kid )
+            parent.kids.add ( kid )
+            Promise.all([
+              kid.save()
+              parent.save()
+              org.save()
+            ]).spread( ( kid, parent, org ) ->
+              sails.log.debug "Kid saved #{ JSON.stringify kid }"
+              sails.log.debug "Parent saved #{ JSON.stringify parent }"
+              x.push( kid )
+            ).catch( ( parent_kid_save_err ) ->
+              sails.log.debug "Parent and kid save error #{ JSON.stringify parent_kid_save_err }"
+            )
+
+
+          ).catch( ( err ) ->
+            sails.log.debug "User findOrCreate error #{ JSON.stringify err }"
+            cb( err )
+            return false
           )
-
-
-        ).catch( ( err ) ->
-          sails.log.debug "User findOrCreate error #{ JSON.stringify err }"
-          cb( err )
-          return false
-        )
+      cb(null, x)
+    ).catch( ( err ) ->
+      sails.log.debug "Kide create org find err #{ JSON.stringify err }"
+      cb( err )
+    )
+      
+      
 
 
        
-    cb(null, x)
+    

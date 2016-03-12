@@ -25,7 +25,7 @@ module.exports = {
       Marker: req.param('id')
 
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.findOne( { id: req.param('id') } ).populate('teams').populate('admins').then( ( org ) ->
+      Org.findOne( { id: req.param('id') } ).populate('teams').populate('org_members').populate('admins').then( ( org ) ->
         sails.log.debug "Org findOne #{ JSON.stringify org }" 
         return  [
                   org
