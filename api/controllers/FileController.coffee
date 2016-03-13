@@ -122,21 +122,32 @@ module.exports = {
         return [ 
                   stuff.Contents, 
                   s3.getObjectAsync( Bucket: 'subzapp', Key: stuff.Contents[0].Key ),
-                  # Team.findOne( id: req.query.team_id )
+                  # Org.findOne( id: req.query.org )
                 ]
       ).spread ( s3_bucket, s3_file ) ->
         sails.log.debug "Bucket #{ JSON.stringify s3_bucket }"
         sails.log.debug "Bucket #{ s3_file }"
-        obj = xlsx.parse(s3_file.Body)
+        # sails.log.debug "Org #{ org }"
+        obj = xlsx.parse( s3_file.Body )
         player_array = obj[0].data
         player_array.splice(0,1)
-        # sails.log.debug "Array #{ JSON.stringify player_array }"
-        User.create_players( player_array, req.query.org_id, ( err, players ) ->
-          sails.log.debug "Players #{ JSON.stringify players }"
-          sails.log.debug "Players error #{ JSON.stringify err }" if err?
-          res.negotiate err if err?
-        )
-        res.json obj[0].data
+
+        return_players = new Array()
+        
+        for player in player_array
+          User.create_kid( player, req.query.org_id, ( err, kid ) ->
+            if err?
+              sails.log.debug "Create kid error #{ JSON.stringify err }"
+            else
+              # sails.log.debug "Create kid #{ JSON.stringify kid }"
+              return_players.push( kid )
+
+              
+          )
+        sails.log.debug "Player array #{ JSON.stringify return_players }"
+        res.json return_players
+
+        
     )
 
     
