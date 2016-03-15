@@ -82,13 +82,17 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'findOne'
 
+  'get /orgs': 
+        controller:             'OrgController'
+        action:                 'find'
+
+  'get /org/s3-info/:id':
+        controller:              'OrgController'
+        action:                  's3_info'
+
   'get /org/get-org/:id':             #Require. Returns details of org. !Must be admin!
         controller:             'OrgController'
         action:                 'get_org'
-
-  'get /all-org':             #Requires nothing. Return all org details;
-        controller:             'OrgController'
-        action:                 'all_org'
 
   'get /org-admins':          #Requires org.id. Returns org, admins and teams of org
         controller:             'OrgController'

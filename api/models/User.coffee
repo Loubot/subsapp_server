@@ -22,6 +22,8 @@ module.exports =
       # required: true
       unique: true
 
+    password: type: 'string'
+
     firstName:
       type: 'string'
       defaultsTo: ''
@@ -42,7 +44,10 @@ module.exports =
       type: 'date'
       defaultsTo: null
 
-    password: type: 'string'
+    super_admin:
+      type: 'boolean'
+      required: true
+      defaultsTo: false
 
     club_admin:
       type: 'boolean'
@@ -147,6 +152,7 @@ module.exports =
     sails.log.debug "Org id #{ org }"
 
     parent_email = kid_details[4].replace(/ /g,'')
+    # "string".replace(/\//g, 'ForwardSlash')
     date_stamp = moment( kid_details[3], ["MM-DD-YYYY", "DD-MM", "DD-MM-YYYY", "MM/DD/YYYY", "DD/MM/YYYY"] ).toISOString()
     sails.log.debug "Stamp !! #{ date_stamp }"
     sails.log.debug "Parent email1 #{parent_email}"

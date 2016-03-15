@@ -64,6 +64,25 @@ module.exports = {
     else
       res.negotiate "You are not authorised"
 
+
+  find: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/find"
+    sails.log.debug "Params #{ JSON.stringify req.query }"
+    sails.log.debug "ID #{ JSON.stringify req.param('id') }"
+    sails.log.debug "Auth response #{ AuthService.super_admin( req.user ) }"
+    if AuthService.super_admin( req.user )
+      Org.find().then( ( orgs ) ->
+        sails.log.debug "Got all orgs"
+        res.json orgs
+      ).catch( ( err ) ->
+        sails.log.debug "Get all orgs error"
+        res.negotiate err
+      )
+    else
+      sails.log.debug "Not allowed"
+      res.unauthorized "You are not an admin"
+      return false
+
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
     sails.log.debug req.query
@@ -121,17 +140,35 @@ module.exports = {
       sails.log.debug "Create done"
       
       return
-  
-  all_org: (req, res) ->
-    sails.log.debug "Hit the org controller/all_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    Org.find().then( (orgs) ->
-      sails.log.debug "All org response #{ JSON.stringify orgs }"
-      res.json orgs
-    ).catch(( err ) ->
-      sails.log.debug "All org error #{ JSON.stringify err }"
-      
-    ).done ->
-      sails.log.debug "All org done"
+
+  s3_info: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/s3_info"
+    sails.log.debug "Params #{ req.param('id') }"
+    sails.log.debug "Auth response #{ AuthService.super_admin( req.user ) }"
+    if AuthService.super_admin( req.user )
+      Promise = require('bluebird')
+      AWS = require('aws-sdk')
+
+      AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+      # s3 = Promise.promisifyAll(new AWS.S3())
+      s3 = new AWS.S3()
+      params = 
+        Bucket: 'subzapp'
+        Prefix: "#{req.param('id')}/"
+
+      s3.listObjects( params, ( err, data ) ->
+        if err?
+          sails.log.debug "S3 error #{ JSON.stringify err }"
+        else
+          sails.log.debug "S3 data #{ JSON.stringify data }"
+          res.json data
+      )
+
+
+    else
+      sails.log.debug "Not authorised"
+      res.unauthorized "You are not allowed to view this"
+
 
 
   ######################################################################

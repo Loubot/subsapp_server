@@ -1,28 +1,64 @@
 'use strict';
 angular.module('subzapp').controller('OrgController', [
   '$scope', '$state', '$http', '$window', '$location', 'user', 'RESOURCES', 'alertify', function($scope, $state, $http, $window, $location, user, RESOURCES, alertify) {
-    var check_club_admin, user_token;
+    var get_orgs, user_token;
     user_token = window.localStorage.getItem('user_token');
-    check_club_admin = function(user) {
-      if (!user.team_admin) {
-        $state.go('login');
-      }
-      alertify.error('You are not a club admin. Contact subzapp admin team for assitance');
-      return false;
+    get_orgs = function() {
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/orgs",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        }
+      }).then(function(orgs) {
+        console.log("Got orgs ");
+        console.log(orgs.data);
+        return $scope.orgs = orgs.data;
+      })["catch"](function(err) {
+        console.log("Got orgs error");
+        console.log(err);
+        if (err.status === 401) {
+          alertify.error("You are not authorised to view this page");
+          return $state.go('login');
+        }
+      });
     };
     console.log('Org Controller');
     if (!(window.USER != null)) {
       user.get_user().then((function(res) {
-        return $scope.org = window.USER.orgs[0];
+        return get_orgs();
       }), function(errResponse) {
         console.log("User get error " + (JSON.stringify(errResponse)));
         window.USER = null;
         return $state.go('login');
       });
     } else {
+      get_orgs();
       console.log("USER already defined");
-      $scope.org = window.USER.orgs[0];
     }
+    $scope.get_org_info = function(id) {
+      console.log($scope.org);
+      return $http({
+        method: 'GET',
+        url: RESOURCES.DOMAIN + "/org/s3-info/" + $scope.org,
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        }
+      }).then((function(res) {
+        console.log("s3_info response");
+        console.log(res.data);
+        return $scope.s3_info = res.data;
+      }), function(errResponse) {
+        console.log("s3_info error response");
+        console.log(err);
+        if (err.status === 401) {
+          alertify.error("You are not authorised to view this page");
+          return $state.go('login');
+        }
+      });
+    };
     return $scope.parse_users = function() {
       console.log('yep');
       return $http({

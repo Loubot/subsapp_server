@@ -11,27 +11,60 @@ angular.module('subzapp').controller('OrgController', [
   'alertify'
   ( $scope, $state, $http, $window, $location, user, RESOURCES, alertify ) ->
     user_token = window.localStorage.getItem 'user_token'
-        
 
-    check_club_admin = ( user ) ->
-      $state.go 'login' if !user.team_admin
-      alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
-      return false 
+    get_orgs = ->
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/orgs"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+      ).then( ( orgs ) ->
+        console.log "Got orgs "
+        console.log orgs.data
+        $scope.orgs = orgs.data
+      ).catch( ( err ) ->
+        console.log "Got orgs error"
+        console.log err
+        if err.status == 401
+          alertify.error "You are not authorised to view this page"
+          $state.go 'login'
+      )
+        
 
     console.log 'Org Controller'
     if !(window.USER?)
       user.get_user().then ( (res) ->
-        # console.log "User set to #{ JSON.stringify window.USER }"
-        $scope.org = window.USER.orgs[0]
+        get_orgs()
 
       ), ( errResponse ) ->
         console.log "User get error #{ JSON.stringify errResponse }"
         window.USER = null
         $state.go 'login'
     else
+      get_orgs()
       console.log "USER already defined"
-      $scope.org = window.USER.orgs[0]
-        
+      
+      
+    $scope.get_org_info = ( id ) ->
+      console.log $scope.org
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }/org/s3-info/#{ $scope.org }"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+
+      ).then ( ( res ) ->
+        console.log "s3_info response"
+        console.log res.data
+        $scope.s3_info = res.data
+      ), ( errResponse ) ->
+        console.log "s3_info error response"
+        console.log err
+        if err.status == 401
+          alertify.error "You are not authorised to view this page"
+          $state.go 'login'
       
 
     $scope.parse_users = ->

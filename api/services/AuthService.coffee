@@ -6,4 +6,11 @@ module.exports = {
 
     return parseInt( user.orgs[0].id ) == parseInt( id )
 
+  super_admin: ( user )->
+    sails.log.debug "Authservice super admin"
+    sails.log.debug "User #{ JSON.stringify user }"
+    sails.log.debug "User #{ JSON.stringify user.super_admin }"
+    sails.log.debug "User #{ typeof user.super_admin }"
+    return Boolean(user.super_admin)
+
 }
