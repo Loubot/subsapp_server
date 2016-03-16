@@ -1,6 +1,6 @@
 winston = require('winston')
 customLogger = new (winston.Logger)(transports: [ new (winston.transports.File)(
-  level: 'debug'
+  level: 'silly'
   filename: "logfile.log") ])
 
 module.exports.log =
