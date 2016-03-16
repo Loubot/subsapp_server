@@ -19,7 +19,7 @@ module.exports = {
       
     ).catch ( err ) ->
       sails.log.debug "Find user error #{ err }"
-      res.negotiate err
+      # res.negotiate err
 
   social: ( req, res ) ->
     Promise = require('q')
