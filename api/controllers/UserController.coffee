@@ -18,7 +18,7 @@ module.exports = {
         
       
     ).catch ( err ) ->
-      sails.log.debug "Find user error #{ JSON.stringify err }"
+      sails.log.debug "Find user error #{ err }"
       res.negotiate err
 
   social: ( req, res ) ->
