@@ -29,7 +29,7 @@ module.exports = {
 
         params = 
           Bucket: 'subzapp'
-          Marker: req.body.org_id
+          Prefix: req.body.org_id
 
         uploadFile = req.file('file').upload {
           adapter: require('skipper-s3')

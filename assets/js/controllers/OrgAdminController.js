@@ -2,7 +2,7 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', 'Upload', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload) {
+  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload, usSpinnerService) {
     var check_club_admin, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
@@ -20,6 +20,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.orgs = window.USER.orgs;
       $scope.show_team_admin = window.USER.orgs.length === 0;
       if ($scope.org != null) {
+        usSpinnerService.spin('spinner-1');
         return $http({
           method: 'GET',
           url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
@@ -31,11 +32,13 @@ angular.module('subzapp').controller('OrgAdminController', [
             org_id: $scope.org.id
           }
         }).then((function(org_and_teams) {
+          usSpinnerService.stop('spinner-1');
           console.log("Get org and teams");
           console.log(org_and_teams);
           $scope.teams = org_and_teams.data.org.teams;
           return $scope.files = org_and_teams.data.s3_object.Contents;
         }), function(errResponse) {
+          usSpinnerService.stop('spinner-1');
           console.log("Get teams failed");
           console.log(errResponse);
           return alertify.error('Failed to fetch teams');
@@ -165,8 +168,14 @@ angular.module('subzapp').controller('OrgAdminController', [
       var file_info;
       console.log("Upload");
       if ($scope.file.info != null) {
-        console.log("Defined " + $scope.file.info);
         file_info = JSON.parse($scope.file.info);
+        console.log("Defined " + file_info);
+        file_info = {
+          org_id: $scope.org.id,
+          team_id: file_info[0],
+          team_name: file_info[1]
+        };
+        console.log("file_info " + (JSON.stringify(file_info)));
       } else {
         console.log("Not defined ");
         file_info = {

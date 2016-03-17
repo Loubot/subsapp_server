@@ -22,7 +22,7 @@ module.exports = {
 
     params = 
       Bucket: 'subzapp'
-      Marker: req.param('id')
+      Prefix: req.param('id')
 
     if AuthService.check_club_admin( req.user, req.param('id') )
       Org.findOne( { id: req.param('id') } ).populate('teams').populate('org_members').populate('admins').then( ( org ) ->

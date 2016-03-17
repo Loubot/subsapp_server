@@ -1,6 +1,6 @@
 'use strict';
 angular.module('subzapp').controller('OrgController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'RESOURCES', 'alertify', function($scope, $state, $http, $window, $location, user, RESOURCES, alertify) {
+  '$scope', '$state', '$http', '$window', '$location', 'user', 'RESOURCES', 'alertify', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, RESOURCES, alertify, usSpinnerService) {
     var get_orgs, user_token;
     user_token = window.localStorage.getItem('user_token');
     get_orgs = function() {
@@ -38,6 +38,7 @@ angular.module('subzapp').controller('OrgController', [
       console.log("USER already defined");
     }
     $scope.get_org_info = function(id) {
+      usSpinnerService.spin('spinner-1');
       console.log($scope.org);
       return $http({
         method: 'GET',
@@ -47,10 +48,12 @@ angular.module('subzapp').controller('OrgController', [
           "Content-Type": "application/json"
         }
       }).then((function(res) {
+        usSpinnerService.stop('spinner-1');
         console.log("s3_info response");
         console.log(res.data);
-        return $scope.s3_info = res.data;
+        return $scope.files = res.data.Contents;
       }), function(errResponse) {
+        usSpinnerService.stop('spinner-1');
         console.log("s3_info error response");
         console.log(err);
         if (err.status === 401) {

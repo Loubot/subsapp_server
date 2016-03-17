@@ -1,6 +1,7 @@
 <div class="container-fluid">
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
 </div>
+<span us-spinner spinner-key="spinner-1"></span>
 <div class="container-fluid">
   <h1 class="text-center">Hello {{ user.email }}</h1>
   
@@ -133,10 +134,10 @@
 
               <h2><strong>Select an excel file below and click submit to upload.</strong></h2>
               <h4><strong>We will process your form and register your players soon. </strong></h4>
-              <form name="form" class="form-horizontal">
+              <form name="form" class="form-horizontal" ng-submit="submit()">
                 <div class="form-group">
                   <div class="button btn btn-success" ngf-select ng-model="file" name="file" accept=".xls"
-                     ngf-max-size="20MB" >Select club sheet</div>
+                     ngf-max-size="20MB" required >Select club sheet</div>
                   <p ngf-src="file">{{ file.name }}</p>
                   
                   
@@ -144,7 +145,7 @@
 
                 <div class="form-group">
                   <div class="styled-select white_text">
-                    <select class="form-control white_text" ng-model="file.info">
+                    <select class="form-control white_text" name="team" ng-model="file.info" required >
                       <option ng-repeat="team in teams" 
                               value="{{ [ team.id, team.name ] }}">
                         {{ team.name }}
@@ -154,7 +155,7 @@
                 </div> <!-- end of form-group -->
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <button type="submit" class="btn btn-success btn-lg" ng-click="submit()">Submit</button>
+                    <button type="submit" class="btn btn-success btn-lg">Submit</button>
                   </div>
                 </div>
                 
@@ -167,7 +168,7 @@
             <ul class="list-group">
               <li class="list-group-item" ng-repeat="file in files">{{ file.Key }}</li>
             </ul> <!-- end of list-group -->
-          </div> <!-- end of row -->
+          </div> <!-- end of col-xs-12 -->
           
         </div> <!-- end of container-fluid -->
       </div>

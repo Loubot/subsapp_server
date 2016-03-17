@@ -9,7 +9,8 @@ angular.module('subzapp').controller('OrgController', [
   'user'
   'RESOURCES'
   'alertify'
-  ( $scope, $state, $http, $window, $location, user, RESOURCES, alertify ) ->
+  'usSpinnerService'
+  ( $scope, $state, $http, $window, $location, user, RESOURCES, alertify, usSpinnerService ) ->
     user_token = window.localStorage.getItem 'user_token'
 
     get_orgs = ->
@@ -47,6 +48,7 @@ angular.module('subzapp').controller('OrgController', [
       
       
     $scope.get_org_info = ( id ) ->
+      usSpinnerService.spin('spinner-1')
       console.log $scope.org
       $http(
         method: 'GET'
@@ -56,10 +58,12 @@ angular.module('subzapp').controller('OrgController', [
                   }
 
       ).then ( ( res ) ->
+        usSpinnerService.stop('spinner-1')
         console.log "s3_info response"
         console.log res.data
-        $scope.s3_info = res.data
+        $scope.files = res.data.Contents
       ), ( errResponse ) ->
+        usSpinnerService.stop('spinner-1')
         console.log "s3_info error response"
         console.log err
         if err.status == 401

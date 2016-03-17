@@ -10,7 +10,9 @@ angular.module('subzapp').controller('OrgAdminController', [
   'RESOURCES'
   'alertify'
   'Upload'
-  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload ) ->
+  'usSpinnerService'
+  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload, usSpinnerService ) ->
+    
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -31,6 +33,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.show_team_admin = ( window.USER.orgs.length == 0 )
       
       if $scope.org?
+        usSpinnerService.spin('spinner-1')
         $http(
           method: 'GET'
           url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
@@ -40,11 +43,13 @@ angular.module('subzapp').controller('OrgAdminController', [
           params: 
             org_id: $scope.org.id
         ).then ( ( org_and_teams ) ->
+          usSpinnerService.stop('spinner-1')
           console.log "Get org and teams"
           console.log org_and_teams
           $scope.teams = org_and_teams.data.org.teams
           $scope.files = org_and_teams.data.s3_object.Contents
         ), ( errResponse ) ->
+          usSpinnerService.stop('spinner-1')
           console.log "Get teams failed"
           console.log  errResponse
           alertify.error 'Failed to fetch teams'
@@ -176,9 +181,14 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.upload = (file) ->
       console.log "Upload"
       if ( $scope.file.info )?
-        console.log "Defined #{ $scope.file.info }"
+        
         file_info = JSON.parse $scope.file.info
-
+        console.log "Defined #{ file_info }"
+        file_info = 
+          org_id: $scope.org.id
+          team_id: file_info[0]
+          team_name: file_info[1]
+        console.log "file_info #{ JSON.stringify file_info }"
       else
         console.log "Not defined "
         file_info = org_id: $scope.org.id
