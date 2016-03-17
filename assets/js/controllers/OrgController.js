@@ -65,13 +65,13 @@ angular.module('subzapp').controller('OrgController', [
     return $scope.parse_users = function() {
       console.log('yep');
       return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/parse-players",
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/file/parse-players",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
         },
-        params: {
+        data: {
           org_id: 1
         }
       }).then((function(res) {

@@ -198,7 +198,7 @@ module.exports.routes =
         controller:             'FileController'
         action:                 'parse_users'
 
-  'get /parse-players':
+  'post /file/parse-players':
         controller:             'FileController'
         action:                 'parse_players'
 
