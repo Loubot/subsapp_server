@@ -112,40 +112,46 @@ module.exports = {
       Bucket: 'subzapp'
       Prefix: String( req.body.org_id )
 
-    s3.listObjectsAsync( params ).then( ( bucket ) ->
-      sails.log.debug "s3 bucket #{ JSON.stringify bucket }"
-      for file in bucket.Contents
-        sails.log.debug "Log Key #{ file.Key }"
-        s3.getObjectAsync( Bucket: 'subzapp', Key: '1/test.xls' ).then( ( downloaded_file ) ->
-          # sails.log.debug "Download file #{ JSON.stringify downloaded_file }"
-          obj = xlsx.parse( downloaded_file.Body )
-          player_array = obj[0].data
-          player_array.splice(0,1)
-          return_players = new Array()
-          
-          for player in player_array
-            User.create_kid( player, req.query.org_id, ( err, kid ) ->
-              if err?
-                sails.log.debug "Create kid error #{ JSON.stringify err }"
-              else
-                # sails.log.debug "Create kid #{ JSON.stringify kid }"
-                return_players.push( kid )
+    Promise.resolve(
+      params = 
+        Bucket: 'subzapp'
+        Prefix: String( req.body.org_id )
 
-                
-            )
-          sails.log.debug "Player array #{ JSON.stringify return_players }"
-          res.json return_players
+      s3.listObjectsAsync( params ).then( ( bucket ) ->
+        sails.log.debug "s3 bucket #{ JSON.stringify bucket }"
+        for file in bucket.Contents
+          sails.log.debug "Log Key #{ file.Key }"
+          s3.getObjectAsync( Bucket: 'subzapp', Key: '1/test.xls' ).then( ( downloaded_file ) ->
+            # sails.log.debug "Download file #{ JSON.stringify downloaded_file }"
+            obj = xlsx.parse( downloaded_file.Body )
+            player_array = obj[0].data
+            player_array.splice(0,1)
+            return_players = new Array()
+            
+            for player in player_array
+              User.create_kid( player, req.query.org_id, ( err, kid ) ->
+                if err?
+                  sails.log.debug "Create kid error #{ JSON.stringify err }"
+                else
+                  # sails.log.debug "Create kid #{ JSON.stringify kid }"
+                  return_players.push( kid )
 
-          
-        ).catch( ( download_file_err ) ->
-          sails.log.debug "S3 download err #{ JSON.stringify download_file_err }"
-        )
-      sails.log.debug "s3 bucket #{ JSON.stringify bucket }"
+                  
+              )
+            sails.log.debug "Player array #{ JSON.stringify return_players }"
+            res.json return_players
+
+            
+          ).catch( ( download_file_err ) ->
+            sails.log.debug "S3 download err #{ JSON.stringify download_file_err }"
+          )
+        
+        
+        # res.json bucket
       
-      # res.json bucket
-    
-    ).catch( ( s3_bucket_err ) ->
-      sails.log.debug "S3 error #{ JSON.stringify s3_bucket_err }"
+      ).catch( ( s3_bucket_err ) ->
+        sails.log.debug "S3 error #{ JSON.stringify s3_bucket_err }"
+      )
     )
 
       
