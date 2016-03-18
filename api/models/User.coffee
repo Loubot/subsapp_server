@@ -165,6 +165,7 @@ module.exports =
         firstName: kid_details[0]
         lastName: kid_details[1]
         dob: kid_details[3]
+        super_admin: false
       )
       User.findOne( email: parent_email )
     ]).spread( ( kid, parent ) ->
