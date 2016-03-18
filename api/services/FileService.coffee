@@ -2,6 +2,43 @@
 
 module.exports = {
 
+  get_org_files: ( body, cb ) ->
+    Promise = require('bluebird')
+    AWS = require('aws-sdk')
+
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+
+    s3 = Promise.promisifyAll(new AWS.S3())
+    params = 
+      Bucket: 'subzapp'
+      Prefix: String( body.org_id )
+
+    s3.listObjectsAsync( params ).then( ( bucket ) ->
+      sails.log.debug "s3 bucket #{ JSON.stringify bucket }"
+      file_keys = new Array()
+      for file in bucket.Contents
+        sails.log.debug "Log Key #{ file.Key }"
+        file_keys.push( file.Key )
+
+      cb( null, file_keys )  
+    
+    
+    ).catch( ( s3_bucket_err ) ->
+      sails.log.debug "S3 error #{ JSON.stringify s3_bucket_err }"
+      cb( s3_bucket_err )
+    )
+
+
+  get_file_body: ( file, cb ) ->
+    sails "Hit the file service/get_file_body"
+    if file.body?
+      cb( null, file.body )
+    else
+      cb( "Can't get file.body" )
+
+
+
+
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
     sails.log.debug "Hit the file tracker service/store_file_info"

@@ -11,7 +11,7 @@
   <div class="col-xs-9">
     
     <form class="form-horizontal" ng-submit="parse_users()">
-      <select class="form-control" ng-model="org" ng-change="get_org_info( org.id )">
+      <select class="form-control" ng-model="org" ng-change="get_org_info( org.id )" required>
         <option value="">---Please select org---</option>
         <option ng-repeat="org in orgs" value="{{ org.id }}" 
                 >
