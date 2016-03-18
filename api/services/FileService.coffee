@@ -30,7 +30,7 @@ module.exports = {
 
 
   get_file_body: ( file, cb ) ->
-    sails "Hit the file service/get_file_body"
+    sails.log.debug "Hit the file service/get_file_body"
     if file.body?
       cb( null, file.body )
     else

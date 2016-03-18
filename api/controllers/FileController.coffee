@@ -113,8 +113,10 @@ module.exports = {
     FileService.get_org_files( req.body, ( err, files ) ->
       if err? or err == []
         sails.log.debug "Get bucket files callback error #{ JSON.stringify err }"
+        res.negotiate err
       else
         sails.log.debug "Got bucket files ok "
+        sails.log.debug "Bucket files #{JSON.stringify files}"
         for file in files
           sails.log.debug "File info #{ file }"
 
