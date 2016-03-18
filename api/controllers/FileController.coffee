@@ -108,29 +108,30 @@ module.exports = {
     s3 = Promise.promisifyAll(new AWS.S3())
     # decode = require('urldecode')
     AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
-    player_array = new Array()
-
-    FileService.get_org_files( req.body, ( err, files ) ->
-      if err? or err == []
-        sails.log.debug "Get bucket files callback error #{ JSON.stringify err }"
+    
+    FileService.get_org_files( req.body, ( err, file_list ) ->
+      if err?
+        sails.log.debug "Get file list err #{ JSON.stringify err }"
         res.negotiate err
       else
-        sails.log.debug "Got bucket files ok "
-        sails.log.debug "Bucket files #{JSON.stringify files}"
-        for file in files
-          sails.log.debug "File info #{ file }"
+        sails.log.debug "File list #{ JSON.stringify file_list }"
+        # res.json file_list
 
-          FileService.get_file_body( file, ( file_body_err, file_body ) ->
-            if file_body_err?
-              sails.log.debug "File body err #{ JSON.stringify file_body_err }"
+        files = new Array()
+        for file in file_list
+          FileService.get_file( req.body, file, ( file_err, returned_file ) ->
+            if err?
+              sails.log.debug "Returned file err #{ JSON.stringify file_err }"
+              res.negotiate file_err
             else
-              sails.log.debug "Got file body #{ JSON.stringify file_body }"
-              player_array.push( file_body )
+              sails.log.debug "Returned file #{ JSON.stringify returned_file }"
+              files.push( returned_file )
+              
           )
-        sails.log.debug "Player array #{ JSON.stringify player_array }"
-        res.json player_array
-
     )
+
+
+    
 
     # s3.getObjectAsync( Bucket: 'subzapp', Key: file.Key ).then( ( downloaded_file ) ->
     #   sails.log.debug "Download file #{ JSON.stringify downloaded_file }"

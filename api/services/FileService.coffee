@@ -1,26 +1,28 @@
+Promise = require('bluebird')
+AWS = require('aws-sdk')
+
+AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+
+s3 = Promise.promisifyAll(new AWS.S3())
 
 
 module.exports = {
 
   get_org_files: ( body, cb ) ->
-    Promise = require('bluebird')
-    AWS = require('aws-sdk')
-
-    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
-
-    s3 = Promise.promisifyAll(new AWS.S3())
     params = 
       Bucket: 'subzapp'
       Prefix: String( body.org_id )
 
+    file_list = new Array()
+
     s3.listObjectsAsync( params ).then( ( bucket ) ->
       sails.log.debug "s3 bucket #{ JSON.stringify bucket }"
-      file_keys = new Array()
-      for file in bucket.Contents
-        sails.log.debug "Log Key #{ file.Key }"
-        file_keys.push( file.Key )
 
-      cb( null, file_keys )  
+      for file in bucket.Contents
+        sails.log.debug "File key #{ file.Key }"
+        file_list.push( file.Key )
+      sails.log.debug "File list #{ JSON.stringify file_list }"
+      cb( null, file_list )  
     
     
     ).catch( ( s3_bucket_err ) ->
@@ -29,13 +31,22 @@ module.exports = {
     )
 
 
-  get_file_body: ( file, cb ) ->
-    sails.log.debug "Hit the file service/get_file_body"
-    if file.body?
-      cb( null, file.body )
-    else
-      cb( "Can't get file.body" )
 
+
+  get_file: ( body, file, cb ) ->
+    params = 
+      Bucket: 'subzapp'
+      Key: file
+
+    sails.log.debug "Hit the file service/get_file"
+    sails.log.debug "Params #{ JSON.stringify file } #{ JSON.stringify params }"
+    s3.getObjectAsync( params ).then( ( downloaded_file ) ->
+      sails.log.debug "downloaded_file #{ JSON.stringify downloaded_file }"
+      cb( null, downloaded_file )
+    ).catch( ( downloaded_file_err ) ->
+      sails.log.debug "downloaded_file_err #{ JSON.stringify downloaded_file_err }"
+      cb( downloaded_file_err )
+    )
 
 
 
