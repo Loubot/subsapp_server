@@ -109,19 +109,30 @@ module.exports = {
     # decode = require('urldecode')
     AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
 
-    params = 
+    bucket_params = 
       Bucket: 'subzapp'
       Prefix: "#{ String( req.body.org_id ) }/"
 
-    File_service = Promise.promisifyAll( FileService )
+    File_service = Promise.promisifyAll( FileService ) # promisify the fileservice functions
 
-    File_service.get_file_list( params, ( err, file_list ) ->
-      if err? 
-        sails.log.debug "File list returned err #{ JSON.stringify err }"
-        res.negotiate err
-      else
-        sails.log.debug "File list returned #{ JSON.stringify file_list }" 
-        res.json file_list
+    File_service.get_file_listAsync( bucket_params ).then( ( file_list ) -> # get list of files in subzapp bucket starting with org_id/
+      sails.log.debug "File list returned #{ JSON.stringify file_list }"
+      file_names = new Array()
+      for file in file_list.Contents #push file keys to an array        
+        file_names.push file.Key
+
+      sails.log.debug "File names #{ JSON.stringify file_names }" 
+      File_service.get_filesAsync( file_names ).then( ( returned_files ) -> # download files using fileservice get_files method
+        sails.log.debug "Returned files #{ returned_files.length }"
+        
+      ).catch( ( returned_files_err ) ->
+        sails.log.debug "Returned files err #{ JSON.stringify returned_files_err }"
+        res.negotiate returned_files_err
+      )
+      
+    ).catch( ( file_list_err ) ->
+      sails.log.debug "File list returned error #{ JSON.stringify file_list_err }"
+      res.negotiate file_list_err
     )
     
     # FileService.get_file_list( params, )

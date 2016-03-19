@@ -21,6 +21,45 @@ module.exports = {
       cb( bucket_info_err ) 
     )
 
+  get_files: ( file_list, cb ) ->
+    sails.log.debug "Hit the fileservice/get_files"
+    sails.log.debug "File list #{ JSON.stringify file_list }"
+    s3 = Promise.promisifyAll( new AWS.S3() )
+    
+
+    finish_up = ( files ) -> # downloads finished, execute call back
+      sails.log.debug "Finish up #{ files.length }"
+      cb( null, files.length )
+
+    
+    params = 
+      Bucket: 'subzapp'
+
+    do_download = ( counter, downloaded_files ) -> #recursive function to download a number of s3 files. execute finish_up when it's finished. 
+      sails.log.debug "Downloaded files size #{ JSON.stringify downloaded_files.length }"
+      sails.log.debug "size in loop #{ file_list.length }"
+      counter = 0 if !(counter)?
+
+      if counter >= file_list.length
+        finish_up( downloaded_files )
+        return downloaded_files
+
+      params.Key = file_list[counter]
+      s3.getObjectAsync( params ).then( ( downloaded_file ) ->
+        sails.log.debug "Downloaded file ok"
+        downloaded_files.push( downloaded_file )
+        ++counter
+        do_download( counter, downloaded_files )
+      ).catch( ( downloaded_file_err ) ->
+        sails.log.debug "downloaded_file_err #{ JSON.stringify downloaded_file_err }"
+        cb( downloaded_file_err )
+      )
+
+    do_download( 0, [] ) # start recursively downloading files. 
+    
+
+
+
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
     sails.log.debug "Hit the file tracker service/store_file_info"
