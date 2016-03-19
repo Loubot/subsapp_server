@@ -63,20 +63,35 @@ module.exports = {
   create_users: ( file, cb ) ->
     xlsx = require('node-xlsx')
     sails.log.debug "Hit the fileservice/create_users"
-    sails.log.debug "Files #{ JSON.stringify file }"
+    # sails.log.debug "Files #{ JSON.stringify file }"
     obj = xlsx.parse( file.Body )
     player_array = obj[0].data
     player_array.splice(0,1)
     return_players = new Array()
 
-    sails.log.debug "Player array #{ JSON.stringify player_array }"
+    Promise.promisifyAll( User.create )
 
-    # finish_up = ( users ) ->
-    #   sails.log.debug "Create users finish up #{ users.length }"
-    #   cb( null, users )
+    sails.log.debug "Player array #{ JSON.stringify player_array.length }"
 
-    # recurse_users = ( counter, users ) ->
-    cb( null, player_array )
+    finish_up = ( users ) ->
+      sails.log.debug "Create users finish up #{ users.length }"
+      cb( null, users )
+
+    recurse_users = ( index, player_array, created_kids ) ->
+      if index >= player_array.length
+        finish_up( users )
+        return users
+
+      User.create_kid( player_array[index], org ).then( ( kid ) ->
+        sails.log.debug "Kid created #{ JSON.stringify kid }"
+        created_kids.push( kid )
+        ++index
+        recurse_users( index, player_array, created_kids )
+      ).catch( ( kid_create_err ) ->
+        sails.log.debug "kid_create_err #{ JSON.stringify kid_create_err }"
+      )
+
+    recurse_users( 0, player_array, [] )
 
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
