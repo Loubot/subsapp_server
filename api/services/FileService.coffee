@@ -3,12 +3,13 @@ AWS = require('aws-sdk')
 
 AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
 
-s3 = Promise.promisifyAll(new AWS.S3())
+
 
 
 module.exports = {
 
   get_org_files: ( body, cb ) ->
+    s3 = Promise.promisifyAll(new AWS.S3())
     params = 
       Bucket: 'subzapp'
       Prefix: String( body.org_id )
@@ -34,21 +35,33 @@ module.exports = {
 
 
   get_file: ( body, file, cb ) ->
+    s3 = new AWS.S3()
+    # downloaded_files = new Array()
+    # sails.log.debug "Total #{ total }"
+
+    # sails.log.debug "file_list #{ JSON.stringify file_list }"
+
+       
     params = 
       Bucket: 'subzapp'
       Key: file
-
     sails.log.debug "Hit the file service/get_file"
     sails.log.debug "Params #{ JSON.stringify file } #{ JSON.stringify params }"
-    s3.getObjectAsync( params ).then( ( downloaded_file ) ->
-      sails.log.debug "downloaded_file #{ JSON.stringify downloaded_file }"
-      cb( null, downloaded_file )
-    ).catch( ( downloaded_file_err ) ->
-      sails.log.debug "downloaded_file_err #{ JSON.stringify downloaded_file_err }"
-      cb( downloaded_file_err )
+    s3.getObject( params, ( err, downloaded_file ) ->
+      if err?
+        sails.log.debug "downloaded_file_err #{ JSON.stringify err }"
+        cb( err )
+      else
+        # sails.log.debug "downloaded_file #{ JSON.stringify downloaded_file }"
+        # downloaded_files.push( downloaded_file )
+        cb( null, downloaded_file ) 
     )
+    
+    # sails.log.debug "downloaded_files size #{ downloaded_files.length }"
 
-
+  check: ( files ) ->
+    sails.log.debug "New size #{ JSON.stringify files }"
+   
 
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
