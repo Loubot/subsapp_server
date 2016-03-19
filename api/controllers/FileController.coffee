@@ -96,7 +96,7 @@ module.exports = {
   parse_players: ( req, res ) ->
     sails.log.debug "Hit the file controller/aws"
     sails.log.debug "params #{ JSON.stringify req.body }"
-    xlsx = require('node-xlsx')
+    
     Promise = require('bluebird')
     sails.log.debug JSON.stringify req.body
     
@@ -166,10 +166,7 @@ module.exports = {
 
     # s3.getObjectAsync( Bucket: 'subzapp', Key: file.Key ).then( ( downloaded_file ) ->
     #   sails.log.debug "Download file #{ JSON.stringify downloaded_file }"
-    #   obj = xlsx.parse( downloaded_file.Body )
-    #   player_array = obj[0].data
-    #   player_array.splice(0,1)
-    #   return_players = new Array()
+    
       
     #   for player in player_array
     #     User.create_kid( player, req.body.org_id, ( err, kid ) ->

@@ -60,19 +60,23 @@ module.exports = {
 
   # end of get_files()
 
-  create_users: ( files, cb ) ->
+  create_users: ( file, cb ) ->
+    xlsx = require('node-xlsx')
     sails.log.debug "Hit the fileservice/create_users"
-    sails.log.debug "Files #{ typeof files }"
-    
+    sails.log.debug "Files #{ JSON.stringify file }"
+    obj = xlsx.parse( file.Body )
+    player_array = obj[0].data
+    player_array.splice(0,1)
+    return_players = new Array()
 
-    finish_up = ( users ) ->
-      sails.log.debug "Create users finish up #{ users.length }"
-      cb( null, users )
+    sails.log.debug "Player array #{ JSON.stringify player_array }"
 
-    recurse_users = ( counter, users ) ->
-      # if counter >= file.length
-      cb( null, 'hello ')
+    # finish_up = ( users ) ->
+    #   sails.log.debug "Create users finish up #{ users.length }"
+    #   cb( null, users )
 
+    # recurse_users = ( counter, users ) ->
+    cb( null, player_array )
 
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
