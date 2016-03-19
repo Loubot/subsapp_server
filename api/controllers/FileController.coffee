@@ -109,6 +109,10 @@ module.exports = {
     # decode = require('urldecode')
     AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
 
+    finish_up = ( users ) ->
+      sails.log.debug "Finished creating users #{ users.length }"
+      res.json users
+
     bucket_params = 
       Bucket: 'subzapp'
       Prefix: "#{ String( req.body.org_id ) }/"
@@ -126,15 +130,24 @@ module.exports = {
       File_service.get_filesAsync( file_names ).then( ( returned_files ) -> # download files using fileservice get_files method
         sails.log.debug "Returned files #{ returned_files.length }"
 
-        File_service.create_usersAsync( returned_files ).then( ( new_users ) -> #create users in fileservice
-          sails.log.debug "New users created #{ JSON.stringify new_users }"
-          res.json new_users
+        recurse_create_users = ( index, created_users ) ->
+          if index >= returned_files.length
+            finish_up( created_users )
+            return created_users
+          sails.log.debug "Check files index #{ JSON.stringify returned_files[index] }"
+          File_service.create_usersAsync( returned_files[index] ).then( ( returned_users ) ->
+            sails.log.debug "Retruned users #{ JSON.stringify returned_users }"
+            created_users.push( returned_users )
+            ++index
+            recurse_create_users( index, created_users )
+          ).catch( ( returned_users_err ) ->
+            sails.log.debug "returned users err #{ JSON.stringify returned_users_err }"
+            res.negotiate returned_users_err
+          )
 
-        ).catch( ( new_users_err ) ->
-          sails.log.debug "New users err #{ JSON.stringify new_users_err }"
-          res.negotiate new_users_err
 
-        )
+
+        recurse_create_users( 0, [] )        
         
       ).catch( ( returned_files_err ) ->
         sails.log.debug "Returned files err #{ JSON.stringify returned_files_err }"

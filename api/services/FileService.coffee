@@ -62,8 +62,17 @@ module.exports = {
 
   create_users: ( files, cb ) ->
     sails.log.debug "Hit the fileservice/create_users"
-    sails.log.debug "Files size #{ files.length }"
-    cb( null, 'hello' )
+    sails.log.debug "Files #{ typeof files }"
+    
+
+    finish_up = ( users ) ->
+      sails.log.debug "Create users finish up #{ users.length }"
+      cb( null, users )
+
+    recurse_users = ( counter, users ) ->
+      # if counter >= file.length
+      cb( null, 'hello ')
+
 
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
