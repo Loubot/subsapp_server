@@ -29,7 +29,7 @@ module.exports = {
 
     finish_up = ( files ) -> # downloads finished, execute call back
       sails.log.debug "Finish up #{ files.length }"
-      cb( null, files.length )
+      cb( null, files )
 
     
     params = 
@@ -58,7 +58,12 @@ module.exports = {
     do_download( 0, [] ) # start recursively downloading files. 
     
 
+  # end of get_files()
 
+  create_users: ( files, cb ) ->
+    sails.log.debug "Hit the fileservice/create_users"
+    sails.log.debug "Files size #{ files.length }"
+    cb( null, 'hello' )
 
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 

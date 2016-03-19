@@ -122,8 +122,19 @@ module.exports = {
         file_names.push file.Key
 
       sails.log.debug "File names #{ JSON.stringify file_names }" 
+
       File_service.get_filesAsync( file_names ).then( ( returned_files ) -> # download files using fileservice get_files method
         sails.log.debug "Returned files #{ returned_files.length }"
+
+        File_service.create_usersAsync( returned_files ).then( ( new_users ) -> #create users in fileservice
+          sails.log.debug "New users created #{ JSON.stringify new_users }"
+          res.json new_users
+
+        ).catch( ( new_users_err ) ->
+          sails.log.debug "New users err #{ JSON.stringify new_users_err }"
+          res.negotiate new_users_err
+
+        )
         
       ).catch( ( returned_files_err ) ->
         sails.log.debug "Returned files err #{ JSON.stringify returned_files_err }"
