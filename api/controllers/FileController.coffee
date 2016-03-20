@@ -108,30 +108,23 @@ module.exports = {
     s3 = Promise.promisifyAll(new AWS.S3())
     # decode = require('urldecode')
     AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
-    
-    FileService.get_org_files( req.body, ( err, file_list ) ->
-      if err?
-        # sails.log.debug "Get file list err #{ JSON.stringify err }"
+
+    params = 
+      Bucket: 'subzapp'
+      Prefix: "#{ String( req.body.org_id ) }/"
+
+    File_service = Promise.promisifyAll( FileService )
+
+    File_service.get_file_list( params, ( err, file_list ) ->
+      if err? 
+        sails.log.debug "File list returned err #{ JSON.stringify err }"
         res.negotiate err
       else
-        # sails.log.debug "File list #{ JSON.stringify file_list }"
-        # res.json file_list
-        returned_files = new Array()
-        total = file_list.length
-        file_list.forEach ( file, index ) ->
-        
-          FileService.get_file( req.body, file, ( file_err, returned_file ) ->
-            if err?
-              sails.log.debug "Returned file err #{ JSON.stringify file_err }"
-              res.negotiate file_err
-            else
-              # sails.log.debug "Returned file #{ index } #{ JSON.stringify returned_file }"
-              returned_files.push( returned_file )
-              sails.log.debug "Returned file size #{ returned_files.length }"
-              User.create_kid( )
-          )
-
+        sails.log.debug "File list returned #{ JSON.stringify file_list }" 
+        res.json file_list
     )
+    
+    # FileService.get_file_list( params, )
 
 
     

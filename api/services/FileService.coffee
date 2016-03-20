@@ -8,60 +8,18 @@ AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: 
 
 module.exports = {
 
-  get_org_files: ( body, cb ) ->
-    s3 = Promise.promisifyAll(new AWS.S3())
-    params = 
-      Bucket: 'subzapp'
-      Prefix: String( body.org_id )
+  get_file_list: ( params, cb ) ->
+    sails.log.debug "Hit the fileservice/get_file_list"
+    sails.log.debug "Bucket Params #{ JSON.stringify params }"
+    s3 = Promise.promisifyAll( new AWS.S3() )
 
-    file_list = new Array()
-
-    s3.listObjectsAsync( params ).then( ( bucket ) ->
-      sails.log.debug "s3 bucket #{ JSON.stringify bucket }"
-
-      for file in bucket.Contents
-        sails.log.debug "File key #{ file.Key }"
-        file_list.push( file.Key )
-      sails.log.debug "File list #{ JSON.stringify file_list }"
-      cb( null, file_list )  
-    
-    
-    ).catch( ( s3_bucket_err ) ->
-      sails.log.debug "S3 error #{ JSON.stringify s3_bucket_err }"
-      cb( s3_bucket_err )
+    s3.listObjectsAsync( params ).then( ( bucket_info ) ->
+      sails.log.debug "Bucket info #{ JSON.stringify bucket_info }"
+      cb( null, bucket_info )
+    ).catch( ( bucket_info_err ) ->
+      sails.log.debug "Bucket info error #{ JSON.stringify bucket_info_err }"
+      cb( bucket_info_err ) 
     )
-
-
-
-
-  get_file: ( body, file, cb ) ->
-    s3 = new AWS.S3()
-    # downloaded_files = new Array()
-    # sails.log.debug "Total #{ total }"
-
-    # sails.log.debug "file_list #{ JSON.stringify file_list }"
-
-       
-    params = 
-      Bucket: 'subzapp'
-      Key: file
-    sails.log.debug "Hit the file service/get_file"
-    sails.log.debug "Params #{ JSON.stringify file } #{ JSON.stringify params }"
-    s3.getObject( params, ( err, downloaded_file ) ->
-      if err?
-        sails.log.debug "downloaded_file_err #{ JSON.stringify err }"
-        cb( err )
-      else
-        # sails.log.debug "downloaded_file #{ JSON.stringify downloaded_file }"
-        # downloaded_files.push( downloaded_file )
-        cb( null, downloaded_file ) 
-    )
-    
-    # sails.log.debug "downloaded_files size #{ downloaded_files.length }"
-
-  check: ( files ) ->
-    sails.log.debug "New size #{ JSON.stringify files }"
-   
 
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
