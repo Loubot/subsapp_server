@@ -122,3 +122,4 @@ config/log.coffee
 assets/excel_sheets/
 .tmp/
 
+#git update-index --assume-unchanged

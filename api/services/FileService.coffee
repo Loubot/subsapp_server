@@ -60,16 +60,17 @@ module.exports = {
 
   # end of get_files()
 
-  create_users: ( file, cb ) ->
+  create_users: ( file, org, cb ) ->
     xlsx = require('node-xlsx')
     sails.log.debug "Hit the fileservice/create_users"
     # sails.log.debug "Files #{ JSON.stringify file }"
+    player_array = null
     obj = xlsx.parse( file.Body )
     player_array = obj[0].data
     player_array.splice(0,1)
-    return_players = new Array()
 
-    Promise.promisifyAll( User.create )
+    sails.log.debug "Player array length #{ JSON.stringify player_array }"
+
 
     sails.log.debug "Player array #{ JSON.stringify player_array.length }"
 
@@ -78,18 +79,26 @@ module.exports = {
       cb( null, users )
 
     recurse_users = ( index, player_array, created_kids ) ->
+      sails.log.debug "Create users array length #{ player_array.length }"
+      sails.log.debug "Create users index #{ index }"
+      sails.log.debug "#{ index >= player_array.length }"
       if index >= player_array.length
-        finish_up( users )
-        return users
+        finish_up( created_kids )
+        return created_kids
 
-      User.create_kid( player_array[index], org ).then( ( kid ) ->
-        sails.log.debug "Kid created #{ JSON.stringify kid }"
-        created_kids.push( kid )
-        ++index
-        recurse_users( index, player_array, created_kids )
-      ).catch( ( kid_create_err ) ->
-        sails.log.debug "kid_create_err #{ JSON.stringify kid_create_err }"
+      User.create_kid( player_array[index], org, ( kid_create_err, kid ) ->
+        if err?
+          sails.log.debug "kid_create_err #{ JSON.stringify kid_create_err }"
+          ++index
+          recurse_users( index, player_array, created_kids )
+        else
+          sails.log.debug "Kid created #{ JSON.stringify kid }"
+          created_kids.push( kid )
+          ++index
+          recurse_users( index, player_array, created_kids )
       )
+
+      
 
     recurse_users( 0, player_array, [] )
 
@@ -152,3 +161,11 @@ module.exports = {
     
 
 }
+# User.create_kid( player_array[index], org ).then( ( kid ) ->
+      #   sails.log.debug "Kid created #{ JSON.stringify kid }"
+      #   created_kids.push( kid )
+      #   ++index
+      #   recurse_users( index, player_array, created_kids )
+      # ).catch( ( kid_create_err ) ->
+      #   sails.log.debug "kid_create_err #{ JSON.stringify kid_create_err }"
+      # )

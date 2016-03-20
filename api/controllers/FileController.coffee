@@ -135,7 +135,7 @@ module.exports = {
             finish_up( created_users )
             return created_users
           # sails.log.debug "Check files index #{ JSON.stringify returned_files[index] }"
-          File_service.create_usersAsync( returned_files[index] ).then( ( returned_users ) ->
+          File_service.create_usersAsync( returned_files[index], req.body.org_id ).then( ( returned_users ) ->
             sails.log.debug "Returned users #{ JSON.stringify returned_users.length }"
             created_users.push( returned_users )
             ++index
