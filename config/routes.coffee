@@ -61,7 +61,7 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'kids_with_parents'
 
-      'get /parent/parents-with-events':
+      'get /parent/parents-with-events/:id':
         controller:             'UserController'
         action:                 'parents_with_events'
 

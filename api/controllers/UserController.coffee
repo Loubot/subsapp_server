@@ -65,7 +65,7 @@ module.exports = {
 
     )
 
-  parents_with_events: ( req, res ) ->
+  parents_with_events_old: ( req, res ) ->
     sails.log.debug "Hit the UserController/parents_with_events"
     User.query("select b.id, b.firstName, b.lastName, b.dob, b.parent_email, a.id as parent_id, c.team_team_members as team_id, d.name as team_name, d.main_org as club_id, e.name as club_name, f.id as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, g.paid, g.createdAt as paid_date
       from user a
@@ -75,6 +75,26 @@ module.exports = {
       left outer join org e on d.main_org = e.id
       right join event f on c.team_team_members = f.event_team
       left outer join tokentransaction g on a.id = g.parent_id and f.id = g.event_id;", ( err, results ) ->
+        if err?
+          sails.log.debug "parents_with_events err #{ err }"
+          res.negotiate err
+        else
+          sails.log.debug "parents_with_events #{ JSON.stringify results }"
+          res.json results
+
+    )
+
+  parents_with_events: ( req, res ) ->
+    sails.log.debug "Hit the UserController/parents_with_events"
+    User.query("select b.id, b.firstName, b.lastName, b.dob, b.parent_email, a.id as parent_id, c.team_team_members as team_id, d.name as team_name, d.main_org as club_id, e.name as club_name, f.id as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, g.paid, g.createdAt as paid_date
+      from user a
+      inner join user b on a.email = b.parent_email
+      left outer join team_team_members__user_user_teams c on b.id = c.user_user_teams
+      left outer join team d on c.team_team_members = d.id
+      left outer join org e on d.main_org = e.id
+      right join event f on c.team_team_members = f.event_team
+      left outer join tokentransaction g on a.id = g.parent_id and f.id = g.event_id
+      where a.id=#{ req.param('id') };", ( err, results ) ->
         if err?
           sails.log.debug "parents_with_events err #{ err }"
           res.negotiate err
