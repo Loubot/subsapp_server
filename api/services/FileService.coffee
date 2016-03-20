@@ -69,10 +69,10 @@ module.exports = {
     player_array = obj[0].data
     player_array.splice(0,1)
 
-    sails.log.debug "Player array length #{ JSON.stringify player_array }"
+    # sails.log.debug "Player array length #{ JSON.stringify player_array }"
 
 
-    sails.log.debug "Player array #{ JSON.stringify player_array.length }"
+    sails.log.debug "Player array length #{ JSON.stringify player_array.length }"
 
     finish_up = ( users ) ->
       sails.log.debug "Create users finish up #{ users.length }"
@@ -140,14 +140,14 @@ module.exports = {
       team_name = body.team_name
       team_name = team_name.replace(/\s/g, "")
       sails.log.debug "No space #{ body.org_id }/#{ body.team_id}/#{ team_name }"
-      return_name = "#{ body.org_id }/#{ body.team_id}/#{ team_name }.xls" #folder/file
+      return_name = "#{ body.org_id }/#{ body.team_id}/#{ team_name }.ods" #folder/file
       sails.log.debug "Return name #{ return_name }"
       cb( null, return_name )
     else
       sails.log.debug "nope"
       Org.findOne( id: body.org_id ).then( ( org ) ->
         sails.log.debug "File service get_file_and_bucket/Org findOne #{ JSON.stringify org }"
-        return_name = "#{ body.org_id }/#{ org.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s/g, "") }.xls"
+        return_name = "#{ body.org_id }/#{ org.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s/g, "") }.ods"
         sails.log.debug "Return name #{ return_name }"
         cb( null, return_name )
       ).catch( ( err ) ->
