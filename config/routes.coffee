@@ -61,7 +61,7 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'kids_with_parents'
 
-      'get /parent/parents-with-events':
+      'get /parent/parents-with-events/:id':
         controller:             'UserController'
         action:                 'parents_with_events'
 
@@ -145,7 +145,7 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'create_payment'
 
-  'get /payment/get-transactions':
+  'get /payment/get-transactions/:id':
         controller:             'PaymentController'
         action:                 'get_transactions'
 

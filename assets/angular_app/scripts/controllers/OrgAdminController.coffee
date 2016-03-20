@@ -175,7 +175,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     # upload file
 
     $scope.submit = ->
-      
+      usSpinnerService.spin('spinner-1')
       $scope.upload $scope.file
 
     $scope.upload = (file) ->
@@ -204,12 +204,14 @@ angular.module('subzapp').controller('OrgAdminController', [
         file: file     
           
       ).then ((resp) ->
+        usSpinnerService.stop('spinner-1')
         console.log 'Success ' + JSON.stringify resp + 'uploaded. Response: ' + JSON.stringify resp.data
         console.log resp
         $scope.files = resp.data.bucket_info.Contents
         alertify.success "File uploaded ok"
         return
       ), ((resp) ->
+        usSpinnerService.stop('spinner-1')
         console.log 'Error status: ' + resp.status
         alertify.error "File failed to upload"
         console.log resp

@@ -147,6 +147,9 @@ module.exports =
 
   
   create_kid: ( kid_details, org, cb ) ->
+    cb( 'empty' ) if !(kid_details?) or kid_details == [] or kid_details.length <= 1
+    parent_email = null
+    date_stamp = null
     Promise = require('q')
     sails.log "Kid details #{ JSON.stringify kid_details }"
     sails.log.debug "Org id #{ org }"

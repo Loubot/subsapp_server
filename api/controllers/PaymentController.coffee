@@ -87,7 +87,7 @@ module.exports = {
     Promise = require('q')
 
     Promise.all([
-      User.findOne( id: req.query.id ).populate('tokens').populate('transactions'),
+      User.findOne( id: req.param('id') ).populate('tokens').populate('transactions'),
       {
         vat: sails.config.stripe.vat,
         stripe_comm_precent: sails.config.stripe.stripe_comm_precent,

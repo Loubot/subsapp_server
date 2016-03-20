@@ -21,6 +21,87 @@ module.exports = {
       cb( bucket_info_err ) 
     )
 
+  get_files: ( file_list, cb ) ->
+    sails.log.debug "Hit the fileservice/get_files"
+    sails.log.debug "File list #{ JSON.stringify file_list }"
+    s3 = Promise.promisifyAll( new AWS.S3() )
+    
+
+    finish_up = ( files ) -> # downloads finished, execute call back
+      sails.log.debug "Finish up #{ files.length }"
+      cb( null, files )
+
+    
+    params = 
+      Bucket: 'subzapp'
+
+    do_download = ( counter, downloaded_files ) -> #recursive function to download a number of s3 files. execute finish_up when it's finished. 
+      sails.log.debug "Downloaded files size #{ JSON.stringify downloaded_files.length }"
+      sails.log.debug "size in loop #{ file_list.length }"
+      counter = 0 if !(counter)?
+
+      if counter >= file_list.length
+        finish_up( downloaded_files )
+        return downloaded_files
+
+      params.Key = file_list[counter]
+      s3.getObjectAsync( params ).then( ( downloaded_file ) ->
+        sails.log.debug "Downloaded file ok"
+        downloaded_files.push( downloaded_file )
+        ++counter
+        do_download( counter, downloaded_files )
+      ).catch( ( downloaded_file_err ) ->
+        sails.log.debug "downloaded_file_err #{ JSON.stringify downloaded_file_err }"
+        cb( downloaded_file_err )
+      )
+
+    do_download( 0, [] ) # start recursively downloading files. 
+    
+
+  # end of get_files()
+
+  create_users: ( file, org, cb ) ->
+    xlsx = require('node-xlsx')
+    sails.log.debug "Hit the fileservice/create_users"
+    # sails.log.debug "Files #{ JSON.stringify file }"
+    player_array = null
+    obj = xlsx.parse( file.Body )
+    player_array = obj[0].data
+    player_array.splice(0,1)
+
+    # sails.log.debug "Player array length #{ JSON.stringify player_array }"
+
+
+    sails.log.debug "Player array length #{ JSON.stringify player_array.length }"
+
+    finish_up = ( users ) ->
+      sails.log.debug "Create users finish up #{ users.length }"
+      cb( null, users )
+
+    recurse_users = ( index, player_array, created_kids ) ->
+      sails.log.debug "Create users array length #{ player_array.length }"
+      sails.log.debug "Create users index #{ index }"
+      sails.log.debug "#{ index >= player_array.length }"
+      if index >= player_array.length
+        finish_up( created_kids )
+        return created_kids
+
+      User.create_kid( player_array[index], org, ( kid_create_err, kid ) ->
+        if err?
+          sails.log.debug "kid_create_err #{ JSON.stringify kid_create_err }"
+          ++index
+          recurse_users( index, player_array, created_kids )
+        else
+          sails.log.debug "Kid created #{ JSON.stringify kid }"
+          created_kids.push( kid )
+          ++index
+          recurse_users( index, player_array, created_kids )
+      )
+
+      
+
+    recurse_users( 0, player_array, [] )
+
   store_file_info: ( s3_object, org_id, team_id, file_name, cb) ->
 
     sails.log.debug "Hit the file tracker service/store_file_info"
@@ -59,14 +140,14 @@ module.exports = {
       team_name = body.team_name
       team_name = team_name.replace(/\s/g, "")
       sails.log.debug "No space #{ body.org_id }/#{ body.team_id}/#{ team_name }"
-      return_name = "#{ body.org_id }/#{ body.team_id}/#{ team_name }.xls" #folder/file
+      return_name = "#{ body.org_id }/#{ body.team_id}/#{ team_name }.ods" #folder/file
       sails.log.debug "Return name #{ return_name }"
       cb( null, return_name )
     else
       sails.log.debug "nope"
       Org.findOne( id: body.org_id ).then( ( org ) ->
         sails.log.debug "File service get_file_and_bucket/Org findOne #{ JSON.stringify org }"
-        return_name = "#{ body.org_id }/#{ org.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s/g, "") }.xls"
+        return_name = "#{ body.org_id }/#{ org.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s/g, "") }.ods"
         sails.log.debug "Return name #{ return_name }"
         cb( null, return_name )
       ).catch( ( err ) ->
@@ -80,3 +161,11 @@ module.exports = {
     
 
 }
+# User.create_kid( player_array[index], org ).then( ( kid ) ->
+      #   sails.log.debug "Kid created #{ JSON.stringify kid }"
+      #   created_kids.push( kid )
+      #   ++index
+      #   recurse_users( index, player_array, created_kids )
+      # ).catch( ( kid_create_err ) ->
+      #   sails.log.debug "kid_create_err #{ JSON.stringify kid_create_err }"
+      # )

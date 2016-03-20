@@ -162,6 +162,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.submit = function() {
+      usSpinnerService.spin('spinner-1');
       return $scope.upload($scope.file);
     };
     $scope.upload = function(file) {
@@ -188,11 +189,13 @@ angular.module('subzapp').controller('OrgAdminController', [
         data: file_info,
         file: file
       }).then((function(resp) {
+        usSpinnerService.stop('spinner-1');
         console.log('Success ' + JSON.stringify(resp + 'uploaded. Response: ' + JSON.stringify(resp.data)));
         console.log(resp);
         $scope.files = resp.data.bucket_info.Contents;
         alertify.success("File uploaded ok");
       }), (function(resp) {
+        usSpinnerService.stop('spinner-1');
         console.log('Error status: ' + resp.status);
         alertify.error("File failed to upload");
         console.log(resp);
