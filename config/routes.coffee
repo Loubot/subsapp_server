@@ -145,7 +145,7 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'create_payment'
 
-  'get /payment/get-transactions':
+  'get /payment/get-transactions/:id':
         controller:             'PaymentController'
         action:                 'get_transactions'
 
