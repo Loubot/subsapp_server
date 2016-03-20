@@ -117,6 +117,8 @@ nbproject
 .idea
 .node_history
 logfile.log
+config/log.js
+config/log.coffee
 assets/excel_sheets/
 .tmp/
 
