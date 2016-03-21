@@ -9,13 +9,16 @@
 module.exports = {
   find: ( req, res ) ->
     sails.log.debug "Hit the TokenTransactionController/findOne"
-    sails.log.debug "Params #{ JSON.stringify req.query }"
-    TokenTransaction.find( user_id: req.query.user_id ).then ( ( ttransaction ) ->
-      res.json ttransaction
+    sails.log.debug "Params #{ JSON.stringify req.param('id') }"
+    if AuthService.check_user( req.user, req.param('id') )
+      TokenTransaction.find( user_id: req.param('id') ).then( ( ttransaction ) ->
+        res.json ttransaction
 
-    ).catch ( err ) ->
-      sails.log.debug "Find TokenTransaction error #{ JSON.stringify err }"
-      res.negotiate err
+      ).catch ( err ) ->
+        sails.log.debug "Find TokenTransaction error #{ JSON.stringify err }"
+        res.negotiate err
+    else
+      res.unauthorized "You are not authorised to view this"
 
 
   pay: ( req, res ) ->

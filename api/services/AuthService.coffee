@@ -13,4 +13,9 @@ module.exports = {
     sails.log.debug "User #{ typeof user.super_admin }"
     return Boolean(user.super_admin)
 
+  check_user: ( user, id ) ->
+    sails.log.debug "Authservice/check_user"
+    sails.log.debug "result #{ user.id == parseInt( id ) }"
+    return user.id == parseInt( id )
+
 }
