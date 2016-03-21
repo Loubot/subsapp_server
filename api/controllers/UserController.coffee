@@ -130,7 +130,7 @@ module.exports = {
                             sails.log.debug "parents_with_events kidsEventsData #{ JSON.stringify kidsEventsData }"
                             NULL = ''
                             masterJsonData = {}
-                            masterJsonData.kids = kidsData
+                            # masterJsonData.kids = kidsData
                             sails.log.debug "masterJsonData kids #{ JSON.stringify masterJsonData }"
                             masterJsonData.kidsWithEvents = []
                             masterJsonData.parent = parentData
