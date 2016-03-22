@@ -68,6 +68,12 @@ module.exports.routes =
 
   # End of user controller
 
+  #Parent controller. Basically a user controller
+  'post /parent/associate-kids':
+        controller:             'ParentController'
+        action:                 'associate_kids'
+  # End of Parent controller
+
   # Business controller
 
   'post /create-business' : # Create new org. See org.coffee for attributes

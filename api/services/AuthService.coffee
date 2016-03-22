@@ -1,3 +1,4 @@
+# Service to provide Authorisation for accessing data and urls.
 module.exports = {
 
   check_club_admin: ( user, id ) -> # Make sure session user is the admin of this club
