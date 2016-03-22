@@ -147,8 +147,9 @@ module.exports = {
                                 if kidID == kidEventID
                                   temporaryKidEvents.push kid_event
                                 kid.events = temporaryKidEvents
-                                masterJsonData.kidsWithEvents.push kid
+                                
                                 j++
+                              masterJsonData.kidsWithEvents.push kid
                               sails.log.debug "Masterjsondata in loop #{ JSON.stringify masterJsonData }"
                               i++
                             sails.log.debug "Masterjsondata #{ JSON.stringify masterJsonData }"
