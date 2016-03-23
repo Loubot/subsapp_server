@@ -11,11 +11,12 @@ module.exports = {
   send_message: ( req, res ) ->
     sails.log.debug "Hit the GCMController/send_message"
     
-    message = new (gcm.Message)(
-      notification:
-        title: 'Hello, World'
-        text: 'This is a notification that will be displayed ASAP.')
-
+    message = new (gcm.Message)
+    
+    message.addNotification
+      title: 'Alert!!!'
+      body: 'Abnormal data access'
+      icon: 'ic_launcher'
 
     sender = new gcm.Sender( sails.config.GCM.server_key )
 
