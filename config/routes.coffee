@@ -242,6 +242,10 @@ module.exports.routes =
         action:                   'pay'
 
   #End of TokenTransactionController
+  'post /gcm/send-message':
+        controller:              'GCMController'
+        action:                  'send_message'
+  #
 
 
   # #Mail controller
