@@ -12,7 +12,12 @@ angular.module('subzapp').controller('OrgAdminController', [
   'usSpinnerService'
   'uiGmapGoogleMapApi'
   ( $scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
-    
+
+    $scope.map =
+      center:
+        latitude: 45
+        longitude: -73
+      zoom: 8
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 

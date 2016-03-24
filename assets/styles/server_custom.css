@@ -16,6 +16,10 @@ body{
   width: 100% !important;
 }
 
+.map_container{
+  height: 400px;
+}
+
 .spinner{
   z-index: 999999999999999999999999999999 !important;
   position: fixed !important;

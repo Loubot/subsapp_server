@@ -4,6 +4,13 @@ var return_org;
 angular.module('subzapp').controller('OrgAdminController', [
   '$scope', '$state', '$http', '$window', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
     var check_club_admin, user_token;
+    $scope.map = {
+      center: {
+        latitude: 45,
+        longitude: -73
+      },
+      zoom: 8
+    };
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');

@@ -6,7 +6,7 @@ angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.da
 
 angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-    v: '3.20',
+    v: '3.23',
     libraries: 'weather,geometry,visualization'
   });
 });
