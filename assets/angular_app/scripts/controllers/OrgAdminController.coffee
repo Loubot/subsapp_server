@@ -18,6 +18,9 @@ angular.module('subzapp').controller('OrgAdminController', [
         latitude: 45
         longitude: -73
       zoom: 8
+
+    uiGmapGoogleMapApi.then (maps) ->
+      
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 

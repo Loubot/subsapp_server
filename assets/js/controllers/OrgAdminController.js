@@ -11,6 +11,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       },
       zoom: 8
     };
+    uiGmapGoogleMapApi.then(function(maps) {});
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
