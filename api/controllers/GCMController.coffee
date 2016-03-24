@@ -21,6 +21,12 @@ module.exports = {
       alerts: req.body.alerts
       event_notifications: req.body.event_notifications
       club_notifications: req.body.club_notifications
+    ).then( ( gcm ) ->
+      sails.log.debug "GCM created #{ JSON.stringify gcm }"
+      res.json gcm
+    ).catch( ( gcm_err ) ->
+      sails.log.debug "GCM error #{ JSON.stringify gcm_err }"
+      res.negotiate gcm_err
     )
 
   send_message: ( req, res ) ->
