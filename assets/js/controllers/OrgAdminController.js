@@ -2,7 +2,7 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload, usSpinnerService) {
+  '$scope', '$state', '$http', '$window', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
     var check_club_admin, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {

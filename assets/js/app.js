@@ -4,6 +4,13 @@ window.USER = null;
 
 angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps']);
 
+angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
+  uiGmapGoogleMapApiProvider.configure({
+    v: '3.20',
+    libraries: 'weather,geometry,visualization'
+  });
+});
+
 angular.module('subzapp').constant('API', 'api/v1/');
 
 angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {

@@ -6,12 +6,12 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$http'
   '$window'
   'user'
-  '$location'
   'RESOURCES'
   'alertify'
   'Upload'
   'usSpinnerService'
-  ( $scope, $state, $http, $window, user, $location, RESOURCES, alertify, Upload, usSpinnerService ) ->
+  'uiGmapGoogleMapApi'
+  ( $scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
     
     check_club_admin = ( user ) ->
       if !user.club_admin

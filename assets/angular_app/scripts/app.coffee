@@ -18,6 +18,12 @@ angular.module('subzapp', [
     'uiGmapgoogle-maps'
 ])
 
+angular.module('subzapp').config (uiGmapGoogleMapApiProvider) ->
+  uiGmapGoogleMapApiProvider.configure
+    v: '3.20'
+    libraries: 'weather,geometry,visualization'
+  return
+
 angular.module('subzapp').constant('API', 'api/v1/')
   
 #routes, using angular-ui-router
