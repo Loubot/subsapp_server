@@ -242,10 +242,18 @@ module.exports.routes =
         action:                   'pay'
 
   #End of TokenTransactionController
+
+  #GCMController
+  'post /gcm/tokens/:id':
+        controller:             'GCMController'
+        action:                 'create_token'
+
   'post /gcm/send-message':
         controller:              'GCMController'
         action:                  'send_message'
-  #
+
+
+  # End of GCMController
 
 
   # #Mail controller

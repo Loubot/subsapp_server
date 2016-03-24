@@ -8,6 +8,21 @@ gcm = require('node-gcm')
 
 module.exports = {
 
+  create_token: ( req, res )->
+    sails.log.debug "Hit the GCMController/creat_token"
+    sails.log.debug "User id #{ req.param('id') }"
+    sails.log.debug "params #{ JSON.stringify req.body }"
+
+    GCMReg.create(
+      user_id: req.param('id')
+      device_uid: req.body.device_uid
+      instance_id: req.body.instance_id
+      gcm_token: req.body.gcm_token
+      alerts: req.body.alerts
+      event_notifications: req.body.event_notifications
+      club_notifications: req.body.club_notifications
+    )
+
   send_message: ( req, res ) ->
     sails.log.debug "Hit the GCMController/send_message"
     

@@ -116,6 +116,11 @@ module.exports =
       collection: 'transaction'
       via: 'payee'
 
+    gcm_tokens:
+      collection: 'gcmreg'
+      via: 'user_gcm_tokens'
+
+
     getFullName: ->
       _.str.trim (@firstName or '') + ' ' + (@lastName or '')
 
