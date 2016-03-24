@@ -15,6 +15,7 @@ angular.module('subzapp', [
     'ngFileUpload'
     "checklist-model"
     'angularSpinner'
+    'uiGmapgoogle-maps'
 ])
 
 angular.module('subzapp').constant('API', 'api/v1/')
