@@ -16,7 +16,7 @@ body{
   width: 100% !important;
 }
 
-.map_container{
+.angular-google-map-container {
   height: 400px;
 }
 

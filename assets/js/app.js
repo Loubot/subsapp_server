@@ -5,7 +5,7 @@ window.USER = null;
 angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps']);
 
 angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
-  uiGmapGoogleMapApiProvider.configure({
+  return uiGmapGoogleMapApiProvider.configure({
     v: '3.23',
     libraries: 'weather,geometry,visualization'
   });

@@ -6,12 +6,21 @@ angular.module('subzapp').controller('OrgAdminController', [
     var check_club_admin, user_token;
     $scope.map = {
       center: {
-        latitude: 45,
-        longitude: -73
+        latitude: 51.9181688,
+        longitude: -8.5039876
       },
-      zoom: 8
+      zoom: 9
     };
-    uiGmapGoogleMapApi.then(function(maps) {});
+    uiGmapGoogleMapApi.then(function(maps) {
+      var geocoder;
+      geocoder = new google.maps.Geocoder();
+      return geocoder.geocode({
+        address: 'the cottage, castlewhite, waterfall, cork'
+      }, function(results, status) {
+        console.log("Results " + (JSON.stringify(results)));
+        return console.log("Status " + (JSON.stringify(status)));
+      });
+    });
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');

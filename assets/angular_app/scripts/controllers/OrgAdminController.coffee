@@ -15,12 +15,17 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.map =
       center:
-        latitude: 45
-        longitude: -73
-      zoom: 8
+        latitude: 51.9181688
+        longitude: -8.5039876
+      zoom: 9
 
     uiGmapGoogleMapApi.then (maps) ->
-      
+      geocoder = new google.maps.Geocoder()
+      geocoder.geocode( address: 'the cottage, castlewhite, waterfall, cork', ( results, status ) ->
+        console.log "Results #{ JSON.stringify results }"
+        console.log "Status #{ JSON.stringify status }"
+      )
+
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
