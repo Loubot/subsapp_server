@@ -56,17 +56,18 @@ module.exports = {
           sails.log.debug 'TokenTransaction create error/event pay ' + JSON.stringify(ttransaction_err)
           res.negotiate ttransaction_err
 
-      else if ( parseInt( parent.tokens[0].amount ) - parseInt( req.body.token_amount ) >= 0 )
+      else if parentHasEnoughTokens
         TokenTransaction.create( 
           event_id: req.body.event_id
           user_id: req.body.user_id
           parent_id: req.body.parent_id
           token_amount: req.body.token_amount
           paid: true
+          declined: false
           team_id: req.body.team_id
         ).then( ( ttransaction ) ->
           sails.log.debug "TokenTransaction create/event pay #{ JSON.stringify ttransaction }"
-          parent.tokens[0].amount = parent.tokens[0].amount - req.body.token_amount
+          parent.tokens[0].amount = tokenBalanceAfterTransaction
           sails.log.debug "new amount #{ parent.tokens[0].amount }"
           parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
             sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
@@ -83,7 +84,6 @@ module.exports = {
     ).catch ( err ) ->
       sails.log.debug "Find parent error #{ JSON.stringify err }"
       res.negotiate err
-
     
   
 
