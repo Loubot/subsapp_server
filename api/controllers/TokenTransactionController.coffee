@@ -39,7 +39,7 @@ module.exports = {
       if tokenBalanceAfterTransaction >= 0
         parentHasEnoughTokens = true
       declinedString = req.body.declined
-      if declinedString.toLowerCase().trim().valueOf() == 'true'
+      if declinedString
         eventHasBeenDeclined = true
       if eventHasBeenDeclined
         TokenTransaction.create(
