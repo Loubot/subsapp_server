@@ -190,6 +190,7 @@ body{
   left: 110px;
   top: 52px;
   position: absolute;
+  opacity: 0;
 }
 
 .button{
@@ -229,6 +230,12 @@ body{
 }
 #target {
   width: 345px;
+}
+
+.appear{
+    -webkit-transition: opacity 2s; 
+    transition: opacity 2s;
+    opacity: 1;
 }
 
 /*styled select*/

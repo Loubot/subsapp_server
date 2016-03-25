@@ -240,7 +240,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       markers: []
 
     uiGmapGoogleMapApi.then (maps) ->
-      
+      $scope.show_map = true
 
     $scope.find_address = ->
       geocoder = new google.maps.Geocoder()
@@ -265,11 +265,12 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.save_address = ->
       console.log $scope.map.center
       $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/parse-players"
+        method: 'PUT'
+        url: "#{ RESOURCES.DOMAIN }org/#{ $scope.org.id }"
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
+        data: $scope.map.center
       ).then ( ( res ) ->
         console.log "aws responses"
         console.log res

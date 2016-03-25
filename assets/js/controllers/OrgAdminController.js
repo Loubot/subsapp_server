@@ -219,7 +219,9 @@ angular.module('subzapp').controller('OrgAdminController', [
       zoom: 9,
       markers: []
     };
-    uiGmapGoogleMapApi.then(function(maps) {});
+    uiGmapGoogleMapApi.then(function(maps) {
+      return $scope.show_map = true;
+    });
     $scope.find_address = function() {
       var geocoder;
       geocoder = new google.maps.Geocoder();
@@ -249,12 +251,13 @@ angular.module('subzapp').controller('OrgAdminController', [
     return $scope.save_address = function() {
       console.log($scope.map.center);
       return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/parse-players",
+        method: 'PUT',
+        url: RESOURCES.DOMAIN + "org/" + $scope.org.id,
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
-        }
+        },
+        data: $scope.map.center
       }).then((function(res) {
         console.log("aws responses");
         console.log(res);

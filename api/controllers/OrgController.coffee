@@ -87,7 +87,10 @@ module.exports = {
     sails.log.debug "Hit the OrgController/update"
     sails.log.debug "Param #{ sails.log.debug req.param('id') }"
     sails.log.debug "Data #{ JSON.stringify req.body }"
-    
+    if AuthService.check_club_admin( req.user, req.param('id') )
+      res.json 'ok'
+    else
+      res.unauthorized 'nop'
 
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
