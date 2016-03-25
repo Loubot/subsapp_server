@@ -266,8 +266,18 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log $scope.map.center
       $http(
         method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/"
-      )
+        url: "#{ RESOURCES.DOMAIN }/parse-players"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+      ).then ( ( res ) ->
+        console.log "aws responses"
+        console.log res
+        $scope.parsed_data = res
+      ), ( errResponse ) ->
+        console.log "aws error"
+        console.log errResponse
+        alertify.error errResponse.data
 
 ])
 

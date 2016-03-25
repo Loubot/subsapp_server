@@ -250,7 +250,19 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log($scope.map.center);
       return $http({
         method: 'POST',
-        url: RESOURCES.DOMAIN + "/"
+        url: RESOURCES.DOMAIN + "/parse-players",
+        headers: {
+          'Authorization': "JWT " + user_token,
+          "Content-Type": "application/json"
+        }
+      }).then((function(res) {
+        console.log("aws responses");
+        console.log(res);
+        return $scope.parsed_data = res;
+      }), function(errResponse) {
+        console.log("aws error");
+        console.log(errResponse);
+        return alertify.error(errResponse.data);
       });
     };
   }
