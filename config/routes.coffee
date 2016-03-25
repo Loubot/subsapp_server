@@ -48,19 +48,6 @@ module.exports.routes =
   #       controller:             'UserController'
   #       action:                 'pick_kids'
 
-    # Parents urls
-      'get /parent/social/:id':
-        controller:             'UserController'
-        action:                 'social'
-
-      'get /parent/financial/:id':
-        controller:             'UserController'
-        action:                 'financial'
-
-      'get /parent/kids-with-parents':
-        controller:             'UserController'
-        action:                 'kids_with_parents'
-
 
   # End of user controller
 
@@ -72,6 +59,18 @@ module.exports.routes =
   'get /parent/parents-with-events/:id':
         controller:             'ParentController'
         action:                 'parents_with_events'
+
+  'get /parent/social/:id':
+        controller:             'ParentController'
+        action:                 'social'
+
+  'get /parent/financial/:id':
+        controller:             'ParentController'
+        action:                 'financial'
+
+  'get /parent/kids-with-parents':
+        controller:             'ParentController'
+        action:                 'kids_with_parents'
   # End of Parent controller
 
   # Business controller
