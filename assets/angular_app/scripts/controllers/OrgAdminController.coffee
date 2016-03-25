@@ -252,8 +252,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         marker =
           id: Date.now()
           coords:
-            latitude: results[0].geometry.location.lat()
-            longitude: results[0].geometry.location.lng()
+            lat: results[0].geometry.location.lat()
+            lng: results[0].geometry.location.lng()
 
         $scope.map.markers.push( marker )
         console.log "markers #{ JSON.stringify $scope.map.markers }"

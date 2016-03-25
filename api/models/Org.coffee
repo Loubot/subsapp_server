@@ -27,6 +27,14 @@ module.exports =
       defaultsTo: ''
       required: true
 
+    lat:
+      type: 'float'
+      defaultsTo: null
+
+    lng:
+      type: 'float'
+      defaultsTo: null
+
     admins: 
       collection: 'user'
       via: 'orgs'
