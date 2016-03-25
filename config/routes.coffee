@@ -61,10 +61,6 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'kids_with_parents'
 
-      'get /parent/parents-with-events/:id':
-        controller:             'UserController'
-        action:                 'parents_with_events'
-
 
   # End of user controller
 
@@ -72,6 +68,10 @@ module.exports.routes =
   'post /parent/associate-kids':
         controller:             'ParentController'
         action:                 'associate_kids'
+
+  'get /parent/parents-with-events/:id':
+        controller:             'ParentController'
+        action:                 'parents_with_events'
   # End of Parent controller
 
   # Business controller
