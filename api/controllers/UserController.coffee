@@ -88,8 +88,9 @@ module.exports = {
 
   parents_with_events: ( req, res ) ->
     sails.log.debug "Hit the UserController/parents_with_events"
-    User.query("select a.email, a.firstName, a.lastName, a.id as parent_id, a.createdAt, a.updatedAt
+    User.query("select a.email, a.firstName, a.lastName, a.id as parent_id, a.createdAt, a.updatedAt, b.amount as tokens
       from user a
+      left outer join token b on a.id = b.owner
       where a.id=#{ req.param('id') };", ( err, parentData ) ->
         if err?
           sails.log.debug "parents_with_events parentData err #{ err }"
