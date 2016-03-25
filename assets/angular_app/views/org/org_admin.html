@@ -1,7 +1,16 @@
 <div class="angular-google-map-container" >
-    <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options" events="map.events" control="googlemap">
-    </ui-gmap-google-map>
+  <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options" events="map.events" control="googlemap">
+    <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.id"></ui-gmap-marker>
+  </ui-gmap-google-map>
+
 </div>
+
+
+
+<input id="pac-input" class="form-control controls" ng-change="find_address()" ng-model="address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
+
+
+
 <div class="container-fluid">
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
 </div>

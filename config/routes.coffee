@@ -243,7 +243,7 @@ module.exports.routes =
   #End of TokenTransactionController
 
   #GCMController
-  'post /gcm/tokens/:id':    #Requires user_id, device_uid, instance_id, gcm_token. Optional: alerts, event_notifications, club_notifications. See GCMReg.coffee
+  'post /gcm/tokens/:id':    #Requires device_uid, instance_id, gcm_token. Optional: alerts, event_notifications, club_notifications. See GCMReg.coffee
         controller:             'GCMController'
         action:                 'create_token'
 

@@ -4,23 +4,6 @@ var return_org;
 angular.module('subzapp').controller('OrgAdminController', [
   '$scope', '$state', '$http', '$window', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
     var check_club_admin, user_token;
-    $scope.map = {
-      center: {
-        latitude: 51.9181688,
-        longitude: -8.5039876
-      },
-      zoom: 9
-    };
-    uiGmapGoogleMapApi.then(function(maps) {
-      var geocoder;
-      geocoder = new google.maps.Geocoder();
-      return geocoder.geocode({
-        address: 'the cottage, castlewhite, waterfall, cork'
-      }, function(results, status) {
-        console.log("Results " + (JSON.stringify(results)));
-        return console.log("Status " + (JSON.stringify(status)));
-      });
-    });
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
@@ -223,10 +206,45 @@ angular.module('subzapp').controller('OrgAdminController', [
         return console.log('progress: ' + progressPercentage + '% ' + evt.config.data);
       });
     };
-    return $scope.convert_date = function(date) {
+    $scope.convert_date = function(date) {
       console.log("date " + date);
       console.log("New date " + (moment(date).format("DD-MM-YYYY")));
       return moment(date).format("DD-MM-YYYY");
+    };
+    $scope.map = {
+      center: {
+        latitude: 51.9181688,
+        longitude: -8.5039876
+      },
+      zoom: 9,
+      markers: []
+    };
+    uiGmapGoogleMapApi.then(function(maps) {});
+    return $scope.find_address = function() {
+      var geocoder;
+      geocoder = new google.maps.Geocoder();
+      return geocoder.geocode({
+        address: $scope.address
+      }, function(results, status) {
+        var marker;
+        $scope.map.markers = [];
+        console.log("results " + (JSON.stringify(results[0].geometry.location)));
+        console.log("Status " + (JSON.stringify(status)));
+        $scope.map.center = {
+          longitude: results[0].geometry.location.lng(),
+          latitude: results[0].geometry.location.lat()
+        };
+        marker = {
+          id: Date.now(),
+          coords: {
+            latitude: results[0].geometry.location.lat(),
+            longitude: results[0].geometry.location.lng()
+          }
+        };
+        $scope.map.markers.push(marker);
+        console.log("markers " + (JSON.stringify($scope.map.markers)));
+        return $scope.$apply();
+      });
     };
   }
 ]);

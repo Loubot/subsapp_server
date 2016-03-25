@@ -13,19 +13,6 @@ angular.module('subzapp').controller('OrgAdminController', [
   'uiGmapGoogleMapApi'
   ( $scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
 
-    $scope.map =
-      center:
-        latitude: 51.9181688
-        longitude: -8.5039876
-      zoom: 9
-
-    uiGmapGoogleMapApi.then (maps) ->
-      geocoder = new google.maps.Geocoder()
-      geocoder.geocode( address: 'the cottage, castlewhite, waterfall, cork', ( results, status ) ->
-        console.log "Results #{ JSON.stringify results }"
-        console.log "Status #{ JSON.stringify status }"
-      )
-
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -240,6 +227,40 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log "date #{ date }"
       console.log "New date #{ moment( date ).format( "DD-MM-YYYY" ) }"
       return moment( date ).format( "DD-MM-YYYY" )
+
+  ###########################################
+  # map stuff                               #
+  ###########################################
+
+    $scope.map =
+      center:
+        latitude: 51.9181688
+        longitude: -8.5039876
+      zoom: 9
+      markers: []
+
+    uiGmapGoogleMapApi.then (maps) ->
+      
+
+    $scope.find_address = ->
+      geocoder = new google.maps.Geocoder()
+      geocoder.geocode( address: $scope.address, ( results, status ) ->
+        $scope.map.markers = []
+        console.log "results #{ JSON.stringify results[0].geometry.location }"
+        console.log "Status #{ JSON.stringify status }"
+        $scope.map.center = longitude: results[0].geometry.location.lng(), latitude: results[0].geometry.location.lat()
+        marker =
+          id: Date.now()
+          coords:
+            latitude: results[0].geometry.location.lat()
+            longitude: results[0].geometry.location.lng()
+
+        $scope.map.markers.push( marker )
+        console.log "markers #{ JSON.stringify $scope.map.markers }"
+        
+        $scope.$apply()
+          
+      )
 
 ])
 
