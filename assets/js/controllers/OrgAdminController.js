@@ -220,7 +220,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       markers: []
     };
     uiGmapGoogleMapApi.then(function(maps) {});
-    return $scope.find_address = function() {
+    $scope.find_address = function() {
       var geocoder;
       geocoder = new google.maps.Geocoder();
       return geocoder.geocode({
@@ -244,6 +244,13 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.map.markers.push(marker);
         console.log("markers " + (JSON.stringify($scope.map.markers)));
         return $scope.$apply();
+      });
+    };
+    return $scope.save_address = function() {
+      console.log($scope.map.center);
+      return $http({
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/"
       });
     };
   }

@@ -83,6 +83,12 @@ module.exports = {
       res.unauthorized "You are not an admin"
       return false
 
+  update: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/update"
+    sails.log.debug "Param #{ sails.log.debug req.param('id') }"
+    sails.log.debug "Data #{ JSON.stringify req.body }"
+    
+
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
     sails.log.debug req.query

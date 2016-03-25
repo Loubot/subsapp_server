@@ -192,6 +192,11 @@ body{
   position: absolute;
 }
 
+.button{
+  left: 420px;
+  width: 50px !important;
+}
+
 #pac-input {
   background-color: #fff;
   font-family: Roboto;

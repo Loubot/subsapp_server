@@ -262,6 +262,13 @@ angular.module('subzapp').controller('OrgAdminController', [
           
       )
 
+    $scope.save_address = ->
+      console.log $scope.map.center
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/"
+      )
+
 ])
 
 return_org = ( orgs, search) ->

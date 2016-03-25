@@ -73,11 +73,15 @@ module.exports.routes =
         action:                 'kids_with_parents'
   # End of Parent controller
 
-  # Business controller
+  # ORG controller
 
   'post /create-business' : # Create new org. See org.coffee for attributes
         controller:             'OrgController'
         action:                 'create_business'
+
+  # 'put /org/:id':
+  #       controller:             'OrgController'
+  #       action:                 'update'
 
   'delete /delete-business' : #Destroy org. Requires org.id
         controller:             'OrgController'
