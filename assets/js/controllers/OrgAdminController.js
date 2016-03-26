@@ -3,7 +3,7 @@ var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
   '$scope', '$state', '$http', '$window', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
-    var check_club_admin, user_token;
+    var check_club_admin, set_map, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
@@ -211,37 +211,38 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log("New date " + (moment(date).format("DD-MM-YYYY")));
       return moment(date).format("DD-MM-YYYY");
     };
-    uiGmapGoogleMapApi.then(function(maps) {
+    set_map = function(lat, lng, set_markers, zoom) {
       var marker;
-      if ($scope.org.lat != null) {
-        $scope.show_map = true;
-        $scope.map = {
-          center: {
-            latitude: $scope.org.lat,
-            longitude: $scope.org.lng
-          },
-          zoom: 11,
-          markers: []
-        };
+      if (zoom == null) {
+        zoom = 11;
+      }
+      $scope.map = {
+        center: {
+          latitude: lat,
+          longitude: lng
+        },
+        zoom: zoom,
+        markers: []
+      };
+      if (set_markers) {
+        console.log("setting markers");
         marker = {
           idKey: Date.now(),
           coords: {
-            latitude: $scope.org.lat,
-            longitude: $scope.org.lng
+            latitude: lat,
+            longitude: lng
           }
         };
-        $scope.map.markers.push(marker);
-        return console.log("markers " + (JSON.stringify($scope.map.markers)));
+        return $scope.map.markers.push(marker);
+      }
+    };
+    uiGmapGoogleMapApi.then(function(maps) {
+      if (($scope.org != null) && ($scope.org.lat != null)) {
+        set_map($scope.org.lat, $scope.org.lng, true);
+        return $scope.show_map = true;
       } else {
         $scope.show_map = true;
-        return $scope.map = {
-          center: {
-            latitude: 51.9181688,
-            longitude: -8.5039876
-          },
-          zoom: 9,
-          markers: []
-        };
+        return set_map(51.9181688, -8.5039876, false);
       }
     });
     $scope.find_address = function() {
@@ -250,23 +251,10 @@ angular.module('subzapp').controller('OrgAdminController', [
       return geocoder.geocode({
         address: $scope.address
       }, function(results, status) {
-        var marker;
         $scope.map.markers = [];
         console.log("results " + (JSON.stringify(results[0].geometry.location)));
         console.log("Status " + (JSON.stringify(status)));
-        $scope.map.center = {
-          longitude: results[0].geometry.location.lng(),
-          latitude: results[0].geometry.location.lat()
-        };
-        marker = {
-          idKey: Date.now(),
-          coords: {
-            latitude: results[0].geometry.location.lat(),
-            longitude: results[0].geometry.location.lng()
-          }
-        };
-        $scope.map.markers.push(marker);
-        console.log("markers " + (JSON.stringify($scope.map.markers)));
+        set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
         return $scope.$apply();
       });
     };
@@ -281,11 +269,11 @@ angular.module('subzapp').controller('OrgAdminController', [
         },
         data: $scope.map.center
       }).then((function(res) {
-        console.log("aws responses");
+        console.log("Save adddres responses");
         console.log(res);
         return $scope.parsed_data = res;
       }), function(errResponse) {
-        console.log("aws error");
+        console.log("Save address error");
         console.log(errResponse);
         return alertify.error(errResponse.data);
       });

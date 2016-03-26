@@ -231,35 +231,34 @@ angular.module('subzapp').controller('OrgAdminController', [
   ###########################################
   # map stuff                               #
   ###########################################
+    set_map = ( lat, lng, set_markers, zoom ) ->
+      if !( zoom )?
+        zoom = 11 
+      $scope.map = 
+        center:
+          latitude: lat
+          longitude: lng
+        zoom: zoom
+        markers: []
 
-    
-
-    uiGmapGoogleMapApi.then (maps) ->
-      if $scope.org.lat?
-        $scope.show_map = true
-        $scope.map = 
-          center:
-            latitude: $scope.org.lat
-            longitude: $scope.org.lng
-          zoom: 11
-          markers: []
-
+      if set_markers
+        console.log "setting markers"
         marker =
           idKey: Date.now()
           coords:
-            latitude: $scope.org.lat
-            longitude: $scope.org.lng
-
+            latitude: lat
+            longitude: lng
         $scope.map.markers.push( marker )
-        console.log "markers #{ JSON.stringify $scope.map.markers }"
+
+    uiGmapGoogleMapApi.then (maps) ->
+      if $scope.org? and $scope.org.lat?
+        set_map( $scope.org.lat, $scope.org.lng, true )
+        $scope.show_map = true
+  
       else
         $scope.show_map = true
-        $scope.map =
-          center:
-            latitude: 51.9181688
-            longitude: -8.5039876
-          zoom: 9
-          markers: []
+        set_map( 51.9181688, -8.5039876, false)
+        
 
     $scope.find_address = ->
       geocoder = new google.maps.Geocoder()
@@ -267,15 +266,9 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.map.markers = []
         console.log "results #{ JSON.stringify results[0].geometry.location }"
         console.log "Status #{ JSON.stringify status }"
-        $scope.map.center = longitude: results[0].geometry.location.lng(), latitude: results[0].geometry.location.lat()
-        marker =
-          idKey: Date.now()
-          coords:
-            latitude: results[0].geometry.location.lat()
-            longitude: results[0].geometry.location.lng()
 
-        $scope.map.markers.push( marker )
-        console.log "markers #{ JSON.stringify $scope.map.markers }"
+        set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
+        
         
         $scope.$apply()
           
@@ -291,11 +284,11 @@ angular.module('subzapp').controller('OrgAdminController', [
                   }
         data: $scope.map.center
       ).then ( ( res ) ->
-        console.log "aws responses"
+        console.log "Save adddres responses"
         console.log res
         $scope.parsed_data = res
       ), ( errResponse ) ->
-        console.log "aws error"
+        console.log "Save address error"
         console.log errResponse
         alertify.error errResponse.data
 
