@@ -7,6 +7,7 @@
 
 passport = require('passport')
 moment = require('moment')
+
 module.exports = {
 
   findOne: ( req, res ) ->
@@ -112,7 +113,7 @@ module.exports = {
     )
 
 
-  create_business: (req, res) ->
+  create: (req, res) ->
     sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     sails.log.debug "Data #{ JSON.stringify req.user }"

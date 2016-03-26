@@ -211,16 +211,38 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log("New date " + (moment(date).format("DD-MM-YYYY")));
       return moment(date).format("DD-MM-YYYY");
     };
-    $scope.map = {
-      center: {
-        latitude: 51.9181688,
-        longitude: -8.5039876
-      },
-      zoom: 9,
-      markers: []
-    };
     uiGmapGoogleMapApi.then(function(maps) {
-      return $scope.show_map = true;
+      var marker;
+      if ($scope.org.lat != null) {
+        $scope.show_map = true;
+        $scope.map = {
+          center: {
+            latitude: $scope.org.lat,
+            longitude: $scope.org.lng
+          },
+          zoom: 11,
+          markers: []
+        };
+        marker = {
+          idKey: Date.now(),
+          coords: {
+            latitude: $scope.org.lat,
+            longitude: $scope.org.lng
+          }
+        };
+        $scope.map.markers.push(marker);
+        return console.log("markers " + (JSON.stringify($scope.map.markers)));
+      } else {
+        $scope.show_map = true;
+        return $scope.map = {
+          center: {
+            latitude: 51.9181688,
+            longitude: -8.5039876
+          },
+          zoom: 9,
+          markers: []
+        };
+      }
     });
     $scope.find_address = function() {
       var geocoder;
@@ -237,10 +259,10 @@ angular.module('subzapp').controller('OrgAdminController', [
           latitude: results[0].geometry.location.lat()
         };
         marker = {
-          id: Date.now(),
+          idKey: Date.now(),
           coords: {
-            lat: results[0].geometry.location.lat(),
-            lng: results[0].geometry.location.lng()
+            latitude: results[0].geometry.location.lat(),
+            longitude: results[0].geometry.location.lng()
           }
         };
         $scope.map.markers.push(marker);

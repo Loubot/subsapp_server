@@ -20,6 +20,7 @@ angular.module('subzapp', [
 
 angular.module('subzapp').config (uiGmapGoogleMapApiProvider) ->
   uiGmapGoogleMapApiProvider.configure
+    key: 'AIzaSyAs4MRJmczRdoukhYLw-AxqV_hHOBXDBQU'
     v: '3.23'
     libraries: 'weather,geometry,visualization'
   
