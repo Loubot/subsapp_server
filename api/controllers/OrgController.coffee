@@ -133,11 +133,9 @@ module.exports = {
       # sails.log.debug org.admins
       # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
     ).catch( ( err ) ->
-      sails.log.debug "Create error response #{ JSON.stringify err }"
-    ).done ->
-      sails.log.debug "Create done"
-      
-      return
+      sails.log.debug "Create error response #{ err }"
+      res.negotiate err
+    )
     
      
   destroy_business: (req, res) ->
