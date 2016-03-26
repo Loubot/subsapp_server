@@ -233,8 +233,9 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: lng
           }
         };
-        return $scope.map.markers.push(marker);
+        $scope.map.markers.push(marker);
       }
+      return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     uiGmapGoogleMapApi.then(function(maps) {
       if (($scope.org != null) && ($scope.org.lat != null)) {
@@ -262,7 +263,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log($scope.map.center);
       return $http({
         method: 'PUT',
-        url: RESOURCES.DOMAIN + "org/" + $scope.org.id,
+        url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"

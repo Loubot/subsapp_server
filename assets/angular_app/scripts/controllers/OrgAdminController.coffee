@@ -250,6 +250,8 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: lng
         $scope.map.markers.push( marker )
 
+      console.log "center #{ JSON.stringify $scope.map.center }"
+
     uiGmapGoogleMapApi.then (maps) ->
       if $scope.org? and $scope.org.lat?
         set_map( $scope.org.lat, $scope.org.lng, true )
@@ -278,7 +280,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log $scope.map.center
       $http(
         method: 'PUT'
-        url: "#{ RESOURCES.DOMAIN }org/#{ $scope.org.id }"
+        url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
