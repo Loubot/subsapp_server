@@ -116,6 +116,7 @@ npm-debug.log
 nbproject
 .idea
 .node_history
+config/log.coffee
 logfile.log
 assets/excel_sheets/
 .tmp/
