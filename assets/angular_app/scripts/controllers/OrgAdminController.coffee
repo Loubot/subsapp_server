@@ -232,6 +232,7 @@ angular.module('subzapp').controller('OrgAdminController', [
   # map stuff                               #
   ###########################################
     set_map = ( lat, lng, set_markers, zoom ) ->
+
       if !( zoom )?
         zoom = 11 
       $scope.map = 
@@ -250,6 +251,9 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: lng
         $scope.map.markers.push( marker )
 
+      $scope.map.events =
+        dragend: ( point ) ->
+          alert 'it workit'
       console.log "center #{ JSON.stringify $scope.map.center }"
 
     uiGmapGoogleMapApi.then (maps) ->

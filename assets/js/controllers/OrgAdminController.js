@@ -235,6 +235,11 @@ angular.module('subzapp').controller('OrgAdminController', [
         };
         $scope.map.markers.push(marker);
       }
+      $scope.map.events = {
+        dragend: function(point) {
+          return alert('it workit');
+        }
+      };
       return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     uiGmapGoogleMapApi.then(function(maps) {
