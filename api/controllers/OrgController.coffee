@@ -19,7 +19,7 @@ module.exports = {
 
     sails.log.debug "Hit the org controller/findOne "
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
-    sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
+    # sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
 
     params = 
       Bucket: 'subzapp'

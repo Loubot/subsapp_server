@@ -8,7 +8,7 @@ angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
   return uiGmapGoogleMapApiProvider.configure({
     key: 'AIzaSyAs4MRJmczRdoukhYLw-AxqV_hHOBXDBQU',
     v: '3.23',
-    libraries: 'weather,geometry,visualization'
+    libraries: 'weather,geometry,visualization,places'
   });
 });
 
