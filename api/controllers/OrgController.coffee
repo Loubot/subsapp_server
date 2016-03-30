@@ -88,8 +88,9 @@ module.exports = {
     sails.log.debug "Hit the OrgController/update"
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Data #{ JSON.stringify req.body }"
+    body = ParamService.fix_lat_lng_name( req.body )
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.update( { id: req.param('id') }, req.body ).then( ( updated_org ) ->
+      Org.update( { id: req.param('id') }, body ).then( ( updated_org ) ->
         sails.log.debug "Org updated #{ JSON.stringify updated_org }"
         res.json updated_org
       ).catch( ( updated_org_err ) ->

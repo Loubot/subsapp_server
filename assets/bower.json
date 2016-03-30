@@ -27,7 +27,7 @@
     "jquery": "~2.1.4",
     "ionic-datepicker": "~0.9.0",
     "angular-bootstrap-datetimepicker": "~0.4.0",
-    "alertify.js": "alertifyjs#~1.0.8",
+    "alertify.js": "alertifyjs#^1.0.10",
     "ng-file-upload": "~11.2.3",
     "angular-scroll-animate": "^0.9.8",
     "checklist-model": "^0.9.0",

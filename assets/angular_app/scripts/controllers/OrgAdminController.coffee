@@ -12,7 +12,6 @@ angular.module('subzapp').controller('OrgAdminController', [
   'usSpinnerService'
   'uiGmapGoogleMapApi'
   ( $scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
-
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -231,6 +230,17 @@ angular.module('subzapp').controller('OrgAdminController', [
   ###########################################
   # map stuff                               #
   ###########################################
+    display_info = ->
+      alertify.log "Enter your clubs address"
+      setTimeout ( ->
+        alertify.log "You can drag the map to fine tune your clubs position"
+      ), 3000
+      
+      setTimeout ( -> 
+        alertify.log "Click save to upate the location"
+      ), 6000
+    
+
     set_map = ( lat, lng, set_markers, zoom ) ->
 
       if !( zoom )?
@@ -253,17 +263,23 @@ angular.module('subzapp').controller('OrgAdminController', [
 
       $scope.map.events =
         dragend: ( point ) ->
-          alert 'it workit'
+          $scope.map.center = 
+            latitude: point.center.lat()
+            longitude: point.center.lng()
+          set_map( point.center.lat(), point.center.lng(), true, zoom )
+          console.log $scope.map.center
       console.log "center #{ JSON.stringify $scope.map.center }"
 
     uiGmapGoogleMapApi.then (maps) ->
       if $scope.org? and $scope.org.lat?
         set_map( $scope.org.lat, $scope.org.lng, true )
         $scope.show_map = true
+        
   
       else
         $scope.show_map = true
         set_map( 51.9181688, -8.5039876, false)
+        display_info()
         
 
     $scope.find_address = ->
@@ -290,7 +306,8 @@ angular.module('subzapp').controller('OrgAdminController', [
                   }
         data: $scope.map.center
       ).then ( ( res ) ->
-        console.log "Save adddres responses"
+        console.log "Save adddres response"
+        alertify.success "Adddres saved"
         console.log res
         $scope.parsed_data = res
       ), ( errResponse ) ->

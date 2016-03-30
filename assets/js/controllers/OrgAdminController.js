@@ -3,7 +3,7 @@ var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
   '$scope', '$state', '$http', '$window', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, $window, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
-    var check_club_admin, set_map, user_token;
+    var check_club_admin, display_info, set_map, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
@@ -211,6 +211,15 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log("New date " + (moment(date).format("DD-MM-YYYY")));
       return moment(date).format("DD-MM-YYYY");
     };
+    display_info = function() {
+      alertify.log("Enter your clubs address");
+      setTimeout((function() {
+        return alertify.log("You can drag the map to fine tune your clubs position");
+      }), 3000);
+      return setTimeout((function() {
+        return alertify.log("Click save to upate the location");
+      }), 6000);
+    };
     set_map = function(lat, lng, set_markers, zoom) {
       var marker;
       if (zoom == null) {
@@ -237,7 +246,12 @@ angular.module('subzapp').controller('OrgAdminController', [
       }
       $scope.map.events = {
         dragend: function(point) {
-          return alert('it workit');
+          $scope.map.center = {
+            latitude: point.center.lat(),
+            longitude: point.center.lng()
+          };
+          set_map(point.center.lat(), point.center.lng(), true, zoom);
+          return console.log($scope.map.center);
         }
       };
       return console.log("center " + (JSON.stringify($scope.map.center)));
@@ -248,7 +262,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         return $scope.show_map = true;
       } else {
         $scope.show_map = true;
-        return set_map(51.9181688, -8.5039876, false);
+        set_map(51.9181688, -8.5039876, false);
+        return display_info();
       }
     });
     $scope.find_address = function() {
@@ -275,7 +290,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         },
         data: $scope.map.center
       }).then((function(res) {
-        console.log("Save adddres responses");
+        console.log("Save adddres response");
+        alertify.success("Adddres saved");
         console.log(res);
         return $scope.parsed_data = res;
       }), function(errResponse) {
