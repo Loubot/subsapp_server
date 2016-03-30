@@ -159,7 +159,4 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
         console.log "Fetching user data error #{ JSON.stringify err }"
         $state.go 'login'
   }
-
-angular.module('subzapp').service 'maps',  ->
-  console.log "Maps service instantiated"
     

@@ -5,13 +5,12 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$state'
   '$http'
   'user'
-  'maps'
   'RESOURCES'
   'alertify'
   'Upload'
   'usSpinnerService'
   'uiGmapGoogleMapApi'
-  ( $scope, $state, $http, user, maps, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
+  ( $scope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -30,8 +29,10 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.user = window.USER
       $scope.orgs = window.USER.orgs
       $scope.show_team_admin = ( window.USER.orgs.length == 0 )
-      
-      if $scope.org?
+      $scope.show_map = true #display map
+
+
+      if $scope.org?  # if org is defined fetch org info with teams info and s3 info
         usSpinnerService.spin('spinner-1')
         $http(
           method: 'GET'
@@ -54,11 +55,11 @@ angular.module('subzapp').controller('OrgAdminController', [
           alertify.error 'Failed to fetch teams'
     )
 
-    $scope.view_team = ( id ) -> # go to team page
+    $scope.view_team = ( id ) -> # go to team page after clicking html link
       window.localStorage.setItem 'team_id', id
       $state.go 'team_manager'
 
-    $scope.org_create = ->
+    $scope.org_create = -> # create a new org
       # console.log "create #{JSON.stringify user}"
       console.log "#{ RESOURCES.DOMAIN }/create-business"
       user_token = window.localStorage.getItem 'user_token'
@@ -88,8 +89,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Business create error response #{ JSON.stringify errResponse }"
         $state.go 'login'
 
-    $scope.edit_org = ( id ) ->
-
+    $scope.edit_org = ( id ) ->  #update org details
+ 
       console.log "Org #{ JSON.stringify $scope.org }"
 
       $scope.show_team_admin = false
@@ -113,7 +114,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     
 
-    $scope.team_create = ->
+    $scope.team_create = ->  # create a team
       console.log "Org id #{ JSON.stringify $scope.org }"
       $scope.team_form_data.org_id = $scope.org.id
       console.log "Form data #{ JSON.stringify $scope.team_form_data }"
@@ -136,7 +137,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log errResponse
         alertify.error errResponse
 
-    $scope.delete_team = ( id ) ->
+    $scope.delete_team = ( id ) -> # delete a team
       $http(
         url: "#{ RESOURCES.DOMAIN }/delete-team"
         method: 'DELETE'
@@ -154,24 +155,10 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Team delete error"
         console.log errResponse
 
-    $scope.aws = ->
-      
-      $http(
-        method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/parse-players"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-      ).then ( ( res ) ->
-        console.log "aws responses"
-        console.log res
-        $scope.parsed_data = res
-      ), ( errResponse ) ->
-        console.log "aws error"
-        console.log errResponse
-        alertify.error errResponse.data
-
-    # upload file
+  ###########################################
+  # Upload a file                           #
+  ###########################################
+    
 
     $scope.submit = ->
       usSpinnerService.spin('spinner-1')
@@ -230,7 +217,7 @@ angular.module('subzapp').controller('OrgAdminController', [
   ###########################################
   # map stuff                               #
   ###########################################
-    display_info = ->
+    display_info = -> # display instructions for setting clubs location
       alertify.log "Enter your clubs address"
       setTimeout ( ->
         alertify.log "You can drag the map to fine tune your clubs position"
@@ -239,9 +226,15 @@ angular.module('subzapp').controller('OrgAdminController', [
       setTimeout ( -> 
         alertify.log "Click save to upate the location"
       ), 6000
+
+    drag_display_info = -> #display instructions for dragging map to update location
+      alertify.log "You can save this new location"
+      setTimeout ( ->
+        alertify.log "Just click the Save Address button"
+      ), 2000
     
 
-    set_map = ( lat, lng, set_markers, zoom ) ->
+    set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
 
       if !( zoom )?
         zoom = 11 
@@ -261,29 +254,30 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: lng
         $scope.map.markers.push( marker )
 
-      $scope.map.events =
-        dragend: ( point ) ->
+      $scope.map.events = # map events. see google maps api for more info
+        dragend: ( point ) ->  # event fired after map drag
           $scope.map.center = 
             latitude: point.center.lat()
             longitude: point.center.lng()
           set_map( point.center.lat(), point.center.lng(), true, zoom )
           console.log $scope.map.center
+          drag_display_info()
       console.log "center #{ JSON.stringify $scope.map.center }"
 
-    uiGmapGoogleMapApi.then (maps) ->
+    uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
       if $scope.org? and $scope.org.lat?
         set_map( $scope.org.lat, $scope.org.lng, true )
-        $scope.show_map = true
+        
         
   
       else
-        $scope.show_map = true
+        
         set_map( 51.9181688, -8.5039876, false)
         display_info()
         
 
-    $scope.find_address = ->
-      geocoder = new google.maps.Geocoder()
+    $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
+      geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       geocoder.geocode( address: $scope.address, ( results, status ) ->
         $scope.map.markers = []
         console.log "results #{ JSON.stringify results[0].geometry.location }"
@@ -292,11 +286,11 @@ angular.module('subzapp').controller('OrgAdminController', [
         set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
         
         
-        $scope.$apply()
+        $scope.$apply() # update scope
           
       )
 
-    $scope.save_address = ->
+    $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log $scope.map.center
       $http(
         method: 'PUT'

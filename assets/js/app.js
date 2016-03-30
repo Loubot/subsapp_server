@@ -135,8 +135,4 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
   };
 });
 
-angular.module('subzapp').service('maps', function() {
-  return console.log("Maps service instantiated");
-});
-
 //# sourceMappingURL=maps/app.js.map

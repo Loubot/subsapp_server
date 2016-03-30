@@ -2,8 +2,8 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', 'user', 'maps', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, user, maps, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
-    var check_club_admin, display_info, set_map, user_token;
+  '$scope', '$state', '$http', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
+    var check_club_admin, display_info, drag_display_info, set_map, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
         $state.go('login');
@@ -19,6 +19,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.user = window.USER;
       $scope.orgs = window.USER.orgs;
       $scope.show_team_admin = window.USER.orgs.length === 0;
+      $scope.show_map = true;
       if ($scope.org != null) {
         usSpinnerService.spin('spinner-1');
         return $http({
@@ -143,24 +144,6 @@ angular.module('subzapp').controller('OrgAdminController', [
         return console.log(errResponse);
       });
     };
-    $scope.aws = function() {
-      return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/parse-players",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        }
-      }).then((function(res) {
-        console.log("aws responses");
-        console.log(res);
-        return $scope.parsed_data = res;
-      }), function(errResponse) {
-        console.log("aws error");
-        console.log(errResponse);
-        return alertify.error(errResponse.data);
-      });
-    };
     $scope.submit = function() {
       usSpinnerService.spin('spinner-1');
       return $scope.upload($scope.file);
@@ -220,6 +203,12 @@ angular.module('subzapp').controller('OrgAdminController', [
         return alertify.log("Click save to upate the location");
       }), 6000);
     };
+    drag_display_info = function() {
+      alertify.log("You can save this new location");
+      return setTimeout((function() {
+        return alertify.log("Just click the Save Address button");
+      }), 2000);
+    };
     set_map = function(lat, lng, set_markers, zoom) {
       var marker;
       if (zoom == null) {
@@ -251,17 +240,16 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: point.center.lng()
           };
           set_map(point.center.lat(), point.center.lng(), true, zoom);
-          return console.log($scope.map.center);
+          console.log($scope.map.center);
+          return drag_display_info();
         }
       };
       return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     uiGmapGoogleMapApi.then(function(maps) {
       if (($scope.org != null) && ($scope.org.lat != null)) {
-        set_map($scope.org.lat, $scope.org.lng, true);
-        return $scope.show_map = true;
+        return set_map($scope.org.lat, $scope.org.lng, true);
       } else {
-        $scope.show_map = true;
         set_map(51.9181688, -8.5039876, false);
         return display_info();
       }
