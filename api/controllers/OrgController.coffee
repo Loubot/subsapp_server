@@ -7,7 +7,7 @@
 
 passport = require('passport')
 moment = require('moment')
-
+Promise = require('bluebird')
 module.exports = {
 
   findOne: ( req, res ) ->
@@ -42,28 +42,26 @@ module.exports = {
     
     
 
-  get_org: (req, res) ->
-    sails.log.debug "Hit the org controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+  get_org_team_members: (req, res) ->
+    sails.log.debug "Hit the org controller/get_org "
     sails.log.debug "Data #{ JSON.stringify req.query }"
     sails.log.debug "QUERY DATE #{ moment( req.query.eligible_date ).toISOString() }"
     sails.log.debug "QUERY END DATE #{ moment( req.query.eligible_date_end ).add( 364, 'days' ).toISOString() }"
-    
+
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.findOne( { id: req.param('id') } )
-      .populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
-      .then( ( org ) ->
-        sails.log.debug "Find response " 
-        res.json org
-          
-        return
-        
-      ).catch( ( err ) ->
-        sails.log.debug "Find error response #{ JSON.stringify err }"
-      ).done ->
-        sails.log.debug "Find done"
-        return
+      Promise.all([
+         Org.findOne( { id: req.param('id') } ).populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
+        Team.findOne( id: req.query.id ).populate('team_members')
+      ]).spread( ( org, team ) ->
+        sails.log.debug "Org found"
+        sails.log.debug "Team found"
+        res.json org: org, team: team
+      ).catch( ( org_and_team_err ) ->
+        sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
+      )
     else
       res.negotiate "You are not authorised"
+    
 
 
   find: ( req, res ) ->
@@ -162,7 +160,7 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
     sails.log.debug "Auth response #{ AuthService.super_admin( req.user ) }"
     if AuthService.super_admin( req.user )
-      Promise = require('bluebird')
+      
       AWS = require('aws-sdk')
 
       AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})

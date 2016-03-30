@@ -125,6 +125,8 @@ angular.module('subzapp').controller('TeamController', [
     };
     $scope.update_members = function() {
       console.log("team id " + $scope.team.id);
+      console.log("Team members array");
+      console.log($scope.team_members_array);
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/team/update-members/" + $scope.team.id,
@@ -186,10 +188,11 @@ angular.module('subzapp').controller('TeamController', [
       }
     });
     return get_org_and_members = function() {
+      console.log("org id " + $scope.team.main_org.id);
       usSpinnerService.spin('spinner-1');
       return $http({
         method: 'GET',
-        url: RESOURCES.DOMAIN + "/org/get-org/" + $scope.team.main_org.id,
+        url: RESOURCES.DOMAIN + "/org/get-org-team-members/" + $scope.team.main_org.id,
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json",
@@ -199,8 +202,8 @@ angular.module('subzapp').controller('TeamController', [
       }).then((function(res) {
         console.log("Get org info ");
         console.log(res.data);
-        $scope.org_members = res.data.org_members;
-        $scope.team_members_array = $scope.team.team_members.map(function(member) {
+        $scope.org_members = res.data.org.org_members;
+        $scope.team_members_array = res.data.team.team_members.map(function(member) {
           return member.id;
         });
         usSpinnerService.stop('spinner-1');

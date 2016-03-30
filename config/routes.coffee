@@ -99,9 +99,9 @@ module.exports.routes =
         controller:              'OrgController'
         action:                  's3_info'
 
-  'get /org/get-org/:id':             #Require. Returns details of org. !Must be admin!
+  'get /org/get-org-team-members/:id':             #Require. Returns details of org. !Must be admin!
         controller:             'OrgController'
-        action:                 'get_org'
+        action:                 'get_org_team_members'
 
   'get /org-admins':          #Requires org.id. Returns org, admins and teams of org
         controller:             'OrgController'
