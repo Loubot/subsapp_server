@@ -7,6 +7,7 @@
 
 passport = require('passport')
 moment = require('moment')
+Promise = require('bluebird')
 module.exports = {
 
   findOne: ( req, res ) ->
@@ -18,7 +19,7 @@ module.exports = {
 
     sails.log.debug "Hit the org controller/findOne "
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
-    sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
+    # sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
 
     params = 
       Bucket: 'subzapp'
@@ -41,28 +42,26 @@ module.exports = {
     
     
 
-  get_org: (req, res) ->
-    sails.log.debug "Hit the org controller/get_org &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+  get_org_team_members: (req, res) ->
+    sails.log.debug "Hit the org controller/get_org "
     sails.log.debug "Data #{ JSON.stringify req.query }"
     sails.log.debug "QUERY DATE #{ moment( req.query.eligible_date ).toISOString() }"
     sails.log.debug "QUERY END DATE #{ moment( req.query.eligible_date_end ).add( 364, 'days' ).toISOString() }"
-    
+
     if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.findOne( { id: req.param('id') } )
-      .populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
-      .then( ( org ) ->
-        sails.log.debug "Find response " 
-        res.json org
-          
-        return
-        
-      ).catch( ( err ) ->
-        sails.log.debug "Find error response #{ JSON.stringify err }"
-      ).done ->
-        sails.log.debug "Find done"
-        return
+      Promise.all([
+         Org.findOne( { id: req.param('id') } ).populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
+        Team.findOne( id: req.query.id ).populate('team_members')
+      ]).spread( ( org, team ) ->
+        sails.log.debug "Org found"
+        sails.log.debug "Team found"
+        res.json org: org, team: team
+      ).catch( ( org_and_team_err ) ->
+        sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
+      )
     else
       res.negotiate "You are not authorised"
+    
 
 
   find: ( req, res ) ->
@@ -83,6 +82,23 @@ module.exports = {
       res.unauthorized "You are not an admin"
       return false
 
+  update: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/update"
+    sails.log.debug "Param #{ req.param('id') }"
+    sails.log.debug "Data #{ JSON.stringify req.body }"
+    body = ParamService.fix_lat_lng_name( req.body )
+    if AuthService.check_club_admin( req.user, req.param('id') )
+      Org.update( { id: req.param('id') }, body ).then( ( updated_org ) ->
+        sails.log.debug "Org updated #{ JSON.stringify updated_org }"
+        res.json updated_org
+      ).catch( ( updated_org_err ) ->
+        sails.log.debug "Updated org error #{ JSON.stringify updated_org_err }"
+        res.negotiate updated_org_err
+      )
+      
+    else
+      res.unauthorized 'You are not authorised to update this'
+
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
     sails.log.debug req.query
@@ -96,7 +112,7 @@ module.exports = {
     )
 
 
-  create_business: (req, res) ->
+  create: (req, res) ->
     sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     sails.log.debug "Data #{ JSON.stringify req.user }"
@@ -117,11 +133,9 @@ module.exports = {
       # sails.log.debug org.admins
       # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
     ).catch( ( err ) ->
-      sails.log.debug "Create error response #{ JSON.stringify err }"
-    ).done ->
-      sails.log.debug "Create done"
-      
-      return
+      sails.log.debug "Create error response #{ err }"
+      res.negotiate err
+    )
     
      
   destroy_business: (req, res) ->
@@ -146,7 +160,7 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
     sails.log.debug "Auth response #{ AuthService.super_admin( req.user ) }"
     if AuthService.super_admin( req.user )
-      Promise = require('bluebird')
+      
       AWS = require('aws-sdk')
 
       AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})

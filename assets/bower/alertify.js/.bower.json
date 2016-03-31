@@ -1,6 +1,6 @@
 {
   "name": "alertify.js",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "main": "dist/js/alertify.js",
   "homepage": "https://alertifyjs.org",
   "keywords": [
@@ -27,7 +27,8 @@
     "Florian Sellmayr (https://flosell.github.io/)",
     "Dennis Heckman <denheck@gmail.com> (https://github.com/denheck)",
     "Mehdi Lefebvre <mehdi.lefebvre@gmail.com> (https://github.com/ollie314)",
-    "Stu Kabakoff <sakabako@gmail.com> (https://github.com/sakabako)"
+    "Stu Kabakoff <sakabako@gmail.com> (https://github.com/sakabako)",
+    "Kevin Friend (https://github.com/kfriend)"
   ],
   "moduleType": [
     "amd",
@@ -47,14 +48,13 @@
     ".travis.yml",
     "Contributors.md"
   ],
-  "_release": "1.0.8",
+  "_release": "1.0.10",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.8",
-    "commit": "65528efceb5edf0d920d45abcbc05b683932806b"
+    "tag": "v1.0.10",
+    "commit": "27a90d518261b8eb9c0aada6d5fe1947ccdb347e"
   },
   "_source": "git://github.com/alertifyjs/alertify.js.git",
   "_target": "~1.0.8",
-  "_originalSource": "alertifyjs",
-  "_direct": true
+  "_originalSource": "alertifyjs"
 }

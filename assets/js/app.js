@@ -2,7 +2,15 @@ window.USER = null;
 
 'use strict';
 
-angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner']);
+angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps']);
+
+angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
+  return uiGmapGoogleMapApiProvider.configure({
+    key: 'AIzaSyAs4MRJmczRdoukhYLw-AxqV_hHOBXDBQU',
+    v: '3.23',
+    libraries: 'weather,geometry,visualization,places'
+  });
+});
 
 angular.module('subzapp').constant('API', 'api/v1/');
 

@@ -38,6 +38,7 @@ body{
 }
 
 .main{
+  margin: -10px;
   height: 100%;
 }
 
@@ -170,6 +171,71 @@ body{
 .file_selection{
   background-color: #3c7f33;
   color: #111;
+}
+
+.angular-google-map-container {
+  margin-top: -20px;
+  height: 400px;
+}
+
+.controls {
+  margin-top: 10px;
+  border: 1px solid;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  left: 110px;
+  top: 52px;
+  position: absolute;
+  opacity: 0;
+}
+
+.button{
+  left: 420px;
+  width: 110px !important;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+.pac-container {
+  font-family: Roboto;
+}
+
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+#target {
+  width: 345px;
+}
+
+.appear{
+    -webkit-transition: opacity 2s; 
+    transition: opacity 2s;
+    opacity: 1;
 }
 
 /*styled select*/

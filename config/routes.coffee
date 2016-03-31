@@ -48,23 +48,6 @@ module.exports.routes =
   #       controller:             'UserController'
   #       action:                 'pick_kids'
 
-    # Parents urls
-      'get /parent/social/:id':
-        controller:             'UserController'
-        action:                 'social'
-
-      'get /parent/financial/:id':
-        controller:             'UserController'
-        action:                 'financial'
-
-      'get /parent/kids-with-parents':
-        controller:             'UserController'
-        action:                 'kids_with_parents'
-
-      'get /parent/parents-with-events/:id':
-        controller:             'UserController'
-        action:                 'parents_with_events'
-
 
   # End of user controller
 
@@ -72,13 +55,33 @@ module.exports.routes =
   'post /parent/associate-kids':
         controller:             'ParentController'
         action:                 'associate_kids'
+
+  'get /parent/parents-with-events/:id':
+        controller:             'ParentController'
+        action:                 'parents_with_events'
+
+  'get /parent/social/:id':
+        controller:             'ParentController'
+        action:                 'social'
+
+  'get /parent/financial/:id':
+        controller:             'ParentController'
+        action:                 'financial'
+
+  'get /parent/kids-with-parents':
+        controller:             'ParentController'
+        action:                 'kids_with_parents'
   # End of Parent controller
 
-  # Business controller
+  # ORG controller
 
   'post /create-business' : # Create new org. See org.coffee for attributes
         controller:             'OrgController'
-        action:                 'create_business'
+        action:                 'create'
+
+  # 'put /org/:id':
+  #       controller:             'OrgController'
+  #       action:                 'update'
 
   'delete /delete-business' : #Destroy org. Requires org.id
         controller:             'OrgController'
@@ -96,9 +99,9 @@ module.exports.routes =
         controller:              'OrgController'
         action:                  's3_info'
 
-  'get /org/get-org/:id':             #Require. Returns details of org. !Must be admin!
+  'get /org/get-org-team-members/:id':             #Require. Returns details of org. !Must be admin!
         controller:             'OrgController'
-        action:                 'get_org'
+        action:                 'get_org_team_members'
 
   'get /org-admins':          #Requires org.id. Returns org, admins and teams of org
         controller:             'OrgController'
@@ -242,6 +245,18 @@ module.exports.routes =
         action:                   'pay'
 
   #End of TokenTransactionController
+
+  #GCMController
+  'post /gcm/tokens/:id':    #Requires device_uid, instance_id, gcm_token. Optional: alerts, event_notifications, club_notifications. See GCMReg.coffee
+        controller:             'GCMController'
+        action:                 'create_token'
+
+  'post /gcm/send-message':
+        controller:              'GCMController'
+        action:                  'send_message'
+
+
+  # End of GCMController
 
 
   # #Mail controller

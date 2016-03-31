@@ -1,3 +1,17 @@
+<div class="angular-google-map-container" >
+  <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options" events="map.events" control="googlemap">
+    <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.idKey"></ui-gmap-marker>
+  </ui-gmap-google-map>
+
+</div>
+
+<form ng-submit="save_address()" >
+  <input id="pac-input" class="form-control controls" ng-class="{ appear: show_map }" ng-change="find_address()" ng-model="address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
+  <input type="submit" value="Save Address" ng-class="{ appear: show_map }" class="controls button btn btn-success">
+</form>
+
+
+
 <div class="container-fluid">
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
 </div>
@@ -136,7 +150,7 @@
               <h4><strong>We will process your form and register your players soon. </strong></h4>
               <form name="form" class="form-horizontal" ng-submit="submit()">
                 <div class="form-group">
-                  <div class="button btn btn-success" ngf-select ng-model="file" name="file" accept=".ods"
+                  <div class="btn btn-success btn-lg" ngf-select ng-model="file" name="file" accept=".ods"
                      ngf-max-size="20MB" required >Select club sheet</div>
                   <p ngf-src="file">{{ file.name }}</p>
                   

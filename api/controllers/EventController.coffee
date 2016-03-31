@@ -15,11 +15,12 @@ module.exports = {
       start_date: req.body.start_date 
       end_date: req.body.end_date 
       event_team: req.body.team_id 
-      price: parseInt(req.body.price)
+      price: parseInt( req.body.price )
       details: req.body.details        
-    ).then( (created) ->
-      sails.log.debug "Event create response #{ JSON.stringify created }"
-      res.json created
+    ).then( ( event_created ) ->
+      sails.log.debug "Event create response #{ JSON.stringify event_created }"
+      GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
+      res.json event_created
     ).catch((err) ->
       sails.log.debug "Create event error #{ JSON.stringify err }"
       res.negotiate err
