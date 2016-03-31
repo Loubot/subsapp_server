@@ -62,7 +62,7 @@ module.exports = {
     
 
 
-  find: ( req, res ) ->
+  find: ( req, res ) -> #'isAuthenticated', 'isSuperAdmin'
     sails.log.debug "Hit the OrgController/find"
     sails.log.debug "Params #{ JSON.stringify req.query }"
     sails.log.debug "ID #{ JSON.stringify req.param('id') }"

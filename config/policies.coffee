@@ -1,9 +1,22 @@
 module.exports.policies =
-  # '*': [ 'isAuthenticated' ]
+  '*': [ 'isAuthenticated' ]
+
+  UserController:
+    'findOne': [ 'isAuthenticated', 'isCurrentUser' ]
+
+  ParentController:
+    'associate_kids': [ 'isAuthenticated', 'isCurrentUser' ]
+
+    'parents_with_events': [ 'isAuthenticated', 'isCurrentUser' ]
+    'financial': [ 'isAuthenticated', 'isCurrentUser' ]
+    'kids_with_parents': [ 'isAuthenticated', 'isCurrentUser' ]
 
   OrgController:
-    '*': ['isAuthenticated', 'isClubAdmin']
-    'find': ['isAuthenticated', 'isSuperAdmin' ]
+    '*': [ 'isAuthenticated', 'isClubAdmin' ]
+    'find': [ 'isAuthenticated', 'isSuperAdmin' ]
+    'get_org_admins': [ 'isAuthenticated', 'isSuperAdmin' ]
+
+
 
   AuthController: 
     '*': true

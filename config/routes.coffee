@@ -26,6 +26,10 @@ module.exports.routes =
    #      controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
    #      action :                 'signup'
 
+  'post /auth/signin':
+        controller:            'AuthController'
+        action:                'signin'
+
   'post /auth/signup/team_manager' :
         controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
         action :                 'team_manager_signup'
@@ -36,6 +40,11 @@ module.exports.routes =
         action :                'login'
 
   # User controller   update user attributes. See user.coffee
+
+  'get /user/:id':
+        controller:             'UserController'
+        action:                 'findOne'
+
   'post /user/edit' :
         controller:             'UserController'
         action:                 'edit_user'
@@ -168,7 +177,7 @@ module.exports.routes =
   # end of Token controller
 
   # Event controller
-  'post /create-event':       #Creates event. See Event.coffee for attributes
+  'post /event':       #Creates event. See Event.coffee for attributes
         controller:             'EventController'
         action:                 'create_event'
 
