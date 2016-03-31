@@ -6,9 +6,10 @@
 
 module.exports = (req, res, next) ->
   sails.log.debug "Policies/check_club_admin"
-  sails.log.debug "User #{ JSON.stringify req.user }"
-  # if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
-  #   res.serverError "You are not authourised to view this" 
+  if !( req.param('id') )
+    res.serverError "ID param not present"
+  else if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
+    res.serverError "You are not authourised to view this" 
 
   next()
   

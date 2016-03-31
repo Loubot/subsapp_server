@@ -66,19 +66,15 @@ module.exports = {
     sails.log.debug "Hit the OrgController/find"
     sails.log.debug "Params #{ JSON.stringify req.query }"
     sails.log.debug "ID #{ JSON.stringify req.param('id') }"
-    sails.log.debug "Auth response #{ AuthService.super_admin( req.user ) }"
-    if AuthService.super_admin( req.user )
-      Org.find().then( ( orgs ) ->
-        sails.log.debug "Got all orgs"
-        res.json orgs
-      ).catch( ( err ) ->
-        sails.log.debug "Get all orgs error"
-        res.negotiate err
-      )
-    else
-      sails.log.debug "Not allowed"
-      res.unauthorized "You are not an admin"
-      return false
+    
+    Org.find().then( ( orgs ) ->
+      sails.log.debug "Got all orgs"
+      res.json orgs
+    ).catch( ( err ) ->
+      sails.log.debug "Get all orgs error"
+      res.negotiate err
+    )
+    
 
   update: ( req, res ) ->
     sails.log.debug "Hit the OrgController/update"
@@ -100,7 +96,7 @@ module.exports = {
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
     sails.log.debug req.query
-    Org.findOne( id: req.query.org_id ).populate('admins').populate('teams').then( ( org ) ->
+    Org.findOne( id: req.param('id') ).populate('admins').populate('teams').then( ( org ) ->
       sails.log.debug "get org admins #{ JSON.stringify org }"
       res.json org #return only admins
     ).catch( ( err ) ->
@@ -156,30 +152,27 @@ module.exports = {
   s3_info: ( req, res ) ->
     sails.log.debug "Hit the OrgController/s3_info"
     sails.log.debug "Params #{ req.param('id') }"
-    sails.log.debug "Auth response #{ AuthService.super_admin( req.user ) }"
-    if AuthService.super_admin( req.user )
+    
       
-      AWS = require('aws-sdk')
+    AWS = require('aws-sdk')
 
-      AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
-      # s3 = Promise.promisifyAll(new AWS.S3())
-      s3 = new AWS.S3()
-      params = 
-        Bucket: 'subzapp'
-        Prefix: "#{req.param('id')}/"
+    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+    # s3 = Promise.promisifyAll(new AWS.S3())
+    s3 = new AWS.S3()
+    params = 
+      Bucket: 'subzapp'
+      Prefix: "#{req.param('id')}/"
 
-      s3.listObjects( params, ( err, data ) ->
-        if err?
-          sails.log.debug "S3 error #{ JSON.stringify err }"
-        else
-          sails.log.debug "S3 data #{ JSON.stringify data }"
-          res.json data
-      )
+    s3.listObjects( params, ( err, data ) ->
+      if err?
+        sails.log.debug "S3 error #{ JSON.stringify err }"
+      else
+        sails.log.debug "S3 data #{ JSON.stringify data }"
+        res.json data
+    )
 
 
-    else
-      sails.log.debug "Not authorised"
-      res.unauthorized "You are not allowed to view this"
+    
 
 
 

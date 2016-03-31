@@ -3,6 +3,7 @@ module.exports.policies =
 
   OrgController:
     '*': ['isAuthenticated', 'isClubAdmin']
+    'find': ['isAuthenticated', 'isSuperAdmin' ]
 
   AuthController: 
     '*': true
