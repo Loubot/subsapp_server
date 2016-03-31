@@ -1,10 +1,19 @@
 module.exports.policies =
-  '*': [ 'isAuthenticated' ]
-  AuthController: '*': true
-  WebController: '*': true
-  InviteController: '*': true
-  FileController: '*': true
-  PasswordReminderController: '*': true
+  # '*': [ 'isAuthenticated' ]
+
+  OrgController:
+    '*': ['isAuthenticated', 'isClubAdmin']
+
+  AuthController: 
+    '*': true
+  WebController: 
+    '*': true
+  InviteController: 
+    '*': true
+  FileController: 
+    '*': true
+  PasswordReminderController: 
+    '*': true
   # BusinessController: '*': true
 
 # ---

@@ -25,20 +25,19 @@ module.exports = {
       Bucket: 'subzapp'
       Prefix: req.param('id')
 
-    if AuthService.check_club_admin( req.user, req.param('id') )
-      Org.findOne( { id: req.param('id') } ).populate('teams').populate('org_members').populate('admins').then( ( org ) ->
-        sails.log.debug "Org findOne #{ JSON.stringify org }" 
-        return  [
-                  org
-                  s3.listObjectsAsync( params )
-                ]
-      ).spread( ( org, s3_object ) ->
-        sails.log.debug "Org findOne #{ JSON.stringify org }"
-        sails.log.debug "Org findOne s3 #{ JSON.stringify s3_object }"
-        res.json org: org, s3_object: s3_object
-      )
-    else
-      res.negotiate "You are not the admin of this org"
+   
+    Org.findOne( { id: req.param('id') } ).populate('teams').populate('org_members').populate('admins').then( ( org ) ->
+      sails.log.debug "Org findOne " 
+      return  [
+                org
+                s3.listObjectsAsync( params )
+              ]
+    ).spread( ( org, s3_object ) ->
+      sails.log.debug "Org findOne"
+      sails.log.debug "Org findOne s3 #{ JSON.stringify s3_object }"
+      res.json org: org, s3_object: s3_object
+    )
+    
     
     
 
@@ -48,19 +47,18 @@ module.exports = {
     sails.log.debug "QUERY DATE #{ moment( req.query.eligible_date ).toISOString() }"
     sails.log.debug "QUERY END DATE #{ moment( req.query.eligible_date_end ).add( 364, 'days' ).toISOString() }"
 
-    if AuthService.check_club_admin( req.user, req.param('id') )
-      Promise.all([
-         Org.findOne( { id: req.param('id') } ).populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
-        Team.findOne( id: req.query.id ).populate('team_members')
-      ]).spread( ( org, team ) ->
-        sails.log.debug "Org found"
-        sails.log.debug "Team found"
-        res.json org: org, team: team
-      ).catch( ( org_and_team_err ) ->
-        sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
-      )
-    else
-      res.negotiate "You are not authorised"
+    
+    Promise.all([
+       Org.findOne( { id: req.param('id') } ).populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
+      Team.findOne( id: req.query.id ).populate('team_members')
+    ]).spread( ( org, team ) ->
+      sails.log.debug "Org found"
+      sails.log.debug "Team found"
+      res.json org: org, team: team
+    ).catch( ( org_and_team_err ) ->
+      sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
+    )
+    
     
 
 
