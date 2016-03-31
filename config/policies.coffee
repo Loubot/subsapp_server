@@ -1,6 +1,13 @@
 module.exports.policies =
   '*': [ 'isAuthenticated' ]
 
+  AuthController: 
+    '*': true
+
+  EventController:
+    'create': [ 'isAuthenticated', 'isClubAdmin' ]
+
+
   UserController:
     'findOne': [ 'isAuthenticated', 'isCurrentUser' ]
 
@@ -18,8 +25,7 @@ module.exports.policies =
 
 
 
-  AuthController: 
-    '*': true
+  
   WebController: 
     '*': true
   InviteController: 

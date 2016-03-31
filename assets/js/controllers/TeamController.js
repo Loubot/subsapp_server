@@ -72,10 +72,11 @@ angular.module('subzapp').controller('TeamController', [
     }
     $scope.create_event = function() {
       $scope.create_event_data.team_id = $scope.team.id;
+      $scope.create_event_data.user_id = $scope.user.id;
       console.log($scope.create_event_data);
       return $http({
         method: 'POST',
-        url: RESOURCES.DOMAIN + "/create-event",
+        url: RESOURCES.DOMAIN + "/event",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json",

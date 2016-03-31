@@ -7,7 +7,7 @@
 
 module.exports = {
   
-  create_event: (req, res) ->
+  create: (req, res) ->
     sails.log.debug "Hit the events controller/create_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     Event.create( 

@@ -179,7 +179,7 @@ module.exports.routes =
   # Event controller
   'post /event':       #Creates event. See Event.coffee for attributes
         controller:             'EventController'
-        action:                 'create_event'
+        action:                 'create'
 
   'post /join-event':         #Requires event id and user id. Add event to user events 
         controller:             'EventController'
