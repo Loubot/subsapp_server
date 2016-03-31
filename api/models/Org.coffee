@@ -27,6 +27,14 @@ module.exports =
       defaultsTo: ''
       required: true
 
+    lat:
+      type: 'float'
+      defaultsTo: null
+
+    lng:
+      type: 'float'
+      defaultsTo: null
+
     admins: 
       collection: 'user'
       via: 'orgs'
@@ -46,6 +54,21 @@ module.exports =
 
     
 
+  afterCreate: ( values, cb ) ->
+    geocoderProvider = 'google'
+    httpAdapter = 'http'
+    geocoder = require('node-geocoder')(geocoderProvider, httpAdapter)
+    sails.log.debug "Org create values #{ JSON.stringify values }"
+
+    geocoder.geocode( values.address ).then( ( geocode_results ) ->
+      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results }"
+      values.lat = geocode_results[0].latitude
+      values.lng = geocode_results[0].longitude
+      cb()
+    ).catch( ( geocode_results_err ) ->
+      sails.log.debug "Org create geocode_results_err #{ JSON.stringify geocode_results_err }"
+      cb( geocode_results_err )
+    )
 
     
     toJSON: ->
