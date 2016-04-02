@@ -1,15 +1,22 @@
 ###*
 # isClubAdmin
-# @description :: Policy to inject check is user is admin
+# @description :: Policy to check is user is admin
 ###
 
 
 module.exports = (req, res, next) ->
   sails.log.debug "Policies/check_club_admin"
-  if !( req.param('id') )
+  if !( req.param('id') ) and !( req.body.org_id )?
+    sails.log.debug "isJSONClubAdmin no id param"
     return res.serverError "ID param not present"
-  else if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
-   return res.serverError "You are not authourised to view this" 
+  else if ( req.param('id') )?
+    sails.log.debug "isJSONClubAdmin param('id')"
+    if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
+      res.serverError "You are not authourised to view this"
+  else if ( req.body.org_id )?
+    sails.log.debug "isJSONClubAdmin req.body.org_id"
+    if !( parseInt( req.user.orgs[0].id ) == parseInt( req.body.org_id ) )
+      res.serverError "You are not authourised to view this"
 
   next()
   

@@ -21,7 +21,6 @@ module.exports.policies =
   OrgController:
     '*': [ 'isAuthenticated', 'isClubAdmin' ]
     'find': [ 'isAuthenticated', 'isSuperAdmin' ]
-    'get_org_admins': [ 'isAuthenticated', 'isSuperAdmin' ]
 
 
 

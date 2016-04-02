@@ -33,7 +33,7 @@ module.exports = {
                 s3.listObjectsAsync( params )
               ]
     ).spread( ( org, s3_object ) ->
-      sails.log.debug "Org findOne"
+      sails.log.debug "Org findOne spread"
       sails.log.debug "Org findOne s3 #{ JSON.stringify s3_object }"
       res.json org: org, s3_object: s3_object
     )
