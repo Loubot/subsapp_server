@@ -18,13 +18,13 @@ module.exports.policies =
     'download_file': [ 'isAuthenticated', 'isSuperAdmin' ]
 
   GCMController:
-  '*': true
+    '*': true
 
   InviteController:
-  '*': true
+    '*': true
 
   MailController:
-  '*': true
+    '*': true
 
   OrgController:
     '*': [ 'isAuthenticated', 'isClubAdmin' ]
