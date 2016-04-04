@@ -12,16 +12,18 @@ module.exports = (req, res, next) ->
     return res.negotiate "You are not authourised"
 
   else if !( req.param('id') ) and !( req.body.org_id )?
-    sails.log.debug "isJSONClubAdmin no id param"
+    sails.log.debug "isClubAdmin no id param"
     return res.negotiate "ID param not present"
+
   else if ( req.param('id') )?
-    sails.log.debug "isJSONClubAdmin param('id')"
+    sails.log.debug "isClubAdmin param('id')"
     if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
-      res.negotiate "You are not authourised to view this"
+      return res.negotiate "You are not authourised to view this"
+      
   else if ( req.body.org_id )?
-    sails.log.debug "isJSONClubAdmin req.body.org_id"
+    sails.log.debug "isClubAdmin req.body.org_id"
     if !( parseInt( req.user.orgs[0].id ) == parseInt( req.body.org_id ) )
-      res.negotiate "You are not authourised to view this"
+      return res.negotiate "You are not authourised to view this"
 
   next()
   
