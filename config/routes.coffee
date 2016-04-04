@@ -30,6 +30,10 @@ module.exports.routes =
         controller:            'AuthController'
         action:                'signin'
 
+  'post /auth/signup':
+        controller:            'AuthController'
+        action:                'signup'
+
   'post /auth/signup/team_manager' :
         controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
         action :                 'team_manager_signup'
@@ -47,7 +51,7 @@ module.exports.routes =
 
   'post /user/edit' :
         controller:             'UserController'
-        action:                 'edit_user'
+        action:                 'update'
 
   'get /get-user-teams':
         controller:             'UserController'

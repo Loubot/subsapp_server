@@ -11,6 +11,7 @@ module.exports = {
   findOne: ( req, res ) ->
     sails.log.debug "hit the team controller/findOne"
     sails.log.debug "Params #{ req.param('id') }"
+    console.log 'yipyip'
     Team.findOne( { id: req.param('id') } ).populateAll().then( ( team ) ->
       console.log "Team findOne #{ JSON.stringify team }"
       res.json team

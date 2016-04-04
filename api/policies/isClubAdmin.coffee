@@ -6,6 +6,7 @@
 
 module.exports = (req, res, next) ->
   sails.log.debug "Policies/check_club_admin"
+  sails.log.debug "Body #{ JSON.stringify req.body }"
   if !( req.param('id') ) and !( req.body.org_id )?
     sails.log.debug "isJSONClubAdmin no id param"
     return res.serverError "ID param not present"

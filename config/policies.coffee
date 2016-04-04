@@ -10,6 +10,7 @@ module.exports.policies =
 
   UserController:
     'findOne': [ 'isAuthenticated', 'isCurrentUser' ]
+    'update':  [ 'isAuthenticated', 'isCurrentUser' ]
 
   ParentController:
     'associate_kids': [ 'isAuthenticated', 'isCurrentUser' ]
@@ -20,6 +21,7 @@ module.exports.policies =
 
   OrgController:
     '*': [ 'isAuthenticated', 'isClubAdmin' ]
+    'create': [ 'isAuthenticated', 'isOkToCreateOrg' ]
     'find': [ 'isAuthenticated', 'isSuperAdmin' ]
 
 

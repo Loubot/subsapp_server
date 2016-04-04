@@ -1,1 +1,1 @@
-web: forever app.js
+web: nodemon app.coffee

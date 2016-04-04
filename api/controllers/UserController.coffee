@@ -41,7 +41,7 @@ module.exports = {
     )
 
 
-  edit_user: (req, res) ->
+  update: (req, res) ->
     sails.log.debug "Hit the User controller/edit-user"      
     sails.log.debug "params #{ JSON.stringify req.body }"
     User.update( id: req.body.id, { firstName: req.body.firstName, lastName: req.body.lastName }).then( (result) ->

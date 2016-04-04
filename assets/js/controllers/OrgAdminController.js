@@ -54,7 +54,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log(RESOURCES.DOMAIN + "/create-business");
       user_token = window.localStorage.getItem('user_token');
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
-      console.log(JSON.stringify($scope.business_form_data));
+      console.log("Form data " + (JSON.stringify($scope.business_form_data)));
       return $http({
         method: 'POST',
         url: RESOURCES.DOMAIN + "/create-business",
