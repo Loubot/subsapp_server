@@ -28,7 +28,7 @@ module.exports = {
         sails.log.debug "Filename #{ JSON.stringify file_name }"
 
         params = 
-          Bucket: 'subzapp'
+          Bucket: 'subzappbucket'
           Prefix: req.body.org_id
 
         uploadFile = req.file('file').upload {
@@ -37,7 +37,7 @@ module.exports = {
           secret: process.env.AWS_SECRET_ACCESS_KEY
           # dirName: 'Lakewood'
           saveAs: file_name
-          bucket: 'subzapp'
+          bucket: 'subzappbucket'
         }, (err, uploadedFiles) ->
           if err
             sails.log.debug "Upload error #{ JSON.stringify err }"

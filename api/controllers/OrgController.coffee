@@ -14,7 +14,9 @@ module.exports = {
     Promise = require('bluebird')
     AWS = require('aws-sdk')
 
-    AWS.config.update({accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY})
+    sails.log.debug "aws #{  process.env.AWS_SECRET_ACCESS_KEY }"
+
+    AWS.config.update({ accessKeyId: process.env.AWS_ACCESS_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY })
     s3 = Promise.promisifyAll(new AWS.S3())
 
     sails.log.debug "Hit the org controller/findOne "
@@ -22,7 +24,7 @@ module.exports = {
     # sails.log.debug "User #{  parseInt( req.user.orgs[0].id ) ==  parseInt( req.param('id') ) }"
 
     params = 
-      Bucket: 'subzapp'
+      Bucket: 'subzappbucket'
       Prefix: req.param('id')
 
    
@@ -36,6 +38,9 @@ module.exports = {
       sails.log.debug "Org findOne spread"
       sails.log.debug "Org findOne s3 #{ JSON.stringify s3_object }"
       res.json org: org, s3_object: s3_object
+    ).catch( ( org_find_s3_err ) ->
+      sails.log.debug "Org org_find_s3_err #{ JSON.stringify org_find_s3_err }"
+      res.negotiate org_find_s3_err
     )
     
     

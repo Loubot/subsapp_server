@@ -53,9 +53,9 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'update'
 
-  'get /get-user-teams':
-        controller:             'UserController'
-        action:                 'get_user_teams'
+  # 'get /get-user-teams':
+  #       controller:             'UserController'
+  #       action:                 'get_user_teams'
 
   # 'get /user/pick-kids':
   #       controller:             'UserController'
@@ -212,7 +212,7 @@ module.exports.routes =
 
   # File controller
 
-  'post /upload-file':
+  'post /file/upload':
         controller:             'FileController'
         action:                 'upload'
 

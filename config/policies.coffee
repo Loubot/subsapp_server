@@ -5,6 +5,7 @@ module.exports.policies =
     '*': true
 
   EventController:
+    '*': [ 'isAuthenticated' ]
     'create': [ 'isAuthenticated', 'isClubAdmin' ]
 
 

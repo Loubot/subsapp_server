@@ -7,17 +7,21 @@
 module.exports = (req, res, next) ->
   sails.log.debug "Policies/check_club_admin"
   sails.log.debug "Body #{ JSON.stringify req.body }"
-  if !( req.param('id') ) and !( req.body.org_id )?
+  if !Boolean( req.user.club_admin )
+    sails.log.debug "No club admin flag"
+    return res.negotiate "You are not authourised"
+
+  else if !( req.param('id') ) and !( req.body.org_id )?
     sails.log.debug "isJSONClubAdmin no id param"
-    return res.serverError "ID param not present"
+    return res.negotiate "ID param not present"
   else if ( req.param('id') )?
     sails.log.debug "isJSONClubAdmin param('id')"
     if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
-      res.serverError "You are not authourised to view this"
+      res.negotiate "You are not authourised to view this"
   else if ( req.body.org_id )?
     sails.log.debug "isJSONClubAdmin req.body.org_id"
     if !( parseInt( req.user.orgs[0].id ) == parseInt( req.body.org_id ) )
-      res.serverError "You are not authourised to view this"
+      res.negotiate "You are not authourised to view this"
 
   next()
   
