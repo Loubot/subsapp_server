@@ -60,7 +60,7 @@ module.exports = {
       instance_id: req.body.instance_id
       gcm_token: req.body.gcm_token
     ).then( ( gcm ) ->
-      sails.log.debug "GCM updated #{ JSON.stringify gcm }"
+      sails.log.debug "GCM Found or updated #{ JSON.stringify gcm }"
       res.json gcm
     ).catch( ( gcm_find_err ) ->
       sails.log.debug "GCM find err #{ JSON.stringify gcm_find_err }"

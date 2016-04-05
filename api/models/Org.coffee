@@ -47,6 +47,10 @@ module.exports =
       collection: 'user'
       via: 'user_orgs'
 
+    org_locations:
+      collection: 'location'
+      via: 'orgs_locations'
+
     files:
       collection: 'filetracker'
       via: 'org'

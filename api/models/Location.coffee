@@ -14,7 +14,17 @@ module.exports =
     org_id:
       type: 'integer'
       required: true
+
+    lat:
+      type: 'float'
+      defaultsTo: null
+
+    lng:
+      type: 'float'
+      defaultsTo: null
     
+    orgs_locations:
+      model: 'org'
       
     
     toJSON: ->
