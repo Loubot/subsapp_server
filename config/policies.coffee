@@ -19,6 +19,7 @@ module.exports.policies =
 
   GCMController:
     '*': [ 'isAuthenticated' ]
+    'update': [ 'isAuthenticated', 'isCurrentUser' ]
 
   InviteController:
     '*': true
