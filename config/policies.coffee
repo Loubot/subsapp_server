@@ -7,8 +7,8 @@ module.exports.policies =
   EventController:
     '*': [ 'isAuthenticated' ]
     'create': [ 'isAuthenticated', 'isClubAdmin' ]
-    # 'join_event': 
-    # 'get_event_members':
+    'join_event': [ 'isAuthenticated', 'isCurrentUser' ]
+    'get_event_members': [ 'isAuthenticated', 'isCurrentUser' ]
     # 'create_parent_event':
 
   FileController:
@@ -18,7 +18,7 @@ module.exports.policies =
     'download_file': [ 'isAuthenticated', 'isSuperAdmin' ]
 
   GCMController:
-    '*': true
+    '*': [ 'isAuthenticated' ]
 
   InviteController:
     '*': true
@@ -43,16 +43,16 @@ module.exports.policies =
     '*': true
 
   PaymentController: 
-    '*': true
+    '*': [ 'isAuthenticated' ]
 
   TeamController: 
-    '*': true
+    '*': [ 'isAuthenticated' ]
 
   TokenController: 
-    '*': true
+    '*': [ 'isAuthenticated' ]
 
   TokenTransactionController: 
-    '*': true
+    '*': [ 'isAuthenticated' ]
 
 
   UserController:

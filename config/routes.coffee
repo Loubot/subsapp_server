@@ -268,6 +268,10 @@ module.exports.routes =
         controller:              'GCMController'
         action:                  'send_message'
 
+  'put /gcm':                #Requires user_id, device_uid, gcm_token. Updates gcm token. Returns gcm model
+        controller:              'GCMController'
+        action:                  'update'
+
 
   # End of GCMController
 

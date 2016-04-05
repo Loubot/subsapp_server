@@ -51,6 +51,9 @@ module.exports =
       type: 'boolean'  
       defaultsTo: false
 
+    addedToCalendar:
+      type: 'boolean'
+      defaultsTo: false
 
     
     toJSON: ->

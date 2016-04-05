@@ -84,6 +84,20 @@ module.exports = {
     ).catch ( err ) ->
       sails.log.debug "Find parent error #{ JSON.stringify err }"
       res.negotiate err
+
+  update: ( req, res ) ->
+    sails.log.debug "Hit the TokenTransactionController/update"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    GCMReg.update( 
+      { user_id: req.body.user_id, device_uid: req.body.device_uid }
+      gcm_token: req.body.gcm_token
+    ).then( ( gcm ) ->
+      sails.log.debug "GCM updated #{ JSON.stringify gcm }"
+      res.json gcm
+    ).catch( ( gcm_find_err ) ->
+      sails.log.debug "GCM find err #{ JSON.stringify gcm_find_err }"
+      res.negotiate gcm_find_err
+    )
     
   
 
