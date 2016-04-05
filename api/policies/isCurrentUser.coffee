@@ -12,7 +12,7 @@ module.exports = (req, res, next) ->
     sails.log.debug "Super admin"
     return
   else if parseInt( req.user.id ) != parseInt( req.param('id') )
-    res.negotiate "You are not allowed to view this"
+    return res.negotiate "You are not allowed to view this"
   next()
   
 # ---
