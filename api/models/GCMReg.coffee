@@ -46,17 +46,25 @@ module.exports =
     
     toJSON: ->
       obj = @toObject()
-      delete obj.password
-      delete obj.socialProfiles
       obj
-  # beforeUpdate: (values, next) ->
-  #   CipherService.hashPassword values
-  #   next()
-  #   return
-  # beforeCreate: (values, next) ->
-  #   CipherService.hashPassword values
-  #   next()
-  #   return
+  
+
+  #update or create method
+  updateOrCreate: (criteria, values, cb) ->
+    self = this
+    # reference for use by callbacks
+    # If no values were specified, use criteria
+    if !values
+      values = if criteria.where then criteria.where else criteria
+    @findOne criteria, (err, result) ->
+      if err
+        return cb(err, false)
+      if result
+        self.update criteria, values, cb
+      else
+        self.create values, cb
+      return
+    return
 
 
 # ---

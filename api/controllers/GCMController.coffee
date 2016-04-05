@@ -50,20 +50,21 @@ module.exports = {
         res.json response
       return
 
-  update: ( req, res ) ->
+  update: ( req, res ) -> #fix this
     sails.log.debug "Hit the TokenTransactionController/update"
     sails.log.debug "Params #{ JSON.stringify req.body }"
-    GCMReg.findOrCreate( 
+    GCMReg.updateOrCreate( 
       { user_id: req.body.user_id, device_uid: req.body.device_uid }
       user_id: req.body.user_id
       device_uid: req.body.device_uid
       instance_id: req.body.instance_id
       gcm_token: req.body.gcm_token
-    ).then( ( gcm ) ->
-      sails.log.debug "GCM Found or updated #{ JSON.stringify gcm }"
-      res.json gcm
-    ).catch( ( gcm_find_err ) ->
-      sails.log.debug "GCM find err #{ JSON.stringify gcm_find_err }"
-      res.negotiate gcm_find_err
+      ( err, gcm ) ->
+        if err?
+          sails.log.debug "Nope #{ JSON.stringify err }" 
+          res.negotiate err
+        else
+          sails.log.debug "yep #{ JSON.stringify gcm }" 
+          res.json gcm
     )
 }
