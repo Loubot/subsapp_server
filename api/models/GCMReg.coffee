@@ -29,15 +29,15 @@ module.exports =
 
     alerts: 
       type: 'boolean'
-      defaultsTo: null
+      defaultsTo: false
 
     event_notifications:
       type: 'boolean'
-      defaultsTo: null
+      defaultsTo: false
 
     club_notifications:
       type:  'boolean'
-      defaultsTo: null
+      defaultsTo: false
 
     user_gcm_tokens:
       model: 'user'
