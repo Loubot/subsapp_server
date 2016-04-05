@@ -88,8 +88,11 @@ module.exports = {
   update: ( req, res ) ->
     sails.log.debug "Hit the TokenTransactionController/update"
     sails.log.debug "Params #{ JSON.stringify req.body }"
-    GCMReg.update( 
+    GCMReg.findOrCreate( 
       { user_id: req.body.user_id, device_uid: req.body.device_uid }
+      user_id: req.body.user_id
+      device_uid: req.body.device_uid
+      instance_id: req.body.instance_id
       gcm_token: req.body.gcm_token
     ).then( ( gcm ) ->
       sails.log.debug "GCM updated #{ JSON.stringify gcm }"
