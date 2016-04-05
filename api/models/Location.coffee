@@ -10,10 +10,7 @@ module.exports =
   autoCreatedAt: true
   autoPK: true
   schema: true
-  attributes:      
-    org_id:
-      type: 'integer'
-      required: true
+  attributes:
 
     lat:
       type: 'float'
@@ -32,6 +29,12 @@ module.exports =
       delete obj.password
       delete obj.socialProfiles
       obj
+
+    add_location: ( other_model, body ) ->
+      sails.log.debug "Location model/add_location"
+      sails.log.debug "other model #{ JSON.stringify other_model }"
+      sails.log.debug "Body #{ JSON.stringify body }"
+      
   # beforeUpdate: (values, next) ->
   #   CipherService.hashPassword values
   #   next()

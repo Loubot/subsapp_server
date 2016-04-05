@@ -61,13 +61,13 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.org_create = -> # create a new org
       # console.log "create #{JSON.stringify user}"
-      console.log "#{ RESOURCES.DOMAIN }/create-business"
+      console.log "#{ RESOURCES.DOMAIN }/org/create"
       user_token = window.localStorage.getItem 'user_token'
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log "Form data #{ JSON.stringify $scope.business_form_data }"
       $http(  
         method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/create-business"
+        url: "#{ RESOURCES.DOMAIN }/org/create"
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
@@ -292,6 +292,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log $scope.map.center
+      $scope.map.user_id = $scope.user.id
       $http(
         method: 'PUT'
         url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
@@ -303,7 +304,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Save adddres response"
         alertify.success "Adddres saved"
         console.log res
-        $scope.parsed_data = res
+        # $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "Save address error"
         console.log errResponse

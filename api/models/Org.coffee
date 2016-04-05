@@ -58,7 +58,7 @@ module.exports =
 
     
 
-  afterCreate: ( values, cb ) ->
+  afterCreate: ( values, cb ) -> #geocode address
     geocoderProvider = 'google'
     httpAdapter = 'http'
     geocoder = require('node-geocoder')(geocoderProvider, httpAdapter)

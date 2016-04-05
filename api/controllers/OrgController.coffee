@@ -85,8 +85,11 @@ module.exports = {
     sails.log.debug "Hit the OrgController/update"
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Data #{ JSON.stringify req.body }"
-    body = ParamService.fix_lat_lng_name( req.body )
-    if AuthService.check_club_admin( req.user, req.param('id') )
+    if ParamService.check_if_coors( req.body ) #if coords exist update location
+
+      body = ParamService.fix_lat_lng_name( req.body )
+      
+    else
       Org.update( { id: req.param('id') }, body ).then( ( updated_org ) ->
         sails.log.debug "Org updated #{ JSON.stringify updated_org }"
         res.json updated_org
@@ -94,9 +97,6 @@ module.exports = {
         sails.log.debug "Updated org error #{ JSON.stringify updated_org_err }"
         res.negotiate updated_org_err
       )
-      
-    else
-      res.unauthorized 'You are not authorised to update this'
 
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"

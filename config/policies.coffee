@@ -29,8 +29,9 @@ module.exports.policies =
 
   OrgController:
     '*': [ 'isAuthenticated', 'isClubAdmin' ]
-    'create': [ 'isAuthenticated', 'isClubAdmin' ]
+    'create': [ 'isAuthenticated', 'hasClubFlag']
     'find': [ 'isAuthenticated', 'isSuperAdmin' ]
+    'update': [ 'isAuthenticated', 'isClubAdmin' ]
 
   ParentController:
     'associate_kids': [ 'isAuthenticated', 'isCurrentUser' ]

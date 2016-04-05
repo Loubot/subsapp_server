@@ -51,13 +51,13 @@ angular.module('subzapp').controller('OrgAdminController', [
       return $state.go('team_manager');
     };
     $scope.org_create = function() {
-      console.log(RESOURCES.DOMAIN + "/create-business");
+      console.log(RESOURCES.DOMAIN + "/org/create");
       user_token = window.localStorage.getItem('user_token');
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log("Form data " + (JSON.stringify($scope.business_form_data)));
       return $http({
         method: 'POST',
-        url: RESOURCES.DOMAIN + "/create-business",
+        url: RESOURCES.DOMAIN + "/org/create",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
@@ -269,6 +269,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     };
     return $scope.save_address = function() {
       console.log($scope.map.center);
+      $scope.map.user_id = $scope.user.id;
       return $http({
         method: 'PUT',
         url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
@@ -280,8 +281,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       }).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
-        console.log(res);
-        return $scope.parsed_data = res;
+        return console.log(res);
       }), function(errResponse) {
         console.log("Save address error");
         console.log(errResponse);
