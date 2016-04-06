@@ -2,6 +2,7 @@
 
 angular.module('subzapp').controller('OrgAdminController', [
   '$scope'
+  '$rootScope'
   '$state'
   '$http'
   'user'
@@ -10,7 +11,7 @@ angular.module('subzapp').controller('OrgAdminController', [
   'Upload'
   'usSpinnerService'
   'uiGmapGoogleMapApi'
-  ( $scope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
+  ( $scope, $rootScope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -22,13 +23,13 @@ angular.module('subzapp').controller('OrgAdminController', [
     user_token = window.localStorage.getItem 'user_token'
     user.get_user().then ( (res) ->
       # console.log "Got user "
-      check_club_admin(window.USER)
+      check_club_admin($rootScope.USER)
       # console.log window.USER.orgs.length == 0
-      $scope.org = window.USER.orgs[0]
+      $scope.org = $rootScope.USER.orgs[0]
       console.log "org id #{ JSON.stringify $scope.org }"
-      $scope.user = window.USER
-      $scope.orgs = window.USER.orgs
-      $scope.show_team_admin = ( window.USER.orgs.length == 0 )
+      $scope.user = $rootScope.USER
+      $scope.orgs = $rootScope.USER.orgs
+      $scope.show_team_admin = ( $rootScope.USER.orgs.length == 0 )
       $scope.show_map = true #display map
 
 
@@ -291,7 +292,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log $scope.map.center
-      $scope.map.user_id = $scope.user.id
+      $scope.map.user_id = $rootScope.USER.id
       $scope.map.org_id = $scope.org.id
       $http(
         method: 'PUT'

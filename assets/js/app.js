@@ -97,7 +97,7 @@ angular.module('subzapp').constant('RESOURCES', (function() {
   };
 })());
 
-angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
+angular.module('subzapp').service('user', function($http, $state, RESOURCES, $rootScope) {
   console.log("user service");
   return {
     check_if_org_admin: function(user, id) {
@@ -124,7 +124,7 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES) {
           return false;
         } else {
           console.log("Got user");
-          window.USER = data;
+          $rootScope.USER = data;
           return data;
         }
       }).error(function(err) {

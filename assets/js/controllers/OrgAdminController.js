@@ -2,7 +2,7 @@
 var return_org;
 
 angular.module('subzapp').controller('OrgAdminController', [
-  '$scope', '$state', '$http', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
+  '$scope', '$rootScope', '$state', '$http', 'user', 'RESOURCES', 'alertify', 'Upload', 'usSpinnerService', 'uiGmapGoogleMapApi', function($scope, $rootScope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi) {
     var check_club_admin, display_info, drag_display_info, set_map, user_token;
     check_club_admin = function(user) {
       if (!user.club_admin) {
@@ -13,12 +13,12 @@ angular.module('subzapp').controller('OrgAdminController', [
     console.log('OrgAdmin Controller');
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
-      check_club_admin(window.USER);
-      $scope.org = window.USER.orgs[0];
+      check_club_admin($rootScope.USER);
+      $scope.org = $rootScope.USER.orgs[0];
       console.log("org id " + (JSON.stringify($scope.org)));
-      $scope.user = window.USER;
-      $scope.orgs = window.USER.orgs;
-      $scope.show_team_admin = window.USER.orgs.length === 0;
+      $scope.user = $rootScope.USER;
+      $scope.orgs = $rootScope.USER.orgs;
+      $scope.show_team_admin = $rootScope.USER.orgs.length === 0;
       $scope.show_map = true;
       if ($scope.org != null) {
         usSpinnerService.spin('spinner-1');
@@ -268,7 +268,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     };
     return $scope.save_address = function() {
       console.log($scope.map.center);
-      $scope.map.user_id = $scope.user.id;
+      $scope.map.user_id = $rootScope.USER.id;
       $scope.map.org_id = $scope.org.id;
       return $http({
         method: 'PUT',

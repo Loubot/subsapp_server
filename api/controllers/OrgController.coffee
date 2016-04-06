@@ -88,9 +88,9 @@ module.exports = {
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     if ParamService.check_if_coors( req.body ) #if coords exist update or create location
-
+      sails.log.debug "Org id attempt ****** #{ JSON.stringify req.org }"
       body = ParamService.fix_lat_lng_name( req.body )
-      Org.findOne( id: req.body.org_id ).populate('org_locations').then( ( org ) ->
+      Org.findOne( id: req.param('id') ).populate('org_locations').then( ( org ) ->
         sails.log.debug "Found org #{ JSON.stringify org }"
         Location.updateOrCreate( 
           { org_id: req.body.org_id } 

@@ -123,7 +123,7 @@ angular.module('subzapp').constant 'RESOURCES', do ->
   
   
 
-angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
+angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope ) ->
   console.log "user service"
   {
 
@@ -152,7 +152,7 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES ) ->
         else
           console.log "Got user"
           # console.log data
-          window.USER = data
+          $rootScope.USER = data
           return data
         
       ).error (err) ->
