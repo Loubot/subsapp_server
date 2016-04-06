@@ -10,6 +10,8 @@ moment = require('moment')
 Promise = require('bluebird')
 module.exports = {
 
+
+
   findOne: ( req, res ) ->
     Promise = require('bluebird')
     AWS = require('aws-sdk')
@@ -43,8 +45,68 @@ module.exports = {
       res.negotiate org_find_s3_err
     )
     
+  create: (req, res) ->
+    sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    sails.log.debug "Data #{ JSON.stringify req.body }"
+    sails.log.debug "Data #{ JSON.stringify req.user }"
+    if req.user.club_admin != true
+      res.negotiate "You are not an admin"
+      return false
+    business_data = req.body
+    Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
+      sails.log.debug "Create response #{ JSON.stringify org }" 
+      org.admins.add(business_data.user_id)
+      org.save (err, s) ->
+        sails.log.debug "saved #{ JSON.stringify s }"
+        User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
+          sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
+          res.json r[0].orgs
+      return
+      #   res.json s
+      # sails.log.debug org.admins
+      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
+    ).catch( ( err ) ->
+      sails.log.debug "Create error response #{ err }"
+      res.negotiate err
+    )
     
-    
+  update: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/update"
+    sails.log.debug "Param #{ req.param('id') }"
+    sails.log.debug "Data #{ JSON.stringify req.body }"
+    if ParamService.check_if_coors( req.body ) #if coords exist update or create location
+
+      body = ParamService.fix_lat_lng_name( req.body )
+      Org.findOne( id: req.body.org_id ).populate('org_locations').then( ( org ) ->
+        sails.log.debug "Found org #{ JSON.stringify org }"
+        Location.updateOrCreate( 
+          { org_id: req.body.org_id } 
+          body
+          ( err, location ) ->
+            if err?
+              sails.log.debug "Location update or create error"
+              res.negotiate err
+            else
+              sails.log.debug "Location created #{ JSON.stringify location }"
+              res.json location
+        )
+        
+        
+        
+      ).catch( ( find_org_err ) ->
+        sails.log.debug "find_org_err #{ find_org_err }"
+        res.negotiate find_org_err
+      )
+      
+    else
+      Org.update( { id: req.param('id') }, body ).then( ( updated_org ) ->
+        sails.log.debug "Org updated #{ JSON.stringify updated_org }"
+        res.json updated_org
+      ).catch( ( updated_org_err ) ->
+        sails.log.debug "Updated org error #{ JSON.stringify updated_org_err }"
+        res.negotiate updated_org_err
+      )
+
 
   get_org_team_members: (req, res) ->
     sails.log.debug "Hit the org controller/get_org "
@@ -81,23 +143,7 @@ module.exports = {
     )
     
 
-  update: ( req, res ) ->
-    sails.log.debug "Hit the OrgController/update"
-    sails.log.debug "Param #{ req.param('id') }"
-    sails.log.debug "Data #{ JSON.stringify req.body }"
-    if ParamService.check_if_coors( req.body ) #if coords exist update location
-
-      body = ParamService.fix_lat_lng_name( req.body )
-      
-    else
-      Org.update( { id: req.param('id') }, body ).then( ( updated_org ) ->
-        sails.log.debug "Org updated #{ JSON.stringify updated_org }"
-        res.json updated_org
-      ).catch( ( updated_org_err ) ->
-        sails.log.debug "Updated org error #{ JSON.stringify updated_org_err }"
-        res.negotiate updated_org_err
-      )
-
+  
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
     sails.log.debug req.query
@@ -107,32 +153,6 @@ module.exports = {
     ).catch( ( err ) ->
       sails.log.debug "Get org admins error"
       sails.log.debug "#{ JSON.stringify err }"
-      res.negotiate err
-    )
-
-
-  create: (req, res) ->
-    sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    sails.log.debug "Data #{ JSON.stringify req.body }"
-    sails.log.debug "Data #{ JSON.stringify req.user }"
-    if req.user.club_admin != true
-      res.negotiate "You are not an admin"
-      return false
-    business_data = req.body
-    Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
-      sails.log.debug "Create response #{ JSON.stringify org }" 
-      org.admins.add(business_data.user_id)
-      org.save (err, s) ->
-        sails.log.debug "saved #{ JSON.stringify s }"
-        User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
-          sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
-          res.json r[0].orgs
-      return
-      #   res.json s
-      # sails.log.debug org.admins
-      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
-    ).catch( ( err ) ->
-      sails.log.debug "Create error response #{ err }"
       res.negotiate err
     )
     

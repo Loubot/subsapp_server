@@ -293,13 +293,14 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log $scope.map.center
       $scope.map.user_id = $scope.user.id
+      $scope.map.org_id = $scope.org.id
       $http(
         method: 'PUT'
         url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
         headers: { 
                   'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                   }
-        data: $scope.map.center
+        data: $scope.map
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"

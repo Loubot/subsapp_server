@@ -9,14 +9,21 @@ module.exports = {
   # Org controller. Change params to latitude and longitude
   fix_lat_lng_name: ( body ) ->
     sails.log.debug "Hit the ParamService/fix_lat_lng_name"
+    sails.log.debug "Center #{ body.center.latitude }"
 
-    if ( typeof body.latitude != undefined ) or ( typeof body.longitude != undefined )
-      if typeof body.latitude != undefined
-        body.lat = body.latitude
+    if ( typeof body.center.latitude != undefined ) or ( typeof body.center.longitude != undefined )
+      if typeof body.center.latitude != undefined
+        body.lat = body.center.latitude
+        sails.log.debug "lat #{ body.lat }"
 
-      if body.longitude != undefined
-        body.lng = body.longitude 
+      if body.center.longitude != undefined
+        body.lng = body.center.longitude 
+        sails.log.debug "lat #{ body.lng }"
 
+    delete body.center
+    delete body.markers
+    delete body.zoom
+    delete body.events
     sails.log.debug "New body #{ JSON.stringify body }"
     return body
 }

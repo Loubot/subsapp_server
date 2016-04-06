@@ -20,7 +20,7 @@ module.exports =
       type: 'float'
       defaultsTo: null
     
-    orgs_locations:
+    org_id:
       model: 'org'
       
     
@@ -30,10 +30,21 @@ module.exports =
       delete obj.socialProfiles
       obj
 
-    add_location: ( other_model, body ) ->
-      sails.log.debug "Location model/add_location"
-      sails.log.debug "other model #{ JSON.stringify other_model }"
-      sails.log.debug "Body #{ JSON.stringify body }"
+  updateOrCreate: (criteria, values, cb) ->
+    self = this
+    # reference for use by callbacks
+    # If no values were specified, use criteria
+    if !values
+      values = if criteria.where then criteria.where else criteria
+    @findOne criteria, (err, result) ->
+      if err
+        return cb(err, false)
+      if result
+        self.update criteria, values, cb
+      else
+        self.create values, cb
+      return
+    return
       
   # beforeUpdate: (values, next) ->
   #   CipherService.hashPassword values

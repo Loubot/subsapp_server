@@ -49,7 +49,7 @@ module.exports =
 
     org_locations:
       collection: 'location'
-      via: 'orgs_locations'
+      via: 'org_id'
 
     files:
       collection: 'filetracker'

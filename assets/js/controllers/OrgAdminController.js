@@ -270,6 +270,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     return $scope.save_address = function() {
       console.log($scope.map.center);
       $scope.map.user_id = $scope.user.id;
+      $scope.map.org_id = $scope.org.id;
       return $http({
         method: 'PUT',
         url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
@@ -277,7 +278,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
         },
-        data: $scope.map.center
+        data: $scope.map
       }).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
