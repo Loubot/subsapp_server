@@ -47,29 +47,41 @@ module.exports = {
     
   create: (req, res) ->
     sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    sails.log.debug "Data #{ JSON.stringify req.body }"
-    sails.log.debug "Data #{ JSON.stringify req.user }"
-    if req.user.club_admin != true
-      res.negotiate "You are not an admin"
-      return false
-    business_data = req.body
-    Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
-      sails.log.debug "Create response #{ JSON.stringify org }" 
-      org.admins.add(business_data.user_id)
-      org.save (err, s) ->
-        sails.log.debug "saved #{ JSON.stringify s }"
-        User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
-          sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
-          res.json r[0].orgs
-          
+    req.login req.user, (err) ->
+      if err
+        return next(err)
+      sails.log.debug 'After relogin: ' + req.session.passport.user
+      res.send 200
       return
-      #   res.json s
-      # sails.log.debug org.admins
-      # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
-    ).catch( ( err ) ->
-      sails.log.debug "Create error response #{ err }"
-      res.negotiate err
-    )
+    return
+    # sails.log.debug "Data #{ JSON.stringify req.body }"
+    # sails.log.debug "Data #{ JSON.stringify req.user }"
+    # if req.user.club_admin != true
+    #   res.negotiate "You are not an admin"
+    #   return false
+    # business_data = req.body
+    # Org.create( { name: business_data.name, address: business_data.address } ).then( ( org ) ->
+    #   sails.log.debug "Create response #{ JSON.stringify org }" 
+    #   org.admins.add(business_data.user_id)
+    #   org.save (err, s) ->
+    #     sails.log.debug "saved #{ JSON.stringify s }"
+    #     User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
+    #       sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
+    #       JWTService.update_user( req , ( err, ups ) ->
+    #         sails.log.debug "err #{ JSON.stringify err }"
+    #         sails.log.debug "ups #{ JSON.stringify ups}"
+
+    #       )
+
+    #   return
+    #   #   res.json s
+    #   # sails.log.debug org.admins
+    #   # sails.log.debug "Updated org #{ JSON.stringify org.admins }"
+    # ).catch( ( err ) ->
+    #   sails.log.debug "Create error response #{ err }"
+    #   res.negotiate err
+    # )
+    res.json 'ok'
     
   update: ( req, res ) ->
     sails.log.debug "Hit the OrgController/update"
