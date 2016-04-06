@@ -61,6 +61,7 @@ module.exports = {
         User.find().where( id: business_data.user_id).populateAll().exec (e, r) ->
           sails.log.debug "Populate result #{ JSON.stringify r[0].orgs }"
           res.json r[0].orgs
+          
       return
       #   res.json s
       # sails.log.debug org.admins

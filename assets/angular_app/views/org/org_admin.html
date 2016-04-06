@@ -1,11 +1,11 @@
-<div class="angular-google-map-container" >
+<div class="angular-google-map-container" ng-show="$scope.org">
   <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options" events="map.events" control="googlemap">
     <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.idKey"></ui-gmap-marker>
   </ui-gmap-google-map>
 
 </div>
 
-<form ng-submit="save_address()" >
+<form ng-submit="save_address()" ng-show="$scope.org">
   <input id="pac-input" class="form-control controls" ng-class="{ appear: show_map }" ng-change="find_address()" ng-model="address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
   <input type="submit" value="Save Address" ng-class="{ appear: show_map }" class="controls button btn btn-success">
 </form>

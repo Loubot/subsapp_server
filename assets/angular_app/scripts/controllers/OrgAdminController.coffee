@@ -40,8 +40,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           headers: { 
                     'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
                     }
-          params: 
-            org_id: $scope.org.id
+          
         ).then ( ( org_and_teams ) ->
           usSpinnerService.stop('spinner-1')
           console.log "Get org and teams"
@@ -218,14 +217,15 @@ angular.module('subzapp').controller('OrgAdminController', [
   # map stuff                               #
   ###########################################
     display_info = -> # display instructions for setting clubs location
-      alertify.log "Enter your clubs address"
-      setTimeout ( ->
-        alertify.log "You can drag the map to fine tune your clubs position"
-      ), 3000
-      
-      setTimeout ( -> 
-        alertify.log "Click save to upate the location"
-      ), 6000
+      if $scope.org
+        alertify.log "Enter your clubs address"
+        setTimeout ( ->
+          alertify.log "You can drag the map to fine tune your clubs position"
+        ), 3000
+        
+        setTimeout ( -> 
+          alertify.log "Click save to upate the location"
+        ), 6000
 
     drag_display_info = -> #display instructions for dragging map to update location
       alertify.log "You can save this new location"
@@ -270,8 +270,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         
         
   
-      else
-        
+      else        
         set_map( 51.9181688, -8.5039876, false)
         display_info()
         

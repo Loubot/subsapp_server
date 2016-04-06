@@ -28,9 +28,6 @@ angular.module('subzapp').controller('OrgAdminController', [
           headers: {
             'Authorization': "JWT " + user_token,
             "Content-Type": "application/json"
-          },
-          params: {
-            org_id: $scope.org.id
           }
         }).then((function(org_and_teams) {
           usSpinnerService.stop('spinner-1');
@@ -195,13 +192,15 @@ angular.module('subzapp').controller('OrgAdminController', [
       return moment(date).format("DD-MM-YYYY");
     };
     display_info = function() {
-      alertify.log("Enter your clubs address");
-      setTimeout((function() {
-        return alertify.log("You can drag the map to fine tune your clubs position");
-      }), 3000);
-      return setTimeout((function() {
-        return alertify.log("Click save to upate the location");
-      }), 6000);
+      if ($scope.org) {
+        alertify.log("Enter your clubs address");
+        setTimeout((function() {
+          return alertify.log("You can drag the map to fine tune your clubs position");
+        }), 3000);
+        return setTimeout((function() {
+          return alertify.log("Click save to upate the location");
+        }), 6000);
+      }
     };
     drag_display_info = function() {
       alertify.log("You can save this new location");
