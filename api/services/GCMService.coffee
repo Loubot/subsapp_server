@@ -17,10 +17,10 @@ module.exports = {
 
     user_query = Promise.promisify( User.query )
     user_query(
-      "select p.id as parent_user_id, g.gcm_token
-      from event e 
-      left outer join event_event_user__user_user_events eu on eu.event_event_user = e.id
-      left outer join user u on u.id = eu.user_user_events
+      "select p.id as parent_user_id, g.gcm_token, g.event_notifications
+      from event e
+      left outer join team_team_members__user_user_teams tm on tm.team_team_members = e.event_team
+      left outer join user u on u.id = tm.user_user_teams
       left outer join user p on p.email = u.parent_email
       left outer join gcmreg g on g.user_id = p.id 
       where e.id = #{ event_created.id } and g.gcm_token is not null
