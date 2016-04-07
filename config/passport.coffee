@@ -35,7 +35,7 @@ JWT_STRATEGY_CONFIG =
 ###
 
 _onLocalStrategyAuth = (email, password, next) ->
-  User.findOne(email: email).populateAll().exec (error, user) ->
+  User.findOne(email: email).populate('orgs').populate('teams').populate('tokens').exec (error, user) ->
     if error
       return next(error, false, {})
     if !user
