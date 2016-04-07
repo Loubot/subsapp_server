@@ -18,7 +18,7 @@ angular.module('subzapp').controller('TeamController', [
 
     get_team_info = ->
       usSpinnerService.spin('spinner-1')
-      if $rootScope.user.club_admin
+      if $rootScope.USER.club_admin
         $http(
           method: 'GET'
           url: "#{ RESOURCES.DOMAIN }/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"
@@ -67,7 +67,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = $rootScope.USER.teams
         return_team( $rootScope.USER.teams, $location.search().id )
         $scope.show_upload = $rootScope.USER.club_admin
-        get_team_info() if $rootScope.club_admin
+        get_team_info() if $rootScope.USER.club_admin
       ), ( errResponse ) ->
         $rootScope.USER = null
         # $state.go 'login'
