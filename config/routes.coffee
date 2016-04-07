@@ -88,7 +88,7 @@ module.exports.routes =
 
   # ORG controller
 
-  'post /org/create' : # Create new org. See org.coffee for attributes
+  'post /org' : # Create new org. See org.coffee for attributes
         controller:             'OrgController'
         action:                 'create'
 

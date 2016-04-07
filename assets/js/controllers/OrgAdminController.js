@@ -48,21 +48,23 @@ angular.module('subzapp').controller('OrgAdminController', [
       return $state.go('team_manager');
     };
     $scope.org_create = function() {
-      console.log(RESOURCES.DOMAIN + "/org/create");
+      console.log(RESOURCES.DOMAIN + "/org");
       user_token = window.localStorage.getItem('user_token');
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log("Form data " + (JSON.stringify($scope.business_form_data)));
       return $http({
         method: 'POST',
-        url: RESOURCES.DOMAIN + "/org/create",
+        url: RESOURCES.DOMAIN + "/org",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"
         },
         data: $scope.business_form_data
       }).then((function(response) {
-        $scope.orgs = response.data;
-        $scope.org = response.data[0];
+        console.log(response);
+        $scope.orgs = response.data.user.orgs;
+        $scope.org = response.data.user.orgs[0];
+        $rootScope.USER = response.data.user;
         console.log("Org set: " + (JSON.stringify($scope.org)));
         alertify.success("Club created successfully");
         $('.business_name').val("");

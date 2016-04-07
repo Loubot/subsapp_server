@@ -33,8 +33,8 @@ module.exports = {
           send_array.push token.gcm_token
 
       message.addNotification
-        title: 'hello'
-        body: 'boobies'
+        title: event_created
+        body: event_created.details
         icon: 'ic_launcher'
 
       sender.send message, { registrationTokens: send_array }, (err, response) ->
