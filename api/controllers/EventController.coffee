@@ -7,7 +7,7 @@
 
 module.exports = {
   
-  create: (req, res) ->
+  create: (req, res) -> #user association happens in afterCreate callback
     sails.log.debug "Hit the events controller/create_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     Event.create( 

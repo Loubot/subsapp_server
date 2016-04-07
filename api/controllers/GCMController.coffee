@@ -5,6 +5,7 @@
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
 gcm = require('node-gcm')
+Promise = require('bluebird')
 
 module.exports = {
 
@@ -53,6 +54,7 @@ module.exports = {
   update: ( req, res ) -> #fix this
     sails.log.debug "Hit the TokenTransactionController/update"
     sails.log.debug "Params #{ JSON.stringify req.body }"
+
     GCMReg.updateOrCreate( 
       { user_id: req.body.user_id, device_uid: req.body.device_uid }
       user_id: req.body.user_id

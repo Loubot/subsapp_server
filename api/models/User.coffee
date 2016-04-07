@@ -118,7 +118,7 @@ module.exports =
 
     gcm_tokens:
       collection: 'gcmreg'
-      via: 'user_gcm_tokens'
+      via: 'user_id'
 
 
     getFullName: ->

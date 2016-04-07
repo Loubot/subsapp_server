@@ -11,10 +11,6 @@ module.exports =
   autoPK: true
   schema: true
   attributes:
-    user_id:
-      type: 'integer'
-      required: true
-
     device_uid:
       type: 'string'
       required: true
@@ -39,7 +35,7 @@ module.exports =
       type:  'boolean'
       defaultsTo: true
 
-    user_gcm_tokens:
+    user_id:
       model: 'user'
 
   
