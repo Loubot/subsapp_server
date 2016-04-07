@@ -57,10 +57,7 @@ module.exports = {
 
     GCMReg.updateOrCreate( 
       { user_id: req.body.user_id, device_uid: req.body.device_uid }
-      user_id: req.body.user_id
-      device_uid: req.body.device_uid
-      instance_id: req.body.instance_id
-      gcm_token: req.body.gcm_token
+      req.body
       ( err, gcm ) ->
         if err?
           sails.log.debug "Nope #{ JSON.stringify err }" 
