@@ -276,7 +276,9 @@ angular.module('subzapp').controller('OrgAdminController', [
         set_map( 51.9181688, -8.5039876, false)
         display_info()
         
-
+    $scope.$watch 'org', ( old_org, new_org ) ->
+      if $scope.org
+        set_map( $scope.org.lat, $scope.org.lng, true )
     $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       geocoder.geocode( address: $scope.address, ( results, status ) ->

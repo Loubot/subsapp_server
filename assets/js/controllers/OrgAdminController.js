@@ -255,6 +255,11 @@ angular.module('subzapp').controller('OrgAdminController', [
         return display_info();
       }
     });
+    $scope.$watch('org', function(old_org, new_org) {
+      if ($scope.org) {
+        return set_map($scope.org.lat, $scope.org.lng, true);
+      }
+    });
     $scope.find_address = function() {
       var geocoder;
       geocoder = new google.maps.Geocoder();
