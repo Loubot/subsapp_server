@@ -77,12 +77,12 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = $rootScope.USER.orgs[0]
       $scope.teams = $rootScope.USER.teams
       $scope.user = $rootScope.USER
-      get_team_info() if $rootScope.user.club_admin
+      get_team_info() if $rootScope.USER.club_admin
   
       
     $scope.create_event = ->
       $scope.create_event_data.team_id = $scope.team.id
-      $scope.create_event_data.user_id = $rootScope.user.id
+      $scope.create_event_data.user_id = $rootScope.USER.id
       console.log $scope.create_event_data
       $http(
         method: 'POST'

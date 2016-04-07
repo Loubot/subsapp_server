@@ -66,13 +66,13 @@ angular.module('subzapp').controller('TeamController', [
       $scope.org = $rootScope.USER.orgs[0];
       $scope.teams = $rootScope.USER.teams;
       $scope.user = $rootScope.USER;
-      if ($rootScope.user.club_admin) {
+      if ($rootScope.USER.club_admin) {
         get_team_info();
       }
     }
     $scope.create_event = function() {
       $scope.create_event_data.team_id = $scope.team.id;
-      $scope.create_event_data.user_id = $rootScope.user.id;
+      $scope.create_event_data.user_id = $rootScope.USER.id;
       console.log($scope.create_event_data);
       return $http({
         method: 'POST',
