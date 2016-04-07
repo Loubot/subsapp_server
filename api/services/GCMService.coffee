@@ -3,6 +3,7 @@ Promise = require('bluebird')
 module.exports = {
   send_message: ( event_created, message ) ->
     sails.log.debug "GCMService/send_message"
+    sails.log.debug "Event created #{ JSON.stringify event_created }"
     # Team.findOne( id: event_created.event_team )
     # .populate('team_members')
     # .then( ( team ) ->
