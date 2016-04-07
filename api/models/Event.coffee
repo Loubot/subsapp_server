@@ -56,7 +56,7 @@ module.exports =
   #   next()
   #   return
 
-  afterCreate: ( values, next ) ->
+  beforeCreate: ( values, next ) ->
     sails.log.debug "Event values #{ JSON.stringify values }"
     
     Team.findOne( id: values.event_team ).populate('team_members').then( ( team ) ->
