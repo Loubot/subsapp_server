@@ -23,7 +23,7 @@ logger = new (winston.Logger)(transports: [
     colorize: false)
 ])
 module.exports.log = 
-  # custom: logger
+  custom: logger
   level: 'debug'
 
 
