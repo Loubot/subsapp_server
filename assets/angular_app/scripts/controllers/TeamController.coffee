@@ -2,6 +2,7 @@
 
 angular.module('subzapp').controller('TeamController', [
   '$scope'
+  '$rootScope'
   '$state'
   '$http'
   '$window'
@@ -11,13 +12,13 @@ angular.module('subzapp').controller('TeamController', [
   'RESOURCES'
   '$filter'
   'usSpinnerService'
-  ( $scope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
+  ( $scope, $rootScope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
     get_team_info = ->
       usSpinnerService.spin('spinner-1')
-      if $scope.user.club_admin
+      if $rootScope.user.club_admin
         $http(
           method: 'GET'
           url: "#{ RESOURCES.DOMAIN }/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"
@@ -57,31 +58,31 @@ angular.module('subzapp').controller('TeamController', [
           console.log "Get team info error #{ JSON.stringify errResponse }"
           $state.go 'login'
 
-    if !(window.USER?)
+    if !($rootScope.USER?)
       user.get_user().then ( (res) ->
         # console.log "User set to #{ JSON.stringify res }"
         # console.log "TeamController teams #{ JSON.stringify window.USER }"
-        $scope.user = window.USER
-        $scope.org = window.USER.orgs[0]
-        $scope.teams = window.USER.teams
-        return_team( USER.teams, $location.search().id )
-        $scope.show_upload = window.USER.club_admin
-        get_team_info() if $scope.user.club_admin
+        $scope.user = $rootScope.USER
+        $scope.org = $rootScope.USER.orgs[0]
+        $scope.teams = $rootScope.USER.teams
+        return_team( $rootScope.USER.teams, $location.search().id )
+        $scope.show_upload = $rootScope.USER.club_admin
+        get_team_info() if $rootScope.club_admin
       ), ( errResponse ) ->
-        window.USER = null
+        $rootScope.USER = null
         # $state.go 'login'
     else
       console.log "USER already defined"
-      $scope.user = window.USER
-      $scope.org = window.USER.orgs[0]
-      $scope.teams = window.USER.teams
-      $scope.user = window.USER
-      get_team_info() if $scope.user.club_admin
+      $scope.user = $rootScope.USER
+      $scope.org = $rootScope.USER.orgs[0]
+      $scope.teams = $rootScope.USER.teams
+      $scope.user = $rootScope.USER
+      get_team_info() if $rootScope.user.club_admin
   
       
     $scope.create_event = ->
       $scope.create_event_data.team_id = $scope.team.id
-      $scope.create_event_data.user_id = $scope.user.id
+      $scope.create_event_data.user_id = $rootScope.user.id
       console.log $scope.create_event_data
       $http(
         method: 'POST'

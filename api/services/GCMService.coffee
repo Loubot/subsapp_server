@@ -1,11 +1,16 @@
 gcm = require('node-gcm')
 
 module.exports = {
-  send_message: ( title, message ) ->
+  send_message: ( event_created, message ) ->
     sails.log.debug "GCMService/send_message"
+    Team.findOne( id: event_created.event_team ).then( ( team ) ->
+      sails.log.debug "Found team #{ JSON.stringify team }"
+    ).catch( ( team_find_err ) ->
+      sails.log.debug "Team find err #{ JSON.stringify team_find_err }"
+    )
     message = new (gcm.Message)
     message.addNotification
-      title: title
+      title: event_created
       body: message
       icon: 'ic_launcher'
 

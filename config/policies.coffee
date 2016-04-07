@@ -6,7 +6,7 @@ module.exports.policies =
 
   EventController:
     '*': [ 'isAuthenticated' ]
-    'create': [ 'isAuthenticated', 'isClubAdmin' ]
+    'create': [ 'isAuthenticated' ]
     'join_event': [ 'isAuthenticated', 'isCurrentUser' ]
     'get_event_members': [ 'isAuthenticated', 'isCurrentUser' ]
     # 'create_parent_event':

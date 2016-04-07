@@ -2,13 +2,13 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService) {
+  '$scope', '$rootScope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'usSpinnerService', function($scope, $rootScope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService) {
     var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
     get_team_info = function() {
       usSpinnerService.spin('spinner-1');
-      if ($scope.user.club_admin) {
+      if ($rootScope.user.club_admin) {
         return $http({
           method: 'GET',
           url: RESOURCES.DOMAIN + "/team/get-team-info/" + (window.localStorage.getItem('team_id')),
@@ -47,32 +47,32 @@ angular.module('subzapp').controller('TeamController', [
         });
       }
     };
-    if (!(window.USER != null)) {
+    if (!($rootScope.USER != null)) {
       user.get_user().then((function(res) {
-        $scope.user = window.USER;
-        $scope.org = window.USER.orgs[0];
-        $scope.teams = window.USER.teams;
-        return_team(USER.teams, $location.search().id);
-        $scope.show_upload = window.USER.club_admin;
-        if ($scope.user.club_admin) {
+        $scope.user = $rootScope.USER;
+        $scope.org = $rootScope.USER.orgs[0];
+        $scope.teams = $rootScope.USER.teams;
+        return_team($rootScope.USER.teams, $location.search().id);
+        $scope.show_upload = $rootScope.USER.club_admin;
+        if ($rootScope.club_admin) {
           return get_team_info();
         }
       }), function(errResponse) {
-        return window.USER = null;
+        return $rootScope.USER = null;
       });
     } else {
       console.log("USER already defined");
-      $scope.user = window.USER;
-      $scope.org = window.USER.orgs[0];
-      $scope.teams = window.USER.teams;
-      $scope.user = window.USER;
-      if ($scope.user.club_admin) {
+      $scope.user = $rootScope.USER;
+      $scope.org = $rootScope.USER.orgs[0];
+      $scope.teams = $rootScope.USER.teams;
+      $scope.user = $rootScope.USER;
+      if ($rootScope.user.club_admin) {
         get_team_info();
       }
     }
     $scope.create_event = function() {
       $scope.create_event_data.team_id = $scope.team.id;
-      $scope.create_event_data.user_id = $scope.user.id;
+      $scope.create_event_data.user_id = $rootScope.user.id;
       console.log($scope.create_event_data);
       return $http({
         method: 'POST',
