@@ -22,11 +22,6 @@ module.exports =
       defaultsTo: ''
       required: true
 
-    address:
-      type: 'text'
-      defaultsTo: ''
-      required: true
-
     # lat:
     #   type: 'float'
     #   defaultsTo: null
@@ -56,25 +51,6 @@ module.exports =
       collection: 'filetracker'
       via: 'org'
       # columnName: 'filetracker_id'
-
-    
-
-  afterCreate: ( values, cb ) -> #geocode address
-    geocoderProvider = 'google'
-    httpAdapter = 'http'
-    geocoder = require('node-geocoder')(geocoderProvider, httpAdapter)
-    sails.log.debug "Org create values #{ JSON.stringify values }"
-
-    geocoder.geocode( values.address ).then( ( geocode_results ) ->
-      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results }"
-      values.lat = geocode_results[0].latitude
-      values.lng = geocode_results[0].longitude
-      cb()
-    ).catch( ( geocode_results_err ) ->
-      sails.log.debug "Org create geocode_results_err #{ JSON.stringify geocode_results_err }"
-      cb( geocode_results_err )
-    )
-
     
     toJSON: ->
       obj = @toObject()

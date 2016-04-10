@@ -135,23 +135,59 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES, $ro
   };
 });
 
-angular.module('subzapp').service('comms', function($http, $state, RESOURCES, $rootScope, $q) {
+angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $rootScope, $q) {
+  var user_token;
   console.log("comms service");
+  user_token = window.localStorage.getItem('user_token');
   return {
-    post: function(url, data) {
+    POST: function(url, data) {
       return $q(function(resolve, reject) {
         return $http({
           method: 'POST',
-          url: RESOURCES.DOMAIN + "/location",
+          url: "" + RESOURCES.DOMAIN + url,
           headers: {
             'Authorization': "JWT " + user_token,
             "Content-Type": "application/json"
           },
-          data: $scope.map
+          data: data
         }).then(function(result) {
-          return resolce(result);
+          return resolve(result);
         })["catch"](function(err_result) {
           return reject(err_result);
+        });
+      });
+    },
+    GET: function(url, data) {
+      return $q(function(resolve, reject) {
+        return $http({
+          method: 'GET',
+          url: "" + RESOURCES.DOMAIN + url,
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          },
+          params: data
+        }).then(function(result) {
+          return resolve(result);
+        })["catch"](function(err_result) {
+          return reject(err_result);
+        });
+      });
+    },
+    DELETE: function(url, data) {
+      return $q(function(resolve, reject) {
+        return $http({
+          method: 'DELETE',
+          url: "" + RESOURCES.DOMAIN + url,
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          },
+          data: data
+        }).then(function(deleted) {
+          return resolve(deleted);
+        })["catch"](function(err_deleting) {
+          return reject(err_deleting);
         });
       });
     }

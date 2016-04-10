@@ -26,7 +26,7 @@ module.exports.policies =
 
   LocationController:
     '*': [ 'isAuthenticated' ]
-    'create': [ 'isAuthenticated', 'isClubAdmin' ]
+    'create': [ 'isAuthenticated' ]
 
 
   MailController:

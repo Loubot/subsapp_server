@@ -81,7 +81,7 @@ module.exports = {
 
    
 
-  create_team: (req, res) ->
+  create: (req, res) ->
     sails.log.debug "Hit the team controller/create_team ***************"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     
@@ -101,7 +101,7 @@ module.exports = {
 
       
 
-  destroy_team: (req, res) ->
+  destroy: (req, res) ->
     sails.log.debug "Hit the team controller/destroy_team"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     

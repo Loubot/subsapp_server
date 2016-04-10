@@ -160,19 +160,53 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope 
         $state.go 'login'
   }
     
-angular.module('subzapp').service 'comms', ( $http, $state, RESOURCES, $rootScope, $q ) ->
+angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScope, $q ) ->
   console.log "comms service"
-  post: ( url, data ) ->
+  user_token = window.localStorage.getItem 'user_token'
+  POST: ( url, data ) ->
     $q ( resolve, reject ) ->
       $http(
         method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/location"
+        url: "#{ RESOURCES.DOMAIN }#{ url }"
         headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                    'Authorization': "JWT #{ user_token }"
+                    "Content-Type": "application/json"
                   }
-        data: $scope.map
+        data: data
       ).then( ( result ) ->
-        resolce result
+        resolve result
       ).catch( ( err_result ) ->
         reject err_result
+      )
+
+  GET: ( url, data ) ->
+    $q ( resolve, reject ) ->
+      $http(
+        method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }#{ url }"
+        headers: { 
+                    'Authorization': "JWT #{ user_token }"
+                    "Content-Type": "application/json"
+                  }
+        params: data
+      ).then( ( result ) ->
+        resolve result
+      ).catch( ( err_result ) ->
+        reject err_result
+      )
+
+  DELETE: ( url, data ) ->
+    $q ( resolve, reject ) ->
+      $http(
+        method: 'DELETE'
+        url: "#{ RESOURCES.DOMAIN }#{ url }"
+        headers: { 
+                    'Authorization': "JWT #{ user_token }"
+                    "Content-Type": "application/json"
+                  }
+        data: data 
+      ).then( ( deleted ) ->
+        resolve deleted
+      ).catch( ( err_deleting ) ->
+        reject err_deleting
       )

@@ -134,11 +134,11 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'update'
   
-  'post /create-team' :       #Requires name, main_org id, user_id. 
+  'post /team' :       #Requires name, main_org id, user_id. 
         controller:             'TeamController'
-        action:                 'create_team'
+        action:                 'create'
 
-  'delete /delete-team' :     #Requires id. Destroys team
+  'delete /team' :     #Requires id. Destroys team
         controller:             'TeamController'
         action:                 'destroy_team'
 

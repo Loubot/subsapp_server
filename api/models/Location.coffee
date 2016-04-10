@@ -19,6 +19,12 @@ module.exports =
     lng:
       type: 'float'
       defaultsTo: null
+
+    address:
+      type: 'text'
+      defaultsTo: ''
+      required: true
+
     
     org_id:
       collection: 'org'
@@ -47,6 +53,24 @@ module.exports =
         self.create values, cb
       return
     return
+
+
+  afterCreate: ( values, cb ) -> #geocode address
+    geocoderProvider = 'google'
+    httpAdapter = 'http'
+    geocoder = require('node-geocoder')(geocoderProvider, httpAdapter)
+    sails.log.debug "Org create values #{ JSON.stringify values }"
+
+    geocoder.geocode( values.address ).then( ( geocode_results ) ->
+      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results }"
+      this.lat = geocode_results[0].latitude
+      this.lng = geocode_results[0].longitude
+      cb()
+    ).catch( ( geocode_results_err ) ->
+      sails.log.debug "Org create geocode_results_err #{ JSON.stringify geocode_results_err }"
+      cb( geocode_results_err )
+    )
+
       
   # beforeUpdate: (values, next) ->
   #   CipherService.hashPassword values

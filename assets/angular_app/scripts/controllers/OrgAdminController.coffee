@@ -4,14 +4,14 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$scope'
   '$rootScope'
   '$state'
-  'comms'
+  'COMMS'
   'user'
   'RESOURCES'
   'alertify'
   'Upload'
   'usSpinnerService'
   'uiGmapGoogleMapApi'
-  ( $scope, $rootScope, $state, comms, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
+  ( $scope, $rootScope, $state, COMMS, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -25,29 +25,25 @@ angular.module('subzapp').controller('OrgAdminController', [
       # console.log "Got user "
       check_club_admin($rootScope.USER)
       # console.log window.USER.orgs.length == 0
-      $scope.org = $rootScope.USER.orgs[0]
-      console.log "org id #{ JSON.stringify $scope.org }"
+      # $scope.org = $rootScope.USER.orgs[0]
+      # console.log "org id #{ JSON.stringify $scope.org }"
       $scope.user = $rootScope.USER
       $scope.orgs = $rootScope.USER.orgs
       $scope.show_team_admin = ( $rootScope.USER.orgs.length == 0 )
       $scope.show_map = true #display map
 
 
-      if $scope.org?  # if org is defined fetch org info with teams info and s3 info
+      if $rootScope.USER.orgs.length > 0  # if org is defined fetch org info with teams info and s3 info
         usSpinnerService.spin('spinner-1')
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
-          headers: { 
-                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                    }
-          
+        COMMS.GET(
+          "/org/#{ $rootScope.USER.orgs[0].id }"
         ).then ( ( org_and_teams ) ->
           usSpinnerService.stop('spinner-1')
           console.log "Get org and teams"
           console.log org_and_teams
           $scope.teams = org_and_teams.data.org.teams
           $scope.files = org_and_teams.data.s3_object.Contents
+          $scope.org = org_and_teams.data.org
         ), ( errResponse ) ->
           usSpinnerService.stop('spinner-1')
           console.log "Get teams failed"
@@ -62,23 +58,17 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.org_create = -> # create a new org
       # console.log "create #{JSON.stringify user}"
       console.log "#{ RESOURCES.DOMAIN }/org"
-      user_token = window.localStorage.getItem 'user_token'
+      
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log "Form data #{ JSON.stringify $scope.business_form_data }"
-      $http(  
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/org"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-        data: 
-          $scope.business_form_data
+      COMMS.POST(
+        '/org', $scope.business_form_data          
       ).then ( (response) ->
 
         # console.log "Business create return "
         console.log response
         $scope.orgs = response.data.user.orgs
-        $scope.org = response.data.user.orgs[0]
+        $scope.org = response.data.org
         $rootScope.USER = response.data.user
         console.log "Org set: #{ JSON.stringify $scope.org }"
         alertify.success "Club created successfully"
@@ -95,14 +85,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log "Org #{ JSON.stringify $scope.org }"
 
       $scope.show_team_admin = false
-      $http(
-        method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/org-admins"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-        params:
-          org_id: id
+      COMMS.GET(
+        '/org-admins', org_id: id
       ).then ( ( response ) ->
         console.log "get org-admins"
         console.log response
@@ -119,13 +103,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log "Org id #{ JSON.stringify $scope.org }"
       $scope.team_form_data.org_id = $scope.org.id
       console.log "Form data #{ JSON.stringify $scope.team_form_data }"
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/create-team"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-        data: $scope.team_form_data
+      COMMS.POST(
+        'team', $scope.team_form_data
       ).then ( ( response ) ->
         console.log "Team create"
         console.log response
@@ -139,15 +118,8 @@ angular.module('subzapp').controller('OrgAdminController', [
         alertify.error errResponse
 
     $scope.delete_team = ( id ) -> # delete a team
-      $http(
-        url: "#{ RESOURCES.DOMAIN }/delete-team"
-        method: 'DELETE'
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-        data:
-          team_id: id
-          org_id: $scope.org.id
+      COMMS.DELETE(
+          'team', team_id: id, org_id: $scope.org.id
       ).then ( ( res ) ->
         console.log "Team delete"
         console.log res
@@ -266,25 +238,13 @@ angular.module('subzapp').controller('OrgAdminController', [
           drag_display_info()
       console.log "center #{ JSON.stringify $scope.map.center }"
 
-    uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
-      if $scope.org? and $scope.org.lat?
-        set_map( $scope.org.lat, $scope.org.lng, true )
-        
-        
-  
-      else        
-        set_map( 51.9181688, -8.5039876, false)
-        display_info()
-        
-    $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
-      if $scope.org
-        set_map( $scope.org.lat, $scope.org.lng, true )
-
-    $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
+    $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
-      geocoder.geocode( address: $scope.address, ( results, status ) ->
+      console.log "Address #{ address }"
+      geocoder.geocode( address: address, ( results, status ) ->
         $scope.map.markers = []
-        console.log "results #{ JSON.stringify results[0].geometry.location }"
+        console.log "results "
+        console.log results
         console.log "Status #{ JSON.stringify status }"
 
         set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
@@ -298,7 +258,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log $scope.map.center
       $scope.map.user_id = $rootScope.USER.id
       $scope.map.org_id = $scope.org.id
-      c
+      COMMS.POST( 
+        '/location', $scope.map 
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"
@@ -309,6 +270,19 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log errResponse
         alertify.error errResponse.data
 
+     ###################### BEGIN MAPS ################################
+    uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
+      
+        
+
+    $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
+      if $scope.org? and $scope.org.org_locations.length > 0
+        set_map( $scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true )       
+  
+      else        
+        set_map( 51.9181688, -8.5039876, true)
+        display_info()
+
 ])
 
 return_org = ( orgs, search) ->
@@ -316,19 +290,3 @@ return_org = ( orgs, search) ->
   for org in orgs    
     if parseInt( org.id ) == parseInt( search.id )
       return org
-
-
-
-
-# $http(
-#   method: 'POST'
-#   url: "#{ RESOURCES.DOMAIN }/send-mail"
-#   headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
-  
-# ).then ( ( response ) ->
-#   console.log "get mandrill-object"
-#   console.log response
-  
-# ), ( errResponse ) ->
-#   console.log "Get mandrill-object"
-#   console.log errResponse

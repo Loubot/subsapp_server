@@ -30,7 +30,11 @@ module.exports = {
       Prefix: req.param('id')
 
    
-    Org.findOne( { id: req.param('id') } ).populate('teams').populate('org_members').populate('admins').then( ( org ) ->
+    Org.findOne( id: req.param('id') )
+    .populate('teams')
+    .populate('org_members')
+    .populate('admins')
+    .populate('org_locations').then( ( org ) ->
       sails.log.debug "Org findOne " 
       return  [
                 org
@@ -49,26 +53,36 @@ module.exports = {
     sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     sails.log.debug "Data #{ JSON.stringify req.user }"
-    if req.user.club_admin != true
-      res.negotiate "You are not an admin"
-      return false
+    
     org_data = req.body
     Org.create( org_data ).then( ( org ) ->
       sails.log.debug "Create response #{ JSON.stringify org }" 
-      org.admins.add(org_data.user_id)
-      org.save (err, s) ->
-        sails.log.debug "saved #{ JSON.stringify s }"
-        User.findOne( id: org_data.user_id ).populateAll().then( ( user ) ->
-          sails.log.debug "User found #{ JSON.stringify user }"
-          res.json
-            org: org
-            user: user
+      org.admins.add( org_data.user_id )
 
-        ).catch( ( user_find_err ) ->
-          sails.log.debug "User find err #{ JSON.stringify user_find_err }"
-        )
+      return [
+        org.save()
+        User.findOne( id: org_data.user_id ).populateAll()
+        Org.findOne( id: org.id ).populate('org_locations')
+      ]
+      # org.save (err, s) ->
+      #   sails.log.debug "saved #{ JSON.stringify s }"
+      #   User.findOne( id: org_data.user_id ).populateAll().then( ( user ) ->
+      #     sails.log.debug "User found #{ JSON.stringify user }"
+      #     res.json
+      #       org: org
+      #       user: user
+
+      #   ).catch( ( user_find_err ) ->
+      #     sails.log.debug "User find err #{ JSON.stringify user_find_err }"
+      #   )
         
-  
+    ).spread( ( org_saved, user, org_found ) ->
+      sails.log.debug "Org saved #{ JSON.stringify org_saved }"
+      sails.log.debug "User found #{ JSON.stringify user }"
+      sails.log.debug "Org found #{ JSON.stringify org_found }"
+      res.json 
+        org: org_found
+        user: user
 
       
       #   res.json s
@@ -86,20 +100,10 @@ module.exports = {
     sails.log.debug "Data #{ JSON.stringify req.body }"
     if ParamService.check_if_coors( req.body ) #if coords exist update or create location
       sails.log.debug "Org id attempt ****** #{ JSON.stringify req.org }"
-      body = ParamService.fix_lat_lng_name( req.body )
+      
       Org.findOne( id: req.param('id') ).populate('org_locations').then( ( org ) ->
         sails.log.debug "Found org #{ JSON.stringify org }"
-        Location.updateOrCreate( 
-          { org_id: req.body.org_id } 
-          body
-          ( err, location ) ->
-            if err?
-              sails.log.debug "Location update or create error"
-              res.negotiate err
-            else
-              sails.log.debug "Location created #{ JSON.stringify location }"
-              res.json location
-        )
+        
         
         
         
