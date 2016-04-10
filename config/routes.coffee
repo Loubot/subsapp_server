@@ -122,6 +122,12 @@ module.exports.routes =
 
   # end of org controller
 
+  # Location Controller
+  'post /location':
+        controller:             'LocationController'
+        action:                 'create'
+  #End of Location Controller
+
   # Team controller
 
   'post /team/update/:id':

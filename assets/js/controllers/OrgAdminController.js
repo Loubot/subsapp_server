@@ -278,8 +278,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.map.user_id = $rootScope.USER.id;
       $scope.map.org_id = $scope.org.id;
       return $http({
-        method: 'PUT',
-        url: RESOURCES.DOMAIN + "/org/" + $scope.org.id,
+        method: 'POST',
+        url: RESOURCES.DOMAIN + "/location",
         headers: {
           'Authorization': "JWT " + user_token,
           "Content-Type": "application/json"

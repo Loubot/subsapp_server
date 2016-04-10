@@ -21,7 +21,9 @@ module.exports =
       defaultsTo: null
     
     org_id:
-      model: 'org'
+      collection: 'org'
+      via: 'org_locations'
+      columnName: 'org_id'
       
     
     toJSON: ->

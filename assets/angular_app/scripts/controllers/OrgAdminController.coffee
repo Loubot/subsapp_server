@@ -4,14 +4,14 @@ angular.module('subzapp').controller('OrgAdminController', [
   '$scope'
   '$rootScope'
   '$state'
-  '$http'
+  'comms'
   'user'
   'RESOURCES'
   'alertify'
   'Upload'
   'usSpinnerService'
   'uiGmapGoogleMapApi'
-  ( $scope, $rootScope, $state, $http, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
+  ( $scope, $rootScope, $state, comms, user, RESOURCES, alertify, Upload, usSpinnerService, uiGmapGoogleMapApi ) ->
     check_club_admin = ( user ) ->
       if !user.club_admin
         $state.go 'login' 
@@ -276,9 +276,10 @@ angular.module('subzapp').controller('OrgAdminController', [
         set_map( 51.9181688, -8.5039876, false)
         display_info()
         
-    $scope.$watch 'org', ( old_org, new_org ) ->
+    $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
       if $scope.org
         set_map( $scope.org.lat, $scope.org.lng, true )
+
     $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       geocoder.geocode( address: $scope.address, ( results, status ) ->
@@ -297,13 +298,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log $scope.map.center
       $scope.map.user_id = $rootScope.USER.id
       $scope.map.org_id = $scope.org.id
-      $http(
-        method: 'PUT'
-        url: "#{ RESOURCES.DOMAIN }/org/#{ $scope.org.id }"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-        data: $scope.map
+      c
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"

@@ -27,13 +27,13 @@ module.exports =
       defaultsTo: ''
       required: true
 
-    lat:
-      type: 'float'
-      defaultsTo: null
+    # lat:
+    #   type: 'float'
+    #   defaultsTo: null
 
-    lng:
-      type: 'float'
-      defaultsTo: null
+    # lng:
+    #   type: 'float'
+    #   defaultsTo: null
 
     admins: 
       collection: 'user'
@@ -50,6 +50,7 @@ module.exports =
     org_locations:
       collection: 'location'
       via: 'org_id'
+      columnName: 'location_id'
 
     files:
       collection: 'filetracker'

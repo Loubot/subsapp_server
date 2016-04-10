@@ -24,6 +24,11 @@ module.exports.policies =
   InviteController:
     '*': true
 
+  LocationController:
+    '*': [ 'isAuthenticated' ]
+    'create': [ 'isAuthenticated', 'isClubAdmin' ]
+
+
   MailController:
     '*': true
 

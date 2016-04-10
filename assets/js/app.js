@@ -135,4 +135,27 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES, $ro
   };
 });
 
+angular.module('subzapp').service('comms', function($http, $state, RESOURCES, $rootScope, $q) {
+  console.log("comms service");
+  return {
+    post: function(url, data) {
+      return $q(function(resolve, reject) {
+        return $http({
+          method: 'POST',
+          url: RESOURCES.DOMAIN + "/location",
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          },
+          data: $scope.map
+        }).then(function(result) {
+          return resolce(result);
+        })["catch"](function(err_result) {
+          return reject(err_result);
+        });
+      });
+    }
+  };
+});
+
 //# sourceMappingURL=maps/app.js.map

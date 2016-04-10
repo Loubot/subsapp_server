@@ -160,3 +160,19 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope 
         $state.go 'login'
   }
     
+angular.module('subzapp').service 'comms', ( $http, $state, RESOURCES, $rootScope, $q ) ->
+  console.log "comms service"
+  post: ( url, data ) ->
+    $q ( resolve, reject ) ->
+      $http(
+        method: 'POST'
+        url: "#{ RESOURCES.DOMAIN }/location"
+        headers: { 
+                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
+                  }
+        data: $scope.map
+      ).then( ( result ) ->
+        resolce result
+      ).catch( ( err_result ) ->
+        reject err_result
+      )
