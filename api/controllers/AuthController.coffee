@@ -43,7 +43,7 @@ module.exports =
       
     ).catch( ( user_create_err ) -> 
       sails.log.debug "User create error #{ JSON.stringify user_create_err.invalidAttributes.email.message }"
-      res.serverError JSON.stringify user_create_err.invalidAttributes.email.message
+      res.serverError("hello")
     )
     return
   team_manager_signup: (req, res) ->
