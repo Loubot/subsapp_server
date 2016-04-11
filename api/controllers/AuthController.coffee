@@ -26,6 +26,8 @@ _onPassportAuth = (req, res, error, user, info) ->
 
 module.exports =
   signup: (req, res) ->
+    sails.log.debug "Hit the authcontroller/signup"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
     User.create(_.omit(req.allParams(), 'id')).then((user) ->
       Token.create( owner: user.id ).exec (err, token) ->
         sails.log.debug "Token created #{ JSON.stringify token }"
@@ -33,15 +35,20 @@ module.exports =
         User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
           sails.log.debug "User pop #{ JSON.stringify user_pop }"
           res.json
-            data:
-              token: CipherService.createToken(user_pop)
-              user: user_pop
+            #data:
+            token: CipherService.createToken(user_pop)
+            user: user_pop
           
         )
       
+    ).catch( ( user_create_err ) -> 
+      sails.log.debug "User create error #{ JSON.stringify user_create_err }"
+      sails.log.debug "User create error #{ JSON.stringify user_create_err }"
+      res.serverError user_create_err
     )
     return
   team_manager_signup: (req, res) ->
+    sails.log.debug "Hit the authcontroller/team_manager_signup"
     sails.log.debug "Body #{ JSON.stringify req.body }"
     User.create(_.omit(req.allParams(), 'id')).then((user) ->
       Token.create( owner: user.id).then( (err, token) ->
@@ -69,6 +76,8 @@ module.exports =
 
     
   signin: (req, res) ->
+    sails.log.debug "Hit the authcontroller/signin"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
     passport.authenticate('local', _onPassportAuth.bind(this, req, res)) req, res
     return
 
