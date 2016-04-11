@@ -35,9 +35,9 @@ module.exports =
         User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
           sails.log.debug "User pop #{ JSON.stringify user_pop }"
           res.json
-            data:
-              token: CipherService.createToken(user_pop)
-              user: user_pop
+            #data:
+            token: CipherService.createToken(user_pop)
+            user: user_pop
           
         )
       
