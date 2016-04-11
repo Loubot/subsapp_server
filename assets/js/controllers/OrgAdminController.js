@@ -164,10 +164,14 @@ angular.module('subzapp').controller('OrgAdminController', [
       }
     };
     drag_display_info = function() {
-      alertify.log("You can save this new location");
-      return setTimeout((function() {
-        return alertify.log("Just click the Save Address button");
-      }), 2000);
+      var timeoutHandler;
+      window.clearTimeout(timeoutHandler);
+      return timeoutHandler = window.setTimeout((function() {
+        alertify.log("You can save this new location");
+        setTimeout((function() {
+          return alertify.log("Just click the Save Address button");
+        }), 2000);
+      }), 2500);
     };
     set_map = function(lat, lng, set_markers, zoom) {
       var marker;

@@ -44,7 +44,7 @@ module.exports =
     ).catch( ( user_create_err ) -> 
       sails.log.debug "User create error #{ JSON.stringify user_create_err }"
       sails.log.debug "User create error #{ JSON.stringify user_create_err }"
-      res.serverError user_create_err
+      res.forbidden user_create_err
     )
     return
   team_manager_signup: (req, res) ->

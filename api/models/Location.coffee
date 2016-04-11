@@ -55,16 +55,16 @@ module.exports =
     return
 
 
-  afterCreate: ( values, cb ) -> #geocode address
+  beforeCreate: ( values, cb ) -> #geocode address
     geocoderProvider = 'google'
     httpAdapter = 'http'
     geocoder = require('node-geocoder')(geocoderProvider, httpAdapter)
-    sails.log.debug "Org create values #{ JSON.stringify values }"
+    sails.log.debug "LOcation create values #{ JSON.stringify values }"
 
     geocoder.geocode( values.address ).then( ( geocode_results ) ->
-      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results }"
-      this.lat = geocode_results[0].latitude
-      this.lng = geocode_results[0].longitude
+      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results[0].latitude }"
+      values.lat = geocode_results[0].latitude
+      values.lng = geocode_results[0].longitude
       cb()
     ).catch( ( geocode_results_err ) ->
       sails.log.debug "Org create geocode_results_err #{ JSON.stringify geocode_results_err }"

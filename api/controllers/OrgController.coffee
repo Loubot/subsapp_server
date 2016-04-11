@@ -63,6 +63,7 @@ module.exports = {
         org.save()
         User.findOne( id: org_data.user_id ).populateAll()
         Org.findOne( id: org.id ).populate('org_locations')
+        Location.create( address: org_data.address )
       ]
       # org.save (err, s) ->
       #   sails.log.debug "saved #{ JSON.stringify s }"
@@ -76,13 +77,24 @@ module.exports = {
       #     sails.log.debug "User find err #{ JSON.stringify user_find_err }"
       #   )
         
-    ).spread( ( org_saved, user, org_found ) ->
+    ).spread( ( org_saved, user, org_found, location ) ->
       sails.log.debug "Org saved #{ JSON.stringify org_saved }"
       sails.log.debug "User found #{ JSON.stringify user }"
       sails.log.debug "Org found #{ JSON.stringify org_found }"
-      res.json 
-        org: org_found
-        user: user
+      sails.log.debug "Location created #{ JSON.stringify location }"
+      location.org_id.add( org_saved.id )
+      location.save( ( location_save_err, location_saved ) ->
+        if location_save_err?
+          sails.log.debug "Location saved error #{ JSON.stringify location_save_err }"
+          res.negotiate location_save_err
+        else
+          sails.log.debug "Location saved #{ JSON.stringify location_saved }"
+          res.json 
+            org: org_found
+            user: user
+            location: location_saved
+      )
+      
 
       
       #   res.json s

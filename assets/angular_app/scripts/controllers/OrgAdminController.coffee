@@ -202,10 +202,16 @@ angular.module('subzapp').controller('OrgAdminController', [
         ), 6000
 
     drag_display_info = -> #display instructions for dragging map to update location
-      alertify.log "You can save this new location"
-      setTimeout ( ->
-        alertify.log "Just click the Save Address button"
-      ), 2000
+      window.clearTimeout timeoutHandler
+        # create new timeout to fire sesarch function after 500ms (or whatever you like)
+      timeoutHandler = window.setTimeout((->
+        alertify.log "You can save this new location"
+        setTimeout ( ->
+          alertify.log "Just click the Save Address button"
+        ), 2000
+        return
+      ), 2500)
+      
     
 
     set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
