@@ -26,6 +26,8 @@ _onPassportAuth = (req, res, error, user, info) ->
 
 module.exports =
   signup: (req, res) ->
+    sails.log.debug "Hit the authcontroller/signup"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
     User.create(_.omit(req.allParams(), 'id')).then((user) ->
       Token.create( owner: user.id ).exec (err, token) ->
         sails.log.debug "Token created #{ JSON.stringify token }"
@@ -42,6 +44,7 @@ module.exports =
     )
     return
   team_manager_signup: (req, res) ->
+    sails.log.debug "Hit the authcontroller/team_manager_signup"
     sails.log.debug "Body #{ JSON.stringify req.body }"
     User.create(_.omit(req.allParams(), 'id')).then((user) ->
       Token.create( owner: user.id).then( (err, token) ->
@@ -69,6 +72,8 @@ module.exports =
 
     
   signin: (req, res) ->
+    sails.log.debug "Hit the authcontroller/signin"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
     passport.authenticate('local', _onPassportAuth.bind(this, req, res)) req, res
     return
 
