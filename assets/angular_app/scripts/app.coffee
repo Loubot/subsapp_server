@@ -160,10 +160,11 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope 
         $state.go 'login'
   }
     
-angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScope, $q ) ->
+angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScope, $q, usSpinnerService ) ->
   console.log "comms service"
   user_token = window.localStorage.getItem 'user_token'
   POST: ( url, data ) ->
+    usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
       $http(
         method: 'POST'
@@ -174,12 +175,16 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
                   }
         data: data
       ).then( ( result ) ->
+        usSpinnerService.stop('spinner-1')
         resolve result
       ).catch( ( err_result ) ->
+        usSpinnerService.stop('spinner-1')
         reject err_result
       )
+        
 
   GET: ( url, data ) ->
+    usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
       $http(
         method: 'GET'
@@ -190,12 +195,15 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
                   }
         params: data
       ).then( ( result ) ->
+        usSpinnerService.stop('spinner-1')
         resolve result
       ).catch( ( err_result ) ->
+        usSpinnerService.stop('spinner-1')
         reject err_result
       )
 
   DELETE: ( url, data ) ->
+    usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
       $http(
         method: 'DELETE'
@@ -206,7 +214,9 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
                   }
         data: data 
       ).then( ( deleted ) ->
+        usSpinnerService.stop('spinner-1')
         resolve deleted
       ).catch( ( err_deleting ) ->
+        usSpinnerService.stop('spinner-1')
         reject err_deleting
       )

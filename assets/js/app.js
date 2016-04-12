@@ -135,12 +135,13 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES, $ro
   };
 });
 
-angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $rootScope, $q) {
+angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $rootScope, $q, usSpinnerService) {
   var user_token;
   console.log("comms service");
   user_token = window.localStorage.getItem('user_token');
   return {
     POST: function(url, data) {
+      usSpinnerService.spin('spinner-1');
       return $q(function(resolve, reject) {
         return $http({
           method: 'POST',
@@ -151,13 +152,16 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
           },
           data: data
         }).then(function(result) {
+          usSpinnerService.stop('spinner-1');
           return resolve(result);
         })["catch"](function(err_result) {
+          usSpinnerService.stop('spinner-1');
           return reject(err_result);
         });
       });
     },
     GET: function(url, data) {
+      usSpinnerService.spin('spinner-1');
       return $q(function(resolve, reject) {
         return $http({
           method: 'GET',
@@ -168,13 +172,16 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
           },
           params: data
         }).then(function(result) {
+          usSpinnerService.stop('spinner-1');
           return resolve(result);
         })["catch"](function(err_result) {
+          usSpinnerService.stop('spinner-1');
           return reject(err_result);
         });
       });
     },
     DELETE: function(url, data) {
+      usSpinnerService.spin('spinner-1');
       return $q(function(resolve, reject) {
         return $http({
           method: 'DELETE',
@@ -185,8 +192,10 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
           },
           data: data
         }).then(function(deleted) {
+          usSpinnerService.stop('spinner-1');
           return resolve(deleted);
         })["catch"](function(err_deleting) {
+          usSpinnerService.stop('spinner-1');
           return reject(err_deleting);
         });
       });

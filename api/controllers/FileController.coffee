@@ -94,11 +94,10 @@ module.exports = {
           
   
   parse_players: ( req, res ) ->
-    sails.log.debug "Hit the file controller/aws"
+    sails.log.debug "Hit the file controller/parse_players"
     sails.log.debug "params #{ JSON.stringify req.body }"
     
     Promise = require('bluebird')
-    sails.log.debug JSON.stringify req.body
     
 
     AWS = require('aws-sdk')
@@ -115,7 +114,8 @@ module.exports = {
 
     bucket_params = 
       Bucket: 'subzapp'
-      Prefix: "#{ String( req.body.org_id ) }/"
+      Prefix: req.body.org_id
+    sails.log.debug "bucket_params #{ JSON.stringify bucket_params} "
 
     File_service = Promise.promisifyAll( FileService ) # promisify the fileservice functions
 

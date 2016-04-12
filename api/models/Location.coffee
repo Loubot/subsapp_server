@@ -12,6 +12,14 @@ module.exports =
   schema: true
   attributes:
 
+    location_name:
+      type: 'string'
+      defaultsTo: null
+
+    location_owner:
+      type: 'string'
+      defaultsTo: null
+
     lat:
       type: 'float'
       defaultsTo: null

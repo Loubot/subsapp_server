@@ -1,17 +1,10 @@
 'use strict';
 angular.module('subzapp').controller('OrgController', [
-  '$scope', '$state', '$http', '$window', '$location', 'user', 'RESOURCES', 'alertify', 'usSpinnerService', function($scope, $state, $http, $window, $location, user, RESOURCES, alertify, usSpinnerService) {
+  '$scope', '$state', 'COMMS', '$window', '$location', 'user', 'RESOURCES', 'alertify', function($scope, $state, COMMS, $window, $location, user, RESOURCES, alertify) {
     var get_orgs, user_token;
     user_token = window.localStorage.getItem('user_token');
     get_orgs = function() {
-      return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/orgs",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        }
-      }).then(function(orgs) {
+      return COMMS.GET('/orgs').then(function(orgs) {
         console.log("Got orgs ");
         console.log(orgs.data);
         return $scope.orgs = orgs.data;
@@ -38,25 +31,16 @@ angular.module('subzapp').controller('OrgController', [
       console.log("USER already defined");
     }
     $scope.get_org_info = function(id) {
-      usSpinnerService.spin('spinner-1');
+      console.log("/org/s3-info/" + $scope.org);
       console.log($scope.org);
-      return $http({
-        method: 'GET',
-        url: RESOURCES.DOMAIN + "/org/s3-info/" + $scope.org,
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        }
-      }).then((function(res) {
-        usSpinnerService.stop('spinner-1');
+      return COMMS.GET("/org/s3-info/" + $scope.org).then((function(res) {
         console.log("s3_info response");
         console.log(res.data);
         return $scope.files = res.data.Contents;
       }), function(errResponse) {
-        usSpinnerService.stop('spinner-1');
         console.log("s3_info error response");
-        console.log(err);
-        if (err.status === 401) {
+        console.log(errResponse);
+        if (errResponse.status === 401) {
           alertify.error("You are not authorised to view this page");
           return $state.go('login');
         }
@@ -64,15 +48,9 @@ angular.module('subzapp').controller('OrgController', [
     };
     return $scope.parse_users = function() {
       console.log('yep');
-      return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/file/parse-players",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        },
+      return COMMS.POST("/file/parse-players/", {
         data: {
-          org_id: 1
+          org_id: $scope.org
         }
       }).then((function(res) {
         console.log("parse users response");

@@ -7,7 +7,8 @@
 module.exports = (req, res, next) ->
   sails.log.debug "Policies/check_club_admin"
   if !( Boolean( req.user.super_admin ) )
-    res.negotiate "You are not allowed to view this"
+    return res.negotiate "You are not allowed to view this"
+
   next()
   
 # ---

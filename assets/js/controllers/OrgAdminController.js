@@ -76,7 +76,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       console.log("Org id " + (JSON.stringify($scope.org)));
       $scope.team_form_data.org_id = $scope.org.id;
       console.log("Form data " + (JSON.stringify($scope.team_form_data)));
-      return COMMS.POST('team', $scope.team_form_data).then((function(response) {
+      return COMMS.POST('/team', $scope.team_form_data).then((function(response) {
         console.log("Team create");
         console.log(response);
         alertify.success(response.data.message);
