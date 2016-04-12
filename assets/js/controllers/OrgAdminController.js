@@ -48,6 +48,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data.user.orgs;
         $scope.org = response.data.org;
         $rootScope.USER = response.data.user;
+        $scope.orgs = response.data.user.orgs;
         console.log("Org set: " + (JSON.stringify($scope.org)));
         alertify.success("Club created successfully");
         $('.business_name').val("");

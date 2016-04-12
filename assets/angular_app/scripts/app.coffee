@@ -176,6 +176,8 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
         data: data
       ).then( ( result ) ->
         usSpinnerService.stop('spinner-1')
+        if result.user != undefined
+          $rootScope.USER = result.user
         resolve result
       ).catch( ( err_result ) ->
         usSpinnerService.stop('spinner-1')

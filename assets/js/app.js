@@ -153,6 +153,9 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
           data: data
         }).then(function(result) {
           usSpinnerService.stop('spinner-1');
+          if (result.user !== void 0) {
+            $rootScope.USER = result.user;
+          }
           return resolve(result);
         })["catch"](function(err_result) {
           usSpinnerService.stop('spinner-1');
