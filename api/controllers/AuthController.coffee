@@ -39,6 +39,9 @@ module.exports =
             token: CipherService.createToken(user_pop)
             user: user_pop
           
+        ).catch( ( user_find_err ) ->
+          sails.log.debug "User find err #{ JSON.stringify user_find_err }"
+          res.serverError user_find_err
         )
       
 
