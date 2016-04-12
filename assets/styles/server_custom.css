@@ -165,6 +165,15 @@ body{
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;  
 }
+
+.register_form{
+  margin: 0 150px;
+}
+
+.team_location_select{
+ /* margin-left: 250px;
+  margin-right: 250px;*/
+}
 /* end of team_manager page*/
 
 /*org_admin page*/

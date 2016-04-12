@@ -3,22 +3,18 @@
 angular.module('subzapp').controller('LoginController', [
   '$scope'
   '$state'
-  '$http'
+  'COMMS'
   '$window'
   'RESOURCES'
   'alertify'
   # 'AuthService'
-  ( $scope, $state, $http, $window, RESOURCES, alertify ) ->
+  ( $scope, $state, COMMS, $window, RESOURCES, alertify ) ->
     console.log 'Login Controller'
     
     $scope.login_submit = ->
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/auth/signin"
-        headers: {
-                  'Content-Type': 'application/json'
-                  }
-        data: $scope.login_form_data
+      COMMS.POST(
+        "/auth/signin"        
+        $scope.login_form_data
       ).then ( (response) ->
         console.log "User id #{ response.data.user }"
         console.log response

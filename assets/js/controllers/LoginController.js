@@ -1,16 +1,9 @@
 'use strict';
 angular.module('subzapp').controller('LoginController', [
-  '$scope', '$state', '$http', '$window', 'RESOURCES', 'alertify', function($scope, $state, $http, $window, RESOURCES, alertify) {
+  '$scope', '$state', 'COMMS', '$window', 'RESOURCES', 'alertify', function($scope, $state, COMMS, $window, RESOURCES, alertify) {
     console.log('Login Controller');
     $scope.login_submit = function() {
-      return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/auth/signin",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: $scope.login_form_data
-      }).then((function(response) {
+      return COMMS.POST("/auth/signin", $scope.login_form_data).then((function(response) {
         console.log("User id " + response.data.user);
         console.log(response);
         $scope.user = response.data.user;

@@ -2,21 +2,14 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$rootScope', '$state', '$http', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'usSpinnerService', function($scope, $rootScope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService) {
+  '$scope', '$rootScope', '$state', 'COMMS', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'usSpinnerService', function($scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService) {
     var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
     get_team_info = function() {
       usSpinnerService.spin('spinner-1');
       if ($rootScope.USER.club_admin) {
-        return $http({
-          method: 'GET',
-          url: RESOURCES.DOMAIN + "/team/get-team-info/" + (window.localStorage.getItem('team_id')),
-          headers: {
-            'Authorization': "JWT " + user_token,
-            "Content-Type": "application/json"
-          }
-        }).then((function(res) {
+        return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
           usSpinnerService.stop('spinner-1');
           console.log("get_team_info response club admin");
           console.log(res);
@@ -28,14 +21,7 @@ angular.module('subzapp').controller('TeamController', [
           return console.log(errResponse);
         });
       } else {
-        return $http({
-          method: 'GET',
-          url: RESOURCES.DOMAIN + "/team/" + (window.localStorage.getItem('team_id')),
-          headers: {
-            'Authorization': "JWT " + user_token,
-            "Content-Type": "application/json"
-          }
-        }).then((function(res) {
+        return COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(res) {
           usSpinnerService.stop('spinner-1');
           console.log("Get team info response");
           console.log(res.data);

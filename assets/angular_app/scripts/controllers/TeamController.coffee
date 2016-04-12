@@ -4,7 +4,7 @@ angular.module('subzapp').controller('TeamController', [
   '$scope'
   '$rootScope'
   '$state'
-  '$http'
+  'COMMS'
   '$window'
   '$location'
   'user'
@@ -12,20 +12,15 @@ angular.module('subzapp').controller('TeamController', [
   'RESOURCES'
   '$filter'
   'usSpinnerService'
-  ( $scope, $rootScope, $state, $http, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
+  ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
 
     get_team_info = ->
       usSpinnerService.spin('spinner-1')
       if $rootScope.USER.club_admin
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"
-          headers: { 
-                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                    }
-          
+        COMMS.GET(
+          "/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"          
         ).then ( (res) ->
           usSpinnerService.stop('spinner-1')
           console.log "get_team_info response club admin"
@@ -40,13 +35,8 @@ angular.module('subzapp').controller('TeamController', [
           console.log "get_team_info error"
           console.log errResponse
       else
-        $http(
-          method: 'GET'
-          url: "#{ RESOURCES.DOMAIN }/team/#{ window.localStorage.getItem 'team_id' }"
-          headers: { 
-                    'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                    }
-
+        COMMS.GET(
+          "/team/#{ window.localStorage.getItem 'team_id' }"
         ).then ( (res) ->
           usSpinnerService.stop('spinner-1')
           console.log "Get team info response"

@@ -10,7 +10,7 @@
     
     <h2>Create an event</h2>
 
-    <form class="form-horizontal register_form" 
+    <form class="form-horizontal register_form center-block" 
               ng-submit="create_event()" 
               method="post" enctype="application/x-www-form-urlencoded">
 
@@ -70,14 +70,26 @@
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
+      <div class="form-group">
+        <select class="form-control team_location_select" ng-model="org" ng-change="get_org_info( org.id )" required>
+          <option value="">---Please select location---</option>
+          <option ng-repeat="org in orgs" value="{{ org.id }}" 
+                  >
+            {{ org.name }}
+          </option>
+        </select> <!-- end of form-control -->
+      </div>
+
       <div class="form-group text-center">
         <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register">
         
       </div> <!-- end of form-group text-center -->
 
+
+
     </form>
 
-    <div class="col-xs-12 make_space"></div> <!-- end of spacer -->
+    
     
 
     
