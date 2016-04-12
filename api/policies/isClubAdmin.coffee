@@ -7,6 +7,7 @@
 module.exports = (req, res, next) ->
   sails.log.debug "Policies/check_club_admin"
   sails.log.debug "Body #{ JSON.stringify req.body }"
+  sails.log.debug "Params #{ req.param('id') }"
   if !Boolean( req.user.club_admin )
     sails.log.debug "No club admin flag"
     return res.negotiate "You are not authourised"
