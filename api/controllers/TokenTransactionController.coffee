@@ -25,16 +25,15 @@ module.exports = {
 
 
   pay: ( req, res ) ->
-    Promise = require('bluebird')
+    
     sails.log.debug "Hit the TokenTransactionController/pay"
     sails.log.debug "Params #{ JSON.stringify req.body }"
-    TokenupdateOrCreate = Promise.promisify( TokenTransaction.updateOrCreate )
-
+    
     User.findOne( id: req.body.parent_id ).populate('tokens').then( ( parent ) ->
       sails.log.debug "Found parent #{ JSON.stringify parent }"
       sails.log.debug "Amount #{ parseInt(req.body.token_amount) }"
 
-      tokenBalanceAfterTransaction = parseInt(parent.tokens[0].amount) - parseInt(req.body.token_amount)
+      tokenBalanceAfterTransaction = parseInt( parent.tokens[0].amount ) - parseInt( req.body.token_amount )
 
       parentHasEnoughTokens = false
       eventHasBeenDeclined = false
@@ -47,32 +46,52 @@ module.exports = {
         eventHasBeenDeclined = true
       if eventHasBeenDeclined
         sails.log.debug "3"
-        TokenupdateOrCreate(
-          { id: req.id, user_id: req.body.user_id, parent_id: req.body.parent_id }
-          req.body
-        ).then( (ttransaction) ->
-          sails.log.debug "ttransaction updateOrCreate #{ JSON.stringify ttransaction }"
-          res.json ttransaction
-        ).catch (ttransaction_err) ->
-          sails.log.debug 'TokenTransaction create error/event pay ' + JSON.stringify(ttransaction_err)
-          res.serverError ttransaction_err
+
+        TokenTransaction.updateOrCreate( 
+          { id: req.body.id } 
+          event_id: req.body.event_id
+          user_id: req.body.user_id
+          parent_id: req.body.parent_id
+          token_amount: req.body.token_amount
+          paid: false
+          declined: true
+          team_id: req.body.team_id
+        ( err, ttransaction ) ->
+          if err?
+            sails.log.debug 'TokenTransaction create error/event pay ' + JSON.stringify(ttransaction_err)
+            res.serverError ttransaction_err
+          else
+            sails.log.debug "ttransaction updateOrCreate #{ JSON.stringify ttransaction }"
+            res.json ttransaction
+        )
+        
 
       else if parentHasEnoughTokens
         sails.log.debug "4"
-        TokenupdateOrCreate( 
-          { id: req.id, user_id: req.body.user_id, parent_id: req.body.parent_id }
-          req.body
-        ).then( ( ttransaction ) ->
-          sails.log.debug "TokenTransaction create/event pay #{ JSON.stringify ttransaction }"
-          parent.tokens[0].amount = tokenBalanceAfterTransaction
-          sails.log.debug "new amount #{ parent.tokens[0].amount }"
-          parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
-            sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
-            sails.log.debug "Saved parent saved_parent_error #{ JSON.stringify saved_parent_error }" if saved_parent_error?
-            res.json ttransaction
-        ).catch ( ttransaction_err ) ->
-          sails.log.debug "TokenTransaction create error/event pay #{ JSON.stringify ttransaction_err }"
-          res.serverError ttransaction_err
+        TokenTransaction.updateOrCreate(
+          { id: req.body.id }
+          event_id: req.body.event_id
+          user_id: req.body.user_id
+          parent_id: req.body.parent_id
+          token_amount: req.body.token_amount
+          paid: true
+          declined: false
+          team_id: req.body.team_id
+          ( err, ttransaction ) ->
+            if err?
+              sails.log.debug "TokenTransaction create error/event pay #{ JSON.stringify ttransaction_err }"
+              res.serverError ttransaction_err
+            else
+             sails.log.debug "TokenTransaction create/event pay #{ JSON.stringify ttransaction }"
+             parent.tokens[0].amount = tokenBalanceAfterTransaction
+             sails.log.debug "new amount #{ parent.tokens[0].amount }"
+             parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
+               sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
+               sails.log.debug "Saved parent saved_parent_error #{ JSON.stringify saved_parent_error }" if saved_parent_error?
+               res.json ttransaction 
+
+        )     
+
 
       else
         res.serverError "You don't have enough tokens. Please top up."

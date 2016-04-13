@@ -70,7 +70,8 @@ module.exports =
   #   return
 
   updateOrCreate: (criteria, values, cb) ->
-    sails.log.debug "Tokentransaction update or create #{ JSON.stringify values }"
+    sails.log.debug "Tokentransaction update or create values #{ JSON.stringify values }"
+    sails.log.debug "Tokentransaction update or create criteria #{ JSON.stringify criteria }"
     self = this
     # reference for use by callbacks
     # If no values were specified, use criteria
@@ -78,10 +79,14 @@ module.exports =
       values = if criteria.where then criteria.where else criteria
     @findOne criteria, (err, result) ->
       if err
+        sails.log.debug "Tokentransaction findOne err #{ JSON.stringify err }"
         return cb(err, false)
       if result
+        sails.log.debug "Tokentransaction findOne #{ JSON.stringify result }"
         self.update criteria, values, cb
       else
+
+        sails.log.debug "Tokentransaction findOne #{ JSON.stringify result }"
         self.create values, cb
       return
     return
