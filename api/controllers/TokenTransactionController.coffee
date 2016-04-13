@@ -16,7 +16,7 @@ module.exports = {
 
       ).catch ( err ) ->
         sails.log.debug "Find TokenTransaction error #{ JSON.stringify err }"
-        res.negotiate err
+        res.serverError err
     else
       res.unauthorized "You are not authorised to view this"
 
@@ -55,7 +55,7 @@ module.exports = {
           res.json ttransaction
         ).catch (ttransaction_err) ->
           sails.log.debug 'TokenTransaction create error/event pay ' + JSON.stringify(ttransaction_err)
-          res.negotiate ttransaction_err
+          res.serverError ttransaction_err
 
       else if parentHasEnoughTokens
         sails.log.debug "4"
@@ -72,15 +72,15 @@ module.exports = {
             res.json ttransaction
         ).catch ( ttransaction_err ) ->
           sails.log.debug "TokenTransaction create error/event pay #{ JSON.stringify ttransaction_err }"
-          res.negotiate ttransaction_err
+          res.serverError ttransaction_err
 
       else
-        res.negotiate "You don't have enough tokens. Please top up."
+        res.serverError "You don't have enough tokens. Please top up."
         
       
     ).catch ( err ) ->
       sails.log.debug "Find parent error #{ JSON.stringify err }"
-      res.negotiate err
+      res.serverError err
     
   
 
