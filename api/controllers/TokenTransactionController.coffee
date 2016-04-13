@@ -48,7 +48,7 @@ module.exports = {
       if eventHasBeenDeclined
         sails.log.debug "3"
         TokenupdateOrCreate(
-          { user_id: req.body.user_id, parent_id: req.body.parent_id }
+          { id: req.id, user_id: req.body.user_id, parent_id: req.body.parent_id }
           req.body
         ).then( (ttransaction) ->
           sails.log.debug "ttransaction updateOrCreate #{ JSON.stringify ttransaction }"
@@ -60,7 +60,7 @@ module.exports = {
       else if parentHasEnoughTokens
         sails.log.debug "4"
         TokenupdateOrCreate( 
-          { user_id: req.body.user_id, parent_id: req.body.parent_id }
+          { id: req.id, user_id: req.body.user_id, parent_id: req.body.parent_id }
           req.body
         ).then( ( ttransaction ) ->
           sails.log.debug "TokenTransaction create/event pay #{ JSON.stringify ttransaction }"
