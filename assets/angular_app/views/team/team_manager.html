@@ -71,11 +71,11 @@
       </div> <!-- end of form-group -->
 
       <div class="form-group">
-        <select class="form-control team_location_select" ng-model="org" ng-change="get_org_info( org.id )" required>
+        <select class="form-control team_location_select" ng-change="update_location()" ng-model="location" required>
           <option value="">---Please select location---</option>
-          <option ng-repeat="org in orgs" value="{{ org.id }}" 
+          <option ng-repeat="location in locations" value="{{ location.id }}" 
                   >
-            {{ org.name }}
+            {{ location.lat }}
           </option>
         </select> <!-- end of form-control -->
       </div>

@@ -25,46 +25,43 @@ module.exports = {
 
 
   pay: ( req, res ) ->
+    Promise = require('bluebird')
     sails.log.debug "Hit the TokenTransactionController/pay"
     sails.log.debug "Params #{ JSON.stringify req.body }"
-
+    TokenupdateOrCreate = Promise.promisify( TokenTransaction.updateOrCreate )
 
     User.findOne( id: req.body.parent_id ).populate('tokens').then( ( parent ) ->
-      sails.log.debug "Found parent #{ JSON.stringify parent.tokens[0].amount }"
+      sails.log.debug "Found parent #{ JSON.stringify parent }"
       sails.log.debug "Amount #{ parseInt(req.body.token_amount) }"
 
       tokenBalanceAfterTransaction = parseInt(parent.tokens[0].amount) - parseInt(req.body.token_amount)
+
       parentHasEnoughTokens = false
       eventHasBeenDeclined = false
       if tokenBalanceAfterTransaction >= 0
+        sails.log.debug "1"
         parentHasEnoughTokens = true
       declinedString = req.body.declined
       if declinedString
+        sails.log.debug "2"
         eventHasBeenDeclined = true
       if eventHasBeenDeclined
-        TokenTransaction.updateOrCreate(
-          event_id: req.body.event_id
-          user_id: req.body.user_id
-          parent_id: req.body.parent_id
-          token_amount: req.body.token_amount
-          paid: false
-          declined: true
-          team_id: req.body.team_id
+        sails.log.debug "3"
+        TokenupdateOrCreate(
+          { user_id: req.body.user_id, parent_id: req.body.parent_id }
+          req.body
         ).then( (ttransaction) ->
+          sails.log.debug "ttransaction updateOrCreate #{ JSON.stringify ttransaction }"
           res.json ttransaction
         ).catch (ttransaction_err) ->
           sails.log.debug 'TokenTransaction create error/event pay ' + JSON.stringify(ttransaction_err)
           res.negotiate ttransaction_err
 
       else if parentHasEnoughTokens
-        TokenTransaction.updateOrCreate( 
-          event_id: req.body.event_id
-          user_id: req.body.user_id
-          parent_id: req.body.parent_id
-          token_amount: req.body.token_amount
-          paid: true
-          declined: false
-          team_id: req.body.team_id
+        sails.log.debug "4"
+        TokenupdateOrCreate( 
+          { user_id: req.body.user_id, parent_id: req.body.parent_id }
+          req.body
         ).then( ( ttransaction ) ->
           sails.log.debug "TokenTransaction create/event pay #{ JSON.stringify ttransaction }"
           parent.tokens[0].amount = tokenBalanceAfterTransaction

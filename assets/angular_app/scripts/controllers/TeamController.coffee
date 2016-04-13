@@ -15,6 +15,7 @@ angular.module('subzapp').controller('TeamController', [
   ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
+    $scope.location = null
 
     get_team_info = ->
       usSpinnerService.spin('spinner-1')
@@ -28,7 +29,7 @@ angular.module('subzapp').controller('TeamController', [
           $scope.team = res.data.team
           
           $scope.org_members = res.data.org.org_members
-           
+          $scope.locations = res.data.org.org_locations
           
         ), ( errResponse ) ->
           usSpinnerService.stop('spinner-1')
@@ -215,6 +216,9 @@ angular.module('subzapp').controller('TeamController', [
         usSpinnerService.stop('spinner-1')
         console.log errResponse
         alertify.error "Couldn't get players info"
+
+    $scope.update_location = ( id ) ->
+      console.log $scope.location
     
 ])
 

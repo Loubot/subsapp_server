@@ -6,6 +6,7 @@ angular.module('subzapp').controller('TeamController', [
     var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
+    $scope.location = null;
     get_team_info = function() {
       usSpinnerService.spin('spinner-1');
       if ($rootScope.USER.club_admin) {
@@ -14,7 +15,8 @@ angular.module('subzapp').controller('TeamController', [
           console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
-          return $scope.org_members = res.data.org.org_members;
+          $scope.org_members = res.data.org.org_members;
+          return $scope.locations = res.data.org.org_locations;
         }), function(errResponse) {
           usSpinnerService.stop('spinner-1');
           console.log("get_team_info error");
@@ -174,7 +176,7 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.log("Please set the eligible date of this team. Click to dismiss", "", 0);
       }
     });
-    return get_org_and_members = function() {
+    get_org_and_members = function() {
       console.log("org id " + $scope.team.main_org.id);
       usSpinnerService.spin('spinner-1');
       return $http({
@@ -201,6 +203,9 @@ angular.module('subzapp').controller('TeamController', [
         console.log(errResponse);
         return alertify.error("Couldn't get players info");
       });
+    };
+    return $scope.update_location = function(id) {
+      return console.log($scope.location);
     };
   }
 ]);

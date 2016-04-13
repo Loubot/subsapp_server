@@ -70,6 +70,7 @@ module.exports =
   #   return
 
   updateOrCreate: (criteria, values, cb) ->
+    sails.log.debug "Tokentransaction update or create #{ JSON.stringify values }"
     self = this
     # reference for use by callbacks
     # If no values were specified, use criteria

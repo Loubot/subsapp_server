@@ -62,7 +62,7 @@ module.exports = {
         return [ 
                   team
                   s3.listObjectsAsync( params )
-                  Org.findOne( id: team.main_org.id )
+                  Org.findOne( id: team.main_org.id ).populate('org_locations')
                 ]
           
 
