@@ -42,7 +42,7 @@ module.exports = {
       if declinedString
         eventHasBeenDeclined = true
       if eventHasBeenDeclined
-        TokenTransaction.create(
+        TokenTransaction.updateOrCreate(
           event_id: req.body.event_id
           user_id: req.body.user_id
           parent_id: req.body.parent_id
@@ -57,7 +57,7 @@ module.exports = {
           res.negotiate ttransaction_err
 
       else if parentHasEnoughTokens
-        TokenTransaction.create( 
+        TokenTransaction.updateOrCreate( 
           event_id: req.body.event_id
           user_id: req.body.user_id
           parent_id: req.body.parent_id
