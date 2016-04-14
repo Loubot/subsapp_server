@@ -263,6 +263,10 @@ module.exports.routes =
         controller:              'TokenTransactionController'
         action:                   'pay'
 
+  'post /tokentransaction/decline':
+        controller:              'TokenTransactionController'
+        action:                  'decline'
+
   #End of TokenTransactionController
 
   #GCMController
