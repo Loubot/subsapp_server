@@ -71,7 +71,7 @@
       </div> <!-- end of form-group -->
 
       <div class="form-group">
-        <select class="form-control team_location_select" ng-change="update_location()" ng-model="location" required>
+        <select class="form-control team_location_select" ng-change="update_location()" ng-model="location" >
           <option value="">---Please select location---</option>
           <option ng-repeat="location in locations" value="{{ location.id }}" 
                   >

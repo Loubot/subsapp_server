@@ -75,14 +75,9 @@ angular.module('subzapp').controller('TeamController', [
       $scope.create_event_data.team_id = $scope.team.id
       $scope.create_event_data.user_id = $rootScope.USER.id
       console.log $scope.create_event_data
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/event"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
-                  }
-        data: $scope.create_event_data
+      COMMS.POST(
+        "/event"
+        $scope.create_event_data
       ).then ( (res) ->
         # console.log "Create event response"
         alertify.success("Event created")
