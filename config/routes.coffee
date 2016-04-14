@@ -267,7 +267,7 @@ module.exports.routes =
         controller:              'EventResponseController'
         action:                  'decline'
 
-  'post /eventresponse/update':
+  'patch /eventresponse/update':
         controller:              'EventResponseController'
         action:                  'update'
 

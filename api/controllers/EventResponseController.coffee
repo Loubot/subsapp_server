@@ -96,21 +96,16 @@ module.exports = {
     sails.log.debug "Hit the TokenTransactionController/update"
     sails.log.debug "Params #{ JSON.stringify req.body }"
 
-    TokenTransaction.create( 
-      event_id: req.body.event_id
-      user_id: req.body.user_id
-      parent_id: req.body.parent_id
-      token_amount: req.body.token_amount
-      paid: false
-      declined: true
-      team_id: req.body.team_id
+    TokenTransaction.update(
+      { id: req.body.id } 
+      req.body
     ).then( ( ttransaction ) ->
-      sails.log.debug "TokenTransaction create/event decline #{ JSON.stringify ttransaction }"
+      sails.log.debug "TokenTransaction create/event update #{ JSON.stringify ttransaction }"
       
       
       res.json ttransaction
     ).catch ( ttransaction_err ) ->
-      sails.log.debug "TokenTransaction create error/event decline #{ JSON.stringify ttransaction_err }"
+      sails.log.debug "TokenTransaction create error/event update #{ JSON.stringify ttransaction_err }"
       res.negotiate ttransaction_err
 
   
