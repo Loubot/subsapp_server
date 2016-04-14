@@ -91,12 +91,8 @@ angular.module('subzapp').controller('TeamController', [
 
     $scope.get_players_by_year = ( id ) ->
       console.log "Find by date"
-      $http(
-        method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/team/get-players-by-year/#{ $scope.team.id }"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
+      COMMS.GET(
+        "#{ RESOURCES.DOMAIN }/team/get-players-by-year/#{ $scope.team.id }"
         # params:
         #   team_id: id
       ).then ( (res) ->
@@ -108,13 +104,8 @@ angular.module('subzapp').controller('TeamController', [
 
   
     $scope.download = ->
-      $http(
-        method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/user/download-file"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-        
+      COMMS.GET(
+        "#{ RESOURCES.DOMAIN }/user/download-file"
       ).then ( (res) ->
          console.log "Download response"
          console.log res
@@ -126,16 +117,9 @@ angular.module('subzapp').controller('TeamController', [
       console.log "team id #{ $scope.team.id }"
       console.log "Team members array"
       console.log $scope.team_members_array
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/team/update-members/#{ $scope.team.id }"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
-                  }
-
-        data:
-          team_members: $scope.team_members_array
+      COMMS.GET(
+        "#{ RESOURCES.DOMAIN }/team/update-members/#{ $scope.team.id }"
+        team_members: $scope.team_members_array
       ).then ( ( res ) ->
         console.log "Update team members"
         console.log res
@@ -152,14 +136,9 @@ angular.module('subzapp').controller('TeamController', [
     $scope.update_eligible_date = () ->
       usSpinnerService.stop('spinner-1')
       console.log $scope.team
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/team/update/#{ $scope.team.id }"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
-                  }
-        data: $scope.team
+      COMMS.GET(
+        "#{ RESOURCES.DOMAIN }/team/update/#{ $scope.team.id }"
+        $scope.team
       ).then ( ( res ) ->
         console.log "Update team date"
         console.log res.data
@@ -190,14 +169,9 @@ angular.module('subzapp').controller('TeamController', [
     get_org_and_members = -> #fetch org info with members. Only members under the teams eligible age. 
       console.log "org id #{ $scope.team.main_org.id }"
       usSpinnerService.spin('spinner-1')
-      $http(
-        method: 'GET'
-        url: "#{ RESOURCES.DOMAIN }/org/get-org-team-members/#{ $scope.team.main_org.id }"
-        headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json",
-                  'Content-Type': 'application/json'
-                  }
-        params: $scope.team
+      COMMS.GET(
+        "#{ RESOURCES.DOMAIN }/org/get-org-team-members/#{ $scope.team.main_org.id }"
+        $scope.team
       ).then ( ( res ) ->
         console.log "Get org info "
         console.log res.data

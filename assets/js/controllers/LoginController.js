@@ -1,15 +1,15 @@
 'use strict';
 angular.module('subzapp').controller('LoginController', [
-  '$scope', '$state', 'COMMS', '$window', 'RESOURCES', 'alertify', function($scope, $state, COMMS, $window, RESOURCES, alertify) {
+  '$scope', '$rootScope', '$state', 'COMMS', '$window', 'RESOURCES', 'alertify', function($scope, $rootScope, $state, COMMS, $window, RESOURCES, alertify) {
     console.log('Login Controller');
     $scope.login_submit = function() {
       return COMMS.POST("/auth/signin", $scope.login_form_data).then((function(response) {
         console.log("User id " + response.data.user);
         console.log(response);
-        $scope.user = response.data.user;
+        $rootScope.USER = response.data.user;
         window.localStorage.setItem('user_token', response.data.token);
         window.localStorage.setItem('user_id', response.data.user.id);
-        if ($scope.user.club_admin) {
+        if ($rootScope.USER.club_admin) {
           console.log('club_admin');
           return $state.go('org_admin');
         } else {
@@ -18,7 +18,7 @@ angular.module('subzapp').controller('LoginController', [
         }
       }), function(errResponse) {
         console.log("Error response " + (JSON.stringify(errResponse.data)));
-        window.USER = null;
+        $rootScope.USER = null;
         return alertify.error(errResponse.data.message);
       });
     };

@@ -2,13 +2,14 @@
 
 angular.module('subzapp').controller('LoginController', [
   '$scope'
+  '$rootScope'
   '$state'
   'COMMS'
   '$window'
   'RESOURCES'
   'alertify'
   # 'AuthService'
-  ( $scope, $state, COMMS, $window, RESOURCES, alertify ) ->
+  ( $scope, $rootScope, $state, COMMS, $window, RESOURCES, alertify ) ->
     console.log 'Login Controller'
     
     $scope.login_submit = ->
@@ -18,12 +19,12 @@ angular.module('subzapp').controller('LoginController', [
       ).then ( (response) ->
         console.log "User id #{ response.data.user }"
         console.log response
-        $scope.user = response.data.user
+        $rootScope.USER = response.data.user
         window.localStorage.setItem 'user_token', response.data.token
         window.localStorage.setItem 'user_id', response.data.user.id
         # console.log "Success response token #{ JSON.stringify response.data.token }"
         # $state.go 'org'
-        if $scope.user.club_admin
+        if $rootScope.USER.club_admin
           console.log 'club_admin'
           $state.go 'org_admin'
         else
@@ -31,7 +32,7 @@ angular.module('subzapp').controller('LoginController', [
           $state.go 'team_manager_home'
       ), ( errResponse ) ->
         console.log "Error response #{ JSON.stringify errResponse.data }"
-        window.USER = null
+        $rootScope.USER = null
         alertify.error( errResponse.data.message )
         # $scope.errorMessage = errResponse
         
