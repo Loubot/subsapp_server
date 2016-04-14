@@ -11,8 +11,8 @@ module.exports = {
     sails.log.debug "Hit the EventResponseController/findOne"
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
     if AuthService.check_user( req.user, req.param('id') )
-      EventResponse.find( user_id: req.param('id') ).then( ( ttransaction ) ->
-        res.json ttransaction
+      EventResponse.find( user_id: req.param('id') ).then( ( e_response ) ->
+        res.json e_response
 
       ).catch ( err ) ->
         sails.log.debug "Find EventResponse error #{ JSON.stringify err }"
@@ -47,17 +47,17 @@ module.exports = {
           paid: true
           declined: false
           team_id: req.body.team_id
-        ).then( ( ttransaction ) ->
-          sails.log.debug "EventResponse create/event pay #{ JSON.stringify ttransaction }"
+        ).then( ( e_response ) ->
+          sails.log.debug "EventResponse create/event pay #{ JSON.stringify e_response }"
           parent.tokens[0].amount = tokenBalanceAfterTransaction
           sails.log.debug "new amount #{ parent.tokens[0].amount }"
           parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
             sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
             sails.log.debug "Saved parent saved_parent_error #{ JSON.stringify saved_parent_error }" if saved_parent_error?
-            res.json ttransaction
-        ).catch ( ttransaction_err ) ->
-          sails.log.debug "EventResponse create error/event pay #{ JSON.stringify ttransaction_err }"
-          res.negotiate ttransaction_err
+            res.json e_response
+        ).catch ( e_response_err ) ->
+          sails.log.debug "EventResponse create error/event pay #{ JSON.stringify e_response_err }"
+          res.negotiate e_response_err
 
       else
         res.negotiate "You don't have enough tokens. Please top up."
@@ -79,14 +79,14 @@ module.exports = {
       paid: false
       declined: true
       team_id: req.body.team_id
-    ).then( ( ttransaction ) ->
-      sails.log.debug "EventResponse create/event decline #{ JSON.stringify ttransaction }"
+    ).then( ( e_response ) ->
+      sails.log.debug "EventResponse create/event decline #{ JSON.stringify e_response }"
       
       
-      res.json ttransaction
-    ).catch ( ttransaction_err ) ->
-      sails.log.debug "EventResponse create error/event decline #{ JSON.stringify ttransaction_err }"
-      res.negotiate ttransaction_err
+      res.json e_response
+    ).catch ( e_response_err ) ->
+      sails.log.debug "EventResponse create error/event decline #{ JSON.stringify e_response_err }"
+      res.negotiate e_response_err
 
     
       
@@ -99,14 +99,14 @@ module.exports = {
     EventResponse.update(
       { id: req.body.id } 
       req.body
-    ).then( ( ttransaction ) ->
-      sails.log.debug "EventResponse create/event update #{ JSON.stringify ttransaction }"
+    ).then( ( e_response ) ->
+      sails.log.debug "EventResponse create/event update #{ JSON.stringify e_response }"
       
       
-      res.json ttransaction
-    ).catch ( ttransaction_err ) ->
-      sails.log.debug "EventResponse create error/event update #{ JSON.stringify ttransaction_err }"
-      res.negotiate ttransaction_err
+      res.json e_response
+    ).catch ( e_response_err ) ->
+      sails.log.debug "EventResponse create error/event update #{ JSON.stringify e_response_err }"
+      res.negotiate e_response_err
 
   
 
