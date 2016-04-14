@@ -35,28 +35,10 @@ module.exports = {
 
       tokenBalanceAfterTransaction = parseInt(parent.tokens[0].amount) - parseInt(req.body.token_amount)
       parentHasEnoughTokens = false
-      eventHasBeenDeclined = false
       if tokenBalanceAfterTransaction >= 0
-        parentHasEnoughTokens = true
-      declinedString = req.body.declined
-      if declinedString
-        eventHasBeenDeclined = true
-      if eventHasBeenDeclined
-        TokenTransaction.create(
-          event_id: req.body.event_id
-          user_id: req.body.user_id
-          parent_id: req.body.parent_id
-          token_amount: req.body.token_amount
-          paid: false
-          declined: true
-          team_id: req.body.team_id
-        ).then( (ttransaction) ->
-          res.json ttransaction
-        ).catch (ttransaction_err) ->
-          sails.log.debug 'TokenTransaction create error/event pay ' + JSON.stringify(ttransaction_err)
-          res.negotiate ttransaction_err
+        parentHasEnoughTokens = true     
 
-      else if parentHasEnoughTokens
+      if parentHasEnoughTokens
         TokenTransaction.create( 
           event_id: req.body.event_id
           user_id: req.body.user_id
