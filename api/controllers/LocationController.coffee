@@ -18,7 +18,7 @@ module.exports = {
       res.json location
     ).catch( ( location_err ) ->
       sails.log.debug "Location create error #{ JSON.stringify location_err }"
-      res.negotitate location_err
+      res.negotiate location_err
     )
 
     # Location.updateOrCreate( 

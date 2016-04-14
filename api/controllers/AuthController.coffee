@@ -32,7 +32,7 @@ module.exports =
       Token.create( owner: user.id ).exec (err, token) ->
         sails.log.debug "Token created #{ JSON.stringify token }"
         sails.log.debug "Token create error #{ JSON.stringify err }" if err?
-        User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
+        User.findOne( id: user.id ).populateAll().then( ( user_pop ) ->
           sails.log.debug "User pop #{ JSON.stringify user_pop }"
           res.json
             #data:

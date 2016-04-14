@@ -70,7 +70,7 @@ module.exports =
     sails.log.debug "LOcation create values #{ JSON.stringify values }"
 
     geocoder.geocode( values.address ).then( ( geocode_results ) ->
-      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results[0].latitude }"
+      sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results }"
       values.lat = geocode_results[0].latitude
       values.lng = geocode_results[0].longitude
       cb()
