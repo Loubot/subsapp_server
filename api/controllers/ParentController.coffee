@@ -56,7 +56,7 @@ module.exports = {
                         inner join user b on a.email = b.parent_email
                         right join event_event_user__user_user_events e on b.id = e.user_user_events
                         right join event f on e.event_event_user = f.id
-                        left outer join tokentransaction g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
+                        left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
                         where a.id=#{ req.param('id') };", ( err, kidsEventsData ) ->
                           if err?
                             sails.log.debug "parents_with_events kidsEventsData err #{ err }"
