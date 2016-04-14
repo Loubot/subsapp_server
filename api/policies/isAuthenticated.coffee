@@ -9,8 +9,10 @@ module.exports = (req, res, next) ->
   sails.log.debug "isAuthenticated"
   passport.authenticate('jwt', (error, user, info) ->
     if error
+      sails.log.debug "Err #{ JSON.stringify error }"
       return res.serverError(error)
     if !user
+      sails.log.debug "No user #{ JSON.stringify info.message }"
       return res.unauthorized(null, info and info.code, info and info.message)
     req.user = user
     next()

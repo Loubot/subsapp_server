@@ -1,21 +1,21 @@
 ###*
-# TokenTransactionController
+# EventResponseController
 #
-# @description :: Server-side logic for managing TokenTransactions
+# @description :: Server-side logic for managing EventResponses
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
 
 
 module.exports = {
   find: ( req, res ) ->
-    sails.log.debug "Hit the TokenTransactionController/findOne"
+    sails.log.debug "Hit the EventResponseController/findOne"
     sails.log.debug "Params #{ JSON.stringify req.param('id') }"
     if AuthService.check_user( req.user, req.param('id') )
-      TokenTransaction.find( user_id: req.param('id') ).then( ( ttransaction ) ->
+      EventResponse.find( user_id: req.param('id') ).then( ( ttransaction ) ->
         res.json ttransaction
 
       ).catch ( err ) ->
-        sails.log.debug "Find TokenTransaction error #{ JSON.stringify err }"
+        sails.log.debug "Find EventResponse error #{ JSON.stringify err }"
         res.negotiate err
     else
       res.unauthorized "You are not authorised to view this"
@@ -25,7 +25,7 @@ module.exports = {
 
 
   pay: ( req, res ) ->
-    sails.log.debug "Hit the TokenTransactionController/pay"
+    sails.log.debug "Hit the EventResponseController/pay"
     sails.log.debug "Params #{ JSON.stringify req.body }"
 
 
@@ -39,7 +39,7 @@ module.exports = {
         parentHasEnoughTokens = true     
 
       if parentHasEnoughTokens
-        TokenTransaction.create( 
+        EventResponse.create( 
           event_id: req.body.event_id
           user_id: req.body.user_id
           parent_id: req.body.parent_id
@@ -48,7 +48,7 @@ module.exports = {
           declined: false
           team_id: req.body.team_id
         ).then( ( ttransaction ) ->
-          sails.log.debug "TokenTransaction create/event pay #{ JSON.stringify ttransaction }"
+          sails.log.debug "EventResponse create/event pay #{ JSON.stringify ttransaction }"
           parent.tokens[0].amount = tokenBalanceAfterTransaction
           sails.log.debug "new amount #{ parent.tokens[0].amount }"
           parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
@@ -56,7 +56,7 @@ module.exports = {
             sails.log.debug "Saved parent saved_parent_error #{ JSON.stringify saved_parent_error }" if saved_parent_error?
             res.json ttransaction
         ).catch ( ttransaction_err ) ->
-          sails.log.debug "TokenTransaction create error/event pay #{ JSON.stringify ttransaction_err }"
+          sails.log.debug "EventResponse create error/event pay #{ JSON.stringify ttransaction_err }"
           res.negotiate ttransaction_err
 
       else
@@ -68,10 +68,10 @@ module.exports = {
       res.negotiate err
 
   decline: ( req, res ) ->
-    sails.log.debug "Hit the TokenTransactionController/decline"
+    sails.log.debug "Hit the EventResponseController/decline"
     sails.log.debug "Params #{ JSON.stringify req.body }"
 
-    TokenTransaction.create( 
+    EventResponse.create( 
       event_id: req.body.event_id
       user_id: req.body.user_id
       parent_id: req.body.parent_id
@@ -80,12 +80,12 @@ module.exports = {
       declined: true
       team_id: req.body.team_id
     ).then( ( ttransaction ) ->
-      sails.log.debug "TokenTransaction create/event decline #{ JSON.stringify ttransaction }"
+      sails.log.debug "EventResponse create/event decline #{ JSON.stringify ttransaction }"
       
       
       res.json ttransaction
     ).catch ( ttransaction_err ) ->
-      sails.log.debug "TokenTransaction create error/event decline #{ JSON.stringify ttransaction_err }"
+      sails.log.debug "EventResponse create error/event decline #{ JSON.stringify ttransaction_err }"
       res.negotiate ttransaction_err
 
     
@@ -93,19 +93,19 @@ module.exports = {
       
     
   update: ( req, res ) ->
-    sails.log.debug "Hit the TokenTransactionController/update"
+    sails.log.debug "Hit the EventResponseController/update"
     sails.log.debug "Params #{ JSON.stringify req.body }"
 
-    TokenTransaction.update(
+    EventResponse.update(
       { id: req.body.id } 
       req.body
     ).then( ( ttransaction ) ->
-      sails.log.debug "TokenTransaction create/event update #{ JSON.stringify ttransaction }"
+      sails.log.debug "EventResponse create/event update #{ JSON.stringify ttransaction }"
       
       
       res.json ttransaction
     ).catch ( ttransaction_err ) ->
-      sails.log.debug "TokenTransaction create error/event update #{ JSON.stringify ttransaction_err }"
+      sails.log.debug "EventResponse create error/event update #{ JSON.stringify ttransaction_err }"
       res.negotiate ttransaction_err
 
   
