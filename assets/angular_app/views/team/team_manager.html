@@ -17,14 +17,14 @@
       <div class="form-group">
         <label class="col-sm-2">Name: </label>
         <div class="col-sm-10">
-          <input type="text" name="name" ng-model="create_event_data.name" class="form-control" placholder:'name'>
+          <input type="text" name="name" ng-model="create_event_data.name" class="form-control" placholder:'name' required>
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
       <div class="form-group">
         <label class="col-sm-2">Details: </label>
         <div class="col-sm-10">
-          <input type="text" name="name" ng-model="create_event_data.details" class="form-control" placholder:'details'>
+          <input type="text" name="name" ng-model="create_event_data.details" class="form-control" placholder:'details' required>
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
@@ -34,12 +34,12 @@
         <label class="col-sm-2">Start Time: </label>
         <div class="col-sm-10 black_text">
           <div class="dropdown">
-            <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="">
+            <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
               <div class="input-group"><input type="text" class="form-control" data-ng-model="create_event_data.start_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
               </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <datetimepicker data-ng-model="create_event_data.start_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"/>
+              <datetimepicker data-ng-model="create_event_data.start_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
             </ul>
           </div>
           
@@ -50,12 +50,12 @@
         <label class="col-sm-2">End Time: </label>
         <div class="col-sm-10 black_text">
           <div class="dropdown">
-            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="">
+            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
               <div class="input-group"><input type="text" class="form-control" data-ng-model="create_event_data.end_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
               </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <datetimepicker data-ng-model="create_event_data.end_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+              <datetimepicker data-ng-model="create_event_data.end_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" ng-required="true"/>
             </ul>
           </div>
           
@@ -71,7 +71,7 @@
       </div> <!-- end of form-group -->
 
       <div class="form-group">
-        <select class="form-control team_location_select" ng-change="update_location()" ng-model="location" >
+        <select class="form-control team_location_select"  ng-model="create_event_data.location_id" required>
           <option value="">---Please select location---</option>
           <option ng-repeat="location in locations" value="{{ location.id }}" 
                   >

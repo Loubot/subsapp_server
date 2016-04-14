@@ -74,6 +74,7 @@ angular.module('subzapp').controller('TeamController', [
     $scope.create_event = ->
       $scope.create_event_data.team_id = $scope.team.id
       $scope.create_event_data.user_id = $rootScope.USER.id
+      $scope.create_event_data.event_team = $scope.team.id
       console.log $scope.create_event_data
       COMMS.POST(
         "/event"
@@ -186,8 +187,6 @@ angular.module('subzapp').controller('TeamController', [
         console.log errResponse
         alertify.error "Couldn't get players info"
 
-    $scope.update_location = ( id ) ->
-      console.log $scope.location
     
 ])
 

@@ -38,6 +38,10 @@ module.exports =
       collection: 'org'
       via: 'org_locations'
       columnName: 'org_id'
+
+    event_id:
+      collection: 'event'
+      via: 'location_id'
       
     
     toJSON: ->

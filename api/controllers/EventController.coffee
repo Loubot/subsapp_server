@@ -10,13 +10,9 @@ module.exports = {
   create: (req, res) -> #user association happens in afterCreate callback
     sails.log.debug "Hit the events controller/create_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
+    req.body.price = parseInt( req.body.price )
     Event.create( 
-      name: req.body.name 
-      start_date: req.body.start_date 
-      end_date: req.body.end_date 
-      event_team: req.body.team_id 
-      price: parseInt( req.body.price )
-      details: req.body.details        
+      req.body      
     ).then( ( event_created ) ->
       sails.log.debug "Event create response #{ JSON.stringify event_created }"
       GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
