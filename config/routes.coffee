@@ -261,7 +261,7 @@ module.exports.routes =
 
   'post /eventresponse/pay':
         controller:              'EventResponseController'
-        action:                   'pay'
+        action:                  'pay'
 
   'post /eventresponse/decline':
         controller:              'EventResponseController'
