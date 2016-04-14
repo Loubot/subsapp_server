@@ -255,17 +255,21 @@ module.exports.routes =
         action:                 'post_reset'
 
   #TokenTransaction controller
-  'get /tokentransaction/:id':
-        controller:             'TokenTransactionController'
+  'get /eventresponse/:id':
+        controller:             'EventResponseController'
         action:                 'find'
 
-  'post /tokentransaction/pay':
-        controller:              'TokenTransactionController'
+  'post /eventresponse/pay':
+        controller:              'EventResponseController'
         action:                   'pay'
 
-  'post /tokentransaction/decline':
-        controller:              'TokenTransactionController'
+  'post /eventresponse/decline':
+        controller:              'EventResponseController'
         action:                  'decline'
+
+  'post /eventresponse/update':
+        controller:              'EventResponseController'
+        action:                  'update'
 
   #End of TokenTransactionController
 
