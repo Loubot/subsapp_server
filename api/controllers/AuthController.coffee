@@ -34,7 +34,7 @@ module.exports =
         sails.log.debug "Token create error #{ JSON.stringify err }" if err?
         User.findOne( id: user.id ).populateAll().then( ( user_pop ) ->
           sails.log.debug "User pop #{ JSON.stringify user_pop }"
-          res.json
+          res.created
             #data:
             token: CipherService.createToken(user_pop)
             user: user_pop
