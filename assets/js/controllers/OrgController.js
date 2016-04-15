@@ -49,9 +49,7 @@ angular.module('subzapp').controller('OrgController', [
     return $scope.parse_users = function() {
       console.log('yep');
       return COMMS.POST("/file/parse-players/", {
-        data: {
-          org_id: $scope.org
-        }
+        org_id: $scope.org
       }).then((function(res) {
         console.log("parse users response");
         console.log(res);

@@ -61,6 +61,7 @@ angular.module('subzapp').controller('TeamController', [
     $scope.create_event = function() {
       $scope.create_event_data.team_id = $scope.team.id;
       $scope.create_event_data.user_id = $rootScope.USER.id;
+      $scope.create_event_data.event_team = $scope.team.id;
       console.log($scope.create_event_data);
       return COMMS.POST("/event", $scope.create_event_data).then((function(res) {
         alertify.success("Event created");
@@ -74,7 +75,7 @@ angular.module('subzapp').controller('TeamController', [
     };
     $scope.get_players_by_year = function(id) {
       console.log("Find by date");
-      return COMMS.GET(RESOURCES.DOMAIN + "/team/get-players-by-year/" + $scope.team.id).then((function(res) {
+      return COMMS.GET("/team/get-players-by-year/" + $scope.team.id).then((function(res) {
         console.log("Playsers by age response");
         return console.log(res);
       }), function(errResponse) {
@@ -82,7 +83,7 @@ angular.module('subzapp').controller('TeamController', [
       });
     };
     $scope.download = function() {
-      return COMMS.GET(RESOURCES.DOMAIN + "/user/download-file").then((function(res) {
+      return COMMS.GET("/user/download-file").then((function(res) {
         console.log("Download response");
         return console.log(res);
       }), function(errResponse) {
@@ -93,7 +94,7 @@ angular.module('subzapp').controller('TeamController', [
       console.log("team id " + $scope.team.id);
       console.log("Team members array");
       console.log($scope.team_members_array);
-      return COMMS.GET(RESOURCES.DOMAIN + "/team/update-members/" + $scope.team.id, {
+      return COMMS.POST("/team/update-members/" + $scope.team.id, {
         team_members: $scope.team_members_array
       }).then((function(res) {
         console.log("Update team members");
@@ -111,7 +112,7 @@ angular.module('subzapp').controller('TeamController', [
     $scope.update_eligible_date = function() {
       usSpinnerService.stop('spinner-1');
       console.log($scope.team);
-      return COMMS.GET(RESOURCES.DOMAIN + "/team/update/" + $scope.team.id, $scope.team).then((function(res) {
+      return COMMS.POST("/team/update/" + $scope.team.id, $scope.team).then((function(res) {
         console.log("Update team date");
         console.log(res.data);
         $scope.team.eligible_date = moment(res.data[0].eligible_date).format('YYYY-MM-DD');
@@ -135,10 +136,10 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.log("Please set the eligible date of this team. Click to dismiss", "", 0);
       }
     });
-    get_org_and_members = function() {
+    return get_org_and_members = function() {
       console.log("org id " + $scope.team.main_org.id);
       usSpinnerService.spin('spinner-1');
-      return COMMS.GET(RESOURCES.DOMAIN + "/org/get-org-team-members/" + $scope.team.main_org.id, $scope.team).then((function(res) {
+      return COMMS.GET("/org/get-org-team-members/" + $scope.team.main_org.id, $scope.team).then((function(res) {
         console.log("Get org info ");
         console.log(res.data);
         $scope.org_members = res.data.org.org_members;
@@ -153,9 +154,6 @@ angular.module('subzapp').controller('TeamController', [
         console.log(errResponse);
         return alertify.error("Couldn't get players info");
       });
-    };
-    return $scope.update_location = function(id) {
-      return console.log($scope.location);
     };
   }
 ]);

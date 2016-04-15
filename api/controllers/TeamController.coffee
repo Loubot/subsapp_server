@@ -24,20 +24,17 @@ module.exports = {
     sails.log.debug "Hit the team controller/update"
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Params #{ JSON.stringify req.body }"
-    if AuthService.check_club_admin( req.user, req.param('id') )
-      Team.update( 
-        { id: req.param('id') }
-        eligible_date: req.body.eligible_date
-        eligible_date_end: req.body.eligible_date_end
-        ).then( ( team ) -> 
-        sails.log.debug "Team updated #{ JSON.stringify team }"
-        res.json team
-      ).catch( ( err ) ->
-        sails.log.debug "Team update error #{ JSON.stringify err }"
-        res.negotiate err
-      )
-    else
-      res.negotiate "You are not authorised"
+    Team.update( 
+      { id: req.param('id') }
+      eligible_date: req.body.eligible_date
+      eligible_date_end: req.body.eligible_date_end
+      ).then( ( team ) -> 
+      sails.log.debug "Team updated #{ JSON.stringify team }"
+      res.json team
+    ).catch( ( err ) ->
+      sails.log.debug "Team update error #{ JSON.stringify err }"
+      res.negotiate err
+    )
 
   get_team_info: (req, res) -> #club admin team findOne
     Promise = require('bluebird')

@@ -63,7 +63,7 @@ module.exports = {
   create_users: ( file, org, cb ) ->
     xlsx = require('node-xlsx')
     sails.log.debug "Hit the fileservice/create_users"
-    # sails.log.debug "Files #{ JSON.stringify file }"
+    sails.log.debug "File service org_id #{ JSON.stringify org }"
     player_array = null
     obj = xlsx.parse( file.Body )
     player_array = obj[0].data
