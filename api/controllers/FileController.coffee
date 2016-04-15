@@ -118,7 +118,7 @@ module.exports = {
     sails.log.debug "bucket_params #{ JSON.stringify bucket_params} "
 
     File_service = Promise.promisifyAll( FileService ) # promisify the fileservice functions
-
+    sails.log.debug "Check her here #{ JSON.stringify req.body.org_id }"
     File_service.get_file_listAsync( bucket_params ).then( ( file_list ) -> # get list of files in subzapp bucket starting with org_id/
       sails.log.debug "File list returned #{ JSON.stringify file_list }"
       file_names = new Array()
@@ -159,70 +159,7 @@ module.exports = {
       res.negotiate file_list_err
     )
     
-    # FileService.get_file_list( params, )
-
-
     
-
-    # s3.getObjectAsync( Bucket: 'subzapp', Key: file.Key ).then( ( downloaded_file ) ->
-    #   sails.log.debug "Download file #{ JSON.stringify downloaded_file }"
-    
-      
-    #   for player in player_array
-    #     User.create_kid( player, req.body.org_id, ( err, kid ) ->
-    #       if err?
-    #         sails.log.debug "Create kid error #{ JSON.stringify err }"
-    #       else
-    #         # sails.log.debug "Create kid #{ JSON.stringify kid }"
-    #         return_players.push( kid )
-
-            
-    #     )
-    #   sails.log.debug "Player array #{ JSON.stringify return_players }"
-    #   res.json return_players
-
-      
-    # ).catch( ( download_file_err ) ->
-    #   sails.log.debug "S3 download err #{ JSON.stringify download_file_err }"
-    # )
-    
-
-      
-
-      
-        
-    
-
-    
-
-    # FileTracker.findOne( id: 4 ).then( ( filet ) ->
-    #   sails.log.debug "File tracker #{ JSON.stringify filet }"
-    #   sails.log.debug "url #{ decode filet.url }"
-    # )
-    # (new (AWS.S3)).getObject {
-    #     Bucket: 'subzapp'
-    #     Key: '1/1/U17Boys'
-    #   }, (err, data) ->
-    #     sails.log.debug "AWS error #{ JSON.stringify err }" if err?
-    #     if err?
-    #       res.negotiate err.message
-    #       return false
-
-    #     tempFile.write data.Body if !err?
-
-    #     sails.log.debug 'yippee'
-    #     obj = xlsx.parse(data.Body)
-        
-    #     player_array = obj[0].data
-    #     player_array.splice(0,1)
-    #     # sails.log.debug "Array #{ JSON.stringify player_array }"
-    #     User.create_players( player_array, ( err, players ) ->
-    #       sails.log.debug "Players #{ JSON.stringify players }"
-    #       sails.log.debug "Players error #{ JSON.stringify err }" if err?
-    #     )
-    #     res.json obj[0].data
-
-      
 
 
      

@@ -140,11 +140,11 @@ module.exports = {
 
     
     Promise.all([
-       Org.findOne( { id: req.param('id') } ).populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
+      Org.findOne( { id: req.param('id') } ).populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } )
       Team.findOne( id: req.query.id ).populate('team_members')
     ]).spread( ( org, team ) ->
-      sails.log.debug "Org found"
-      sails.log.debug "Team found"
+      sails.log.debug "Org found #{ JSON.stringify org }"
+      sails.log.debug "Team found "
       res.json org: org, team: team
     ).catch( ( org_and_team_err ) ->
       sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
