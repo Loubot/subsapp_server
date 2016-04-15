@@ -51,11 +51,12 @@ module.exports = {
                       res.negotiate err
                     else
                       sails.log.debug "parents_with_events kidsData #{ JSON.stringify kidsData }"
-                      User.query("select b.id, a.id as parent_id, e.event_event_user as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, g.paid, g.declined, g.createdAt as paid_date, g.id as event_response_id
+                      User.query("select b.id, a.id as parent_id, e.event_event_user as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, l.lat, l.lng, l.location_name, l.location_owner, g.paid, g.declined, g.createdAt as paid_date, g.id as event_response_id
                         from user a 
                         inner join user b on a.email = b.parent_email
                         right join event_event_user__user_user_events e on b.id = e.user_user_events
                         right join event f on e.event_event_user = f.id
+                        right join location l on l.id = f.location_id
                         left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
                         where a.id=#{ req.param('id') };", ( err, kidsEventsData ) ->
                           if err?
