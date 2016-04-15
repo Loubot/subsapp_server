@@ -40,6 +40,9 @@ module.exports =
     event_user:
       collection: 'user'
       via: 'user_events'
+
+    location_id:
+      model: 'location'
       
     
     toJSON: ->
@@ -72,6 +75,7 @@ module.exports =
 
     ).catch ( err ) ->
       sails.log.debug "Event afterCreate Team find err #{ JSON.stringify err }"
+      next( err )
 
 
 
