@@ -34,7 +34,10 @@ module.exports =
         sails.log.debug "Token create error #{ JSON.stringify err }" if err?
         User.findOne( id: user.id ).populateAll().then( ( user_pop ) ->
           sails.log.debug "User pop #{ JSON.stringify user_pop }"
-          res.created
+          #this does not work data not being passed to mobile client
+          #res.created
+          #reverted to res.json
+          res.json
             #data:
             token: CipherService.createToken(user_pop)
             user: user_pop
