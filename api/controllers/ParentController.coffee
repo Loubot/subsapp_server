@@ -96,6 +96,28 @@ module.exports = {
     )
 
   #end of parents_with_events
+  
+  token_payments: ( req, res ) ->
+    sails.log.debug "Hit the UserController/token_payments"
+    User.query("select er.token_amount, er.createdAt as paid_on, child.firstName as child_name, e.name as event_name, e.start_date, l.location_name, t.name as team_name, o.name as club_name
+      from eventresponse er
+      left outer join user child on child.id = er.user_id
+      left outer join event e on e.id = er.event_id
+      left outer join team t on t.id = e.event_team
+      left outer join org o on o.id = t.main_org
+      left outer join location l on l.id = e.location_id
+      where er.paid is true and er.parent_id = #{ req.param('id') };", ( err, tokenPaymentsData ) ->
+        if err?
+          sails.log.debug "token_payments tokenPaymentsData err #{ err }"
+          res.negotiate err
+        else
+          sails.log.debug "token_payments tokenPaymentsData #{ JSON.stringify tokenPaymentsData }"
+          NULL = ''
+          masterJsonData = tokenPaymentsData
+          res.json masterJsonData
+    )
+
+  
 
   social: ( req, res ) ->
     Promise = require('q')
