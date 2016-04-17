@@ -97,7 +97,7 @@ angular.module('subzapp').constant('RESOURCES', (function() {
   };
 })());
 
-angular.module('subzapp').service('user', function($http, $state, RESOURCES, $rootScope) {
+angular.module('subzapp').service('user', function($http, $state, RESOURCES, $rootScope, alertify) {
   console.log("user service");
   return {
     check_if_org_admin: function(user, id) {
@@ -124,10 +124,15 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES, $ro
           return false;
         } else {
           console.log("Got user");
+          if (data.length <= 0) {
+            alertify.error("No user data");
+            $state.go('login');
+            return false;
+          }
           $rootScope.USER = data;
           return data;
         }
-      }).error(function(err) {
+      })["catch"](function(err) {
         console.log("Fetching user data error " + (JSON.stringify(err)));
         return $state.go('login');
       });

@@ -123,7 +123,7 @@ angular.module('subzapp').constant 'RESOURCES', do ->
   
   
 
-angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope ) ->
+angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope, alertify ) ->
   console.log "user service"
   {
 
@@ -151,11 +151,14 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope 
           return false
         else
           console.log "Got user"
-          # console.log data
+          if data.length <= 0
+            alertify.error "No user data"
+            $state.go 'login'
+            return false
           $rootScope.USER = data
           return data
         
-      ).error (err) ->
+      ).catch (err) ->
         console.log "Fetching user data error #{ JSON.stringify err }"
         $state.go 'login'
   }

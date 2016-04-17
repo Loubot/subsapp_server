@@ -4,7 +4,7 @@ angular.module('subzapp').controller('LoginController', [
     console.log('Login Controller');
     $scope.login_submit = function() {
       return COMMS.POST("/auth/signin", $scope.login_form_data).then((function(response) {
-        console.log("User id " + response.data.user);
+        console.log("Logged in " + response.data.user);
         console.log(response);
         $rootScope.USER = response.data.user;
         window.localStorage.setItem('user_token', response.data.token);

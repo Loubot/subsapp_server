@@ -69,8 +69,10 @@ module.exports =
 
   beforeCreate: ( values, cb ) -> #geocode address
     geocoderProvider = 'google'
-    httpAdapter = 'http'
-    geocoder = require('node-geocoder')(geocoderProvider, httpAdapter)
+    httpAdapter = 'https'
+    extra = apiKey: sails.config.stripe.maps_Key
+    geocoder = require('node-geocoder')( geocoderProvider, httpAdapter, extra )
+
     sails.log.debug "LOcation create values #{ JSON.stringify values }"
 
     geocoder.geocode( values.address ).then( ( geocode_results ) ->

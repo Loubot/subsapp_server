@@ -17,7 +17,7 @@ angular.module('subzapp').controller('LoginController', [
         "/auth/signin"        
         $scope.login_form_data
       ).then ( (response) ->
-        console.log "User id #{ response.data.user }"
+        console.log "Logged in #{ response.data.user }"
         console.log response
         $rootScope.USER = response.data.user
         window.localStorage.setItem 'user_token', response.data.token

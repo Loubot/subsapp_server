@@ -46,7 +46,8 @@ angular.module('subzapp').controller('TeamController', [
           return get_team_info();
         }
       }), function(errResponse) {
-        return $rootScope.USER = null;
+        $rootScope.USER = null;
+        return $state.go('login');
       });
     } else {
       console.log("USER already defined");
