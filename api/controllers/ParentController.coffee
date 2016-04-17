@@ -106,7 +106,8 @@ module.exports = {
       left outer join team t on t.id = e.event_team
       left outer join org o on o.id = t.main_org
       left outer join location l on l.id = e.location_id
-      where er.paid is true and er.parent_id = #{ req.param('id') };", ( err, tokenPaymentsData ) ->
+      where er.paid is true and er.parent_id = #{ req.param('id') }
+      order by er.createdAt DESC;", ( err, tokenPaymentsData ) ->
         if err?
           sails.log.debug "token_payments tokenPaymentsData err #{ err }"
           res.negotiate err
