@@ -15,7 +15,14 @@ module.exports = {
     body = ParamService.fix_lat_lng_name( req.body )
     Location.create( body ).then( ( location ) ->
       sails.log.debug "Location created #{ JSON.stringify location }"
-      res.json location
+      Org.find( id: req.body.org_id ).populate( 'org_locations' ).then( ( org_found ) ->
+        sails.log.debug "Org found #{ JSON.stringify org_found }"
+        res.json org_found
+      ).catch( ( org_found_err ) ->
+        sails.log.debug "Org find err #{ JSON.stringify org_found_err }"
+        res.negotiate org_found_err
+      )
+      
     ).catch( ( location_err ) ->
       sails.log.debug "Location create error #{ JSON.stringify location_err }"
       res.negotiate location_err

@@ -13,6 +13,7 @@ angular.module('subzapp').controller('TeamController', [
           console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
+          $scope.org = res.data.org;
           $scope.org_members = res.data.org.org_members;
           return $scope.locations = res.data.org.org_locations;
         }), function(errResponse) {
@@ -33,7 +34,6 @@ angular.module('subzapp').controller('TeamController', [
     if (!($rootScope.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = $rootScope.USER;
-        $scope.org = $rootScope.USER.orgs[0];
         $scope.teams = $rootScope.USER.teams;
         return_team($rootScope.USER.teams, $location.search().id);
         $scope.show_upload = $rootScope.USER.club_admin;
@@ -163,6 +163,7 @@ angular.module('subzapp').controller('TeamController', [
         zoom: zoom,
         markers: []
       };
+      console.log($scope.map);
       if (set_markers) {
         console.log("setting markers");
         marker = {
@@ -176,6 +177,7 @@ angular.module('subzapp').controller('TeamController', [
       }
       $scope.map.events = {
         dragend: function(point) {
+          console.log('yep');
           $scope.map.center = {
             latitude: point.center.lat(),
             longitude: point.center.lng()
@@ -210,15 +212,24 @@ angular.module('subzapp').controller('TeamController', [
     };
     $('#add_locations').on('shown.bs.modal', function() {
       $scope.show_map = true;
-      $scope.map = {
-        center: {
-          latitude: 51.9181688,
-          longitude: -8.5039876
-        },
-        zoom: 11
-      };
+      set_map(51.9181688, -8.5039876, false);
       return $scope.$apply();
     });
+    $scope.save_address = function() {
+      console.log($scope.map.center);
+      $scope.map.user_id = $rootScope.USER.id;
+      $scope.map.org_id = $scope.org.id;
+      return COMMS.POST('/location', $scope.map).then((function(res) {
+        console.log("Save adddres response");
+        alertify.success("Adddres saved");
+        console.log(res);
+        return $scope.locations = res.data.org.org_locations;
+      }), function(errResponse) {
+        console.log("Save address error");
+        console.log(errResponse);
+        return alertify.error(errResponse.data);
+      });
+    };
     return $scope.onTimeSet = function(nd, od) {
       $scope.create_event_data.start_date = moment(nd).format('DD-MM-YYYY HH:mm');
       return $scope.create_event_data.end_date = moment(nd).add(2, 'hours').format('DD-MM-YYYY HH:mm');
