@@ -168,6 +168,8 @@ body{
 
 .register_form{
   margin: 0 150px;
+  border: solid #b8b8b8;
+  padding: 7px;
 }
 
 .team_location_select{
