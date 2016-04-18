@@ -3,7 +3,7 @@ var return_team;
 
 angular.module('subzapp').controller('TeamController', [
   '$scope', '$rootScope', '$state', 'COMMS', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'uiGmapGoogleMapApi', function($scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, uiGmapGoogleMapApi) {
-    var get_org_and_members, get_team_info, user_token;
+    var get_org_and_members, get_team_info, set_map, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
     $scope.location = null;
@@ -150,6 +150,58 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.error("Couldn't get players info");
       });
     };
+    set_map = function(lat, lng, set_markers, zoom) {
+      var marker;
+      if (zoom == null) {
+        zoom = 11;
+      }
+      $scope.map = {
+        center: {
+          latitude: lat,
+          longitude: lng
+        },
+        zoom: zoom,
+        markers: []
+      };
+      if (set_markers) {
+        console.log("setting markers");
+        marker = {
+          idKey: Date.now(),
+          coords: {
+            latitude: lat,
+            longitude: lng
+          }
+        };
+        $scope.map.markers.push(marker);
+      }
+      $scope.map.events = {
+        dragend: function(point) {
+          $scope.map.center = {
+            latitude: point.center.lat(),
+            longitude: point.center.lng()
+          };
+          set_map(point.center.lat(), point.center.lng(), true, zoom);
+          console.log($scope.map.center);
+          return drag_display_info();
+        }
+      };
+      return console.log("center " + (JSON.stringify($scope.map.center)));
+    };
+    $scope.find_address = function(address) {
+      var geocoder;
+      geocoder = new google.maps.Geocoder();
+      console.log("Address " + address);
+      return geocoder.geocode({
+        address: address
+      }, function(results, status) {
+        $scope.map.markers = [];
+        console.log("results ");
+        console.log(results);
+        console.log("Status " + (JSON.stringify(status)));
+        set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
+        return $scope.$apply();
+      });
+    };
     $scope.new_location = function() {
       if ('new_location' === $scope.create_event_data.location_id) {
         $('#add_locations').modal('show');
@@ -177,15 +229,15 @@ angular.module('subzapp').controller('TeamController', [
 return_team = function(teams, id) {
   var team;
   team = (function() {
-    var i, len, results;
-    results = [];
+    var i, len, results1;
+    results1 = [];
     for (i = 0, len = teams.length; i < len; i++) {
       team = teams[i];
       if (team.id === parseInt(id)) {
-        results.push(team);
+        results1.push(team);
       }
     }
-    return results;
+    return results1;
   })();
   console.log("Team " + (JSON.stringify(team)));
   return team;
