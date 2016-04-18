@@ -70,25 +70,28 @@
         </div> <!-- end of col-sm-10 -->
       </div> <!-- end of form-group -->
 
-      <div class="form-group">
-        <select class="form-control team_location_select"  ng-model="create_event_data.location_id" required>
-          <option value="">---Please select location---</option>
+      <div class="form-group" >
+        <select class="form-control team_location_select" ng-change="new_location()" ng-model="create_event_data.location_id" required>
+          <option value="" >---Please select location---</option>
           <option ng-repeat="location in locations" value="{{ location.id }}" 
                   >
             {{ location.address }}
           </option>
+          <option value="new_location" >---Create new location?---</option>
         </select> <!-- end of form-control -->
+      </div> <!-- end of form-group -->
+
+      <div class="form-group center-block" >
+        <button class="btn btn-info" data-toggle="modal" data-target="#add_locations">Add a new location</button>
       </div>
 
       <div class="form-group text-center">
         <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register">
         
       </div> <!-- end of form-group text-center -->
-
-
-
     </form>
 
+    
     
     
 
@@ -99,15 +102,12 @@
 </div> <!-- end of container-fluid -->
 
 
-
-<!-- <button class="btn btn-warning btn-lg" ng-click="get_players_by_year(team.id)">Get players!</button><br>
-<button class="btn btn-info btn-lg" ng-click="download()">Download </button> -->
-
-
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#select_player_modal">
-  Manage players
-</button>
+<div class="container-fluid">
+  <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#select_player_modal">
+    Manage players
+  </button>
+</div>
 
 <!-- Modal -->
 <div class="modal fade black_text" id="select_player_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -193,3 +193,24 @@
 </div> <!-- end of modal -->
 
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="add_locations" tabindex="-1" role="dialog" aria-labelledby="add_locations">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="add_locations_label">Add a new location</h4>
+      </div>
+      <div class="modal-body">
+        <div class="angular-google-map-container">
+          <ui-gmap-google-map center='map.center' ng-if="show_map" zoom='map.zoom'></ui-gmap-google-map>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

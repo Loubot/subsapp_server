@@ -11,19 +11,19 @@ angular.module('subzapp').controller('TeamController', [
   'alertify'
   'RESOURCES'
   '$filter'
-  'usSpinnerService'
-  ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService ) ->    
+  'uiGmapGoogleMapApi'
+  ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, uiGmapGoogleMapApi ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
     $scope.location = null
 
     get_team_info = ->
-      usSpinnerService.spin('spinner-1')
+      
       if $rootScope.USER.club_admin
         COMMS.GET(
           "/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"          
         ).then ( (res) ->
-          usSpinnerService.stop('spinner-1')
+          
           console.log "get_team_info response club admin"
           console.log res
           $scope.team = res.data.team
@@ -32,20 +32,20 @@ angular.module('subzapp').controller('TeamController', [
           $scope.locations = res.data.org.org_locations
           
         ), ( errResponse ) ->
-          usSpinnerService.stop('spinner-1')
+          
           console.log "get_team_info error"
           console.log errResponse
       else
         COMMS.GET(
           "/team/#{ window.localStorage.getItem 'team_id' }"
         ).then ( (res) ->
-          usSpinnerService.stop('spinner-1')
+          
           console.log "Get team info response"
           console.log res.data
           $scope.team = res.data
            
         ), ( errResponse ) ->
-          usSpinnerService.stop('spinner-1')
+          
           console.log "Get team info error #{ JSON.stringify errResponse }"
           $state.go 'login'
 
@@ -61,7 +61,7 @@ angular.module('subzapp').controller('TeamController', [
         get_team_info() if $rootScope.USER.club_admin
       ), ( errResponse ) ->
         $rootScope.USER = null
-        $state.go 'login'
+        # $state.go 'login'
     else
       console.log "USER already defined"
       $scope.user = $rootScope.USER
@@ -135,7 +135,7 @@ angular.module('subzapp').controller('TeamController', [
         alertify.error "Failed to add team members"
 
     $scope.update_eligible_date = () ->
-      usSpinnerService.stop('spinner-1')
+      
       console.log $scope.team
       COMMS.POST(
         "/team/update/#{ $scope.team.id }"
@@ -148,7 +148,7 @@ angular.module('subzapp').controller('TeamController', [
         get_org_and_members()
         alertify.success "Eligible date updated"
       ), ( errResponse ) ->
-        usSpinnerService.stop('spinner-1')
+       
         console.log "Update date error "
         console.log errResponse
         alertify.error "Update failed"
@@ -169,7 +169,7 @@ angular.module('subzapp').controller('TeamController', [
 
     get_org_and_members = -> #fetch org info with members. Only members under the teams eligible age. 
       console.log "org id #{ $scope.team.main_org.id }"
-      usSpinnerService.spin('spinner-1')
+      
       COMMS.GET(
         "/org/get-org-team-members/#{ $scope.team.main_org.id }"
         $scope.team
@@ -179,15 +179,28 @@ angular.module('subzapp').controller('TeamController', [
         $scope.org_members = res.data.org.org_members
         $scope.team_members_array = res.data.team.team_members.map( ( member ) ->
             member.id ) #create array containing team members user.id
-        usSpinnerService.stop('spinner-1')
+        
         alertify.success "Got players info"
       ), ( errResponse ) ->
         console.log "Get org info error "
-        usSpinnerService.stop('spinner-1')
+        
         console.log errResponse
         alertify.error "Couldn't get players info"
 
-    
+    $scope.new_location = ->
+      if 'new_location' == $scope.create_event_data.location_id
+        $('#add_locations').modal 'show'
+        return true
+
+    $('#add_locations').on 'shown.bs.modal', ->
+      $scope.show_map = true
+      $scope.map = 
+        center:
+          latitude: 51.9181688
+          longitude: -8.5039876
+        zoom: 11
+      $scope.$apply()
+
 ])
 
 return_team = ( teams, id ) ->

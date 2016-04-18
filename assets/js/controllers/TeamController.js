@@ -2,34 +2,29 @@
 var return_team;
 
 angular.module('subzapp').controller('TeamController', [
-  '$scope', '$rootScope', '$state', 'COMMS', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'usSpinnerService', function($scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, usSpinnerService) {
+  '$scope', '$rootScope', '$state', 'COMMS', '$window', '$location', 'user', 'alertify', 'RESOURCES', '$filter', 'uiGmapGoogleMapApi', function($scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, uiGmapGoogleMapApi) {
     var get_org_and_members, get_team_info, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
     $scope.location = null;
     get_team_info = function() {
-      usSpinnerService.spin('spinner-1');
       if ($rootScope.USER.club_admin) {
         return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
-          usSpinnerService.stop('spinner-1');
           console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
           $scope.org_members = res.data.org.org_members;
           return $scope.locations = res.data.org.org_locations;
         }), function(errResponse) {
-          usSpinnerService.stop('spinner-1');
           console.log("get_team_info error");
           return console.log(errResponse);
         });
       } else {
         return COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(res) {
-          usSpinnerService.stop('spinner-1');
           console.log("Get team info response");
           console.log(res.data);
           return $scope.team = res.data;
         }), function(errResponse) {
-          usSpinnerService.stop('spinner-1');
           console.log("Get team info error " + (JSON.stringify(errResponse)));
           return $state.go('login');
         });
@@ -46,8 +41,7 @@ angular.module('subzapp').controller('TeamController', [
           return get_team_info();
         }
       }), function(errResponse) {
-        $rootScope.USER = null;
-        return $state.go('login');
+        return $rootScope.USER = null;
       });
     } else {
       console.log("USER already defined");
@@ -111,7 +105,6 @@ angular.module('subzapp').controller('TeamController', [
       });
     };
     $scope.update_eligible_date = function() {
-      usSpinnerService.stop('spinner-1');
       console.log($scope.team);
       return COMMS.POST("/team/update/" + $scope.team.id, $scope.team).then((function(res) {
         console.log("Update team date");
@@ -121,7 +114,6 @@ angular.module('subzapp').controller('TeamController', [
         get_org_and_members();
         return alertify.success("Eligible date updated");
       }), function(errResponse) {
-        usSpinnerService.stop('spinner-1');
         console.log("Update date error ");
         console.log(errResponse);
         return alertify.error("Update failed");
@@ -137,9 +129,8 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.log("Please set the eligible date of this team. Click to dismiss", "", 0);
       }
     });
-    return get_org_and_members = function() {
+    get_org_and_members = function() {
       console.log("org id " + $scope.team.main_org.id);
-      usSpinnerService.spin('spinner-1');
       return COMMS.GET("/org/get-org-team-members/" + $scope.team.main_org.id, $scope.team).then((function(res) {
         console.log("Get org info ");
         console.log(res.data);
@@ -147,15 +138,30 @@ angular.module('subzapp').controller('TeamController', [
         $scope.team_members_array = res.data.team.team_members.map(function(member) {
           return member.id;
         });
-        usSpinnerService.stop('spinner-1');
         return alertify.success("Got players info");
       }), function(errResponse) {
         console.log("Get org info error ");
-        usSpinnerService.stop('spinner-1');
         console.log(errResponse);
         return alertify.error("Couldn't get players info");
       });
     };
+    $scope.new_location = function() {
+      if ('new_location' === $scope.create_event_data.location_id) {
+        $('#add_locations').modal('show');
+        return true;
+      }
+    };
+    return $('#add_locations').on('shown.bs.modal', function() {
+      $scope.show_map = true;
+      $scope.map = {
+        center: {
+          latitude: 51.9181688,
+          longitude: -8.5039876
+        },
+        zoom: 11
+      };
+      return $scope.$apply();
+    });
   }
 ]);
 
