@@ -18,7 +18,7 @@ module.exports = {
       GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
       res.json event_created
     ).catch((err) ->
-      sails.log.debug "Create event error #{ JSON.stringify err }"
+      # sails.log.debug "Create event error #{ JSON.stringify err }"
       res.negotiate err
     )
 

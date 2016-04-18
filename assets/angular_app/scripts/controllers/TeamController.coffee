@@ -75,6 +75,11 @@ angular.module('subzapp').controller('TeamController', [
       $scope.create_event_data.team_id = $scope.team.id
       $scope.create_event_data.user_id = $rootScope.USER.id
       $scope.create_event_data.event_team = $scope.team.id
+      if isNaN( $scope.create_event_data.location_id )
+        console.log "Not a number"
+        alertify.error "You must select a location"
+        return false
+
       console.log $scope.create_event_data
       COMMS.POST(
         "/event"
@@ -201,15 +206,14 @@ angular.module('subzapp').controller('TeamController', [
         zoom: 11
       $scope.$apply()
 
+    $scope.onTimeSet = ( nd, od ) ->
+      $scope.create_event_data.start_date = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.create_event_data.end_date = moment( nd ).add( 2, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
+      
+
 ])
 
 return_team = ( teams, id ) ->
   team = (team for team in teams when team.id is parseInt( id ))
   console.log "Team #{ JSON.stringify team }"
   return team
-
- #  $scope.members = res.data.team.team_members
- # $scope.events = res.data.team.events
- # $scope.files = res.data.bucket_info.Contents
-
-

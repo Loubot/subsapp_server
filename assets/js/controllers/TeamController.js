@@ -57,6 +57,11 @@ angular.module('subzapp').controller('TeamController', [
       $scope.create_event_data.team_id = $scope.team.id;
       $scope.create_event_data.user_id = $rootScope.USER.id;
       $scope.create_event_data.event_team = $scope.team.id;
+      if (isNaN($scope.create_event_data.location_id)) {
+        console.log("Not a number");
+        alertify.error("You must select a location");
+        return false;
+      }
       console.log($scope.create_event_data);
       return COMMS.POST("/event", $scope.create_event_data).then((function(res) {
         alertify.success("Event created");
@@ -151,7 +156,7 @@ angular.module('subzapp').controller('TeamController', [
         return true;
       }
     };
-    return $('#add_locations').on('shown.bs.modal', function() {
+    $('#add_locations').on('shown.bs.modal', function() {
       $scope.show_map = true;
       $scope.map = {
         center: {
@@ -162,6 +167,10 @@ angular.module('subzapp').controller('TeamController', [
       };
       return $scope.$apply();
     });
+    return $scope.onTimeSet = function(nd, od) {
+      $scope.create_event_data.start_date = moment(nd).format('DD-MM-YYYY HH:mm');
+      return $scope.create_event_data.end_date = moment(nd).add(2, 'hours').format('DD-MM-YYYY HH:mm');
+    };
   }
 ]);
 

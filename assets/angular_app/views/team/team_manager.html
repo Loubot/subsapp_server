@@ -39,7 +39,9 @@
               </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-              <datetimepicker data-ng-model="create_event_data.start_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
+              <datetimepicker data-ng-model="create_event_data.start_date" 
+              data-on-set-time="onTimeSet(newDate, oldDate)"
+              data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
             </ul>
           </div>
           
