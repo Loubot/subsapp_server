@@ -19,7 +19,7 @@ module.exports = {
         sails.log.debug "Location find or create err #{ JSON.stringify location_err }"
         return res.negotiate location_err
       else
-        Org.find( id: req.body.org_id ).populate( 'org_locations' ).then( ( org_found ) ->
+        Org.findOne( id: req.body.org_id ).populate( 'org_locations' ).then( ( org_found ) ->
           sails.log.debug "Org found #{ JSON.stringify org_found }"
           res.json org_found
         ).catch( ( org_found_err ) ->

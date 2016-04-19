@@ -276,8 +276,8 @@ angular.module('subzapp').controller('TeamController', [
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"
-        console.log res
-        $scope.locations = res.data.org.org_locations
+        console.log res.data
+        $scope.locations = res.data.org_locations
         # $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "Save address error"

@@ -228,8 +228,8 @@ angular.module('subzapp').controller('TeamController', [
       return COMMS.POST('/location', $scope.map).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
-        console.log(res);
-        return $scope.locations = res.data.org.org_locations;
+        console.log(res.data);
+        return $scope.locations = res.data.org_locations;
       }), function(errResponse) {
         console.log("Save address error");
         console.log(errResponse);
