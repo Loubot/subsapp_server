@@ -57,7 +57,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.org_create = -> # create a new org
       # console.log "create #{JSON.stringify user}"
-      console.log "#{ RESOURCES.DOMAIN }/org"
+      # console.log "#{ RESOURCES.DOMAIN }/org"
       
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log "Form data #{ JSON.stringify $scope.business_form_data }"
@@ -203,6 +203,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         ), 6000
 
     drag_display_info = -> #display instructions for dragging map to update location
+    
       window.clearTimeout timeoutHandler
         # create new timeout to fire sesarch function after 500ms (or whatever you like)
       timeoutHandler = window.setTimeout((->
@@ -234,7 +235,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           longitude: lng
         $scope.map.zoom = zoom    
 
-      console.log $scope.map
+      # console.log $scope.map
       if set_markers
         $scope.map.markers = new Array()
         console.log "setting markers"
@@ -251,18 +252,18 @@ angular.module('subzapp').controller('OrgAdminController', [
             latitude: point.center.lat()
             longitude: point.center.lng()
           set_map( point.center.lat(), point.center.lng(), true, $scope.map.zoom )
-          console.log $scope.map.center
+          # console.log $scope.map.center
           drag_display_info()
       console.log "center #{ JSON.stringify $scope.map.center }"
 
     $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
-      console.log "Address #{ address }"
+      # console.log "Address #{ address }"
       geocoder.geocode( address: address, ( results, status ) ->
         $scope.map.markers = []
-        console.log "results "
+        # console.log "results "
         console.log results
-        console.log "Status #{ JSON.stringify status }"
+        # console.log "Status #{ JSON.stringify status }"
 
         set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
         
@@ -274,7 +275,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.save_address = -> # event triggered when user clicks save address button. 
       if $scope.org.org_locations.length > 0
         $scope.map.id = $scope.org.org_locations[0].id
-      console.log $scope.map.center
+      # console.log $scope.map.center
       $scope.map.user_id = $rootScope.USER.id
       $scope.map.org_id = $scope.org.id
       COMMS.POST( 

@@ -40,7 +40,6 @@ angular.module('subzapp').controller('OrgAdminController', [
       return $state.go('team_manager');
     };
     $scope.org_create = function() {
-      console.log(RESOURCES.DOMAIN + "/org");
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log("Form data " + (JSON.stringify($scope.business_form_data)));
       return COMMS.POST('/org', $scope.business_form_data).then((function(response) {
@@ -195,7 +194,6 @@ angular.module('subzapp').controller('OrgAdminController', [
         };
         $scope.map.zoom = zoom;
       }
-      console.log($scope.map);
       if (set_markers) {
         $scope.map.markers = new Array();
         console.log("setting markers");
@@ -215,7 +213,6 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: point.center.lng()
           };
           set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
-          console.log($scope.map.center);
           return drag_display_info();
         }
       };
@@ -224,14 +221,11 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.find_address = function(address) {
       var geocoder;
       geocoder = new google.maps.Geocoder();
-      console.log("Address " + address);
       return geocoder.geocode({
         address: address
       }, function(results, status) {
         $scope.map.markers = [];
-        console.log("results ");
         console.log(results);
-        console.log("Status " + (JSON.stringify(status)));
         set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
         return $scope.$apply();
       });
@@ -240,7 +234,6 @@ angular.module('subzapp').controller('OrgAdminController', [
       if ($scope.org.org_locations.length > 0) {
         $scope.map.id = $scope.org.org_locations[0].id;
       }
-      console.log($scope.map.center);
       $scope.map.user_id = $rootScope.USER.id;
       $scope.map.org_id = $scope.org.id;
       return COMMS.POST('/location', $scope.map).then((function(res) {
