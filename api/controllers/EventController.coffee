@@ -11,6 +11,8 @@ module.exports = {
     sails.log.debug "Hit the events controller/create_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     req.body.price = parseInt( req.body.price )
+    req.body.start_date =  DateService.create_timestamp( req.body.start_date )
+    req.body.end_date = DateService.create_timestamp( req.body.end_date )
     Event.create( 
       req.body      
     ).then( ( event_created ) ->
@@ -18,7 +20,7 @@ module.exports = {
       GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
       res.json event_created
     ).catch((err) ->
-      # sails.log.debug "Create event error #{ JSON.stringify err }"
+      sails.log.debug "Create event error #{ JSON.stringify err }"
       res.negotiate err
     )
 
