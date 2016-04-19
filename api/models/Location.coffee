@@ -76,6 +76,9 @@ module.exports =
     sails.log.debug "LOcation create values #{ JSON.stringify values }"
 
     geocoder.geocode( values.address ).then( ( geocode_results ) ->
+      if geocode_results.length == 0
+        return cb( "No results returned " )
+         
       sails.log.debug "Org create geocoder results #{ JSON.stringify geocode_results }"
       values.lat = geocode_results[0].latitude
       values.lng = geocode_results[0].longitude
@@ -84,16 +87,5 @@ module.exports =
       sails.log.debug "Org create geocode_results_err #{ JSON.stringify geocode_results_err }"
       cb( geocode_results_err )
     )
-
-      
-  # beforeUpdate: (values, next) ->
-  #   CipherService.hashPassword values
-  #   next()
-  #   return
-  # beforeCreate: (values, next) ->
-  #   CipherService.hashPassword values
-  #   next()
-  #   return
-
 
 # ---

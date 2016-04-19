@@ -179,15 +179,25 @@ angular.module('subzapp').controller('OrgAdminController', [
       if (zoom == null) {
         zoom = 11;
       }
-      $scope.map = {
-        center: {
+      if (!$scope.map) {
+        $scope.map = {
+          center: {
+            latitude: lat,
+            longitude: lng
+          },
+          zoom: zoom,
+          markers: []
+        };
+      } else {
+        $scope.map.center = {
           latitude: lat,
           longitude: lng
-        },
-        zoom: zoom,
-        markers: []
-      };
+        };
+        $scope.map.zoom = zoom;
+      }
+      console.log($scope.map);
       if (set_markers) {
+        $scope.map.markers = new Array();
         console.log("setting markers");
         marker = {
           idKey: Date.now(),
@@ -204,7 +214,7 @@ angular.module('subzapp').controller('OrgAdminController', [
             latitude: point.center.lat(),
             longitude: point.center.lng()
           };
-          set_map(point.center.lat(), point.center.lng(), true, zoom);
+          set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
           console.log($scope.map.center);
           return drag_display_info();
         }
@@ -237,7 +247,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       }), function(errResponse) {
         console.log("Save address error");
         console.log(errResponse);
-        return alertify.error(errResponse.data);
+        return alertify.error("Failed to save location");
       });
     };
     uiGmapGoogleMapApi.then(function(maps) {});

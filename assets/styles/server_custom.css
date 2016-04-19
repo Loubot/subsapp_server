@@ -11,6 +11,14 @@ body{
   margin-bottom: 100px;
 }
 
+.no_padding{
+  padding: 0px !important;
+}
+
+.no_margin{
+  margin: 0px !important;
+}
+
 .make_space{
   height: 15px !important;
   width: 100% !important;
@@ -37,8 +45,7 @@ body{
   padding:15px 15px 15px 15px;
 }
 
-.main{
-  margin: -10px;
+.main{  
   height: 100%;
 }
 
@@ -166,7 +173,7 @@ body{
   -webkit-border-radius: 10px;  
 }
 
-.register_form{
+.location_form{
   margin: 0 150px;
   border: solid #b8b8b8;
   padding: 7px;

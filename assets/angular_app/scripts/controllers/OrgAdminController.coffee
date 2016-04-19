@@ -218,15 +218,25 @@ angular.module('subzapp').controller('OrgAdminController', [
     set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
 
       if !( zoom )?
-        zoom = 11 
-      $scope.map = 
-        center:
+        zoom = 11
+
+      if !( $scope.map ) #define a new map        
+        $scope.map = 
+          center:
+            latitude: lat
+            longitude: lng
+          zoom: zoom
+          markers: []
+
+      else
+        $scope.map.center = 
           latitude: lat
           longitude: lng
-        zoom: zoom
-        markers: []
+        $scope.map.zoom = zoom    
 
+      console.log $scope.map
       if set_markers
+        $scope.map.markers = new Array()
         console.log "setting markers"
         marker =
           idKey: Date.now()
@@ -240,7 +250,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.map.center = 
             latitude: point.center.lat()
             longitude: point.center.lng()
-          set_map( point.center.lat(), point.center.lng(), true, zoom )
+          set_map( point.center.lat(), point.center.lng(), true, $scope.map.zoom )
           console.log $scope.map.center
           drag_display_info()
       console.log "center #{ JSON.stringify $scope.map.center }"
@@ -275,7 +285,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       ), ( errResponse ) ->
         console.log "Save address error"
         console.log errResponse
-        alertify.error errResponse.data
+        alertify.error "Failed to save location"
 
      ###################### BEGIN MAPS ################################
     uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded

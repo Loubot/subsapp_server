@@ -20,7 +20,7 @@ angular.module('subzapp', [
 
 angular.module('subzapp').config (uiGmapGoogleMapApiProvider) ->
   uiGmapGoogleMapApiProvider.configure
-    # key: 'AIzaSyCwEGjP02TnzKzlAHNeLD8M_7cMw0fPATM'
+    key: 'AIzaSyCwEGjP02TnzKzlAHNeLD8M_7cMw0fPATM'
     v: '3.23'
     libraries: 'weather,geometry,visualization,places'
   
@@ -71,7 +71,7 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       controller : 'OrgAdminController'
 
     $stateProvider.state "org_admin_team",
-      url: '/org_admin_team'
+      url: '/org-admin-team'
       templateUrl : "angular_app/views/org/org_admin_team.html"
       controller : 'OrgAdminTeamController'
 
