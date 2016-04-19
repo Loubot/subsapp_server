@@ -57,11 +57,17 @@ module.exports =
     if !values
       values = if criteria.where then criteria.where else criteria
     @findOne criteria, (err, result) ->
+      sails.log.debug "Criteria #{ JSON.stringify criteria }"
+      sails.log.debug "Found result #{ JSON.stringify result }"
       if err
+        sails.log.debug "Location find or create err"
         return cb(err, false)
       if result
+        sails.log.debug "Location find or create found one"
+        delete values.id
         self.update criteria, values, cb
       else
+        sails.log.debug "Location find or create new one"
         self.create values, cb
       return
     return

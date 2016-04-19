@@ -15,10 +15,8 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       return $scope.orgs = $rootScope.USER.orgs;
     }));
     console.log($location.search().id);
-    COMMS.GET({
-      params: {
-        team_id: $location.search().id
-      }
+    COMMS.GET("org/" + tbd, {
+      team_id: $location.search().id
     }).then((function(res) {
       console.log("Get team result");
       console.log(res);

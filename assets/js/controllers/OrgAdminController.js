@@ -237,6 +237,9 @@ angular.module('subzapp').controller('OrgAdminController', [
       });
     };
     $scope.save_address = function() {
+      if ($scope.org.org_locations.length > 0) {
+        $scope.map.id = $scope.org.org_locations[0].id;
+      }
       console.log($scope.map.center);
       $scope.map.user_id = $rootScope.USER.id;
       $scope.map.org_id = $scope.org.id;
@@ -253,6 +256,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     uiGmapGoogleMapApi.then(function(maps) {});
     return $scope.$watch('org', function(old_org, new_org) {
       if (($scope.org != null) && $scope.org.org_locations.length > 0) {
+        $scope.map.address = $scope.org.org_locations[0].address;
         return set_map($scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true);
       } else {
         set_map(51.9181688, -8.5039876, true);

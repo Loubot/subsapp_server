@@ -272,6 +272,8 @@ angular.module('subzapp').controller('OrgAdminController', [
       )
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
+      if $scope.org.org_locations.length > 0
+        $scope.map.id = $scope.org.org_locations[0].id
       console.log $scope.map.center
       $scope.map.user_id = $rootScope.USER.id
       $scope.map.org_id = $scope.org.id
@@ -294,6 +296,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
       if $scope.org? and $scope.org.org_locations.length > 0
+        $scope.map.address = $scope.org.org_locations[0].address
         set_map( $scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true )       
   
       else        
