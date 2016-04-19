@@ -199,18 +199,27 @@ angular.module('subzapp').controller('TeamController', [
     ###########################################
 
     set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
-
       if !( zoom )?
-        zoom = 11 
-      $scope.map = 
-        center:
+        zoom = 11
+
+      if !( $scope.map ) #define a new map        
+        $scope.map = 
+          center:
+            latitude: lat
+            longitude: lng
+          zoom: zoom
+          markers: []
+
+      else
+        $scope.map.center = 
           latitude: lat
           longitude: lng
-        zoom: zoom
-        markers: []
+        $scope.map.zoom = zoom    
+
       console.log $scope.map
 
       if set_markers
+        $scope.map.markers = new Array()
         console.log "setting markers"
         marker =
           idKey: Date.now()
@@ -218,6 +227,7 @@ angular.module('subzapp').controller('TeamController', [
             latitude: lat
             longitude: lng
         $scope.map.markers.push( marker )
+        $scope.$apply()
 
       $scope.map.events = # map events. see google maps api for more info
         dragend: ( point ) ->  # event fired after map drag
@@ -225,25 +235,24 @@ angular.module('subzapp').controller('TeamController', [
           $scope.map.center = 
             latitude: point.center.lat()
             longitude: point.center.lng()
-          set_map( point.center.lat(), point.center.lng(), true, zoom )
+          set_map( point.center.lat(), point.center.lng(), true, $scope.map.zoom )
 
-          console.log $scope.map.center
-          drag_display_info()
+          # console.log point
+          
       console.log "center #{ JSON.stringify $scope.map.center }"
 
-    $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
+    $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
-      console.log "Address #{ address }"
-      geocoder.geocode( address: address, ( results, status ) ->
+      console.log "Address #{ $scope.map.address }"
+      geocoder.geocode( address: $scope.map.address, ( results, status ) ->
         $scope.map.markers = []
-        console.log "results "
+        # console.log "results "
         console.log results
-        console.log "Status #{ JSON.stringify status }"
+        # console.log "Status #{ JSON.stringify status }"
 
         set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
         
         
-        $scope.$apply() # update scope
           
       )
 
@@ -258,7 +267,8 @@ angular.module('subzapp').controller('TeamController', [
       $scope.$apply()
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
-      console.log $scope.map.center
+      console.log "Save address"
+      console.log $scope.map
       $scope.map.user_id = $rootScope.USER.id
       $scope.map.org_id = $scope.org.id
       COMMS.POST( 

@@ -155,16 +155,25 @@ angular.module('subzapp').controller('TeamController', [
       if (zoom == null) {
         zoom = 11;
       }
-      $scope.map = {
-        center: {
+      if (!$scope.map) {
+        $scope.map = {
+          center: {
+            latitude: lat,
+            longitude: lng
+          },
+          zoom: zoom,
+          markers: []
+        };
+      } else {
+        $scope.map.center = {
           latitude: lat,
           longitude: lng
-        },
-        zoom: zoom,
-        markers: []
-      };
+        };
+        $scope.map.zoom = zoom;
+      }
       console.log($scope.map);
       if (set_markers) {
+        $scope.map.markers = new Array();
         console.log("setting markers");
         marker = {
           idKey: Date.now(),
@@ -174,6 +183,7 @@ angular.module('subzapp').controller('TeamController', [
           }
         };
         $scope.map.markers.push(marker);
+        $scope.$apply();
       }
       $scope.map.events = {
         dragend: function(point) {
@@ -182,26 +192,21 @@ angular.module('subzapp').controller('TeamController', [
             latitude: point.center.lat(),
             longitude: point.center.lng()
           };
-          set_map(point.center.lat(), point.center.lng(), true, zoom);
-          console.log($scope.map.center);
-          return drag_display_info();
+          return set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
         }
       };
       return console.log("center " + (JSON.stringify($scope.map.center)));
     };
-    $scope.find_address = function(address) {
+    $scope.find_address = function() {
       var geocoder;
       geocoder = new google.maps.Geocoder();
-      console.log("Address " + address);
+      console.log("Address " + $scope.map.address);
       return geocoder.geocode({
-        address: address
+        address: $scope.map.address
       }, function(results, status) {
         $scope.map.markers = [];
-        console.log("results ");
         console.log(results);
-        console.log("Status " + (JSON.stringify(status)));
-        set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
-        return $scope.$apply();
+        return set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
       });
     };
     $scope.new_location = function() {
@@ -216,7 +221,8 @@ angular.module('subzapp').controller('TeamController', [
       return $scope.$apply();
     });
     $scope.save_address = function() {
-      console.log($scope.map.center);
+      console.log("Save address");
+      console.log($scope.map);
       $scope.map.user_id = $rootScope.USER.id;
       $scope.map.org_id = $scope.org.id;
       return COMMS.POST('/location', $scope.map).then((function(res) {
