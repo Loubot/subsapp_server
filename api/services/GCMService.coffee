@@ -34,7 +34,7 @@ module.exports = {
 
       message.addNotification
         #title: event_created
-        title: event_created.name
+        title: "New event: " + event_created.name
         body: event_created.details
         icon: 'app_icon'
         
