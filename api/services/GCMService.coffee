@@ -33,9 +33,16 @@ module.exports = {
           send_array.push token.gcm_token
 
       message.addNotification
-        title: event_created
+        #title: event_created
+        title: event_created.name
         body: event_created.details
-        icon: 'ic_launcher'
+        icon: 'app_icon'
+        
+      message.addData
+        eventName: event_created.name
+        eventDetails: event_created.details
+        eventStart: event_created.start_date
+        eventEnd: event_created.end_date
 
       sender.send message, { registrationTokens: send_array }, (err, response) ->
         if err?
