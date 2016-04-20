@@ -16,9 +16,9 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       if !user.club_admin
         $state.go 'login' 
         alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
-        
 
-    
+    team_id = window.localStorage.getItem 'team_id'
+
     user.get_user().then ( (res) ->
       check_club_admin(res.data)
       # console.log "Got user #{ JSON.stringify res }"
@@ -26,11 +26,11 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       $scope.orgs = $rootScope.USER.orgs
       
     )
-    console.log $location.search().id
 # "https://ie-mg42.mail.yahoo.com/neo/launch?.rand=3kv9scfolg9ma#"
     COMMS.GET(
-      "org/#{ tbd }"
-        team_id: $location.search().id
+
+      '/get-team', team_id: team_id
+
     ).then ( ( res ) ->
       console.log "Get team result"
       console.log res
@@ -45,12 +45,14 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       COMMS.POST(
         '/invite-manager'
         { org_id: $scope.org.id
+
         team_id: $location.search().id
         club_admin: $scope.user.id
         club_admin_email: $scope.user.email
         invited_email: $scope.invite_manager_data.invited_email
         main_org_name: $scope.org.name
         team_name: $scope.team.name }
+
       ).then ( ( response ) ->
         console.log "Send invite mail"
         console.log response

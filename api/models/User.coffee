@@ -68,9 +68,9 @@ module.exports =
       defaultsTo: false
 
 
-    orgs:
+    org:
       collection: 'org'
-      via: 'admins'
+      via: 'user_id'
 
     teams:
       collection: 'team'

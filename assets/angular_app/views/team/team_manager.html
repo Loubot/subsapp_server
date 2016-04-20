@@ -97,6 +97,7 @@
       </div> <!-- end of form-group text-center -->
     </form>
 
+
     
     
     
@@ -105,7 +106,16 @@
   </div> <!-- end of col-xs-12 --> 
   
 
+
 </div> <!-- end of container-fluid -->
+
+<form action="#/org-admin-team" ng-if="user.club_admin">
+  <div class="form-group text-center">
+    <button  class="btn btn-warning btn-lg">Invite manager for this team</button
+      >
+  </div>
+</form> <!-- end of container-fluid -->
+
 
 
 <!-- Button trigger modal -->
@@ -113,7 +123,9 @@
   <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#select_player_modal">
     Manage players
   </button>
-</div>
+
+</div> <!-- end of container-fluid -->
+
 
 <!-- Modal -->
 <div class="modal fade black_text" id="select_player_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

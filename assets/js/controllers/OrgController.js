@@ -11,10 +11,7 @@ angular.module('subzapp').controller('OrgController', [
       })["catch"](function(err) {
         console.log("Got orgs error");
         console.log(err);
-        if (err.status === 401) {
-          alertify.error("You are not authorised to view this page");
-          return $state.go('login');
-        }
+        return $state.go('login');
       });
     };
     console.log('Org Controller');

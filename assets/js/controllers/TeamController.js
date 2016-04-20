@@ -34,6 +34,7 @@ angular.module('subzapp').controller('TeamController', [
     if (!($rootScope.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = $rootScope.USER;
+        $scope.org = $rootScope.USER.org[0];
         $scope.teams = $rootScope.USER.teams;
         return_team($rootScope.USER.teams, $location.search().id);
         $scope.show_upload = $rootScope.USER.club_admin;
@@ -46,7 +47,7 @@ angular.module('subzapp').controller('TeamController', [
     } else {
       console.log("USER already defined");
       $scope.user = $rootScope.USER;
-      $scope.org = $rootScope.USER.orgs[0];
+      $scope.org = $rootScope.USER.org[0];
       $scope.teams = $rootScope.USER.teams;
       $scope.user = $rootScope.USER;
       if ($rootScope.USER.club_admin) {

@@ -29,14 +29,14 @@ angular.module('subzapp').controller('OrgAdminController', [
       # console.log "org id #{ JSON.stringify $scope.org }"
       $scope.user = $rootScope.USER
       $scope.orgs = $rootScope.USER.orgs
-      $scope.show_team_admin = ( $rootScope.USER.orgs.length == 0 )
+      $scope.show_team_admin = ( $rootScope.USER.org.length == 0 )
       $scope.show_map = true #display map
 
 
-      if $rootScope.USER.orgs.length > 0  # if org is defined fetch org info with teams info and s3 info
-        usSpinnerService.spin('spinner-1')
+      if $rootScope.USER.org.length > 0  # if org is defined fetch org info with teams info and s3 info
+        
         COMMS.GET(
-          "/org/#{ $rootScope.USER.orgs[0].id }"
+          "/org/#{ $rootScope.USER.org[0].id }"
         ).then ( ( org_and_teams ) ->
           usSpinnerService.stop('spinner-1')
           console.log "Get org and teams"
@@ -45,7 +45,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.files = org_and_teams.data.s3_object.Contents
           $scope.org = org_and_teams.data.org
         ), ( errResponse ) ->
-          usSpinnerService.stop('spinner-1')
+          
           console.log "Get teams failed"
           console.log  errResponse
           alertify.error 'Failed to fetch teams'
@@ -57,7 +57,8 @@ angular.module('subzapp').controller('OrgAdminController', [
 
     $scope.org_create = -> # create a new org
       # console.log "create #{JSON.stringify user}"
-      # console.log "#{ RESOURCES.DOMAIN }/org"
+
+      $scope.business_form_data.user_id = $rootScope.USER.id
       
       $scope.business_form_data.user_id = window.localStorage.getItem 'user_id'
       console.log "Form data #{ JSON.stringify $scope.business_form_data }"

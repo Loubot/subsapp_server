@@ -165,8 +165,9 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope,
     
 angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScope, $q, usSpinnerService ) ->
   console.log "comms service"
-  user_token = window.localStorage.getItem 'user_token'
+  
   POST: ( url, data ) ->
+    user_token = window.localStorage.getItem 'user_token'
     usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
       $http(
@@ -189,6 +190,7 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
         
 
   GET: ( url, data ) ->
+    user_token = window.localStorage.getItem 'user_token'
     usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
       $http(
@@ -208,6 +210,7 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
       )
 
   DELETE: ( url, data ) ->
+    user_token = window.localStorage.getItem 'user_token'
     usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
       $http(
