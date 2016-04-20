@@ -84,6 +84,11 @@ module.exports.routes =
   'get /parent/kids-with-parents':
         controller:             'ParentController'
         action:                 'kids_with_parents'
+  
+  'get /parent/token_payments/:id':
+        controller:             'ParentController'
+        action:                 'token_payments'
+  
   # End of Parent controller
 
   # ORG controller
