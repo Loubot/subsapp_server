@@ -30,13 +30,13 @@ module.exports = {
           res.negotiate err
         else
           sails.log.debug "parents_with_events parentData #{ JSON.stringify parentData }"
-          User.query("select count(*)
+          User.query("select count(*) as actionsRequired
             from user a 
-	          inner join user b on a.email = b.parent_email
+            inner join user b on a.email = b.parent_email
             right join event_event_user__user_user_events e on b.id = e.user_user_events
-	          right join event f on e.event_event_user = f.id
-	          left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
-	          where g.paid is null and f.start_date > date_sub(now(),interval 6 hour) and a.id=#{ req.param('id') };", ( err, unactionedEventCount ) ->
+            right join event f on e.event_event_user = f.id
+            left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
+            where g.paid is null and f.start_date > date_sub(now(),interval 6 hour) and a.id=#{ req.param('id') };", ( err, unactionedEventCount ) ->
               if err?
                 sails.log.debug "parents_with_events unactionedEventCount err #{ err }"
                 res.negotiate err
