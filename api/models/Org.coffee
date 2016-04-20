@@ -30,9 +30,10 @@ module.exports =
     #   type: 'float'
     #   defaultsTo: null
 
-    admins: 
-      collection: 'user'
-      via: 'orgs'
+    user_id: 
+      model: 'user'
+      unique: true
+      required: true
 
     teams:
       collection: 'team'

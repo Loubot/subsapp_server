@@ -33,7 +33,7 @@ module.exports = {
     Org.findOne( id: req.param('id') )
     .populate('teams')
     .populate('org_members')
-    .populate('admins')
+    .populate('user_id')
     .populate('org_locations').then( ( org ) ->
       sails.log.debug "Org findOne " 
       return  [
@@ -50,17 +50,17 @@ module.exports = {
     )
     
   create: (req, res) ->
-    sails.log.debug "Hit the business controller/create_business &&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    sails.log.debug "Hit the org controller/create &&&&&&&&&&&&&&&&&&&&&&&&&&&"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     sails.log.debug "Data #{ JSON.stringify req.user }"
     
     org_data = req.body
     Org.create( org_data ).then( ( org ) ->
       sails.log.debug "Create response #{ JSON.stringify org }" 
-      org.admins.add( org_data.user_id )
+      
 
       return [
-        org.save()
+        
         
         Org.findOne( id: org.id ).populate('org_locations')
         Location.create( 
@@ -69,11 +69,10 @@ module.exports = {
           location_name: "Main address of #{ org.name }"
         )
       ]        
-    ).spread( ( org_saved, org_found, location ) ->
-      sails.log.debug "Org saved #{ JSON.stringify org_saved }"
+    ).spread( ( org_found, location ) ->
       sails.log.debug "Org found #{ JSON.stringify org_found }"
       sails.log.debug "Location created #{ JSON.stringify location }"
-      location.org_id.add( org_saved.id )
+      location.org_id.add( org_found.id )
       location.save( ( location_save_err, location_saved ) ->
         if location_save_err?
           sails.log.debug "Location saved error #{ JSON.stringify location_save_err }"
@@ -171,7 +170,7 @@ module.exports = {
   get_org_admins: (req, res) ->
     sails.log.debug "Hit the Org controller/get_org_admins"
     sails.log.debug req.query
-    Org.findOne( id: req.param('id') ).populate('admins').populate('teams').then( ( org ) ->
+    Org.findOne( id: req.param('id') ).populate('user_id').populate('teams').then( ( org ) ->
       sails.log.debug "get org admins #{ JSON.stringify org }"
       res.json org #return only admins
     ).catch( ( err ) ->

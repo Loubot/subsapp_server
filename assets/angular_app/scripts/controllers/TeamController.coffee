@@ -18,7 +18,6 @@ angular.module('subzapp').controller('TeamController', [
     $scope.location = null
 
     get_team_info = ->
-      usSpinnerService.spin('spinner-1')
       if $rootScope.USER.club_admin
         COMMS.GET(
           "/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"          
@@ -32,7 +31,6 @@ angular.module('subzapp').controller('TeamController', [
           $scope.locations = res.data.org.org_locations
           
         ), ( errResponse ) ->
-          usSpinnerService.stop('spinner-1')
           console.log "get_team_info error"
           console.log errResponse
       else
@@ -45,7 +43,6 @@ angular.module('subzapp').controller('TeamController', [
           $scope.team = res.data
            
         ), ( errResponse ) ->
-          usSpinnerService.stop('spinner-1')
           console.log "Get team info error #{ JSON.stringify errResponse }"
           $state.go 'login'
 
@@ -54,7 +51,7 @@ angular.module('subzapp').controller('TeamController', [
         # console.log "User set to #{ JSON.stringify res }"
         # console.log "TeamController teams #{ JSON.stringify window.USER }"
         $scope.user = $rootScope.USER
-        $scope.org = $rootScope.USER.orgs[0]
+        $scope.org = $rootScope.USER.org[0]
         $scope.teams = $rootScope.USER.teams
         return_team( $rootScope.USER.teams, $location.search().id )
         $scope.show_upload = $rootScope.USER.club_admin
@@ -65,7 +62,7 @@ angular.module('subzapp').controller('TeamController', [
     else
       console.log "USER already defined"
       $scope.user = $rootScope.USER
-      $scope.org = $rootScope.USER.orgs[0]
+      $scope.org = $rootScope.USER.org[0]
       $scope.teams = $rootScope.USER.teams
       $scope.user = $rootScope.USER
       get_team_info() if $rootScope.USER.club_admin

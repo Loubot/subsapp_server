@@ -71,7 +71,7 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       controller : 'OrgAdminController'
 
     $stateProvider.state "org_admin_team",
-      url: '/org_admin_team'
+      url: '/org-admin-team'
       templateUrl : "angular_app/views/org/org_admin_team.html"
       controller : 'OrgAdminTeamController'
 

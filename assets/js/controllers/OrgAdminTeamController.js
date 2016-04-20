@@ -1,7 +1,7 @@
 'use strict';
 angular.module('subzapp').controller('OrgAdminTeamController', [
-  '$scope', '$state', '$http', '$window', 'user', '$location', 'RESOURCES', 'alertify', function($scope, $state, $http, $window, user, $location, RESOURCES, alertify) {
-    var check_club_admin, user_token;
+  '$scope', '$rootScope', '$state', '$http', '$window', 'user', 'RESOURCES', 'alertify', 'COMMS', function($scope, $rootScope, $state, $http, $window, user, RESOURCES, alertify, COMMS) {
+    var check_club_admin, team_id;
     console.log('OrgAdminTeam Controller');
     check_club_admin = function(user) {
       if (!user.club_admin) {
@@ -9,23 +9,14 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
         return alertify.error('You are not a club admin. Contact subzapp admin team for assitance');
       }
     };
-    user_token = window.localStorage.getItem('user_token');
+    team_id = window.localStorage.getItem('team_id');
     user.get_user().then((function(res) {
       check_club_admin(res.data);
-      $scope.user = res.data;
-      return $scope.orgs = window.USER.orgs;
+      $scope.user = $rootScope.USER;
+      return $scope.orgs = $rootScope.USER.orgs;
     }));
-    console.log($location.search().id);
-    $http({
-      method: 'GET',
-      url: RESOURCES.DOMAIN + "/get-team",
-      headers: {
-        'Authorization': "JWT " + user_token,
-        "Content-Type": "application/json"
-      },
-      params: {
-        team_id: $location.search().id
-      }
+    COMMS.GET('/get-team', {
+      team_id: team_id
     }).then((function(res) {
       console.log("Get team result");
       console.log(res);
@@ -37,22 +28,14 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
     });
     return $scope.invite_manager = function() {
       console.log($scope.invite_manager_data);
-      return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/invite-manager",
-        headers: {
-          'Authorization': "JWT " + user_token,
-          "Content-Type": "application/json"
-        },
-        data: {
-          org_id: $scope.org.id,
-          team_id: $location.search().id,
-          club_admin: $scope.user.id,
-          club_admin_email: $scope.user.email,
-          invited_email: $scope.invite_manager_data.invited_email,
-          main_org_name: $scope.org.name,
-          team_name: $scope.team.name
-        }
+      return COMMS.POST('/invite-manager', {
+        org_id: $scope.org.id,
+        team_id: $location.search().id,
+        club_admin: $scope.user.id,
+        club_admin_email: $scope.user.email,
+        invited_email: $scope.invite_manager_data.invited_email,
+        main_org_name: $scope.org.name,
+        team_name: $scope.team.name
       }).then((function(response) {
         console.log("Send invite mail");
         console.log(response);

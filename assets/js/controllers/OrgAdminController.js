@@ -16,10 +16,10 @@ angular.module('subzapp').controller('OrgAdminController', [
       check_club_admin($rootScope.USER);
       $scope.user = $rootScope.USER;
       $scope.orgs = $rootScope.USER.orgs;
-      $scope.show_team_admin = $rootScope.USER.orgs.length === 0;
+      $scope.show_team_admin = $rootScope.USER.org.length === 0;
       $scope.show_map = true;
-      if ($rootScope.USER.orgs.length > 0) {
-        return COMMS.GET("/org/" + $rootScope.USER.orgs[0].id).then((function(org_and_teams) {
+      if ($rootScope.USER.org.length > 0) {
+        return COMMS.GET("/org/" + $rootScope.USER.org[0].id).then((function(org_and_teams) {
           usSpinnerService.stop('spinner-1');
           console.log("Get org and teams");
           console.log(org_and_teams);
@@ -39,6 +39,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     };
     $scope.org_create = function() {
       console.log(RESOURCES.DOMAIN + "/org");
+      $scope.business_form_data.user_id = $rootScope.USER.id;
       $scope.business_form_data.user_id = window.localStorage.getItem('user_id');
       console.log("Form data " + (JSON.stringify($scope.business_form_data)));
       return COMMS.POST('/org', $scope.business_form_data).then((function(response) {

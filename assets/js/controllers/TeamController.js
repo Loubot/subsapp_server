@@ -8,7 +8,6 @@ angular.module('subzapp').controller('TeamController', [
     user_token = window.localStorage.getItem('user_token');
     $scope.location = null;
     get_team_info = function() {
-      usSpinnerService.spin('spinner-1');
       if ($rootScope.USER.club_admin) {
         return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
           usSpinnerService.stop('spinner-1');
@@ -18,7 +17,6 @@ angular.module('subzapp').controller('TeamController', [
           $scope.org_members = res.data.org.org_members;
           return $scope.locations = res.data.org.org_locations;
         }), function(errResponse) {
-          usSpinnerService.stop('spinner-1');
           console.log("get_team_info error");
           return console.log(errResponse);
         });
@@ -29,7 +27,6 @@ angular.module('subzapp').controller('TeamController', [
           console.log(res.data);
           return $scope.team = res.data;
         }), function(errResponse) {
-          usSpinnerService.stop('spinner-1');
           console.log("Get team info error " + (JSON.stringify(errResponse)));
           return $state.go('login');
         });
@@ -38,7 +35,7 @@ angular.module('subzapp').controller('TeamController', [
     if (!($rootScope.USER != null)) {
       user.get_user().then((function(res) {
         $scope.user = $rootScope.USER;
-        $scope.org = $rootScope.USER.orgs[0];
+        $scope.org = $rootScope.USER.org[0];
         $scope.teams = $rootScope.USER.teams;
         return_team($rootScope.USER.teams, $location.search().id);
         $scope.show_upload = $rootScope.USER.club_admin;
@@ -51,7 +48,7 @@ angular.module('subzapp').controller('TeamController', [
     } else {
       console.log("USER already defined");
       $scope.user = $rootScope.USER;
-      $scope.org = $rootScope.USER.orgs[0];
+      $scope.org = $rootScope.USER.org[0];
       $scope.teams = $rootScope.USER.teams;
       $scope.user = $rootScope.USER;
       if ($rootScope.USER.club_admin) {

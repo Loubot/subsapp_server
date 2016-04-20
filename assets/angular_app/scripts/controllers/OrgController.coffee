@@ -22,9 +22,7 @@ angular.module('subzapp').controller('OrgController', [
       ).catch( ( err ) ->
         console.log "Got orgs error"
         console.log err
-        if err.status == 401
-          alertify.error "You are not authorised to view this page"
-          $state.go 'login'
+        $state.go 'login'
       )
         
 
