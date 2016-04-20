@@ -16,9 +16,9 @@ angular.module('subzapp').controller('RegisterController', [
       }).then((function(response) {
         console.log("Registration successfull");
         console.log(response);
-        window.localStorage.setItem('user_token', response.data.data.token);
+        window.localStorage.setItem('user_token', response.data.token);
         console.log("user_token " + window.localStorage.getItem('user_token'));
-        window.localStorage.setItem('user_id', response.data.data.user.id);
+        window.localStorage.setItem('user_id', response.data.user.id);
         alertify.success('Welcome');
         return $state.go('org_admin');
       }), function(errResponse) {
