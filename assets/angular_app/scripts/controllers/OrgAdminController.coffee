@@ -34,7 +34,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
 
       if $rootScope.USER.orgs.length > 0  # if org is defined fetch org info with teams info and s3 info
-        usSpinnerService.spin('spinner-1')
+        
         COMMS.GET(
           "/org/#{ $rootScope.USER.orgs[0].id }"
         ).then ( ( org_and_teams ) ->
@@ -45,7 +45,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.files = org_and_teams.data.s3_object.Contents
           $scope.org = org_and_teams.data.org
         ), ( errResponse ) ->
-          usSpinnerService.stop('spinner-1')
+          
           console.log "Get teams failed"
           console.log  errResponse
           alertify.error 'Failed to fetch teams'

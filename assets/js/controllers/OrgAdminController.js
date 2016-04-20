@@ -19,7 +19,6 @@ angular.module('subzapp').controller('OrgAdminController', [
       $scope.show_team_admin = $rootScope.USER.orgs.length === 0;
       $scope.show_map = true;
       if ($rootScope.USER.orgs.length > 0) {
-        usSpinnerService.spin('spinner-1');
         return COMMS.GET("/org/" + $rootScope.USER.orgs[0].id).then((function(org_and_teams) {
           usSpinnerService.stop('spinner-1');
           console.log("Get org and teams");
@@ -28,7 +27,6 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.files = org_and_teams.data.s3_object.Contents;
           return $scope.org = org_and_teams.data.org;
         }), function(errResponse) {
-          usSpinnerService.stop('spinner-1');
           console.log("Get teams failed");
           console.log(errResponse);
           return alertify.error('Failed to fetch teams');

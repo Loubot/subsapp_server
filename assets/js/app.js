@@ -136,11 +136,11 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES, $ro
 });
 
 angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $rootScope, $q, usSpinnerService) {
-  var user_token;
   console.log("comms service");
-  user_token = window.localStorage.getItem('user_token');
   return {
     POST: function(url, data) {
+      var user_token;
+      user_token = window.localStorage.getItem('user_token');
       usSpinnerService.spin('spinner-1');
       return $q(function(resolve, reject) {
         return $http({
@@ -164,6 +164,8 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
       });
     },
     GET: function(url, data) {
+      var user_token;
+      user_token = window.localStorage.getItem('user_token');
       usSpinnerService.spin('spinner-1');
       return $q(function(resolve, reject) {
         return $http({
@@ -184,6 +186,8 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
       });
     },
     DELETE: function(url, data) {
+      var user_token;
+      user_token = window.localStorage.getItem('user_token');
       usSpinnerService.spin('spinner-1');
       return $q(function(resolve, reject) {
         return $http({
