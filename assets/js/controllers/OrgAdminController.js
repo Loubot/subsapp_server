@@ -46,7 +46,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data.user.orgs;
         $scope.org = response.data.org;
         $rootScope.USER = response.data.user;
-        $scope.orgs = response.data.user.orgs;
+        $scope.show_team_admin = response.data.user.org;
         console.log("Org set: " + (JSON.stringify($scope.org)));
         alertify.success("Club created successfully");
         $('.business_name').val("");
@@ -174,6 +174,8 @@ angular.module('subzapp').controller('OrgAdminController', [
     };
     set_map = function(lat, lng, set_markers, zoom) {
       var marker;
+      console.log(lat);
+      console.log(lng);
       if (zoom == null) {
         zoom = 11;
       }
@@ -204,18 +206,15 @@ angular.module('subzapp').controller('OrgAdminController', [
           }
         };
         $scope.map.markers.push(marker);
+        $scope.$apply;
       }
-      $scope.map.events = {
-        dragend: function(point) {
-          $scope.map.center = {
-            latitude: point.center.lat(),
-            longitude: point.center.lng()
-          };
-          set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
+      return $scope.map.events = {
+        click: function(point, eventName, goodStuff) {
+          console.log(goodStuff[0]);
+          set_map(goodStuff[0].latLng.lat(), goodStuff[0].latLng.lng(), true, $scope.map.zoom);
           return drag_display_info();
         }
       };
-      return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     $scope.find_address = function(address) {
       var geocoder;

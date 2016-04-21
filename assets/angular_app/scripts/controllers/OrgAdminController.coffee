@@ -71,7 +71,9 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data.user.orgs
         $scope.org = response.data.org
         $rootScope.USER = response.data.user
-        $scope.orgs = response.data.user.orgs
+
+        $scope.show_team_admin = response.data.user.org
+        
         console.log "Org set: #{ JSON.stringify $scope.org }"
         alertify.success "Club created successfully"
         # $scope.business_form.$setPristine()
@@ -218,7 +220,8 @@ angular.module('subzapp').controller('OrgAdminController', [
     
 
     set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
-
+      console.log lat
+      console.log lng
       if !( zoom )?
         zoom = 11
 
@@ -247,15 +250,18 @@ angular.module('subzapp').controller('OrgAdminController', [
             longitude: lng
         $scope.map.markers.push( marker )
 
+        $scope.$apply
+
       $scope.map.events = # map events. see google maps api for more info
-        dragend: ( point ) ->  # event fired after map drag
-          $scope.map.center = 
-            latitude: point.center.lat()
-            longitude: point.center.lng()
-          set_map( point.center.lat(), point.center.lng(), true, $scope.map.zoom )
+        click: ( point, eventName, goodStuff ) ->  # event fired after map drag
+          console.log goodStuff[0]
+          # $scope.map.center = 
+          #   latitude: goodStuff[0].latLng.lat()
+          #   longitude: goodStuff[0].latLng.lng()
+          set_map( goodStuff[0].latLng.lat(), goodStuff[0].latLng.lng(), true, $scope.map.zoom )
           # console.log $scope.map.center
           drag_display_info()
-      console.log "center #{ JSON.stringify $scope.map.center }"
+      # console.log "center #{ JSON.stringify $scope.map.center }"
 
     $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
