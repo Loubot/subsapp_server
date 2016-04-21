@@ -277,6 +277,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       if $scope.location?
         $scope.location.id = $scope.location.id
       # console.log $scope.map.center
+      console.log $scope.location
       $scope.location.user_id = $rootScope.USER.id
       $scope.location.org_id = $scope.org.id
       COMMS.POST( 
