@@ -6,7 +6,8 @@ angular.module('subzapp').controller('TeamController', [
     var get_org_and_members, get_team_info, set_map, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
-    $scope.location = null;
+    $scope.location = {};
+    $scope.markers = new Array();
     get_team_info = function() {
       if ($rootScope.USER.club_admin) {
         return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
@@ -151,51 +152,40 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.error("Couldn't get players info");
       });
     };
-    set_map = function(lat, lng, set_markers, zoom) {
-      var marker;
+    set_map = function(lat, lng, set_markers, open) {
+      var i, len, marker, ref, zoom;
+      if (typeof zoom === "undefined" || zoom === null) {
+        zoom = 11;
+      }
+      ref = $scope.markers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        marker = ref[i];
+        marker.setMap(null);
+      }
+      $scope.markers = new Array();
       if (zoom == null) {
         zoom = 11;
       }
-      if (!$scope.map) {
-        $scope.map = {
-          center: {
-            latitude: lat,
-            longitude: lng
-          },
-          zoom: zoom,
-          markers: []
-        };
-      } else {
-        $scope.map.center = {
-          latitude: lat,
-          longitude: lng
-        };
-        $scope.map.zoom = zoom;
+      if (open) {
+        $scope.map.setZoom(zoom);
       }
-      console.log($scope.map);
+      if (move) {
+        $scope.map.setCenter({
+          lat: lat,
+          lng: lng
+        });
+      }
       if (set_markers) {
-        $scope.map.markers = new Array();
-        console.log("setting markers");
-        marker = {
-          idKey: Date.now(),
-          coords: {
-            latitude: lat,
-            longitude: lng
-          }
-        };
-        $scope.map.markers.push(marker);
-        $scope.$apply();
+        marker = new google.maps.Marker({
+          position: {
+            lat: lat,
+            lng: lng
+          },
+          title: 'Hello World!'
+        });
+        $scope.markers.push(marker);
+        marker.setMap($scope.map);
       }
-      $scope.map.events = {
-        dragend: function(point) {
-          console.log('yep');
-          $scope.map.center = {
-            latitude: point.center.lat(),
-            longitude: point.center.lng()
-          };
-          return set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
-        }
-      };
       return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     $scope.find_address = function() {
@@ -216,10 +206,23 @@ angular.module('subzapp').controller('TeamController', [
         return true;
       }
     };
+    uiGmapGoogleMapApi.then(function(maps) {
+      $scope.map = new google.maps.Map(document.getElementById('map-container'), {
+        center: {
+          lat: 51.9181688,
+          lng: -8.5039876
+        },
+        zoom: 15
+      });
+      return $scope.markers = new Array();
+    });
     $('#add_locations').on('shown.bs.modal', function() {
+      google.maps.event.trigger($scope.map, 'resize');
       $scope.show_map = true;
-      set_map(51.9181688, -8.5039876, false);
-      return $scope.$apply();
+      return $scope.map.addListener('click', function(e) {
+        $scope.location.lat = e.latLng.lat();
+        return $scope.location.lng = e.latLng.lng();
+      });
     });
     $scope.save_address = function() {
       console.log("Save address");

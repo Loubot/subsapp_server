@@ -223,17 +223,12 @@
       </div>
       <div class="modal-body">
 
-        <div class="angular-google-map-container">
-
-          <ui-gmap-google-map center="map.center" zoom="map.zoom" 
-              draggable="true" options="map.options" events="map.events" control="googlemap">
-
-          <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.idKey"></ui-gmap-marker>
+        <div id="map-container" >
 
         </div> <!-- end of angular-google-map-container -->
 
-        <form ng-submit="save_address()" ng-if="org">
-          <input id="pac-input" class="form-control controls" ng-class="{ appear: show_map }" ng-change="find_address( map.address )" 
+        <form ng-submit="save_address()" >
+          <input id="pac-input" class="form-control controls" ng-change="find_address( map.address )" 
             ng-model="map.address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
           <input type="submit" value="Save Address" ng-class="{ appear: show_map }" class="controls button btn btn-success">
         </form>
