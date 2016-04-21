@@ -28,6 +28,14 @@ module.exports =
       type: 'text'
       defaultsTo: null
 
+    lat:
+      type: 'float'
+      defaultsTo: null
+
+    lng:
+      type: 'float'
+      defaultsTo: null
+
     event_parent:
       model: 'user'
       
