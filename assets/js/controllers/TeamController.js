@@ -211,6 +211,7 @@ angular.module('subzapp').controller('TeamController', [
       return $scope.markers = new Array();
     });
     $('#add_locations').on('shown.bs.modal', function() {
+      $scope.location.location_owner = $scope.org.name;
       google.maps.event.trigger($scope.map, 'resize');
       return $scope.map.addListener('click', function(e) {
         $scope.location.lat = e.latLng.lat();
@@ -220,14 +221,15 @@ angular.module('subzapp').controller('TeamController', [
     });
     $scope.save_address = function() {
       console.log("Save address");
-      console.log($scope.map);
-      $scope.map.user_id = $rootScope.USER.id;
-      $scope.map.org_id = $scope.org.id;
-      return COMMS.POST('/location', $scope.map).then((function(res) {
+      console.log($scope.location);
+      $scope.location.user_id = $rootScope.USER.id;
+      $scope.location.org_id = $scope.org.id;
+      return COMMS.POST('/location', $scope.location).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
         console.log(res.data);
-        return $scope.locations = res.data.org_locations;
+        $scope.locations = res.data.org_locations;
+        return $('#add_locations').modal('hide');
       }), function(errResponse) {
         console.log("Save address error");
         return alertify.error(errResponse.data);

@@ -12,13 +12,14 @@ module.exports =
   schema: true
   attributes:
 
-    location_name:
-      type: 'string'
-      defaultsTo: null
-
     location_owner:
       type: 'string'
       defaultsTo: null
+
+    location_name:
+      type: 'string'
+      defaultsTo: null
+    
 
     lat:
       type: 'float'
@@ -32,6 +33,9 @@ module.exports =
       type: 'text'
       defaultsTo: ''
       # required: true
+
+
+############ Associations #################
 
     
     org_id:

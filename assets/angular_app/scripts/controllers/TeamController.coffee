@@ -28,6 +28,7 @@ angular.module('subzapp').controller('TeamController', [
           console.log res
           $scope.team = res.data.team
           $scope.org = res.data.org
+
           $scope.org_members = res.data.org.org_members
           $scope.locations = res.data.org.org_locations
           
@@ -263,6 +264,7 @@ angular.module('subzapp').controller('TeamController', [
       $scope.markers = new Array()
 
     $('#add_locations').on 'shown.bs.modal', ->
+      $scope.location.location_owner = $scope.org.name # set name of location_owner in text field
       google.maps.event.trigger($scope.map, 'resize')
 
       $scope.map.addListener 'click', ( e ) ->
@@ -272,16 +274,17 @@ angular.module('subzapp').controller('TeamController', [
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log "Save address"
-      console.log $scope.map
-      $scope.map.user_id = $rootScope.USER.id
-      $scope.map.org_id = $scope.org.id
+      console.log $scope.location
+      $scope.location.user_id = $rootScope.USER.id
+      $scope.location.org_id = $scope.org.id
       COMMS.POST( 
-        '/location', $scope.map 
+        '/location', $scope.location 
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"
         console.log res.data
         $scope.locations = res.data.org_locations
+        $('#add_locations').modal 'hide'
         # $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "Save address error"

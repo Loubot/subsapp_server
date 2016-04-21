@@ -81,7 +81,7 @@
           <option value="" >---Please select location---</option>
           <option ng-repeat="location in locations" value="{{ location.id }}" 
                   >
-            {{ location.address }}
+            {{ location.location_name }}
           </option>
           <option value="new_location" >---Create new location?---</option>
         </select> <!-- end of form-control -->
@@ -230,12 +230,13 @@
         <form ng-submit="save_address()" class="form-horizontal">
           <input id="pac-input" class="form-control visible_controls"  ng-change="find_address( location.address )" 
             ng-model="location.address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
-          <input type="submit" value="Save Address"  class="visible_controls button btn btn-success">
+          
 
           <div class="form-group">
             <label for="location_owner" class="col-sm-3 control-label black_text">Location owner</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="location_owner" value="{{ org.name }}" 
+              <input type="text" class="form-control" id="location_owner" ng-model="location.location_owner" 
+                value="{{ org.name }}" 
                 placeholder="Location owner" disabled>
             </div> <!-- end of col-sm-9 -->
           </div> <!-- end of form-group -->
@@ -243,10 +244,17 @@
           <div class="form-group">
             <label for="location_name" class="col-sm-3 control-label black_text">Location name</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="Location_name" placeholder="Name">
+              <input type="text" class="form-control" id="Location_name" ng-model="location.location_name" placeholder="Name">
             </div> <!-- end of col-sm-9 -->
           </div> <!-- end of form-group -->
 
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <input type="submit" value="Save Address"  class="button btn btn-success">
+            </div>
+          </div>
+
+          
          
 
         </form>
