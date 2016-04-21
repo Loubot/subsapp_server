@@ -17,6 +17,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $state.go 'login' 
         alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
 
+    $scope.location = {}
     console.log 'OrgAdmin Controller'
 
 
@@ -314,8 +315,9 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
       if $scope.org?
         console.log "yep"
-        $scope.location = $scope.org.org_locations[0]
-        set_map( $scope.location.lat, $scope.location.lng, true, 15, true )       
+        if $scope.org.org_locations.length > 0
+          $scope.location = $scope.org.org_locations[0]
+          set_map( $scope.location.lat, $scope.location.lng, true, 15, true )       
   
       # else if google?
       #   $scope.location = {}

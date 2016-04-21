@@ -10,6 +10,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return alertify.error('You are not a club admin. Contact subzapp admin team for assitance');
       }
     };
+    $scope.location = {};
     console.log('OrgAdmin Controller');
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
@@ -249,8 +250,10 @@ angular.module('subzapp').controller('OrgAdminController', [
     return $scope.$watch('org', function(old_org, new_org) {
       if ($scope.org != null) {
         console.log("yep");
-        $scope.location = $scope.org.org_locations[0];
-        return set_map($scope.location.lat, $scope.location.lng, true, 15, true);
+        if ($scope.org.org_locations.length > 0) {
+          $scope.location = $scope.org.org_locations[0];
+          return set_map($scope.location.lat, $scope.location.lng, true, 15, true);
+        }
       }
     });
   }
