@@ -78,11 +78,7 @@ module.exports = {
     sails.log.debug "Hit the event controller/create_parent_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     ParentEvent.create( 
-      name: req.body.name 
-      start_date: req.body.start_date 
-      end_date: req.body.end_date 
-      details: req.body.details 
-      event_parent: req.body.event_parent
+      req.body
     ).then( ( p_event) ->
       sails.log.debug "Parent event created #{ JSON.stringify p_event }"
       res.json p_event
