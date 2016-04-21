@@ -219,55 +219,48 @@ angular.module('subzapp').controller('OrgAdminController', [
       
     
 
-    set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
-      console.log lat
-      console.log lng
+    set_map = ( lat, lng, set_markers, zoom, move ) -> # set map to new center/ possibly with marker
+      
+      for marker in $scope.markers
+        marker.setMap( null )
+      $scope.markers = new Array()
+
       if !( zoom )?
         zoom = 11
+      
+      # console.log " zoom #{ zoom }"
+      $scope.map.setZoom( zoom )
+      if move
+        $scope.map.setCenter
+          lat: lat
+          lng: lng
 
-      if !( $scope.map ) #define a new map        
-        $scope.map = 
-          center:
-            latitude: lat
-            longitude: lng
-          zoom: zoom
-          markers: []
 
-      else
-        $scope.map.center = 
-          latitude: lat
-          longitude: lng
-        $scope.map.zoom = zoom    
-
-      # console.log $scope.map
       if set_markers
-        $scope.map.markers = new Array()
-        console.log "setting markers"
-        marker =
-          idKey: Date.now()
-          coords:
-            latitude: lat
-            longitude: lng
-        $scope.map.markers.push( marker )
+        marker = new (google.maps.Marker)(
+          position: 
+            lat: lat
+            lng: lng
+          title: 'Hello World!')
+        $scope.markers.push marker
 
-        $scope.$apply
+        marker.setMap $scope.map
 
-      $scope.map.events = # map events. see google maps api for more info
-        click: ( point, eventName, goodStuff ) ->  # event fired after map drag
-          console.log goodStuff[0]
-          # $scope.map.center = 
-          #   latitude: goodStuff[0].latLng.lat()
-          #   longitude: goodStuff[0].latLng.lng()
-          set_map( goodStuff[0].latLng.lat(), goodStuff[0].latLng.lng(), true, $scope.map.zoom )
-          # console.log $scope.map.center
-          drag_display_info()
-      # console.log "center #{ JSON.stringify $scope.map.center }"
+      
+
+
+
+
+      
+
+
+     
 
     $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       # console.log "Address #{ address }"
       geocoder.geocode( address: address, ( results, status ) ->
-        $scope.map.markers = []
+        
         # console.log "results "
         console.log results
         # console.log "Status #{ JSON.stringify status }"
@@ -275,18 +268,19 @@ angular.module('subzapp').controller('OrgAdminController', [
         set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
         
         
-        $scope.$apply() # update scope
+        
           
       )
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
-      if $scope.org.org_locations.length > 0
-        $scope.map.id = $scope.org.org_locations[0].id
+      console.log $scope.location
+      if $scope.location?
+        $scope.location.id = $scope.location.id
       # console.log $scope.map.center
-      $scope.map.user_id = $rootScope.USER.id
-      $scope.map.org_id = $scope.org.id
+      $scope.location.user_id = $rootScope.USER.id
+      $scope.location.org_id = $scope.org.id
       COMMS.POST( 
-        '/location', $scope.map 
+        '/location', $scope.location 
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"
@@ -299,17 +293,34 @@ angular.module('subzapp').controller('OrgAdminController', [
 
      ###################### BEGIN MAPS ################################
     uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
-      
+      $scope.map = new (google.maps.Map)(document.getElementById('map-container'),
+        center:
+          lat: 51.9181688
+          lng: -8.5039876
+        zoom: 15)
+      $scope.markers = new Array()
+      set_map( 51.9181688, -8.5039876, true, null, true )
+
+      $scope.map.addListener 'click', ( e ) ->
+        $scope.location.lat = e.latLng.lat()
+        $scope.location.lng = e.latLng.lng()
+        set_map( e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom, false )
+        
+       
+        
         
 
     $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
-      if $scope.org? and $scope.org.org_locations.length > 0
-        $scope.map.address = $scope.org.org_locations[0].address
-        set_map( $scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true )       
+      if $scope.org?
+        console.log "yep"
+        $scope.location = $scope.org.org_locations[0]
+        set_map( $scope.location.lat, $scope.location.lng, true, 15, true )       
   
-      else        
-        set_map( 51.9181688, -8.5039876, true)
-        display_info()
+      # else if google?
+      #   $scope.location = {}
+      #   console.log 'yep2'     
+      #   set_map( 51.9181688, -8.5039876, true, 15 )
+      #   display_info()
 
 ])
 

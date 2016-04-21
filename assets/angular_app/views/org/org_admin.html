@@ -1,20 +1,16 @@
 <span us-spinner spinner-key="spinner-1"></span>
 
-<div class="angular-google-map-container" ng-if="org">
-  <ui-gmap-google-map center="map.center" zoom="map.zoom" 
-      draggable="true" options="map.options" events="map.events" control="googlemap">
-    <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.idKey"></ui-gmap-marker>
-  </ui-gmap-google-map>
+<div id="map-container">
 
-</div>
+</div> <!-- end of map-container -->
 
 <form ng-submit="save_address()" ng-if="org" >
-  <input id="pac-input" class="form-control controls" ng-class="{ appear: show_map }" ng-change="find_address( map.address )" 
-    ng-model="map.address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
+  <input id="pac-input" class="form-control controls" ng-class="{ appear: show_map }" ng-change="find_address( location.address )" 
+    ng-model="location.address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
   <input type="submit" value="Save Address" ng-class="{ appear: show_map }" class="controls button btn btn-success">
 </form>
 
-
+{{ map.markers }}
 <div class="container-fluid">
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
 </div>

@@ -172,49 +172,35 @@ angular.module('subzapp').controller('OrgAdminController', [
         }), 2000);
       }), 2500);
     };
-    set_map = function(lat, lng, set_markers, zoom) {
-      var marker;
-      console.log(lat);
-      console.log(lng);
+    set_map = function(lat, lng, set_markers, zoom, move) {
+      var i, len, marker, ref;
+      ref = $scope.markers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        marker = ref[i];
+        marker.setMap(null);
+      }
+      $scope.markers = new Array();
       if (zoom == null) {
         zoom = 11;
       }
-      if (!$scope.map) {
-        $scope.map = {
-          center: {
-            latitude: lat,
-            longitude: lng
-          },
-          zoom: zoom,
-          markers: []
-        };
-      } else {
-        $scope.map.center = {
-          latitude: lat,
-          longitude: lng
-        };
-        $scope.map.zoom = zoom;
+      $scope.map.setZoom(zoom);
+      if (move) {
+        $scope.map.setCenter({
+          lat: lat,
+          lng: lng
+        });
       }
       if (set_markers) {
-        $scope.map.markers = new Array();
-        console.log("setting markers");
-        marker = {
-          idKey: Date.now(),
-          coords: {
-            latitude: lat,
-            longitude: lng
-          }
-        };
-        $scope.map.markers.push(marker);
-        $scope.$apply;
+        marker = new google.maps.Marker({
+          position: {
+            lat: lat,
+            lng: lng
+          },
+          title: 'Hello World!'
+        });
+        $scope.markers.push(marker);
+        return marker.setMap($scope.map);
       }
-      return $scope.map.events = {
-        click: function(point, eventName, goodStuff) {
-          console.log(goodStuff[0]);
-          set_map(goodStuff[0].latLng.lat(), goodStuff[0].latLng.lng(), true, $scope.map.zoom);
-          return drag_display_info();
-        }
-      };
     };
     $scope.find_address = function(address) {
       var geocoder;
@@ -222,19 +208,18 @@ angular.module('subzapp').controller('OrgAdminController', [
       return geocoder.geocode({
         address: address
       }, function(results, status) {
-        $scope.map.markers = [];
         console.log(results);
-        set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
-        return $scope.$apply();
+        return set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
       });
     };
     $scope.save_address = function() {
-      if ($scope.org.org_locations.length > 0) {
-        $scope.map.id = $scope.org.org_locations[0].id;
+      console.log($scope.location);
+      if ($scope.location != null) {
+        $scope.location.id = $scope.location.id;
       }
-      $scope.map.user_id = $rootScope.USER.id;
-      $scope.map.org_id = $scope.org.id;
-      return COMMS.POST('/location', $scope.map).then((function(res) {
+      $scope.location.user_id = $rootScope.USER.id;
+      $scope.location.org_id = $scope.org.id;
+      return COMMS.POST('/location', $scope.location).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
         return console.log(res);
@@ -244,14 +229,27 @@ angular.module('subzapp').controller('OrgAdminController', [
         return alertify.error("Failed to save location");
       });
     };
-    uiGmapGoogleMapApi.then(function(maps) {});
+    uiGmapGoogleMapApi.then(function(maps) {
+      $scope.map = new google.maps.Map(document.getElementById('map-container'), {
+        center: {
+          lat: 51.9181688,
+          lng: -8.5039876
+        },
+        zoom: 15
+      });
+      $scope.markers = new Array();
+      set_map(51.9181688, -8.5039876, true, null, true);
+      return $scope.map.addListener('click', function(e) {
+        $scope.location.lat = e.latLng.lat();
+        $scope.location.lng = e.latLng.lng();
+        return set_map(e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom, false);
+      });
+    });
     return $scope.$watch('org', function(old_org, new_org) {
-      if (($scope.org != null) && $scope.org.org_locations.length > 0) {
-        $scope.map.address = $scope.org.org_locations[0].address;
-        return set_map($scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true);
-      } else {
-        set_map(51.9181688, -8.5039876, true);
-        return display_info();
+      if ($scope.org != null) {
+        console.log("yep");
+        $scope.location = $scope.org.org_locations[0];
+        return set_map($scope.location.lat, $scope.location.lng, true, 15, true);
       }
     });
   }

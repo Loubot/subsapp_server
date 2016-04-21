@@ -197,7 +197,7 @@ body{
   color: #111;
 }
 
-.angular-google-map-container {
+#map-container {
   margin-top: -20px;
   height: 400px;
 }
