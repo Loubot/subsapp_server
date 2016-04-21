@@ -31,7 +31,7 @@ module.exports =
     address:
       type: 'text'
       defaultsTo: ''
-      required: true
+      # required: true
 
     
     org_id:

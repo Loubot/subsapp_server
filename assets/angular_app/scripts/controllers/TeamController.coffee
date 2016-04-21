@@ -200,7 +200,7 @@ angular.module('subzapp').controller('TeamController', [
     #                                         #
     ###########################################
 
-    set_map = ( lat, lng, set_markers, open ) -> # set map to new center/ possibly with marker
+    set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
       if !( zoom )?
         zoom = 11
 
@@ -209,16 +209,14 @@ angular.module('subzapp').controller('TeamController', [
         marker.setMap( null )
       $scope.markers = new Array()
 
-      if !( zoom )?
-        zoom = 11
-      
+
       # console.log " zoom #{ zoom }"
-      if open
-        $scope.map.setZoom( zoom )
-      if move
-        $scope.map.setCenter
-          lat: lat
-          lng: lng
+      
+      $scope.map.setZoom( zoom )
+    
+      $scope.map.setCenter
+        lat: lat
+        lng: lng
 
 
       if set_markers
@@ -238,7 +236,8 @@ angular.module('subzapp').controller('TeamController', [
     $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       console.log "Address #{ $scope.map.address }"
-      geocoder.geocode( address: $scope.map.address, ( results, status ) ->
+      geocoder.geocode( address: $scope.location.address, ( results, status ) ->
+        console.log results
         $scope.map.markers = []
         # console.log "results "
         console.log results
@@ -265,12 +264,11 @@ angular.module('subzapp').controller('TeamController', [
 
     $('#add_locations').on 'shown.bs.modal', ->
       google.maps.event.trigger($scope.map, 'resize')
-      $scope.show_map = true
 
       $scope.map.addListener 'click', ( e ) ->
         $scope.location.lat = e.latLng.lat()
         $scope.location.lng = e.latLng.lng()
-        # set_map( e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom, true )
+        set_map( e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom )
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log "Save address"
@@ -287,7 +285,7 @@ angular.module('subzapp').controller('TeamController', [
         # $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "Save address error"
-        console.log errResponse
+        # console.log errResponse
         alertify.error errResponse.data
       
       

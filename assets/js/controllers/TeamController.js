@@ -152,9 +152,9 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.error("Couldn't get players info");
       });
     };
-    set_map = function(lat, lng, set_markers, open) {
-      var i, len, marker, ref, zoom;
-      if (typeof zoom === "undefined" || zoom === null) {
+    set_map = function(lat, lng, set_markers, zoom) {
+      var i, len, marker, ref;
+      if (zoom == null) {
         zoom = 11;
       }
       ref = $scope.markers;
@@ -163,18 +163,11 @@ angular.module('subzapp').controller('TeamController', [
         marker.setMap(null);
       }
       $scope.markers = new Array();
-      if (zoom == null) {
-        zoom = 11;
-      }
-      if (open) {
-        $scope.map.setZoom(zoom);
-      }
-      if (move) {
-        $scope.map.setCenter({
-          lat: lat,
-          lng: lng
-        });
-      }
+      $scope.map.setZoom(zoom);
+      $scope.map.setCenter({
+        lat: lat,
+        lng: lng
+      });
       if (set_markers) {
         marker = new google.maps.Marker({
           position: {
@@ -193,8 +186,9 @@ angular.module('subzapp').controller('TeamController', [
       geocoder = new google.maps.Geocoder();
       console.log("Address " + $scope.map.address);
       return geocoder.geocode({
-        address: $scope.map.address
+        address: $scope.location.address
       }, function(results, status) {
+        console.log(results);
         $scope.map.markers = [];
         console.log(results);
         return set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
@@ -218,10 +212,10 @@ angular.module('subzapp').controller('TeamController', [
     });
     $('#add_locations').on('shown.bs.modal', function() {
       google.maps.event.trigger($scope.map, 'resize');
-      $scope.show_map = true;
       return $scope.map.addListener('click', function(e) {
         $scope.location.lat = e.latLng.lat();
-        return $scope.location.lng = e.latLng.lng();
+        $scope.location.lng = e.latLng.lng();
+        return set_map(e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom);
       });
     });
     $scope.save_address = function() {
@@ -236,7 +230,6 @@ angular.module('subzapp').controller('TeamController', [
         return $scope.locations = res.data.org_locations;
       }), function(errResponse) {
         console.log("Save address error");
-        console.log(errResponse);
         return alertify.error(errResponse.data);
       });
     };
