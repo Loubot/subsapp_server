@@ -1,0 +1,44 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-warning btn-lg center-block" data-toggle="modal" data-target="#team_message">
+  Send team messages
+</button>
+
+<!-- Modal -->
+<div class="modal fade black_text" id="team_message" tabindex="-1" role="dialog" aria-labelledby="send_team_messages">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="send_team_messages">Select teams and send message</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="send_team_message()">
+          <div class="form-group" >
+            <div ng-repeat="team in org.teams">
+              <label >
+                <input type="checkbox" checklist-value="team.id" checklist-model="teams_array"> {{ team.name }} 
+              </label>
+            </div> <!-- end of ng-repeat="team in org.teams" -->
+
+            <div ng-repeat="manager in managers">
+              <label >
+                <input type="checkbox" checklist-value="manger.id" checklist-model="teams_array"> {{ manager.email }} 
+              </label>
+            </div> <!-- end of ng-repeat="manager in managers" -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group">
+            <label for="message_details" class="col-sm-3 control-label">Message Details</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="message_details" placeholder="Details">
+            </div>
+          </div> <!-- end of form-group -->
+
+        </form> <!-- end of send_team_message() -->
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

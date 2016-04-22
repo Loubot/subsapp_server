@@ -245,17 +245,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           title: 'Hello World!')
         $scope.markers.push marker
 
-        marker.setMap $scope.map
-
-      
-
-
-
-
-      
-
-
-     
+        marker.setMap $scope.map     
 
     $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
@@ -318,12 +308,27 @@ angular.module('subzapp').controller('OrgAdminController', [
         if $scope.org.org_locations.length > 0
           $scope.location = $scope.org.org_locations[0]
           set_map( $scope.location.lat, $scope.location.lng, true, 15, true )       
-  
-      # else if google?
-      #   $scope.location = {}
-      #   console.log 'yep2'     
-      #   set_map( 51.9181688, -8.5039876, true, 15 )
-      #   display_info()
+ 
+
+ ####################################################################
+ #                   Message stuff                                  #
+ ####################################################################
+
+    $(document).on 'shown.bs.modal', '#team_message', ( e )->
+      COMMS.GET(
+        "/org/teams-and-mangers/#{ $scope.org.id }"
+      ).then ( ( resp) ->
+        console.log "Got teams and managers"
+        console.log resp.data.managers
+        $scope.managers = resp.data.managers
+        $scope.teams_array = $scope.org.teams.map( ( team ) ->
+          team.id
+        )
+      ), ( errResponse ) ->
+        console.log "Get teams and managers error"
+        console.log errResponse
+      
+
 
 ])
 

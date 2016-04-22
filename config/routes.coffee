@@ -97,10 +97,6 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'create'
 
-  # 'put /org/:id':
-  #       controller:             'OrgController'
-  #       action:                 'update'
-
   'delete /delete-business/:id' : #Destroy org. Requires org.id
         controller:             'OrgController'
         action:                 'destroy_business'
@@ -121,9 +117,13 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'get_org_team_members'
 
-  'get /org-admins/:id':          #Requires org.id. Returns org, admins and teams of org
+  'get /org/org-admins/:id':          #Requires org.id. Returns org, admins and teams of org
         controller:             'OrgController'
         action:                 'get_org_admins'
+
+  'get /org/teams-and-mangers/:id':
+        controller:             'OrgController'
+        action:                 'get_teams_and_managers'
 
   # end of org controller
 

@@ -247,7 +247,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return set_map(e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom, false);
       });
     });
-    return $scope.$watch('org', function(old_org, new_org) {
+    $scope.$watch('org', function(old_org, new_org) {
       if ($scope.org != null) {
         console.log("yep");
         if ($scope.org.org_locations.length > 0) {
@@ -255,6 +255,19 @@ angular.module('subzapp').controller('OrgAdminController', [
           return set_map($scope.location.lat, $scope.location.lng, true, 15, true);
         }
       }
+    });
+    return $(document).on('shown.bs.modal', '#team_message', function(e) {
+      return COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
+        console.log("Got teams and managers");
+        console.log(resp.data.managers);
+        $scope.managers = resp.data.managers;
+        return $scope.teams_array = $scope.org.teams.map(function(team) {
+          return team.id;
+        });
+      }), function(errResponse) {
+        console.log("Get teams and managers error");
+        return console.log(errResponse);
+      });
     });
   }
 ]);

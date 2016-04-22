@@ -21,6 +21,10 @@ body{
   padding: 0px !important;
 }
 
+.bottom_margin_50{
+  margin-bottom: 50px;
+}
+
 .no_margin{
   margin: 0px !important;
 }
