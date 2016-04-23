@@ -26,7 +26,10 @@ angular.module('subzapp').controller('OrgAdminController', [
           console.log(org_and_teams);
           $scope.teams = org_and_teams.data.org.teams;
           $scope.files = org_and_teams.data.s3_object.Contents;
-          return $scope.org = org_and_teams.data.org;
+          $scope.org = org_and_teams.data.org;
+          $scope.locations = org_and_teams.data.org.org_locations;
+          console.log("Locations");
+          return console.log($scope.locations);
         }), function(errResponse) {
           console.log("Get teams failed");
           console.log(errResponse);
@@ -175,6 +178,9 @@ angular.module('subzapp').controller('OrgAdminController', [
     };
     set_map = function(lat, lng, set_markers, zoom, move) {
       var i, len, marker, ref;
+      if (!($scope.markers != null)) {
+        $scope.markers = new Array();
+      }
       ref = $scope.markers;
       for (i = 0, len = ref.length; i < len; i++) {
         marker = ref[i];
@@ -184,14 +190,16 @@ angular.module('subzapp').controller('OrgAdminController', [
       if (zoom == null) {
         zoom = 11;
       }
-      $scope.map.setZoom(zoom);
-      if (move) {
+      if ($scope.map != null) {
+        $scope.map.setZoom(zoom);
+      }
+      if (move && ($scope.map != null)) {
         $scope.map.setCenter({
           lat: lat,
           lng: lng
         });
       }
-      if (set_markers) {
+      if (set_markers && (typeof google !== "undefined" && google !== null)) {
         marker = new google.maps.Marker({
           position: {
             lat: lat,
@@ -260,10 +268,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       return COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
         console.log("Got teams and managers");
         console.log(resp.data.managers);
-        $scope.managers = resp.data.managers;
-        return $scope.teams_array = $scope.org.teams.map(function(team) {
-          return team.id;
-        });
+        return $scope.managers = resp.data.managers;
       }), function(errResponse) {
         console.log("Get teams and managers error");
         return console.log(errResponse);
@@ -281,5 +286,7 @@ return_org = function(orgs, search) {
     }
   }
 };
+
+$('#team_message').modal('show');
 
 //# sourceMappingURL=../maps/controllers/OrgAdminController.js.map

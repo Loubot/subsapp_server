@@ -45,6 +45,9 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.teams = org_and_teams.data.org.teams
           $scope.files = org_and_teams.data.s3_object.Contents
           $scope.org = org_and_teams.data.org
+          $scope.locations = org_and_teams.data.org.org_locations
+          console.log "Locations"
+          console.log $scope.locations
         ), ( errResponse ) ->
           
           console.log "Get teams failed"
@@ -221,7 +224,7 @@ angular.module('subzapp').controller('OrgAdminController', [
     
 
     set_map = ( lat, lng, set_markers, zoom, move ) -> # set map to new center/ possibly with marker
-      
+      $scope.markers = new Array() if !( $scope.markers? )
       for marker in $scope.markers
         marker.setMap( null )
       $scope.markers = new Array()
@@ -230,14 +233,16 @@ angular.module('subzapp').controller('OrgAdminController', [
         zoom = 11
       
       # console.log " zoom #{ zoom }"
-      $scope.map.setZoom( zoom )
-      if move
+
+      $scope.map.setZoom( zoom ) if $scope.map?
+
+      if move and $scope.map?
         $scope.map.setCenter
           lat: lat
           lng: lng
 
 
-      if set_markers
+      if set_markers and google?
         marker = new (google.maps.Marker)(
           position: 
             lat: lat
@@ -321,12 +326,14 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Got teams and managers"
         console.log resp.data.managers
         $scope.managers = resp.data.managers
-        $scope.teams_array = $scope.org.teams.map( ( team ) ->
-          team.id
-        )
+        # $scope.teams_array = $scope.org.teams.map( ( team ) ->
+        #   team.id
+        # )
       ), ( errResponse ) ->
         console.log "Get teams and managers error"
         console.log errResponse
+
+
       
 
 
@@ -337,3 +344,5 @@ return_org = ( orgs, search) ->
   for org in orgs    
     if parseInt( org.id ) == parseInt( search.id )
       return org
+
+$('#team_message').modal 'show'

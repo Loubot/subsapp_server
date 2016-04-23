@@ -1,0 +1,53 @@
+<!-- Modal -->
+<div class="modal fade" id="add_locations" tabindex="-1" role="dialog" aria-labelledby="add_locations">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title black_text" id="add_locations_label">Add a new location <small>Click on your desired location</small></h4>
+      </div>
+      <div class="modal-body">
+
+        <div id="map-container" >
+
+        </div> <!-- end of angular-google-map-container -->
+
+        <form ng-submit="save_address()" class="form-horizontal">
+          <input id="pac-input" class="form-control visible_controls"  ng-change="find_address( location.address )" 
+            ng-model="location.address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
+          
+
+          <div class="form-group">
+            <label for="location_owner" class="col-sm-3 control-label black_text">Location owner</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="location_owner" ng-model="location.location_owner" 
+                value="{{ org.name }}" 
+                placeholder="Location owner" disabled required>
+            </div> <!-- end of col-sm-9 -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group">
+            <label for="location_name" class="col-sm-3 control-label black_text">Location name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="Location_name" ng-model="location.location_name" placeholder="Name" required>
+            </div> <!-- end of col-sm-9 -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <input type="submit" value="Save Address"  class="button btn btn-success">
+            </div>
+          </div>
+
+          
+         
+
+        </form>
+
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> <!-- end of footer -->
+    </div> <!-- end of modal-content -->
+  </div> <!-- end of modal-dialog -->
+</div> <!-- end of modal fade -->

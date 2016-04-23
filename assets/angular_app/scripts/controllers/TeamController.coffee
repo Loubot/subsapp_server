@@ -230,6 +230,8 @@ angular.module('subzapp').controller('TeamController', [
 
         marker.setMap $scope.map
 
+        # google.maps.event.trigger($scope.map, 'resize')
+
           # console.log point
           
       console.log "center #{ JSON.stringify $scope.map.center }"
@@ -263,7 +265,8 @@ angular.module('subzapp').controller('TeamController', [
         zoom: 15)
       $scope.markers = new Array()
 
-    $('#add_locations').on 'shown.bs.modal', ->
+    $( document ).on 'shown.bs.modal', '#add_locations', ->
+    
       $scope.location.location_owner = $scope.org.name # set name of location_owner in text field
       google.maps.event.trigger($scope.map, 'resize')
 

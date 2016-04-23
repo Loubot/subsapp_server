@@ -210,7 +210,7 @@ angular.module('subzapp').controller('TeamController', [
       });
       return $scope.markers = new Array();
     });
-    $('#add_locations').on('shown.bs.modal', function() {
+    $(document).on('shown.bs.modal', '#add_locations', function() {
       $scope.location.location_owner = $scope.org.name;
       google.maps.event.trigger($scope.map, 'resize');
       return $scope.map.addListener('click', function(e) {
