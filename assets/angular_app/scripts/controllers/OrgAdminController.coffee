@@ -318,14 +318,19 @@ angular.module('subzapp').controller('OrgAdminController', [
  ####################################################################
  #                   Message stuff                                  #
  ####################################################################
+    #initiliase scopes
+    $scope.multi_event = {}
+    $scope.managers_array = new Array()
+    $scope.teams_array = new Array()
 
-    $(document).on 'shown.bs.modal', '#team_message', ( e )->
+    $(document).on 'shown.bs.modal', '#multi_event_modal', ( e )->
       COMMS.GET(
         "/org/teams-and-mangers/#{ $scope.org.id }"
       ).then ( ( resp) ->
         console.log "Got teams and managers"
         console.log resp.data.managers
         $scope.managers = resp.data.managers
+        $scope.multi_event.name = "Loubto"
         # $scope.teams_array = $scope.org.teams.map( ( team ) ->
         #   team.id
         # )
@@ -334,6 +339,10 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log errResponse
 
 
+    $scope.create_multi_event = ->
+      console.log "teams array #{ JSON.stringify $scope.teams_array }"
+      console.log "managers array #{ JSON.stringify $scope.managers_array }"
+      console.log $scope.multi_event
       
 
 

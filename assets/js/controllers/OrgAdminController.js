@@ -264,16 +264,25 @@ angular.module('subzapp').controller('OrgAdminController', [
         }
       }
     });
-    return $(document).on('shown.bs.modal', '#team_message', function(e) {
+    $scope.multi_event = {};
+    $scope.managers_array = new Array();
+    $scope.teams_array = new Array();
+    $(document).on('shown.bs.modal', '#multi_event_modal', function(e) {
       return COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
         console.log("Got teams and managers");
         console.log(resp.data.managers);
-        return $scope.managers = resp.data.managers;
+        $scope.managers = resp.data.managers;
+        return $scope.multi_event.name = "Loubto";
       }), function(errResponse) {
         console.log("Get teams and managers error");
         return console.log(errResponse);
       });
     });
+    return $scope.create_multi_event = function() {
+      console.log("teams array " + (JSON.stringify($scope.teams_array)));
+      console.log("managers array " + (JSON.stringify($scope.managers_array)));
+      return console.log($scope.multi_event);
+    };
   }
 ]);
 
