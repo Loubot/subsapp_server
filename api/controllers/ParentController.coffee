@@ -42,7 +42,7 @@ module.exports = {
                 res.negotiate err
               else
                 sails.log.debug "parents_with_events unactionedEventCount #{ JSON.stringify unactionedEventCount }"
-                User.query("select a.id, a.name, a.details, a.start_date, a.end_date, a.event_parent as parent_id
+                User.query("select a.id, a.name, a.details, a.start_date, a.end_date, a.lat, a.lng, a.event_parent as parent_id
                   from parentevent a
                   where a.event_parent=#{ req.param('id') };", ( err, parentEventData ) ->
                     if err?
