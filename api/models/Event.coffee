@@ -16,7 +16,7 @@ module.exports =
       defaultsTo: ''
       required: true
 
-    start_date:
+    start_date: # arrive in form
       type: 'datetime'
       required: true
       defaultsTo: null
@@ -24,6 +24,10 @@ module.exports =
     end_date:
       type: 'datetime'
       required: true
+      defaultsTo: null  
+
+    kick_off_date: # only for matches
+      type: 'datetime'
       defaultsTo: null
 
     details:

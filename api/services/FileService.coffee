@@ -40,7 +40,7 @@ module.exports = {
       sails.log.debug "size in loop #{ file_list.length }"
       counter = 0 if !(counter)?
 
-      if counter >= file_list.length
+      if counter >= file_list.length 
         finish_up( downloaded_files )
         return downloaded_files
 
@@ -82,7 +82,7 @@ module.exports = {
       sails.log.debug "Create users array length #{ player_array.length }"
       sails.log.debug "Create users index #{ index }"
       sails.log.debug "#{ index >= player_array.length }"
-      if index >= player_array.length
+      if index >= (player_array.length )
         finish_up( created_kids )
         return created_kids
 

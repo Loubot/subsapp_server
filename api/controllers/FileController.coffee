@@ -131,7 +131,7 @@ module.exports = {
         sails.log.debug "Returned files #{ returned_files.length }"
 
         recurse_create_users = ( index, created_users ) ->
-          if index >= returned_files.length
+          if index >= (returned_files.length )
             finish_up( created_users )
             return created_users
           # sails.log.debug "Check files index #{ JSON.stringify returned_files[index] }"
