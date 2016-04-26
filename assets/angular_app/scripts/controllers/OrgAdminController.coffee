@@ -328,7 +328,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         "/org/teams-and-mangers/#{ $scope.org.id }"
       ).then ( ( resp) ->
         console.log "Got teams and managers"
-        console.log resp.data.managers
+        console.log resp.data
         $scope.managers = resp.data.managers
         # $scope.teams_array = $scope.org.teams.map( ( team ) ->
         #   team.id
@@ -339,6 +339,7 @@ angular.module('subzapp').controller('OrgAdminController', [
 
 
     $scope.create_multi_event = ->
+      console.log 'yep'
       console.log "teams array #{ JSON.stringify $scope.teams_array }"
       console.log "managers array #{ JSON.stringify $scope.managers_array }"
       COMMS.POST(

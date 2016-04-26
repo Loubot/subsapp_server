@@ -37,21 +37,41 @@ module.exports = {
     req.body.price = parseInt( req.body.price )
     req.body.event_details.start_date =  DateService.create_timestamp( req.body.event_details.start_date )
     req.body.event_details_date = DateService.create_timestamp( req.body.event_details.end_date )
-    Event.create(
-      req.body.event_details
-    ).then( ( multi_event ) ->
-      sails.log.debug "Multi event created #{ JSON.stringify multi_event }"
-      res.json multi_event
-      EventService.org_event_associations( req.body, ( org_event_associations_err, org_event_associations ) ->
-        if err?
-          sails.log.debug "org_event_associations_err #{ JSON.stringify org_event_associations_err }"
-        else
-          sails.log.debug "org_event_associations done"
+
+    team_events = new Array()
+
+    sails.log.debug req.body.teams_array.length
+    create_events = ( teams_array, index ) ->
+      console.log "index #{ index }"
+      console.log "teams array #{ teams_array.length }"
+      if index >= teams_array.length
+        console.log "Finished="
+        res.json index
+        return false
+        
+      ++index
+      req.body.event_details.event_team = index
+      Event.create( req.body.event_details ).then( ( event_created ) ->
+        sails.log.debug "Event created #{ JSON.stringify event_created }"
+        EventService.org_event_associations( event_created.id, index, ( err, resp ) ->
+          if err
+            sails.log.debug "Multiple associations err"
+          else
+            sails.log.debug "Multiple associations done"
+        )
+      ).catch( ( event_created_err ) ->
+        sails.log.debug "Event created err #{ JSON.stringify event_created_err }"
       )
-    ).catch( ( multi_event_err ) ->
-      sails.log.debug "Multi event error #{ JSON.stringify multi_event_err }"
-      res.negotiate multi_event_err
-    )
+
+
+      create_events( teams_array, index )
+
+    create_events( req.body.teams_array, 0 )
+    console.log "i am here"
+      
+
+      
+      
 
     
   join_event: ( req, res ) ->

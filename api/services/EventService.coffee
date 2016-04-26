@@ -19,40 +19,41 @@ module.exports = {
     )
 
 
-  org_event_associations: ( body ) ->
+  org_event_associations: ( event_id, team_id, cb ) ->
     sails.log.debug "Hit the EventService/org_event_associations"
+    sails.log.debug "Team id #{ team_id }"
 
-    team_create_associations = ( members, id, counter, cb ) ->
-      if counter >= members.length
-        sails.log.debug "Finished all assocaitions"
-        cb( null, 'Finito' )
+    do_team_association = ( team_members, index, callback ) ->
+      sails.log.debug "do_team_association index #{ index }"
+      sails.log.debug "do_team_association team_members #{ team_members.length }"
+      if index >= team_members.length
+        sails.log.debug "Finished do_team_association"
+        callback( null, "We are finished ")
+        return false
 
-      members[ counter ].user_teams.add( id )
-      members[ counter ].save ( err, saved ) ->
-        if err?
-          sails.log.debug "It is not saved "
+      sails.log.debug "User #{ JSON.stringify team_members[index]}"
+
+      team_members[ index ].user_events.add( event_id )
+      team_members[ index ].save ( err, saved ) ->
+        if err
+          sails.log.debug "Team member save err #{ JSON.stringify err }"
         else
-          sails.log.debug "It is saved"
-      counter++
+          sails.log.debug "Team member saved"
 
-      team_create_associations( members, id, counter, cb )
+        ++index
+        do_team_association( team_members, index, callback )
 
 
-    if body.teams_array.length > 0
-      for team in body.teams_array
-        Team.findOne( id: team ).populate('team_members').then( ( team_found ) ->
-          sails.log.debug "Team found #{ JSON.stringify team_found }"
-          team_create_associations( team_found.team_members, team, 0, ( err, done ) ->
-            if err?
-              sails.log.debug "Nope"
-            else
-              sails.log.debug "Team: #{ team } done"
-          )
-        ).catch( ( team_find_err ) ->
-          sails.log.debug "Team find error #{ JSON.stringify team_find_err }"
 
-        )
-        
+    Team.findOne( team_id ).populate('team_members').then( ( team ) ->
+      sails.log.debug "Found team #{ JSON.stringify team.team_members.length }"
+
+      do_team_association( team.team_members, 0, cb )
+
+    ).catch( ( team_find_err ) ->
+      sails.log.debug "Team find err #{ JSON.stringify team_find_err }"
+    )
+  
 
 
 
