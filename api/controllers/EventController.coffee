@@ -8,7 +8,7 @@
 module.exports = {
   
   create: (req, res) -> #user association happens in afterCreate callback
-    sails.log.debug "Hit the events controller/create_event"
+    sails.log.debug "Hit the events controller/create"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     req.body.price = parseInt( req.body.price )
     req.body.start_date =  DateService.create_timestamp( req.body.start_date )
@@ -18,10 +18,39 @@ module.exports = {
     ).then( ( event_created ) ->
       sails.log.debug "Event create response #{ JSON.stringify event_created }"
       GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
+      EventService.team_event_associations( event_created.event_team, event_created.id, ( associations_err, cb ) ->
+        if associations_err?
+          sails.log.debug "Event create team_event_associations err #{ JSON.stringify associations_err }"
+        else 
+          sails.log.debug "Event created with associations"
+          res.json event_created
+      )
       res.json event_created
     ).catch((err) ->
       sails.log.debug "Create event error #{ JSON.stringify err }"
       res.negotiate err
+    )
+
+  create_multi_event: ( req, res ) -> # Create event for multiple teams or managers
+    sails.log.debug "Hit the EventController/create_multi_event"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    req.body.price = parseInt( req.body.price )
+    req.body.event_details.start_date =  DateService.create_timestamp( req.body.event_details.start_date )
+    req.body.event_details_date = DateService.create_timestamp( req.body.event_details.end_date )
+    Event.create(
+      req.body.event_details
+    ).then( ( multi_event ) ->
+      sails.log.debug "Multi event created #{ JSON.stringify multi_event }"
+      res.json multi_event
+      EventService.org_event_associations( req.body, ( org_event_associations_err, org_event_associations ) ->
+        if err?
+          sails.log.debug "org_event_associations_err #{ JSON.stringify org_event_associations_err }"
+        else
+          sails.log.debug "org_event_associations done"
+      )
+    ).catch( ( multi_event_err ) ->
+      sails.log.debug "Multi event error #{ JSON.stringify multi_event_err }"
+      res.negotiate multi_event_err
     )
 
     

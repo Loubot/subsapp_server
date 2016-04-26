@@ -5,7 +5,7 @@ module.exports = {
     sails.log.debug "Authservice check_club_admin"
     sails.log.debug "Params #{ JSON.stringify user } #{ id }"
 
-    return parseInt( user.orgs[0].id ) == parseInt( id )
+    return parseInt( user.org[0].id ) == parseInt( id )
 
   super_admin: ( user )->
     sails.log.debug "Authservice super admin"

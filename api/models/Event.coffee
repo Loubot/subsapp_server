@@ -59,23 +59,23 @@ module.exports =
   #   next()
   #   return
 
-  afterCreate: ( values, next ) ->
-    sails.log.debug "Event values #{ JSON.stringify values }"
+  # afterCreate: ( values, next ) ->
+  #   sails.log.debug "Event values #{ JSON.stringify values }"
     
-    Team.findOne( id: values.event_team ).populate('team_members').then( ( team ) ->
-      sails.log.debug "Event afterCreate Team find #{ JSON.stringify team }"
-      for user in team.team_members
-        sails.log.debug "User loop #{ JSON.stringify user }"
-        user.user_events.add values.id
-        user.save ( err, saved ) ->
-          sails.log.debug "Event afterCreate User save err #{ JSON.stringify err }" if err?
-          sails.log.debug "Event afterCreate User save #{ JSON.stringify saved }" 
+  #   Team.findOne( id: values.event_team ).populate('team_members').then( ( team ) ->
+  #     sails.log.debug "Event afterCreate Team find #{ JSON.stringify team }"
+  #     for user in team.team_members
+  #       sails.log.debug "User loop #{ JSON.stringify user }"
+  #       user.user_events.add values.id
+  #       user.save ( err, saved ) ->
+  #         sails.log.debug "Event afterCreate User save err #{ JSON.stringify err }" if err?
+  #         sails.log.debug "Event afterCreate User save #{ JSON.stringify saved }" 
 
-      next()
+  #     next()
 
-    ).catch ( err ) ->
-      sails.log.debug "Event afterCreate Team find err #{ JSON.stringify err }"
-      next( err )
+  #   ).catch ( err ) ->
+  #     sails.log.debug "Event afterCreate Team find err #{ JSON.stringify err }"
+  #     next( err )
 
 
 

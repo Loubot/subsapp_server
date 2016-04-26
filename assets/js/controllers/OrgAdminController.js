@@ -271,8 +271,7 @@ angular.module('subzapp').controller('OrgAdminController', [
       return COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
         console.log("Got teams and managers");
         console.log(resp.data.managers);
-        $scope.managers = resp.data.managers;
-        return $scope.multi_event.name = "Loubto";
+        return $scope.managers = resp.data.managers;
       }), function(errResponse) {
         console.log("Get teams and managers error");
         return console.log(errResponse);
@@ -281,7 +280,19 @@ angular.module('subzapp').controller('OrgAdminController', [
     return $scope.create_multi_event = function() {
       console.log("teams array " + (JSON.stringify($scope.teams_array)));
       console.log("managers array " + (JSON.stringify($scope.managers_array)));
-      return console.log($scope.multi_event);
+      return COMMS.POST("/event/create-multi-event", {
+        teams_array: $scope.teams_array,
+        managers_array: $scope.managers_array,
+        event_details: $scope.multi_event
+      }).then((function(resp) {
+        console.log("Multi event response");
+        console.log(resp);
+        return alertify.success("Created event");
+      }), function(errResponse) {
+        console.log("Multi event error");
+        console.log(errResponse);
+        return alertify.error("Failed to create event");
+      });
     };
   }
 ]);

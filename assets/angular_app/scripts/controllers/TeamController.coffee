@@ -215,9 +215,9 @@ angular.module('subzapp').controller('TeamController', [
       
       $scope.map.setZoom( zoom )
     
-      $scope.map.setCenter
-        lat: lat
-        lng: lng
+      # $scope.map.setCenter
+      #   lat: lat
+      #   lng: lng
 
 
       if set_markers
@@ -260,14 +260,17 @@ angular.module('subzapp').controller('TeamController', [
     uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
       $scope.map = new (google.maps.Map)(document.getElementById('map-container'),
         center:
-          lat: 51.9181688
-          lng: -8.5039876
-        zoom: 15)
+          lat: 51.8959843
+          lng: -8.5330899
+        zoom: 8)
       $scope.markers = new Array()
 
     $( document ).on 'shown.bs.modal', '#add_locations', ->
+      # $scope.map.center = 
+      #   lat: 51.8959843
+      #   lng: -8.5330899
     
-      $scope.location.location_owner = $scope.org.name # set name of location_owner in text field
+      # $scope.location.location_owner = $scope.org.name # set name of location_owner in text field
       google.maps.event.trigger($scope.map, 'resize')
 
       $scope.map.addListener 'click', ( e ) ->

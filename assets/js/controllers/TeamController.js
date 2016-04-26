@@ -164,10 +164,6 @@ angular.module('subzapp').controller('TeamController', [
       }
       $scope.markers = new Array();
       $scope.map.setZoom(zoom);
-      $scope.map.setCenter({
-        lat: lat,
-        lng: lng
-      });
       if (set_markers) {
         marker = new google.maps.Marker({
           position: {
@@ -203,15 +199,14 @@ angular.module('subzapp').controller('TeamController', [
     uiGmapGoogleMapApi.then(function(maps) {
       $scope.map = new google.maps.Map(document.getElementById('map-container'), {
         center: {
-          lat: 51.9181688,
-          lng: -8.5039876
+          lat: 51.8959843,
+          lng: -8.5330899
         },
-        zoom: 15
+        zoom: 8
       });
       return $scope.markers = new Array();
     });
     $(document).on('shown.bs.modal', '#add_locations', function() {
-      $scope.location.location_owner = $scope.org.name;
       google.maps.event.trigger($scope.map, 'resize');
       return $scope.map.addListener('click', function(e) {
         $scope.location.lat = e.latLng.lat();

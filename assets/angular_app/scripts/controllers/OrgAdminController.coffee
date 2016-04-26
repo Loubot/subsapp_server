@@ -330,7 +330,6 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Got teams and managers"
         console.log resp.data.managers
         $scope.managers = resp.data.managers
-        $scope.multi_event.name = "Loubto"
         # $scope.teams_array = $scope.org.teams.map( ( team ) ->
         #   team.id
         # )
@@ -342,7 +341,19 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.create_multi_event = ->
       console.log "teams array #{ JSON.stringify $scope.teams_array }"
       console.log "managers array #{ JSON.stringify $scope.managers_array }"
-      console.log $scope.multi_event
+      COMMS.POST(
+        "/event/create-multi-event"
+        teams_array: $scope.teams_array
+        managers_array: $scope.managers_array
+        event_details: $scope.multi_event
+      ).then ( ( resp ) ->
+        console.log "Multi event response"
+        console.log resp
+        alertify.success "Created event"
+      ), ( errResponse ) ->
+        console.log "Multi event error"
+        console.log errResponse
+        alertify.error "Failed to create event"
       
 
 
