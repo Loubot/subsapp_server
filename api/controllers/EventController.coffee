@@ -4,7 +4,7 @@
 # @description :: Server-side logic for managing Events
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
-
+Promise = require('bluebird')
 module.exports = {
   
   create: (req, res) -> #user association happens in afterCreate callback
@@ -40,37 +40,56 @@ module.exports = {
 
     team_events = new Array()
 
-    sails.log.debug req.body.teams_array.length
-    create_events = ( teams_array, index ) ->
-      console.log "index #{ index }"
-      console.log "teams array #{ teams_array.length }"
-      if index >= teams_array.length
-        console.log "Finished="
-        res.json index
-        return false
+    # create_events = ( teams_array, index ) -> #recursively create events
+    #   console.log "index #{ index }"
+    #   console.log "teams array #{ teams_array.length }"
+    #   if index >= teams_array.length
+    #     console.log "Finished="
+    #     res.json index
+    #     return false
         
-      ++index
-      req.body.event_details.event_team = index
-      Event.create( req.body.event_details ).then( ( event_created ) ->
-        sails.log.debug "Event created #{ JSON.stringify event_created }"
-        EventService.org_event_associations( event_created.id, index, ( err, resp ) ->
-          if err
-            sails.log.debug "Multiple associations err"
+    #   ++index
+    #   req.body.event_details.event_team = index
+    #   Event.create( req.body.event_details ).then( ( event_created ) ->
+    #     sails.log.debug "Event created #{ JSON.stringify event_created }"
+    #     EventService.org_event_associations_clubs( event_created.id, index, ( err, resp ) ->
+    #       if err
+    #         sails.log.debug "Multiple associations err"
+    #       else
+    #         sails.log.debug "Multiple associations done"
+    #     )
+    #   ).catch( ( event_created_err ) ->
+    #     sails.log.debug "Event created err #{ JSON.stringify event_created_err }"
+    #   )
+
+
+    #   create_events( teams_array, index ) #recursively create events
+
+    # create_events( req.body.teams_array, 0 ) #recursively create events
+
+    if req.body.managers_array.length > 0
+
+      Promise.all([
+        User.find( { id: req.body.managers_array }, select: ['id'] ).populate('gcm_tokens')
+        Event.create( req.body.event_details )
+      ]).spread( ( managers, managers_event_created ) ->
+        sails.log.debug "Managers found #{ JSON.stringify managers }"
+        sails.log.debug "Managers event #{ JSON.stringify managers_event_created }"
+        
+        EventService.org_event_associations_managers( managers, managers_event_created.id, ( err, done ) ->
+          if err?
+            sails.log.debug "bla"
           else
-            sails.log.debug "Multiple associations done"
+            sails.log.debug "associations done"
+            res.json managers_event_created
         )
-      ).catch( ( event_created_err ) ->
-        sails.log.debug "Event created err #{ JSON.stringify event_created_err }"
+        
+      ).catch( ( managers_find_event_err ) ->
+        sails.log.debug "Manager find/event create error #{ JSON.stringify managers_find_event_err }"
+        res.negotiate managers_find_event_err
       )
-
-
-      create_events( teams_array, index )
-
-    create_events( req.body.teams_array, 0 )
-    console.log "i am here"
-      
-
-      
+  
+    
       
 
     

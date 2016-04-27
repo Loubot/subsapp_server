@@ -54,6 +54,10 @@ module.exports = {
     ).catch( ( user_ids_gcm_tokens_err ) ->
       sails.log.debug "User ids and gcm tokens err #{ JSON.stringify user_ids_gcm_tokens_err }"
     )
+
+  multi_event_teams_send_message: ( event_created, teams ) ->
+    sails.log.debug "Hit the GCMService/multi_event_teams_send_message"
+    
     
 
     

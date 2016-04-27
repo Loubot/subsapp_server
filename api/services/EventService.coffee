@@ -55,6 +55,34 @@ module.exports = {
     )
   
 
+  org_event_associations_managers: ( managers, event_id, cb ) ->
+    sails.log.debug "Hit the EventService/org_event_associations_managers"
+    sails.log.debug "Managers #{ JSON.stringify managers }"
+
+    do_manager_associations = ( manager_array, index, event_id, callback ) ->
+      sails.log.debug "do_manager_associations index #{ index }"
+      sails.log.debug "do_manager_associations manager_array #{ manager_array.length }"
+
+      if index >= manager_array.length
+        sails.log.debug "Finished do_manager_associations"
+        callback( null, "We are finished managers" )
+        return false
+
+      sails.log.debug "Manager! #{ JSON.stringify manager_array[index] }"
+
+      manager_array[ index ].user_events.add( event_id )
+      manager_array[ index ].save ( err, saved ) ->
+        if err
+          sails.log.debug "Manger save error #{ JSON.stringify err }"
+        else
+          sails.log.debug "Manager saved"
+
+        ++index
+        do_manager_associations( manager_array, index, event_id, callback ) # back to the start
+
+
+    do_manager_associations( managers, 0, event_id, cb )
+
 
 
 }
