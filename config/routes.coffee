@@ -49,7 +49,7 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'findOne'
 
-  'post /user/edit' :
+  'post /user/edit/:id' :
         controller:             'UserController'
         action:                 'update'
 
