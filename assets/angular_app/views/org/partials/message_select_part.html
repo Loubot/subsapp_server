@@ -109,10 +109,12 @@
           </div>
 
           <div class="form-group text-center">
-            <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register">
+            <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register"
+              ng-disabled="(teams_array.length + managers_array.length) == 0"
+            >
             
           </div> <!-- end of form-group text-center -->
-
+          
         </form> <!-- end of send_team_message() form-->
 
       </div> <!-- end of modal-body -->
