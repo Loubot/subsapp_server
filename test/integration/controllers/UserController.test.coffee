@@ -4,13 +4,26 @@ request = require('supertest')
 describe 'Find user id = 1', ->
   token = null
   user = null
+
+  it "should register a user", (done) ->
+    request(sails.hooks.http.app).post('/auth/signup').set('Accept', 'application/json').send(
+      'email': 'lllouis@yahoo.com'
+      'password': 'Football1').expect('Content-Type', /json/).expect(200).end (err, res) ->
+      sails.log.debug "User register res"
+      
+      token = res.body.token
+      user = res.body.user
+      user.id.should.equal 1
+      done()
+
+    
+
   it 'should create user session for valid user', (done) ->
     request(sails.hooks.http.app).post('/auth/signin').set('Accept', 'application/json').send(
       'email': 'lllouis@yahoo.com'
       'password': 'Football1').expect('Content-Type', /json/).expect(200).end (err, res) ->
       sails.log.debug "res"
-      token = res.body.token
-      user = res.body.user
+      
       sails.log.debug "error #{ JSON.stringify err if err? }"
       user.id.should.equal 1
       # res.body.short_name.should.equal 'Test user'

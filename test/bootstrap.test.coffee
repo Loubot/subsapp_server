@@ -1,23 +1,21 @@
-Sails = require('sails')
-# Global before hook
+sails = require('sails')
 before (done) ->
-  # Lift Sails with test database
-  Sails.lift {
-    log: level: 'error'
-    models:
-      connection: 'test'
-      migrate: 'drop'
-  }, (err) ->
+  # Increase the Mocha timeout so that Sails has enough time to lift.
+  @timeout 30000
+  sails.log.debug "Hello"
+  sails.lift {
+      log: level: 'debug'
+      models:
+        connection: 'test'
+        migrate: 'drop'
+    }, (err, server) ->
     if err
       return done(err)
-    # Anything else you need to set up
-    # ...
-    done()
+    # here you can load fixtures, etc.
+    done err, sails
     return
   return
-# Global after hook
 after (done) ->
-  console.log()
-  # Skip a line before displaying Sails lowering logs
-  Sails.lower done
+  # here you can clear fixtures, etc.
+  sails.lower done
   return
