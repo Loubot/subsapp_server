@@ -9,7 +9,7 @@ module.exports = (req, res, next) ->
   sails.log.debug "Body #{ JSON.stringify req.body }"
   if !Boolean( req.user.club_admin )
     sails.log.debug "No club admin flag"
-    return res.negotiate "You are not authourised"
+    return res.negotiate "You are not authourised/has club flag"
 
 
   next()
