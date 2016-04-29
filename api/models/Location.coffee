@@ -75,7 +75,7 @@ module.exports =
 
   beforeCreate: ( values, cb ) -> #geocode address
     geocoderProvider = 'google'
-    httpAdapter = 'https'
+    httpAdapter = 'http'
     extra = apiKey: sails.config.stripe.maps_Key
     geocoder = require('node-geocoder')( geocoderProvider, httpAdapter, extra )
 
