@@ -24,11 +24,7 @@ module.exports.connections =
   localDiskDb: adapter: 'sails-disk'
 
   test:
-    adapter: 'sails-mysql'
-    host: 'localhost'
-    user: 'loubot'
-    password: 'pass'
-    database: 'test_db'
+    adapter: 'sails-memory'
 
   subsapp_db:
     adapter: 'sails-mysql'

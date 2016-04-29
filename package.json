@@ -56,6 +56,7 @@
     "run-sequence": "^1.1.5",
     "sails": "^0.11.1",
     "sails-disk": "~0.10.0",
+    "sails-memory": "^0.10.6",
     "sails-mysql": "^0.11.1",
     "sails-postgresql": "^0.10.17",
     "should": "^8.3.1",
