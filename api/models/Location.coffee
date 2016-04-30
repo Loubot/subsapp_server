@@ -15,6 +15,7 @@ module.exports =
     location_owner:
       type: 'string'
       defaultsTo: null
+      required: true
 
     location_name:
       type: 'string'
