@@ -68,7 +68,7 @@
   "scripts": {
     "debug": "node debug app.js",
     "start": "sails lift",
-    "test": "mocha  test/bootstrap.test.coffee test/integration/models/User.test.coffee test/integration/controllers/UserController.test.coffee test/integration/controllers/OrgController.test.coffee test/integration/controllers/EventController.test.coffee"
+    "test": "mocha  test/bootstrap.test.coffee test/integration/models/User.test.coffee test/integration/models/Org.test.coffee test/integration/models/Location.test.coffee test/integration/controllers/UserController.test.coffee test/integration/controllers/OrgController.test.coffee test/integration/controllers/EventController.test.coffee"
   },
   "engines": {
     "node": "~4.2.2",

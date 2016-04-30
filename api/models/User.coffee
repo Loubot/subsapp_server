@@ -142,7 +142,7 @@ module.exports =
     toJSON: ->
       obj = @toObject()
       delete obj.password
-      delete obj.socialProfiles
+      # delete obj.socialProfiles
       obj
 
   # beforeUpdate: (values, next) ->
