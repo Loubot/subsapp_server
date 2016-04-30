@@ -40,6 +40,20 @@ module.exports =
       type: 'string'
       defaultsTo: ''
 
+    mobile_number1:
+      type: 'string'
+      defaultsTo: null
+
+    mobile_number2:
+      type: 'string'
+      defaultsTo: null
+
+    fair_number:
+      type: 'string'
+      defaultsTo: null
+      
+
+
     dob_stamp:
       type: 'date'
       defaultsTo: null

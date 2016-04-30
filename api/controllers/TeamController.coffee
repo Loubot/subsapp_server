@@ -11,9 +11,8 @@ module.exports = {
   findOne: ( req, res ) ->
     sails.log.debug "hit the team controller/findOne"
     sails.log.debug "Params #{ req.param('id') }"
-    console.log 'yipyip'
     Team.findOne( { id: req.param('id') } ).populateAll().then( ( team ) ->
-      console.log "Team findOne #{ JSON.stringify team }"
+      sails.log.debub "Team findOne #{ JSON.stringify team }"
       res.json team
     ).catch( ( err ) ->
       sails.log.debug "Team find one err #{ JSON.stringify err }"
@@ -147,26 +146,24 @@ module.exports = {
     )
 
   update_members: ( req, res ) ->
-    if AuthService.check_club_admin( req.user, req.param('id') )
-      sails.log.debug "Hit the TeamController/update_members"
-      sails.log.debug "Params #{ JSON.stringify req.body }"
-      sails.log.debug "Param #{ req.param('id') }"
+    
+    sails.log.debug "Hit the TeamController/update_members"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    sails.log.debug "Param #{ req.param('id') }"
 
-      Team.update( { id: req.param('id') }, 'team_members': req.body.team_members ).then( ( updated ) ->
-        sails.log.debug "Team members update #{ JSON.stringify updated }"
-        Team.findOne( id: req.param('id') ).populate('team_members').then( ( updated_team_found ) ->
-          sails.log.debug "Updated team found #{ JSON.stringify updated_team_found }"
-          res.json updated_team_found
-        ).catch( ( updated_team_found_err ) ->
-          sails.log.debug "Upated team found error #{ JSON.stringify updated_team_found_err }"
-          res.negotiate updated_team_found_err
-        )
-      ).catch( ( err ) ->
-        sails.log.debug "Team update members error #{ JSON.stringify err }"
-        res.negotiate err
+    Team.update( { id: req.param('id') }, 'team_members': req.body.team_members ).then( ( updated ) ->
+      sails.log.debug "Team members update #{ JSON.stringify updated }"
+      Team.findOne( id: req.param('id') ).populate('team_members').then( ( updated_team_found ) ->
+        sails.log.debug "Updated team found #{ JSON.stringify updated_team_found }"
+        res.json updated_team_found
+      ).catch( ( updated_team_found_err ) ->
+        sails.log.debug "Upated team found error #{ JSON.stringify updated_team_found_err }"
+        res.negotiate updated_team_found_err
       )
-    else
-      res.negotiate "You are not authorised"
+    ).catch( ( err ) ->
+      sails.log.debug "Team update members error #{ JSON.stringify err }"
+      res.negotiate err
+    )   
 
 
 

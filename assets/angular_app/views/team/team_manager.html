@@ -18,6 +18,13 @@
 
       <h2>Create an event</h2>
 
+      <select class="form-group black_text">
+        <option>Home Game</option>
+        <option>Away Game</option>
+        <option>Training</option>
+        <option>Other</option>
+      </select> <!-- end of form-group -->
+
       <div class="form-group">
         <label class="col-sm-2">Name: </label>
         <div class="col-sm-10">
@@ -81,7 +88,7 @@
           <option value="" >---Please select location---</option>
           <option ng-repeat="location in locations" value="{{ location.id }}" 
                   >
-            {{ location.address }}
+            {{ location.location_owner }}, {{ location.location_name }}
           </option>
           <option value="new_location" >---Create new location?---</option>
         </select> <!-- end of form-control -->
@@ -213,35 +220,4 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="add_locations" tabindex="-1" role="dialog" aria-labelledby="add_locations">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title black_text" id="add_locations_label">Add a new location <small>Center map on your desired location</small></h4>
-      </div>
-      <div class="modal-body">
-
-        <div class="angular-google-map-container">
-
-          <ui-gmap-google-map center="map.center" zoom="map.zoom" 
-              draggable="true" options="map.options" events="map.events" control="googlemap">
-
-          <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.idKey"></ui-gmap-marker>
-
-        </div> <!-- end of angular-google-map-container -->
-
-        <form ng-submit="save_address()" ng-if="org">
-          <input id="pac-input" class="form-control controls" ng-class="{ appear: show_map }" ng-change="find_address( map.address )" 
-            ng-model="map.address" ng-model-options='{ debounce: 1000 }' type="text" placeholder="Search Box">
-          <input type="submit" value="Save Address" ng-class="{ appear: show_map }" class="controls button btn btn-success">
-        </form>
-
-      </div> <!-- end of modal-body -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div> <!-- end of footer -->
-    </div> <!-- end of modal-content -->
-  </div> <!-- end of modal-dialog -->
-</div> <!-- end of modal fade -->
+<div ng-include="'/angular_app/views/global_partials/add_locations_part.html'"></div>

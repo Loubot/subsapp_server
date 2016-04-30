@@ -10,6 +10,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         return alertify.error('You are not a club admin. Contact subzapp admin team for assitance');
       }
     };
+    $scope.location = {};
     console.log('OrgAdmin Controller');
     user_token = window.localStorage.getItem('user_token');
     user.get_user().then((function(res) {
@@ -25,7 +26,10 @@ angular.module('subzapp').controller('OrgAdminController', [
           console.log(org_and_teams);
           $scope.teams = org_and_teams.data.org.teams;
           $scope.files = org_and_teams.data.s3_object.Contents;
-          return $scope.org = org_and_teams.data.org;
+          $scope.org = org_and_teams.data.org;
+          $scope.locations = org_and_teams.data.org.org_locations;
+          console.log("Locations");
+          return console.log($scope.locations);
         }), function(errResponse) {
           console.log("Get teams failed");
           console.log(errResponse);
@@ -46,7 +50,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data.user.orgs;
         $scope.org = response.data.org;
         $rootScope.USER = response.data.user;
-        $scope.orgs = response.data.user.orgs;
+        $scope.show_team_admin = response.data.user.org;
         console.log("Org set: " + (JSON.stringify($scope.org)));
         alertify.success("Club created successfully");
         $('.business_name').val("");
@@ -172,50 +176,40 @@ angular.module('subzapp').controller('OrgAdminController', [
         }), 2000);
       }), 2500);
     };
-    set_map = function(lat, lng, set_markers, zoom) {
-      var marker;
+    set_map = function(lat, lng, set_markers, zoom, move) {
+      var i, len, marker, ref;
+      if (!($scope.markers != null)) {
+        $scope.markers = new Array();
+      }
+      ref = $scope.markers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        marker = ref[i];
+        marker.setMap(null);
+      }
+      $scope.markers = new Array();
       if (zoom == null) {
         zoom = 11;
       }
-      if (!$scope.map) {
-        $scope.map = {
-          center: {
-            latitude: lat,
-            longitude: lng
+      if ($scope.map != null) {
+        $scope.map.setZoom(zoom);
+      }
+      if (move && ($scope.map != null)) {
+        $scope.map.setCenter({
+          lat: lat,
+          lng: lng
+        });
+      }
+      if (set_markers && (typeof google !== "undefined" && google !== null)) {
+        marker = new google.maps.Marker({
+          position: {
+            lat: lat,
+            lng: lng
           },
-          zoom: zoom,
-          markers: []
-        };
-      } else {
-        $scope.map.center = {
-          latitude: lat,
-          longitude: lng
-        };
-        $scope.map.zoom = zoom;
+          title: 'Hello World!'
+        });
+        $scope.markers.push(marker);
+        return marker.setMap($scope.map);
       }
-      if (set_markers) {
-        $scope.map.markers = new Array();
-        console.log("setting markers");
-        marker = {
-          idKey: Date.now(),
-          coords: {
-            latitude: lat,
-            longitude: lng
-          }
-        };
-        $scope.map.markers.push(marker);
-      }
-      $scope.map.events = {
-        dragend: function(point) {
-          $scope.map.center = {
-            latitude: point.center.lat(),
-            longitude: point.center.lng()
-          };
-          set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
-          return drag_display_info();
-        }
-      };
-      return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     $scope.find_address = function(address) {
       var geocoder;
@@ -223,19 +217,19 @@ angular.module('subzapp').controller('OrgAdminController', [
       return geocoder.geocode({
         address: address
       }, function(results, status) {
-        $scope.map.markers = [];
         console.log(results);
-        set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
-        return $scope.$apply();
+        return set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
       });
     };
     $scope.save_address = function() {
-      if ($scope.org.org_locations.length > 0) {
-        $scope.map.id = $scope.org.org_locations[0].id;
+      console.log($scope.location);
+      if ($scope.location != null) {
+        $scope.location.id = $scope.location.id;
       }
-      $scope.map.user_id = $rootScope.USER.id;
-      $scope.map.org_id = $scope.org.id;
-      return COMMS.POST('/location', $scope.map).then((function(res) {
+      console.log($scope.location);
+      $scope.location.user_id = $rootScope.USER.id;
+      $scope.location.org_id = $scope.org.id;
+      return COMMS.POST('/location', $scope.location).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
         return console.log(res);
@@ -245,16 +239,62 @@ angular.module('subzapp').controller('OrgAdminController', [
         return alertify.error("Failed to save location");
       });
     };
-    uiGmapGoogleMapApi.then(function(maps) {});
-    return $scope.$watch('org', function(old_org, new_org) {
-      if (($scope.org != null) && $scope.org.org_locations.length > 0) {
-        $scope.map.address = $scope.org.org_locations[0].address;
-        return set_map($scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true);
-      } else {
-        set_map(51.9181688, -8.5039876, true);
-        return display_info();
+    uiGmapGoogleMapApi.then(function(maps) {
+      $scope.map = new google.maps.Map(document.getElementById('map-container'), {
+        center: {
+          lat: 51.9181688,
+          lng: -8.5039876
+        },
+        zoom: 15
+      });
+      $scope.markers = new Array();
+      set_map(51.9181688, -8.5039876, true, null, true);
+      return $scope.map.addListener('click', function(e) {
+        $scope.location.lat = e.latLng.lat();
+        $scope.location.lng = e.latLng.lng();
+        return set_map(e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom, false);
+      });
+    });
+    $scope.$watch('org', function(old_org, new_org) {
+      if ($scope.org != null) {
+        console.log("yep");
+        if ($scope.org.org_locations.length > 0) {
+          $scope.location = $scope.org.org_locations[0];
+          return set_map($scope.location.lat, $scope.location.lng, true, 15, true);
+        }
       }
     });
+    $scope.multi_event = {};
+    $scope.managers_array = new Array();
+    $scope.teams_array = new Array();
+    $(document).on('shown.bs.modal', '#multi_event_modal', function(e) {
+      return COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
+        console.log("Got teams and managers");
+        console.log(resp.data);
+        return $scope.managers = resp.data.managers;
+      }), function(errResponse) {
+        console.log("Get teams and managers error");
+        return console.log(errResponse);
+      });
+    });
+    return $scope.create_multi_event = function() {
+      console.log('yep');
+      console.log("teams array " + (JSON.stringify($scope.teams_array)));
+      console.log("managers array " + (JSON.stringify($scope.managers_array)));
+      return COMMS.POST("/event/create-multi-event", {
+        teams_array: $scope.teams_array,
+        managers_array: $scope.managers_array,
+        event_details: $scope.multi_event
+      }).then((function(resp) {
+        console.log("Multi event response");
+        console.log(resp);
+        return alertify.success("Created event");
+      }), function(errResponse) {
+        console.log("Multi event error");
+        console.log(errResponse);
+        return alertify.error("Failed to create event");
+      });
+    };
   }
 ]);
 
@@ -267,5 +307,7 @@ return_org = function(orgs, search) {
     }
   }
 };
+
+$('#team_message').modal('show');
 
 //# sourceMappingURL=../maps/controllers/OrgAdminController.js.map

@@ -6,7 +6,8 @@ angular.module('subzapp').controller('TeamController', [
     var get_org_and_members, get_team_info, set_map, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
-    $scope.location = null;
+    $scope.location = {};
+    $scope.markers = new Array();
     get_team_info = function() {
       if ($rootScope.USER.club_admin) {
         return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
@@ -152,50 +153,28 @@ angular.module('subzapp').controller('TeamController', [
       });
     };
     set_map = function(lat, lng, set_markers, zoom) {
-      var marker;
+      var i, len, marker, ref;
       if (zoom == null) {
         zoom = 11;
       }
-      if (!$scope.map) {
-        $scope.map = {
-          center: {
-            latitude: lat,
-            longitude: lng
-          },
-          zoom: zoom,
-          markers: []
-        };
-      } else {
-        $scope.map.center = {
-          latitude: lat,
-          longitude: lng
-        };
-        $scope.map.zoom = zoom;
+      ref = $scope.markers;
+      for (i = 0, len = ref.length; i < len; i++) {
+        marker = ref[i];
+        marker.setMap(null);
       }
-      console.log($scope.map);
+      $scope.markers = new Array();
+      $scope.map.setZoom(zoom);
       if (set_markers) {
-        $scope.map.markers = new Array();
-        console.log("setting markers");
-        marker = {
-          idKey: Date.now(),
-          coords: {
-            latitude: lat,
-            longitude: lng
-          }
-        };
-        $scope.map.markers.push(marker);
-        $scope.$apply();
+        marker = new google.maps.Marker({
+          position: {
+            lat: lat,
+            lng: lng
+          },
+          title: 'Hello World!'
+        });
+        $scope.markers.push(marker);
+        marker.setMap($scope.map);
       }
-      $scope.map.events = {
-        dragend: function(point) {
-          console.log('yep');
-          $scope.map.center = {
-            latitude: point.center.lat(),
-            longitude: point.center.lng()
-          };
-          return set_map(point.center.lat(), point.center.lng(), true, $scope.map.zoom);
-        }
-      };
       return console.log("center " + (JSON.stringify($scope.map.center)));
     };
     $scope.find_address = function() {
@@ -203,8 +182,9 @@ angular.module('subzapp').controller('TeamController', [
       geocoder = new google.maps.Geocoder();
       console.log("Address " + $scope.map.address);
       return geocoder.geocode({
-        address: $scope.map.address
+        address: $scope.location.address
       }, function(results, status) {
+        console.log(results);
         $scope.map.markers = [];
         console.log(results);
         return set_map(results[0].geometry.location.lat(), results[0].geometry.location.lng(), true, 15);
@@ -216,24 +196,37 @@ angular.module('subzapp').controller('TeamController', [
         return true;
       }
     };
-    $('#add_locations').on('shown.bs.modal', function() {
-      $scope.show_map = true;
-      set_map(51.9181688, -8.5039876, false);
-      return $scope.$apply();
+    uiGmapGoogleMapApi.then(function(maps) {
+      $scope.map = new google.maps.Map(document.getElementById('map-container'), {
+        center: {
+          lat: 51.8959843,
+          lng: -8.5330899
+        },
+        zoom: 8
+      });
+      return $scope.markers = new Array();
+    });
+    $(document).on('shown.bs.modal', '#add_locations', function() {
+      google.maps.event.trigger($scope.map, 'resize');
+      return $scope.map.addListener('click', function(e) {
+        $scope.location.lat = e.latLng.lat();
+        $scope.location.lng = e.latLng.lng();
+        return set_map(e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom);
+      });
     });
     $scope.save_address = function() {
       console.log("Save address");
-      console.log($scope.map);
-      $scope.map.user_id = $rootScope.USER.id;
-      $scope.map.org_id = $scope.org.id;
-      return COMMS.POST('/location', $scope.map).then((function(res) {
+      console.log($scope.location);
+      $scope.location.user_id = $rootScope.USER.id;
+      $scope.location.org_id = $scope.org.id;
+      return COMMS.POST('/location', $scope.location).then((function(res) {
         console.log("Save adddres response");
         alertify.success("Adddres saved");
         console.log(res.data);
-        return $scope.locations = res.data.org_locations;
+        $scope.locations = res.data.org_locations;
+        return $('#add_locations').modal('hide');
       }), function(errResponse) {
         console.log("Save address error");
-        console.log(errResponse);
         return alertify.error(errResponse.data);
       });
     };

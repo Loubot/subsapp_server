@@ -130,6 +130,32 @@ module.exports = {
         res.negotiate updated_org_err
       )
 
+  get_teams_and_managers: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/get_team_and_managers"
+    sails.log.debug "Params #{ req.param('id') }"
+
+    Org.findOne( id: req.param( 'id') ).populate('teams').then( ( org ) ->
+      sails.log.debug "Org found #{ JSON.stringify org }"
+      manager_ids = new Array()
+      for team in org.teams
+        if team.manager?
+          manager_ids.push team.manager
+          
+      sails.log.debug "Manager ids #{ JSON.stringify manager_ids }"
+      User.find( { id: manager_ids }, select: [ 'id', 'email' ] ).then( ( managers ) ->
+        sails.log.debug "Managers #{ JSON.stringify managers }"
+        res.json
+          org: org
+          managers: managers
+      ).catch( ( manager_err ) ->
+        # sails.log.debug "Manager errors #{ JSON.stringify manager_err }"
+        res.negotiate manager_err
+      )
+    ).catch( ( org_err ) -> 
+      sails.log.debug "Org find err #{ JSON.stringify org_err }"
+      res.negotiate org_err
+    )
+
 
   get_org_team_members: (req, res) ->
     sails.log.debug "Hit the org controller/get_org "

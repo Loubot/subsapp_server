@@ -15,8 +15,8 @@ angular.module('subzapp').controller('TeamController', [
   ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, uiGmapGoogleMapApi ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
-    $scope.location = null
-
+    $scope.location = {}
+    $scope.markers = new Array()
     get_team_info = ->
 
       if $rootScope.USER.club_admin
@@ -28,6 +28,7 @@ angular.module('subzapp').controller('TeamController', [
           console.log res
           $scope.team = res.data.team
           $scope.org = res.data.org
+
           $scope.org_members = res.data.org.org_members
           $scope.locations = res.data.org.org_locations
           
@@ -204,40 +205,32 @@ angular.module('subzapp').controller('TeamController', [
       if !( zoom )?
         zoom = 11
 
-      if !( $scope.map ) #define a new map        
-        $scope.map = 
-          center:
-            latitude: lat
-            longitude: lng
-          zoom: zoom
-          markers: []
+      
+      for marker in $scope.markers
+        marker.setMap( null )
+      $scope.markers = new Array()
 
-      else
-        $scope.map.center = 
-          latitude: lat
-          longitude: lng
-        $scope.map.zoom = zoom    
 
-      console.log $scope.map
+      # console.log " zoom #{ zoom }"
+      
+      $scope.map.setZoom( zoom )
+    
+      # $scope.map.setCenter
+      #   lat: lat
+      #   lng: lng
+
 
       if set_markers
-        $scope.map.markers = new Array()
-        console.log "setting markers"
-        marker =
-          idKey: Date.now()
-          coords:
-            latitude: lat
-            longitude: lng
-        $scope.map.markers.push( marker )
-        $scope.$apply()
+        marker = new (google.maps.Marker)(
+          position: 
+            lat: lat
+            lng: lng
+          title: 'Hello World!')
+        $scope.markers.push marker
 
-      $scope.map.events = # map events. see google maps api for more info
-        dragend: ( point ) ->  # event fired after map drag
-          console.log 'yep'
-          $scope.map.center = 
-            latitude: point.center.lat()
-            longitude: point.center.lng()
-          set_map( point.center.lat(), point.center.lng(), true, $scope.map.zoom )
+        marker.setMap $scope.map
+
+        # google.maps.event.trigger($scope.map, 'resize')
 
           # console.log point
           
@@ -246,7 +239,8 @@ angular.module('subzapp').controller('TeamController', [
     $scope.find_address = -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       console.log "Address #{ $scope.map.address }"
-      geocoder.geocode( address: $scope.map.address, ( results, status ) ->
+      geocoder.geocode( address: $scope.location.address, ( results, status ) ->
+        console.log results
         $scope.map.markers = []
         # console.log "results "
         console.log results
@@ -263,27 +257,44 @@ angular.module('subzapp').controller('TeamController', [
         $('#add_locations').modal 'show'
         return true
 
-    $('#add_locations').on 'shown.bs.modal', ->
-      $scope.show_map = true
-      set_map( 51.9181688, -8.5039876, false )
-      $scope.$apply()
+    uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
+      $scope.map = new (google.maps.Map)(document.getElementById('map-container'),
+        center:
+          lat: 51.8959843
+          lng: -8.5330899
+        zoom: 8)
+      $scope.markers = new Array()
+
+    $( document ).on 'shown.bs.modal', '#add_locations', ->
+      # $scope.map.center = 
+      #   lat: 51.8959843
+      #   lng: -8.5330899
+    
+      # $scope.location.location_owner = $scope.org.name # set name of location_owner in text field
+      google.maps.event.trigger($scope.map, 'resize')
+
+      $scope.map.addListener 'click', ( e ) ->
+        $scope.location.lat = e.latLng.lat()
+        $scope.location.lng = e.latLng.lng()
+        set_map( e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom )
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
       console.log "Save address"
-      console.log $scope.map
-      $scope.map.user_id = $rootScope.USER.id
-      $scope.map.org_id = $scope.org.id
+      console.log $scope.location
+      $scope.location.user_id = $rootScope.USER.id
+      $scope.location.org_id = $scope.org.id
       COMMS.POST( 
-        '/location', $scope.map 
+        '/location', $scope.location 
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"
         console.log res.data
         $scope.locations = res.data.org_locations
+        $('#add_locations').modal 'hide'
         # $scope.parsed_data = res
       ), ( errResponse ) ->
         console.log "Save address error"
-        console.log errResponse
+        # console.log errResponse
         alertify.error errResponse.data
       
       

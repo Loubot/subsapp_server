@@ -1,0 +1,126 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-warning btn-lg center-block" data-toggle="modal" data-target="#multi_event_modal">
+  Create event
+</button>
+
+<!-- Modal -->
+<div class="modal fade black_text" id="multi_event_modal" tabindex="-1" role="dialog" aria-labelledby="multi_event">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="multi_event">Team or manager events</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" ng-submit="create_multi_event()" enctype="application/x-www-form-urlencoded">
+
+          <div class="form-group form_border" >
+            <h4>Select team(s)</h4>
+            <div ng-repeat="team in org.teams">
+              <label >
+                <input type="checkbox" checklist-value="team.id" checklist-model="teams_array"> {{ team.name }} 
+              </label>
+            </div> <!-- end of ng-repeat="team in org.teams" -->
+
+            
+          </div> <!-- end of form-group -->
+
+          <div class="form-group form_border">
+            <h4>Select manager(s)</h4>
+            <div ng-repeat="manager in managers">
+              <label >
+                <input type="checkbox" checklist-value="manager.id" checklist-model="managers_array"> {{ manager.email }} 
+              </label>
+            </div> <!-- end of ng-repeat="manager in managers" -->
+          </div> <!-- end of form-group -->
+
+          <h3 class="text-center">Event details</h3>
+          <div class="form-group">
+            <label class="col-sm-2">Name: </label>
+            <div class="col-sm-10">
+              <input type="text" name="name" ng-model="multi_event.name" class="form-control" placholder:'name' required>
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group">
+            <label class="col-sm-2">Details: </label>
+            <div class="col-sm-10">
+              <input type="text" name="name" ng-model="multi_event.details" class="form-control" placholder:'details' required>
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+            
+
+          <div class="form-group">
+            <label class="col-sm-2">Start Time: </label>
+            <div class="col-sm-10 black_text">
+              <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
+                  <div class="input-group"><input type="text" class="form-control" data-ng-model="multi_event.start_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                  </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="multi_event.start_date" 
+                  data-on-set-time="onTimeSet(newDate, oldDate)"
+                  data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
+                </ul>
+              </div>
+              
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group">
+            <label class="col-sm-2">End Time: </label>
+            <div class="col-sm-10 black_text">
+              <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
+                  <div class="input-group"><input type="text" class="form-control" data-ng-model="multi_event.end_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                  </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="multi_event.end_date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" ng-required="true"/>
+                </ul>
+              </div>
+              
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+
+          <div class="form-group">
+            <label class="col-sm-2">Tokens: </label>
+            <div class="col-sm-10">
+              <input type="number" name="price" ng-model="multi_event.price" class="form-control" placholder:'price'>
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group" >
+            <select class="form-control team_location_select" ng-change="new_location()" ng-model="multi_event.location_id" required>
+              <option value="" >---Please select location---</option>
+              <option ng-repeat="location in locations" value="{{ location.id }}" 
+                      >
+                {{ location.location_name }}
+              </option>
+              <option value="new_location" >---Create new location?---</option>
+            </select> <!-- end of form-control -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group text-center" >
+            <button class="btn btn-info" data-toggle="modal" data-target="#add_locations">Add a new location</button>
+          </div>
+
+          <div class="form-group text-center">
+            <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register"
+              ng-disabled="(teams_array.length + managers_array.length) == 0"
+            >
+            
+          </div> <!-- end of form-group text-center -->
+          
+        </form> <!-- end of send_team_message() form-->
+
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

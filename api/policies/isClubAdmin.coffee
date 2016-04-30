@@ -23,12 +23,12 @@ module.exports = (req, res, next) ->
 
   else if typeof req.param('id') != undefined
     sails.log.debug "isClubAdmin param('id')"
-    if !( parseInt( req.user.orgs[0].id ) == parseInt( req.param('id') ) )
+    if !( parseInt( req.user.org[0].id ) == parseInt( req.param('id') ) )
       return res.negotiate "You are not authourised to view this"
       
   else if typeof req.body.org_id != undefined
     sails.log.debug "isClubAdmin req.body.org_id"
-    if !( parseInt( req.user.orgs[0].id ) == parseInt( req.body.org_id ) )
+    if !( parseInt( req.user.org[0].id ) == parseInt( req.body.org_id ) )
       return res.negotiate "You are not authourised to view this"
 
   next()

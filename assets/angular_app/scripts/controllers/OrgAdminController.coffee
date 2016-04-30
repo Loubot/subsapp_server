@@ -17,6 +17,7 @@ angular.module('subzapp').controller('OrgAdminController', [
         $state.go 'login' 
         alertify.error 'You are not a club admin. Contact subzapp admin team for assitance'
 
+    $scope.location = {}
     console.log 'OrgAdmin Controller'
 
 
@@ -44,6 +45,9 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.teams = org_and_teams.data.org.teams
           $scope.files = org_and_teams.data.s3_object.Contents
           $scope.org = org_and_teams.data.org
+          $scope.locations = org_and_teams.data.org.org_locations
+          console.log "Locations"
+          console.log $scope.locations
         ), ( errResponse ) ->
           
           console.log "Get teams failed"
@@ -71,7 +75,9 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.orgs = response.data.user.orgs
         $scope.org = response.data.org
         $rootScope.USER = response.data.user
-        $scope.orgs = response.data.user.orgs
+
+        $scope.show_team_admin = response.data.user.org
+        
         console.log "Org set: #{ JSON.stringify $scope.org }"
         alertify.success "Club created successfully"
         # $scope.business_form.$setPristine()
@@ -217,51 +223,40 @@ angular.module('subzapp').controller('OrgAdminController', [
       
     
 
-    set_map = ( lat, lng, set_markers, zoom ) -> # set map to new center/ possibly with marker
+    set_map = ( lat, lng, set_markers, zoom, move ) -> # set map to new center/ possibly with marker
+      $scope.markers = new Array() if !( $scope.markers? )
+      for marker in $scope.markers
+        marker.setMap( null )
+      $scope.markers = new Array()
 
       if !( zoom )?
         zoom = 11
+      
+      # console.log " zoom #{ zoom }"
 
-      if !( $scope.map ) #define a new map        
-        $scope.map = 
-          center:
-            latitude: lat
-            longitude: lng
-          zoom: zoom
-          markers: []
+      $scope.map.setZoom( zoom ) if $scope.map?
 
-      else
-        $scope.map.center = 
-          latitude: lat
-          longitude: lng
-        $scope.map.zoom = zoom    
+      if move and $scope.map?
+        $scope.map.setCenter
+          lat: lat
+          lng: lng
 
-      # console.log $scope.map
-      if set_markers
-        $scope.map.markers = new Array()
-        console.log "setting markers"
-        marker =
-          idKey: Date.now()
-          coords:
-            latitude: lat
-            longitude: lng
-        $scope.map.markers.push( marker )
 
-      $scope.map.events = # map events. see google maps api for more info
-        dragend: ( point ) ->  # event fired after map drag
-          $scope.map.center = 
-            latitude: point.center.lat()
-            longitude: point.center.lng()
-          set_map( point.center.lat(), point.center.lng(), true, $scope.map.zoom )
-          # console.log $scope.map.center
-          drag_display_info()
-      console.log "center #{ JSON.stringify $scope.map.center }"
+      if set_markers and google?
+        marker = new (google.maps.Marker)(
+          position: 
+            lat: lat
+            lng: lng
+          title: 'Hello World!')
+        $scope.markers.push marker
+
+        marker.setMap $scope.map     
 
     $scope.find_address = ( address ) -> # event triggered after user has stopped typing for a second. Debounce set on html element
       geocoder = new google.maps.Geocoder() # geocode address to lat/lng coordinate
       # console.log "Address #{ address }"
       geocoder.geocode( address: address, ( results, status ) ->
-        $scope.map.markers = []
+        
         # console.log "results "
         console.log results
         # console.log "Status #{ JSON.stringify status }"
@@ -269,18 +264,20 @@ angular.module('subzapp').controller('OrgAdminController', [
         set_map( results[0].geometry.location.lat(), results[0].geometry.location.lng() , true, 15 )
         
         
-        $scope.$apply() # update scope
+        
           
       )
 
     $scope.save_address = -> # event triggered when user clicks save address button. 
-      if $scope.org.org_locations.length > 0
-        $scope.map.id = $scope.org.org_locations[0].id
+      console.log $scope.location
+      if $scope.location?
+        $scope.location.id = $scope.location.id
       # console.log $scope.map.center
-      $scope.map.user_id = $rootScope.USER.id
-      $scope.map.org_id = $scope.org.id
+      console.log $scope.location
+      $scope.location.user_id = $rootScope.USER.id
+      $scope.location.org_id = $scope.org.id
       COMMS.POST( 
-        '/location', $scope.map 
+        '/location', $scope.location 
       ).then ( ( res ) ->
         console.log "Save adddres response"
         alertify.success "Adddres saved"
@@ -293,17 +290,73 @@ angular.module('subzapp').controller('OrgAdminController', [
 
      ###################### BEGIN MAPS ################################
     uiGmapGoogleMapApi.then (maps) -> # event fired when maps are loaded
-      
+      $scope.map = new (google.maps.Map)(document.getElementById('map-container'),
+        center:
+          lat: 51.9181688
+          lng: -8.5039876
+        zoom: 15)
+      $scope.markers = new Array()
+      set_map( 51.9181688, -8.5039876, true, null, true )
+
+      $scope.map.addListener 'click', ( e ) ->
+        $scope.location.lat = e.latLng.lat()
+        $scope.location.lng = e.latLng.lng()
+        set_map( e.latLng.lat(), e.latLng.lng(), true, $scope.map.zoom, false )
+        
+       
+        
         
 
     $scope.$watch 'org', ( old_org, new_org ) -> # watch org for changes and update coords
-      if $scope.org? and $scope.org.org_locations.length > 0
-        $scope.map.address = $scope.org.org_locations[0].address
-        set_map( $scope.org.org_locations[0].lat, $scope.org.org_locations[0].lng, true )       
-  
-      else        
-        set_map( 51.9181688, -8.5039876, true)
-        display_info()
+      if $scope.org?
+        console.log "yep"
+        if $scope.org.org_locations.length > 0
+          $scope.location = $scope.org.org_locations[0]
+          set_map( $scope.location.lat, $scope.location.lng, true, 15, true )       
+ 
+
+ ####################################################################
+ #                   Message stuff                                  #
+ ####################################################################
+    #initiliase scopes
+    $scope.multi_event = {}
+    $scope.managers_array = new Array()
+    $scope.teams_array = new Array()
+
+    $(document).on 'shown.bs.modal', '#multi_event_modal', ( e )->
+      COMMS.GET(
+        "/org/teams-and-mangers/#{ $scope.org.id }"
+      ).then ( ( resp) ->
+        console.log "Got teams and managers"
+        console.log resp.data
+        $scope.managers = resp.data.managers
+        # $scope.teams_array = $scope.org.teams.map( ( team ) ->
+        #   team.id
+        # )
+      ), ( errResponse ) ->
+        console.log "Get teams and managers error"
+        console.log errResponse
+
+
+    $scope.create_multi_event = ->
+      console.log 'yep'
+      console.log "teams array #{ JSON.stringify $scope.teams_array }"
+      console.log "managers array #{ JSON.stringify $scope.managers_array }"
+      COMMS.POST(
+        "/event/create-multi-event"
+        teams_array: $scope.teams_array
+        managers_array: $scope.managers_array
+        event_details: $scope.multi_event
+      ).then ( ( resp ) ->
+        console.log "Multi event response"
+        console.log resp
+        alertify.success "Created event"
+      ), ( errResponse ) ->
+        console.log "Multi event error"
+        console.log errResponse
+        alertify.error "Failed to create event"
+      
+
 
 ])
 
@@ -312,3 +365,5 @@ return_org = ( orgs, search) ->
   for org in orgs    
     if parseInt( org.id ) == parseInt( search.id )
       return org
+
+$('#team_message').modal 'show'

@@ -30,66 +30,80 @@ module.exports = {
           res.negotiate err
         else
           sails.log.debug "parents_with_events parentData #{ JSON.stringify parentData }"
-          User.query("select a.id, a.name, a.details, a.start_date, a.end_date, a.event_parent as parent_id
-            from parentevent a
-            where a.event_parent=#{ req.param('id') };", ( err, parentEventData ) ->
+          User.query("select count(*) as actionsRequired
+            from user a 
+            inner join user b on a.email = b.parent_email
+            right join event_event_user__user_user_events e on b.id = e.user_user_events
+            right join event f on e.event_event_user = f.id
+            left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
+            where g.paid is null and f.start_date > date_sub(now(),interval 6 hour) and a.id=#{ req.param('id') };", ( err, unactionedEventCount ) ->
               if err?
-                sails.log.debug "parents_with_events parentEventData err #{ err }"
+                sails.log.debug "parents_with_events unactionedEventCount err #{ err }"
                 res.negotiate err
               else
-                sails.log.debug "parents_with_events parentEventData #{ JSON.stringify parentEventData }"
-                User.query("select b.id, b.firstName, b.lastName, b.dob, b.parent_email, a.id as parent_id, c.team_team_members as team_id, d.name as team_name, o.org_org_members as club_id, e.name as club_name
-                  from user a
-                  inner join user b on a.email = b.parent_email
-                  left outer join org_org_members__user_user_orgs o on b.id = o.user_user_orgs
-                  left outer join team_team_members__user_user_teams c on b.id = c.user_user_teams
-                  left outer join team d on c.team_team_members = d.id
-                  left outer join org e on o.org_org_members = e.id
-                  where a.id=#{ req.param('id') };", ( err, kidsData ) ->
+                sails.log.debug "parents_with_events unactionedEventCount #{ JSON.stringify unactionedEventCount }"
+                User.query("select a.id, a.name, a.details, a.start_date, a.end_date, a.lat, a.lng, a.event_parent as parent_id
+                  from parentevent a
+                  where a.event_parent=#{ req.param('id') };", ( err, parentEventData ) ->
                     if err?
-                      sails.log.debug "parents_with_events kidsData err #{ err }"
+                      sails.log.debug "parents_with_events parentEventData err #{ err }"
                       res.negotiate err
                     else
-                      sails.log.debug "parents_with_events kidsData #{ JSON.stringify kidsData }"
-                      User.query("select b.id, a.id as parent_id, e.event_event_user as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, l.lat, l.lng, l.location_name, l.location_owner, g.paid, g.declined, g.createdAt as paid_date, g.id as event_response_id
-                        from user a 
+                      sails.log.debug "parents_with_events parentEventData #{ JSON.stringify parentEventData }"
+                      User.query("select b.id, b.firstName, b.lastName, b.dob, b.parent_email, a.id as parent_id, c.team_team_members as team_id, d.name as team_name, o.org_org_members as club_id, e.name as club_name
+                        from user a
                         inner join user b on a.email = b.parent_email
-                        right join event_event_user__user_user_events e on b.id = e.user_user_events
-                        right join event f on e.event_event_user = f.id
-                        right join location l on l.id = f.location_id
-                        left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
-                        where a.id=#{ req.param('id') };", ( err, kidsEventsData ) ->
+                        left outer join org_org_members__user_user_orgs o on b.id = o.user_user_orgs
+                        left outer join team_team_members__user_user_teams c on b.id = c.user_user_teams
+                        left outer join team d on c.team_team_members = d.id
+                        left outer join org e on o.org_org_members = e.id
+                        where a.id=#{ req.param('id') };", ( err, kidsData ) ->
                           if err?
-                            sails.log.debug "parents_with_events kidsEventsData err #{ err }"
+                            sails.log.debug "parents_with_events kidsData err #{ err }"
                             res.negotiate err
                           else
-                            sails.log.debug "parents_with_events kidsEventsData #{ JSON.stringify kidsEventsData }"
-                            NULL = ''
-                            masterJsonData = {}
-                            # masterJsonData.kids = kidsData
-                            sails.log.debug "masterJsonData kids #{ JSON.stringify masterJsonData }"
-                            masterJsonData.kidsWithEvents = []
-                            masterJsonData.parent = parentData
-                            masterJsonData.parentEvents = parentEventData
-                            i = 0
-                            while i < kidsData.length
-                              kid = kidsData[i]
-                              kidID = kid.id
-                              temporaryKidEvents = []
-                              j = 0
-                              while j < kidsEventsData.length
-                                kid_event = kidsEventsData[j]
-                                kidEventID = kid_event.id
-                                if kidID == kidEventID
-                                  temporaryKidEvents.push kid_event
-                                kid.events = temporaryKidEvents
-                                
-                                j++
-                              masterJsonData.kidsWithEvents.push kid
-                              sails.log.debug "Masterjsondata in loop #{ JSON.stringify masterJsonData }"
-                              i++
-                            sails.log.debug "Masterjsondata #{ JSON.stringify masterJsonData }"
-                            res.json masterJsonData
+                            sails.log.debug "parents_with_events kidsData #{ JSON.stringify kidsData }"
+                            User.query("select b.id, a.id as parent_id, e.event_event_user as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, l.lat, l.lng, l.location_name, l.location_owner, g.paid, g.declined, g.createdAt as paid_date, g.id as event_response_id
+                              from user a 
+                              inner join user b on a.email = b.parent_email
+                              right join event_event_user__user_user_events e on b.id = e.user_user_events
+                              right join event f on e.event_event_user = f.id
+                              right join location l on l.id = f.location_id
+                              left outer join eventresponse g on a.id = g.parent_id and f.id = g.event_id and b.id = g.user_id
+                              where a.id=#{ req.param('id') };", ( err, kidsEventsData ) ->
+                                if err?
+                                  sails.log.debug "parents_with_events kidsEventsData err #{ err }"
+                                  res.negotiate err
+                                else
+                                  sails.log.debug "parents_with_events kidsEventsData #{ JSON.stringify kidsEventsData }"
+                                  NULL = ''
+                                  masterJsonData = {}
+                                  # masterJsonData.kids = kidsData
+                                  sails.log.debug "masterJsonData kids #{ JSON.stringify masterJsonData }"
+                                  masterJsonData.kidsWithEvents = []
+                                  masterJsonData.parent = parentData
+                                  masterJsonData.unactionedCount = unactionedEventCount
+                                  masterJsonData.parentEvents = parentEventData
+                                  i = 0
+                                  while i < kidsData.length
+                                    kid = kidsData[i]
+                                    kidID = kid.id
+                                    temporaryKidEvents = []
+                                    j = 0
+                                    while j < kidsEventsData.length
+                                      kid_event = kidsEventsData[j]
+                                      kidEventID = kid_event.id
+                                      if kidID == kidEventID
+                                        temporaryKidEvents.push kid_event
+                                      kid.events = temporaryKidEvents
+                                      
+                                      j++
+                                    masterJsonData.kidsWithEvents.push kid
+                                    sails.log.debug "Masterjsondata in loop #{ JSON.stringify masterJsonData }"
+                                    i++
+                                  sails.log.debug "Masterjsondata #{ JSON.stringify masterJsonData }"
+                                  res.json masterJsonData
+                            )
                       )
                 )
           )

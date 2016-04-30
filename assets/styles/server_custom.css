@@ -12,13 +12,17 @@ body{
 }
 
 .form_border{
-  margin: 30px 0px;
+  margin: 30px 5px !important;
   border: solid #b8b8b8;
   padding: 7px;
 }
 
 .no_padding{
   padding: 0px !important;
+}
+
+.bottom_margin_50{
+  margin-bottom: 50px;
 }
 
 .no_margin{
@@ -180,7 +184,7 @@ body{
 }
 
 .location_form{
-  margin: 10px 150px;
+  /*margin: 10px 150px;*/
   border: solid #b8b8b8;
   padding: 7px;
 }
@@ -197,7 +201,7 @@ body{
   color: #111;
 }
 
-.angular-google-map-container {
+#map-container {
   margin-top: -20px;
   height: 400px;
 }
@@ -215,6 +219,20 @@ body{
   top: 52px;
   position: absolute;
   opacity: 0;
+}
+
+.visible_controls {
+  margin-top: 10px;
+  border: 1px solid;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  left: 110px;
+  top: 52px;
+  position: absolute;
 }
 
 .button{
@@ -257,9 +275,9 @@ body{
 }
 
 .appear{
-    -webkit-transition: opacity 2s; 
-    transition: opacity 2s;
-    opacity: 1;
+  -webkit-transition: opacity 2s; 
+  transition: opacity 2s;
+  opacity: 1;
 }
 
 /*styled select*/

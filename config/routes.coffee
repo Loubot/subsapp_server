@@ -39,9 +39,9 @@ module.exports.routes =
         action :                 'team_manager_signup'
         
   '/': view: 'index'
-  'post /api/v1/login' :
-        controller :            'WebController'
-        action :                'login'
+  # 'post /api/v1/login' :
+  #       controller :            'WebController'
+  #       action :                'login'
 
   # User controller   update user attributes. See user.coffee
 
@@ -97,10 +97,6 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'create'
 
-  # 'put /org/:id':
-  #       controller:             'OrgController'
-  #       action:                 'update'
-
   'delete /delete-business/:id' : #Destroy org. Requires org.id
         controller:             'OrgController'
         action:                 'destroy_business'
@@ -121,9 +117,13 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'get_org_team_members'
 
-  'get /org-admins/:id':          #Requires org.id. Returns org, admins and teams of org
+  'get /org/org-admins/:id':          #Requires org.id. Returns org, admins and teams of org
         controller:             'OrgController'
         action:                 'get_org_admins'
+
+  'get /org/teams-and-mangers/:id':
+        controller:             'OrgController'
+        action:                 'get_teams_and_managers'
 
   # end of org controller
 
@@ -143,9 +143,9 @@ module.exports.routes =
         controller:             'TeamController'
         action:                 'create'
 
-  'delete /team' :     #Requires id. Destroys team
-        controller:             'TeamController'
-        action:                 'destroy_team'
+  # `'delete /team' :     #Requires id. Destroys team
+  #       controller:             'TeamController'
+  #       action:                 'destroy_team'
 
   'get /get-team' :           #Requires team id. Returns team with events and main org.
         controller:             'TeamController'
@@ -195,6 +195,10 @@ module.exports.routes =
   'post /event':       #Creates event. See Event.coffee for attributes
         controller:             'EventController'
         action:                 'create'
+
+  'post /event/create-multi-event':
+        controller:             'EventController'
+        action:                 'create_multi_event'
 
   'post /join-event':         #Requires event id and user id. Add event to user events 
         controller:             'EventController'
@@ -251,13 +255,13 @@ module.exports.routes =
         controller:             'PasswordReminderController'
         action:                 'post_remind'
 
-  'get /reset/{reminder_token}':
-        controller:             'PasswordReminderController'
-        action:                 'get_reset'
+  # 'get /reset/{reminder_token}':
+  #       controller:             'PasswordReminderController'
+  #       action:                 'get_reset'
 
-  'post /reset':
-        controller:             'PasswordReminderController'
-        action:                 'post_reset'
+  # 'post /reset':
+  #       controller:             'PasswordReminderController'
+  #       action:                 'post_reset'
 
   #TokenTransaction controller
   'get /eventresponse/:id':
