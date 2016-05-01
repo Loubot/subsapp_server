@@ -77,9 +77,16 @@ angular.module('subzapp').controller('TeamController', [
   
       
     $scope.create_event = ->
+      console.log $scope.training_or_match
+      console.log JSON.stringify $scope.create_event_data
       $scope.create_event_data.team_id = $scope.team.id
       $scope.create_event_data.user_id = $rootScope.USER.id
       $scope.create_event_data.event_team = $scope.team.id
+      if $scope.training_or_match == 'false'
+        console.log 'yep'
+        delete $scope.create_event_data.kick_off_date 
+      console.log "delete"
+      console.log JSON.stringify $scope.create_event_data
       if isNaN( $scope.create_event_data.location_id )
         console.log "Not a number"
         alertify.error "You must select a location"

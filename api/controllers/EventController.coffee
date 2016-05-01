@@ -13,7 +13,7 @@ module.exports = {
     req.body.price = parseInt( req.body.price )
     req.body.start_date =  DateService.create_timestamp( req.body.start_date )
     req.body.end_date = DateService.create_timestamp( req.body.end_date )
-    req.body.kick_off_date = DateService.create_timestamp( req.body.kick_off_date )
+    req.body.kick_off_date = DateService.create_timestamp( req.body.kick_off_date ) if req.body.kick_off_date?
     Event.create( 
       req.body      
     ).then( ( event_created ) ->
