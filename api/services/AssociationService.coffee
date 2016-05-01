@@ -3,10 +3,15 @@ Promise = require( 'bluebird' )
 module.exports = {
   associate_kids: ( user, cb ) ->
     kids_array = new Array()
-    sails.log.debug "AssociationService/associate_kids"
+    user.mobile_number1 = 123 if !( user.mobile_number1? )
+    sails.log.debug "AssociationService/associate_kids user #{ JSON.stringify user }"
     Promise.all([
       User.findOne( id: user.id )
-      User.find( parent_email: user.email )
+      User.find( or: [
+        { parent_email: user.email }
+        { mobile_number1: user.mobile_number1 }
+        { mobile_number2: user.mobile_number1 }
+      ])
     ]).spread( ( parent, kids ) ->
       sails.log.debug "Parent #{ JSON.stringify parent }"
       sails.log.debug "kids #{ JSON.stringify kids }"

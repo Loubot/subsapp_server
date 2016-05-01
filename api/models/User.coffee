@@ -165,7 +165,7 @@ module.exports =
 #3=DOB
 #4=Email
 
-  
+  ############# create kid called from filecontroller/fileservice
   create_kid: ( kid_details, org, cb ) ->
     cb( 'empty' ) if !(kid_details?) or kid_details == [] or kid_details.length <= 1
     parent_email = null
@@ -220,11 +220,25 @@ module.exports =
       cb( kid_parent_err )
     )
 
-   
-   
-      
-      
+    #################### end of create kid ############################
 
+  # associate_kids: ( parent_info, cb )  ->
+  #   sails.log.debug "User model/associate_kids"
+  #   sails.log.debug "Parent info #{ JSON.stringify parent_info }"
 
-       
-    
+  #   User.find( or: [
+  #     { email: parent_info.email }
+  #     { mobile_number1: parent_info.mobile_number1 }
+  #     { mobile_number1: parent_info.mobile_number1 }
+  #   ]).then( ( kids ) ->
+  #     AssociationService.associate_kids( parent_info.id, ( err, success ) ->
+  #       if err?
+  #         sails.log.debug "AssociationService.associate_kids_err #{ JSON.stringify err }"
+  #         cb( err )
+  #       else
+  #         sails.log.debug "Kids associated "
+  #         cb( null, success )
+  #     )
+  #   ).catch( ( kids_err ) ->
+  #     sails.log.debug "Kids find error #{ JSON.stringify kids_err }"
+  #   )

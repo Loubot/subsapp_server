@@ -69,7 +69,6 @@ module.exports =
           User.findOne( id: user.id ).populateAll().then ( ( user_pop ) ->
             sails.log.debug "User pop #{ JSON.stringify user_pop }"
             res.json
-              data:
                 token: CipherService.createToken(user_pop)
                 user: user_pop
             
@@ -77,6 +76,32 @@ module.exports =
       )
       
     ).then(res.created).catch res.serverError
+    return
+
+  parent_sign_up: ( req, res ) ->
+    sails.log.debug "Hit the AuthController/parent_sign_up"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    User.create(_.omit(req.allParams(), 'id')).then( (user) ->
+      sails.log.debug "User created #{ JSON.stringify user }"
+      Token.create( owner: user.id ).then( ( token ) ->
+        sails.log.debug "Token created #{ JSON.stringify token }"
+        AssociationService.associate_kids( user, ( err, success ) ->
+          if err? and err != null
+            sails.log.debug "AuthController/AssociationService ERR #{ JSON.stringify err }"
+            res.negotiate err
+          else
+            sails.log.debug "AuthController/AssociationService response #{ JSON.stringify success }"
+            res.json
+              token: CipherService.createToken(user)
+              user: user
+        )
+      ).catch( ( token_err ) ->
+        sails.log.debug "Token create error #{ JSON.stringify token_err }"
+      )
+    ).catch( ( user_create_err ) ->
+      sails.log.debug "User create error"
+      res.serverError user_create_err
+    )
     return
 
     
