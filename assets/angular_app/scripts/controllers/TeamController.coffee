@@ -15,6 +15,7 @@ angular.module('subzapp').controller('TeamController', [
   ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, uiGmapGoogleMapApi ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
+    $scope.training_or_match = 'disabled'
     $scope.location = {}
     $scope.markers = new Array()
     get_team_info = ->
@@ -301,7 +302,9 @@ angular.module('subzapp').controller('TeamController', [
 
     $scope.onTimeSet = ( nd, od ) ->
       $scope.create_event_data.start_date = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.create_event_data.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
       $scope.create_event_data.end_date = moment( nd ).add( 2, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
+      
       
 
 ])

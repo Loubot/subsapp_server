@@ -6,6 +6,7 @@ angular.module('subzapp').controller('TeamController', [
     var get_org_and_members, get_team_info, set_map, user_token;
     console.log('Team Controller');
     user_token = window.localStorage.getItem('user_token');
+    $scope.training_or_match = 'disabled';
     $scope.location = {};
     $scope.markers = new Array();
     get_team_info = function() {
@@ -232,6 +233,7 @@ angular.module('subzapp').controller('TeamController', [
     };
     return $scope.onTimeSet = function(nd, od) {
       $scope.create_event_data.start_date = moment(nd).format('DD-MM-YYYY HH:mm');
+      $scope.create_event_data.kick_off_date = moment(nd).add(1, 'hours').format('DD-MM-YYYY HH:mm');
       return $scope.create_event_data.end_date = moment(nd).add(2, 'hours').format('DD-MM-YYYY HH:mm');
     };
   }
