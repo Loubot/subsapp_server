@@ -15,6 +15,7 @@ angular.module('subzapp').controller('TeamController', [
   ( $scope, $rootScope, $state, COMMS, $window, $location, user, alertify, RESOURCES, $filter, uiGmapGoogleMapApi ) ->    
     console.log 'Team Controller'
     user_token = window.localStorage.getItem 'user_token'
+    $scope.training_or_match = 'disabled'
     $scope.location = {}
     $scope.markers = new Array()
     get_team_info = ->
@@ -76,9 +77,16 @@ angular.module('subzapp').controller('TeamController', [
   
       
     $scope.create_event = ->
+      console.log $scope.training_or_match
+      console.log JSON.stringify $scope.create_event_data
       $scope.create_event_data.team_id = $scope.team.id
       $scope.create_event_data.user_id = $rootScope.USER.id
       $scope.create_event_data.event_team = $scope.team.id
+      if $scope.training_or_match == 'false'
+        console.log 'yep'
+        delete $scope.create_event_data.kick_off_date 
+      console.log "delete"
+      console.log JSON.stringify $scope.create_event_data
       if isNaN( $scope.create_event_data.location_id )
         console.log "Not a number"
         alertify.error "You must select a location"
@@ -301,7 +309,9 @@ angular.module('subzapp').controller('TeamController', [
 
     $scope.onTimeSet = ( nd, od ) ->
       $scope.create_event_data.start_date = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.create_event_data.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
       $scope.create_event_data.end_date = moment( nd ).add( 2, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
+      
       
 
 ])

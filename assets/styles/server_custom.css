@@ -295,3 +295,15 @@ body{
   display: block;
   margin: 0 auto;
  }
+
+ .hidden{
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 4s, opacity 5s linear;
+  -webkit-transition: visibility 4s, opacity 5s linear;
+ }
+
+ .show_it{
+  visibility: visible;
+  opacity: 1;
+ }
