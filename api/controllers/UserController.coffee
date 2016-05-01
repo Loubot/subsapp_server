@@ -21,30 +21,10 @@ module.exports = {
       sails.log.debug "Find user error #{ err }"
       res.negotiate err
 
-  # parents_with_events_old: ( req, res ) ->
-  #   sails.log.debug "Hit the UserController/parents_with_events"
-  #   User.query("select b.id, b.firstName, b.lastName, b.dob, b.parent_email, a.id as parent_id, c.team_team_members as team_id, d.name as team_name, d.main_org as club_id, e.name as club_name, f.id as event_id, f.name as title, f.details, f.start_date, f.end_date, f.price, g.paid, g.createdAt as paid_date
-  #     from user a
-  #     inner join user b on a.email = b.parent_email
-  #     left outer join team_team_members__user_user_teams c on b.id = c.user_user_teams
-  #     left outer join team d on c.team_team_members = d.id
-  #     left outer join org e on d.main_org = e.id
-  #     right join event f on c.team_team_members = f.event_team
-  #     left outer join tokentransaction g on a.id = g.parent_id and f.id = g.event_id;", ( err, results ) ->
-  #       if err?
-  #         sails.log.debug "parents_with_events err #{ err }"
-  #         res.negotiate err
-  #       else
-  #         sails.log.debug "parents_with_events #{ JSON.stringify results }"
-  #         res.json results
-
-  #   )
-
-
   update: (req, res) ->
-    sails.log.debug "Hit the User controller/edit-user"      
-    sails.log.debug "params #{ JSON.stringify req.body }"
-    User.update( id: req.body.id, { firstName: req.body.firstName, lastName: req.body.lastName }).then( (result) ->
+    sails.log.debug "Hit the User controller/update"      
+    sails.log.debug "params #{ JSON.stringify req.param('id') }"
+    User.update( id: req.param('id'), { firstName: req.body.firstName, lastName: req.body.lastName }).then( (result) ->
       sails.log.debug "User update response #{ JSON.stringify result }"
       # res.status(204)
       res.send result

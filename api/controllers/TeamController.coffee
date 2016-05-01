@@ -9,7 +9,7 @@ passport = require('passport')
 module.exports = {
 
   findOne: ( req, res ) ->
-    sails.log.debug "hit the team controller/findOne"
+    sails.log.debug "hit the TeamController/findOne"
     sails.log.debug "Params #{ req.param('id') }"
     Team.findOne( { id: req.param('id') } ).populateAll().then( ( team ) ->
       sails.log.debub "Team findOne #{ JSON.stringify team }"
@@ -20,7 +20,7 @@ module.exports = {
     )
 
   update: ( req, res ) ->
-    sails.log.debug "Hit the team controller/update"
+    sails.log.debug "Hit the TeamController/update"
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     Team.update( 
@@ -37,8 +37,8 @@ module.exports = {
 
   get_team_info: (req, res) -> #club admin team findOne
     Promise = require('bluebird')
-    sails.log.debug "Hit the team controller/get_team_info"
-    sails.log.debug "Hit the team controller/get_team_info #{ JSON.stringify req.query }"
+    sails.log.debug "Hit the TeamController/get_team_info"
+    sails.log.debug "Hit the TeamController/get_team_info #{ JSON.stringify req.query }"
     
 
 
@@ -77,7 +77,7 @@ module.exports = {
    
 
   create: (req, res) ->
-    sails.log.debug "Hit the team controller/create_team ***************"
+    sails.log.debug "Hit the TeamController/create_team ***************"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     
     Team.create( name: req.body.name, main_org: req.body.org_id, manager: req.body.user_id ).then( ( team ) ->
@@ -97,7 +97,7 @@ module.exports = {
       
 
   destroy: (req, res) ->
-    sails.log.debug "Hit the team controller/destroy_team"
+    sails.log.debug "Hit the TeamController/destroy_team"
     sails.log.debug "Data #{ JSON.stringify req.body }"
     
     Team.destroy( id: req.body.team_id).then( (team) ->
@@ -117,7 +117,7 @@ module.exports = {
 #/////////////////////////////// Joining team logic
 
   join_team: (req, res) ->
-    sails.log.debug "Hit the team controller/join_team"
+    sails.log.debug "Hit the TeamController/join_team"
     Team.findOne( { id: req.body.team_id } ).then( ( team ) ->
       sails.log.debug "Find user response #{ JSON.stringify team }" 
       team.team_members.add(req.body.user_id)
@@ -169,7 +169,7 @@ module.exports = {
 
 
   get_team: (req, res) ->
-    sails.log.debug "Hit the team controller/get_team"
+    sails.log.debug "Hit the TeamController/get_team"
     Team.findOne( { id: req.query.team_id } ).populate('events').populate('main_org').populate('manager').then( (team) ->
       sails.log.debug "Get team response #{ JSON.stringify team }"
       res.json team

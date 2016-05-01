@@ -56,16 +56,19 @@
     "run-sequence": "^1.1.5",
     "sails": "^0.11.1",
     "sails-disk": "~0.10.0",
+    "sails-memory": "^0.10.6",
     "sails-mysql": "^0.11.1",
     "sails-postgresql": "^0.10.17",
     "should": "^8.3.1",
     "skipper-s3": "^0.5.6",
     "stripe": "^4.1.0",
+    "supertest": "^1.2.0",
     "winston": "^2.1.0"
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "sails lift"
+    "start": "nodemon app.coffee",
+    "test": "mocha  test/bootstrap.test.coffee test/integration/models/User.test.coffee test/integration/models/Org.test.coffee test/integration/models/Location.test.coffee test/integration/models/Team.test.coffee test/integration/models/Event.test.coffee test/integration/controllers/UserController.test.coffee test/integration/controllers/OrgController.test.coffee test/integration/controllers/EventController.test.coffee"
   },
   "engines": {
     "node": "~4.2.2",

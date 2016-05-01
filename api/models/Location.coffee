@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'alter'
+  migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -15,6 +15,7 @@ module.exports =
     location_owner:
       type: 'string'
       defaultsTo: null
+      required: true
 
     location_name:
       type: 'string'
@@ -79,7 +80,7 @@ module.exports =
 
   beforeCreate: ( values, cb ) -> #geocode address
     geocoderProvider = 'google'
-    httpAdapter = 'https'
+    httpAdapter = 'http'
     extra = apiKey: sails.config.stripe.maps_Key
     geocoder = require('node-geocoder')( geocoderProvider, httpAdapter, extra )
 

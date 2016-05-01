@@ -38,6 +38,9 @@ module.exports =
       type: 'integer'
       required: true
 
+
+  ############################# associations ######################################
+
     event_team:
       model: 'team'
 
@@ -47,6 +50,7 @@ module.exports =
 
     location_id:
       model: 'location'
+      unique: true
       
     
     toJSON: ->

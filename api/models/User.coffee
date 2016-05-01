@@ -141,8 +141,9 @@ module.exports =
     
     toJSON: ->
       obj = @toObject()
-      delete obj.password
-      delete obj.socialProfiles
+      delete obj.password if !( process.env.NODE_ENV == 'development' )
+      # delete obj.socialProfiles
+
       obj
 
   # beforeUpdate: (values, next) ->
