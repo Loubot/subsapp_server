@@ -1,7 +1,7 @@
 sails = require('sails')
 before (done) ->
   # Increase the Mocha timeout so that Sails has enough time to lift.
-  @timeout 30000
+  @timeout 40000
   sails.log.debug "Hello"
   sails.lift {
       log: level: 'debug'

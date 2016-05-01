@@ -2,28 +2,31 @@ request = require('supertest')
 describe 'UserModel', ->
   test_user = null
   describe 'create', ->
-    it "should register a user", (done) ->
-      request(sails.hooks.http.app).post('/auth/signup').set('Accept', 'application/json').send(
+    it "should create a user", (done) ->
+      User.create(
         'email': 'lllouis@yahoo.com'
         'password': 'Football1'
         'club_admin': true
-        'team_admin': true).expect('Content-Type', /json/).expect(200).end (err, res) ->
-        sails.log.debug "User register res #{ JSON.stringify res.body }"
-        
-        token = res.body.token
-        user = res.body.user
-        sails.log.debug "User registered"
-        user.id.should.equal 1
+        'team_admin': true
+      ).then( ( user ) ->
+        sails.log.debug "user #{ JSON.stringify user }"
+        user.id.should.equal( 1 )
         done()
+      ).catch( ( err ) ->
+        done( err )
+      )
 
+      
   describe "find a user", ->
 
-    it "should not have a password", ( done ) ->
+    it "should not have a hashed password", ( done ) ->
       User.findOne( id: 1 ).then( ( user ) ->
-        sails.log.debug "User found #{ JSON.stringify user.id }"
+        sails.log.debug "User found #{ JSON.stringify user }"
         user.email.should.equal("lllouis@yahoo.com")
         user.id.should.equal( 1 )
         user.password.should.not.equal( "Football1" )
+        user.club_admin.should.equal( true )
+        user.team_admin.should.equal( true )
         test_user = user
         done()
       ).catch( ( err ) ->

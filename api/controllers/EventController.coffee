@@ -8,7 +8,7 @@ Promise = require('bluebird')
 module.exports = {
   
   create: (req, res) -> #user association happens in afterCreate callback
-    sails.log.debug "Hit the events controller/create"
+    sails.log.debug "Hit the EventController/create"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     req.body.price = parseInt( req.body.price )
     req.body.start_date =  DateService.create_timestamp( req.body.start_date )

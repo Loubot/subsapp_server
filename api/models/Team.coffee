@@ -29,6 +29,16 @@ module.exports =
     manager:
       model: 'user'
 
+    eligible_date:
+      type: 'date'
+      defaultsTo: null
+
+    eligible_date_end:
+      type: 'date'
+      defaultsTo: null
+
+    ################### associations ************************************
+
     team_members:
       collection: 'user'
       via: 'user_teams'
@@ -41,13 +51,7 @@ module.exports =
       collection: 'filetracker'
       via: 'team'
 
-    eligible_date:
-      type: 'date'
-      defaultsTo: null
-
-    eligible_date_end:
-      type: 'date'
-      defaultsTo: null
+    
 
     
 
