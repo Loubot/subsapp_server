@@ -135,6 +135,10 @@ module.exports.routes =
   'post /location':
         controller:             'LocationController'
         action:                 'create'
+
+  'get /locations':
+        controller:             'LocationController'
+        action:                 'index'
   #End of Location Controller
 
   # Team controller

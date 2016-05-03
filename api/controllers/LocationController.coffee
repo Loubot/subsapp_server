@@ -28,5 +28,15 @@ module.exports = {
         )
     )
 
+  index: ( req, res ) ->
+    sails.log.debug "Hit the LocationController/index"
+    Location.find().sort('location_owner ASC').then( ( locations ) ->
+      sails.log.debug "Got locations "
+      res.json locations
+    ).catch( ( err ) ->
+      sails.log.debug "locations all err #{ JSON.strigify err }"
+      res.negotiate err
+    )
+
 
 }

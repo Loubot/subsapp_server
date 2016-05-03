@@ -1,4 +1,4 @@
-<!-- Button trigger modal -->
+ <!-- Button trigger modal -->
 <button type="button" class="btn btn-warning btn-lg center-block" data-toggle="modal" data-target="#multi_event_modal">
   Create event
 </button>
@@ -98,7 +98,7 @@
               <option value="" >---Please select location---</option>
               <option ng-repeat="location in locations" value="{{ location.id }}" 
                       >
-                {{ location.location_name }}
+                {{ location.location_owner }}, {{ location.location_name }}
               </option>
               <option value="new_location" >---Create new location?---</option>
             </select> <!-- end of form-control -->

@@ -26,10 +26,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           console.log(org_and_teams);
           $scope.teams = org_and_teams.data.org.teams;
           $scope.files = org_and_teams.data.s3_object.Contents;
-          $scope.org = org_and_teams.data.org;
-          $scope.locations = org_and_teams.data.org.org_locations;
-          console.log("Locations");
-          return console.log($scope.locations);
+          return $scope.org = org_and_teams.data.org;
         }), function(errResponse) {
           console.log("Get teams failed");
           console.log(errResponse);
@@ -268,12 +265,20 @@ angular.module('subzapp').controller('OrgAdminController', [
     $scope.managers_array = new Array();
     $scope.teams_array = new Array();
     $(document).on('shown.bs.modal', '#multi_event_modal', function(e) {
-      return COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
+      COMMS.GET("/org/teams-and-mangers/" + $scope.org.id).then((function(resp) {
         console.log("Got teams and managers");
         console.log(resp.data);
         return $scope.managers = resp.data.managers;
       }), function(errResponse) {
         console.log("Get teams and managers error");
+        return console.log(errResponse);
+      });
+      return COMMS.GET("/locations").then((function(resp) {
+        console.log("Got locations");
+        console.log(resp.data);
+        return $scope.locations = resp.data;
+      }), function(errResponse) {
+        console.log("Got locations error");
         return console.log(errResponse);
       });
     });
@@ -307,7 +312,5 @@ return_org = function(orgs, search) {
     }
   }
 };
-
-$('#team_message').modal('show');
 
 //# sourceMappingURL=../maps/controllers/OrgAdminController.js.map

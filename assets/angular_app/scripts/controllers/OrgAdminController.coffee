@@ -45,9 +45,7 @@ angular.module('subzapp').controller('OrgAdminController', [
           $scope.teams = org_and_teams.data.org.teams
           $scope.files = org_and_teams.data.s3_object.Contents
           $scope.org = org_and_teams.data.org
-          $scope.locations = org_and_teams.data.org.org_locations
-          console.log "Locations"
-          console.log $scope.locations
+          
         ), ( errResponse ) ->
           
           console.log "Get teams failed"
@@ -337,6 +335,21 @@ angular.module('subzapp').controller('OrgAdminController', [
         console.log "Get teams and managers error"
         console.log errResponse
 
+      COMMS.GET(
+        "/locations"
+      ).then ( ( resp) ->
+        console.log "Got locations"
+        console.log resp.data
+        $scope.locations = resp.data
+        # $scope.teams_array = $scope.org.teams.map( ( team ) ->
+        #   team.id
+        # )
+      ), ( errResponse ) ->
+        console.log "Got locations error"
+        console.log errResponse
+
+
+
 
     $scope.create_multi_event = ->
       console.log 'yep'
@@ -365,5 +378,3 @@ return_org = ( orgs, search) ->
   for org in orgs    
     if parseInt( org.id ) == parseInt( search.id )
       return org
-
-$('#team_message').modal 'show'
