@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  # migrate: 'alter'
+  migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -35,6 +35,8 @@ module.exports =
       unique: true
       required: true
 
+    ################# associations #########################
+
     teams:
       collection: 'team'
       via: 'main_org'
@@ -52,6 +54,10 @@ module.exports =
       collection: 'filetracker'
       via: 'org'
       # columnName: 'filetracker_id'
+
+    org_token:
+      collection: 'orgtokenbalance'
+      via: 'org_id'
     
     toJSON: ->
       obj = @toObject()

@@ -51,6 +51,9 @@ module.exports = {
           sails.log.debug "EventResponse create/event pay #{ JSON.stringify e_response }"
           parent.tokens[0].amount = tokenBalanceAfterTransaction
           sails.log.debug "new amount #{ parent.tokens[0].amount }"
+
+          OrgTokenService.add_tokens( req.body.token_amount, req.body.team_id ) # Update the orgs token amaount
+
           parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
             sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
             sails.log.debug "Saved parent saved_parent_error #{ JSON.stringify saved_parent_error }" if saved_parent_error?
