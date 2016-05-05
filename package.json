@@ -69,7 +69,7 @@
   "scripts": {
     "debug": "node debug app.js",
     "start": "nodemon app.coffee",
-    "test": "mocha  test/bootstrap.test.coffee test/integration/models/User.test.coffee test/integration/models/Org.test.coffee test/integration/models/Location.test.coffee test/integration/models/Team.test.coffee test/integration/models/Event.test.coffee test/integration/inject/seed.coffee test/integration/controllers/UserController.test.coffee test/integration/controllers/OrgController.test.coffee test/integration/controllers/EventController.test.coffee"
+    "test": "mocha  test/bootstrap.test.coffee test/integration/models/User.test.coffee test/integration/models/Org.test.coffee test/integration/models/Location.test.coffee test/integration/models/Team.test.coffee test/integration/models/Event.test.coffee test/integration/models/OrgTokenBalance.test.coffee test/integration/inject/seed.coffee test/integration/controllers/UserController.test.coffee test/integration/controllers/OrgController.test.coffee test/integration/controllers/EventController.test.coffee"
   },
   "engines": {
     "node": "~4.2.2",

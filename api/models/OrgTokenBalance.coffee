@@ -22,6 +22,7 @@ module.exports =
     org_id: 
       model: 'org'
       unique: true
+      required: true
       
     
     toJSON: ->
@@ -50,6 +51,9 @@ module.exports =
         return cb(err, false)
       if result
         sails.log.debug "OrgTokenBalance findOne #{ JSON.stringify result }"
+        
+        values.tokens = result.tokens + values.tokens # Update tokens to new amount
+        
         self.update criteria, values, cb
       else
 

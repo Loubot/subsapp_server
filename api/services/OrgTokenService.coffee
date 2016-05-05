@@ -11,7 +11,8 @@ module.exports = {
       
       OrgTokenBalance.updateOrCreate(
         { id: team.main_org } 
-        
+        org_id: team.main_org
+        tokens: amount
       )
 
      
