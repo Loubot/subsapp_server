@@ -13,15 +13,15 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
     MailgunService.send_message()
     res.json 'ok'
-    # User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
-    #   sails.log.debug "Found user #{ JSON.stringify user }"
+    User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
+      sails.log.debug "Found user #{ JSON.stringify user }"
       
-    #   res.json user
+      res.json user
         
       
-    # ).catch ( err ) ->
-    #   sails.log.debug "Find user error #{ err }"
-    #   res.negotiate err
+    ).catch ( err ) ->
+      sails.log.debug "Find user error #{ err }"
+      res.negotiate err
 
   update: (req, res) ->
     sails.log.debug "Hit the User controller/update"      
