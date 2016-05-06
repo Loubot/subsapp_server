@@ -11,8 +11,6 @@ module.exports = {
   findOne: ( req, res ) ->
     sails.log.debug "Hit the user controller/findOne"
     sails.log.debug "Params #{ req.param('id') }"
-    MailgunService.send_message()
-    res.json 'ok'
     User.findOne( id: req.param('id') ).populateAll().then( ( user ) ->
       sails.log.debug "Found user #{ JSON.stringify user }"
       

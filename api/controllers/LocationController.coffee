@@ -1,4 +1,4 @@
-###*
+###
 # LocationController
 #
 # @description :: Server-side logic for managing Locations

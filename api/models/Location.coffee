@@ -4,7 +4,7 @@
 ###
 
 module.exports =
-  migrate: 'alter'
+  # migrate: 'alter'
   # adapter: 'mysql',
   autoUpdatedAt: true
   autoCreatedAt: true
@@ -42,7 +42,7 @@ module.exports =
     org_id:
       collection: 'org'
       via: 'org_locations'
-      columnName: 'org_id'
+      # columnName: 'org_id'
 
     event_id:
       collection: 'event'
