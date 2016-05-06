@@ -35,7 +35,7 @@ module.exports.policies =
   OrgController:
     '*': [ 'isAuthenticated', 'isClubAdmin' ]
     'create': [ 'isAuthenticated', 'hasClubFlag']
-    'findOne': [ 'isAuthenticated' ]
+    'findOne': [ 'isAuthenticated', 'isClubAdmin' ]
     'find': [ 'isAuthenticated', 'isSuperAdmin' ]
     'update': [ 'isAuthenticated', 'isClubAdmin' ]
 
