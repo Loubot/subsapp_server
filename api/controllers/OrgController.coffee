@@ -78,23 +78,13 @@ module.exports = {
 
     params = 
       Bucket: 'subzappbucket'
-      Prefix: req.param('id')
-
-   
-    Org.findOne( id: req.param('id') )
-    .populate('teams')
-    .populate('org_members')
-    .populate('user_id')
-    .populate('org_locations').then( ( org ) ->
-      sails.log.debug "Org findOne " 
-      return  [
-                org
-                s3.listObjectsAsync( params )
-              ]
-    ).spread( ( org, s3_object ) ->
-      sails.log.debug "Org findOne spread"
+      Prefix: req.param('id')   
+    
+      
+    s3.listObjectsAsync( params ).then( ( s3_object ) ->    
+      
       sails.log.debug "Org findOne s3 #{ JSON.stringify s3_object }"
-      res.json org: org, s3_object: s3_object
+      res.json org: req.org, s3_object: s3_object
     ).catch( ( org_find_s3_err ) ->
       sails.log.debug "Org org_find_s3_err #{ JSON.stringify org_find_s3_err }"
       res.negotiate org_find_s3_err

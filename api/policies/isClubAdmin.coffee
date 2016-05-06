@@ -9,8 +9,22 @@ module.exports = (req, res, next) ->
   sails.log.debug "Body #{ JSON.stringify req.body }"
   sails.log.debug "Params #{ req.param('id') }"
 
+  if !Boolean( req.user.club_admin )
+    sails.log.debug "No club admin flag"
+    return res.negotiate "You are not authourised"
+  else if !( req.param('id') )
+    sails.log.debug "isClubAdmin no id param"
+    return res.negotiate "ID param not present"
+
+
   Org.findOne( id: req.param('id') ).populate('user_id').then( ( org ) ->
     sails.log.debug "Find org #{ JSON.stringify org }"
+    if Boolean( req.user.super_admin )
+      req.org = org
+      next()
+      return
+
+    
     if !org.user_id? or org.user_id.id != req.user.id
       return res.negotiate "Your are not authourised"
     req.org = org
@@ -20,17 +34,10 @@ module.exports = (req, res, next) ->
     return res.negotiate org_err
   )
 
-  # if Boolean( req.user.super_admin )
-  #   next()
-  #   return
+ 
 
-  # if !Boolean( req.user.club_admin )
-  #   sails.log.debug "No club admin flag"
-  #   return res.negotiate "You are not authourised"
-
-  # else if !( req.param('id') ) and !( req.body.org_id )?
-  #   sails.log.debug "isClubAdmin no id param"
-  #   return res.negotiate "ID param not present"
+  
+ 
 
   # else if typeof req.param('id') != undefined
   #   sails.log.debug "isClubAdmin param('id')"
