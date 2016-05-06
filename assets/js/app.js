@@ -47,7 +47,7 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     controller: 'OrgController'
   });
   $stateProvider.state("org_admin", {
-    url: '/org_admin',
+    url: '/org-admin',
     templateUrl: "angular_app/views/org/org_admin.html",
     controller: 'OrgAdminController'
   });
@@ -55,6 +55,11 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     url: '/org-admin-team',
     templateUrl: "angular_app/views/org/org_admin_team.html",
     controller: 'OrgAdminTeamController'
+  });
+  $stateProvider.state("org_financials", {
+    url: '/org-financials',
+    templateUrl: "angular_app/views/org/org_financials.html",
+    controller: 'OrgFinancialsController'
   });
   $stateProvider.state("team", {
     url: '/team',

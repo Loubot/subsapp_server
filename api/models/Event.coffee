@@ -50,7 +50,6 @@ module.exports =
 
     location_id:
       model: 'location'
-      unique: true
       
     
     toJSON: ->

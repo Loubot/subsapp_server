@@ -66,7 +66,7 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       controller : 'OrgController'
 
     $stateProvider.state "org_admin",
-      url: '/org_admin'
+      url: '/org-admin'
       templateUrl : "angular_app/views/org/org_admin.html"
       controller : 'OrgAdminController'
 
@@ -74,6 +74,11 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       url: '/org-admin-team'
       templateUrl : "angular_app/views/org/org_admin_team.html"
       controller : 'OrgAdminTeamController'
+
+    $stateProvider.state "org_financials",
+      url: '/org-financials'
+      templateUrl : "angular_app/views/org/org_financials.html"
+      controller : 'OrgFinancialsController'
 
     # team state
     $stateProvider.state "team",
