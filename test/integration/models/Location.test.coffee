@@ -40,19 +40,23 @@ describe "Location model", ->
         done( err )
       )
 
-  # describe "associate org", ->
-  #   it "should associate an org", ( done ) ->
-  #     Location.findOne( id: 1 ).populate('org_id').then( ( location ) ->
-  #       sails.log.debug "Location found #{ JSON.stringify location }"
-  #       location.org_id.add( 2 )
-  #       location.save( ( location_save_err, location_saved ) ->
-  #         if location_save_err?
-  #           sails.log.debug "Location saved error #{ JSON.stringify location_save_err }"
-  #           done( location_save_err )
-  #         else
-  #           sails.log.debug "Location saved #{ JSON.stringify location_saved }"
-  #           done()
-  #       )
-  #     ).catch( ( err ) ->
-  #       done( err )
-  #     )
+  describe "associate org", ->
+    it "should associate an org", ( done ) ->
+      Location.findOne( id: 1 ).populate('org_id').then( ( location ) ->
+        sails.log.debug "Location found #{ JSON.stringify location }"
+        location.org_id.add( 1 )
+        location.save( ( location_save_err, location_saved ) ->
+          sails.log.debug "Location saved #{ JSON.stringify location_saved }"
+          if location_save_err?
+            sails.log.debug "Location saved error #{ JSON.stringify location_save_err }"
+            done( location_save_err )
+          else
+            sails.log.debug "Location saved #{ JSON.stringify location_saved }"
+            location_saved.org_id[0].name.should.equal( "Lakewood F.C.s" )
+            location_saved.org_id[0].user_id.should.equal( 1 )
+            done()
+
+        )
+      ).catch( ( err ) ->
+        done( err )
+      )
