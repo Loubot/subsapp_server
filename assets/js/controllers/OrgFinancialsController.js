@@ -6,7 +6,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       $scope.user = $rootScope.USER;
       return COMMS.GET("/org/" + $scope.user.org[0].id).then((function(res) {
         console.log("Got org info");
-        console.log(res);
+        console.log(res.data.org);
         $scope.org = res.data.org;
         return alertify.success("Got org info");
       }), function(errResponse) {

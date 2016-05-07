@@ -19,7 +19,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         "/org/#{ $scope.user.org[0].id }"
       ).then ( ( res ) ->
         console.log "Got org info"
-        console.log res
+        console.log res.data.org
         $scope.org = res.data.org
         alertify.success "Got org info"
       ), ( errResponse ) ->

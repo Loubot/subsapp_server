@@ -38,6 +38,7 @@ module.exports.policies =
     'findOne': [ 'isAuthenticated', 'isClubAdmin' ]
     'find': [ 'isAuthenticated', 'isSuperAdmin' ]
     'update': [ 'isAuthenticated', 'isClubAdmin' ]
+    'withdraw': [ 'isAuthenticated', 'isClubAdmin']
 
   ParentController:
     'associate_kids': [ 'isAuthenticated', 'isCurrentUser' ]

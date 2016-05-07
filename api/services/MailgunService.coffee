@@ -19,5 +19,18 @@ module.exports = {
       sails.log.debug "Err #{ JSON.stringify error }" if error?
 
 
+  withdrawl_message: ( amount, org_name, email ) ->
+    sails.log.debug "Hit the mailgunservice/withdrawl_message"
+
+    data = {
+      from: 'subzappBot <me@samples.mailgun.org>',
+      to: 'louisangelini@gmail.com',
+      subject: 'Withdrawl request',
+      text: "#{ org_name } has requested to withdraw #{ amount }. \n Sort it out like."
+    }
+
+    mailgun.messages().send data, (error, body) ->
+      sails.log.debug "Body #{ JSON.stringify body }"
+      sails.log.debug "Err #{ JSON.stringify error }" if error?
 }
 

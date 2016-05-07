@@ -129,6 +129,10 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'get_teams_and_managers'
 
+  'post /org/withdraw/:id':
+        controller:             'OrgController'
+        action:                 'withdraw'
+
   # end of org controller
 
   # Location Controller
