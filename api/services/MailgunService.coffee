@@ -1,8 +1,6 @@
-api_key = process.env.MAILGUN_PRIVATE
+require('../../node_modules/mailin/mailin.js')
+client = new Mailin('https://api.sendinblue.com/v2.0', '0E6kXPLmN3SpcbJM')
 
-domain = "sandbox8fb7da333b2d4f5bbb8b66b0eb62ae65.mailgun.org"
-
-mailgun = require('mailgun-js')({apiKey: api_key, domain: domain})
 
 module.exports = {
   send_message: ->
@@ -20,16 +18,15 @@ module.exports = {
 
 
   withdrawl_message: ( amount, org_name, email ) ->
-    sails.log.debug "Hit the mailgunservice/withdrawl_message"
-
-    data = {
-      from: 'subzappBot <me@samples.mailgun.org>',
-      to: 'louisangelini@gmail.com',
-      messsage: './views/mail_templates/billing.html'
-    }
-
-    mailgun.messages().send data, (error, body) ->
-      sails.log.debug "Body #{ JSON.stringify body }"
-      sails.log.debug "Err #{ JSON.stringify error }" if error?
+    data =
+      'to': 'louisangelini@gmail.com': 'to whom!'
+      'from': [
+        'lllouis@subzapp.com'
+      ]
+      'subject': 'TEST'
+      'html': 'This is the <h1>HTML</h1>'
+    client.send_email(data).on 'complete', (data) ->
+      console.log data
+      return
 }
 
