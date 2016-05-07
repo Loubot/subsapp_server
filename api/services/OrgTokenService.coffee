@@ -13,13 +13,17 @@ module.exports = {
         { id: team.main_org } 
         org_id: team.main_org
         tokens: amount
+        ( err, org_tok ) ->
+          if err?
+            sails.log.debug "OrgTokenBalance create err #{ JSON.stringify err }"
+          else
+            sails.log.debug "OrgTokenBalance created #{ JSON.stringify org_tok }"
       )
 
      
       
     ).catch( ( team_err ) ->
       sails.log.debug "Team find err #{ JSON.stringify team_err }"
-      cb( team_err )
     )
 
 }
