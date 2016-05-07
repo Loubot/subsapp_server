@@ -17,7 +17,7 @@ module.exports = (req, res, next) ->
     return res.negotiate "ID param not present"
 
 
-  Org.findOne( id: req.param('id') ).populate('user_id').then( ( org ) ->
+  Org.findOne( id: req.param('id') ).populateAll().then( ( org ) ->
     sails.log.debug "Find org #{ JSON.stringify org }"
     if Boolean( req.user.super_admin )
       req.org = org
