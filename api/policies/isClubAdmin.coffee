@@ -12,7 +12,7 @@ module.exports = (req, res, next) ->
   if !Boolean( req.user.club_admin )
     sails.log.debug "No club admin flag"
     return res.negotiate "You are not authourised"
-  else if !( req.param('id') )
+  else if ( req.param('id') == 'undefined' )
     sails.log.debug "isClubAdmin no id param"
     return res.negotiate "ID param not present"
 
@@ -30,7 +30,7 @@ module.exports = (req, res, next) ->
     req.org = org
     next()
   ).catch( ( org_err ) ->
-    sails.log.debug "Org err #{ JSON.stringify org_err }"
+    sails.log.debug "Org err #{ org_err }"
     return res.negotiate org_err
   )
 

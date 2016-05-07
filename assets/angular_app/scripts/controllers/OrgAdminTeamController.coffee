@@ -36,10 +36,11 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       console.log res
       $scope.org = res.data.main_org
       $scope.team = res.data
+      alertify.success "Got team info"
     ), ( errResponse ) ->
       console.log "Get team error"
       console.log errResponse
-
+      alertify.error "Failed to get team info"
     $scope.invite_manager = ->
       console.log $scope.invite_manager_data
       COMMS.POST(

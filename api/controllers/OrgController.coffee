@@ -235,30 +235,4 @@ module.exports = {
         res.json data
     )
 
-
-    
-
-
-
-  ######################################################################
-          ## Mobile app ##
-  get_org_list: (req, res) ->
-    sails.log.debug "Hit the org controller/get_org_list"
-    Org.find().then( (orgs) ->
-      sails.log.debug "Org get_org_list #{ JSON.stringify orgs }"
-      res.json orgs
-    ).catch((err) ->
-      sails.log.debug "Org find get org list error #{ JSON.stringify err }"
-    ).done ->
-      sails.log.debug "Org find done"
-
-  get_single_org: (req, res) ->
-    sails.log.debug "Hit the org controller/get_single_org #{ JSON.stringify req.query }"
-    Org.findOne().where( { id: req.query.org_id } ).populate('teams').then( (org) -> 
-      sails.log.debug "Get single org #{ JSON.stringify org }"
-      res.json org
-    ).catch( (err) ->
-      sails.log.debug "Get single org error #{ JSON.stringify err }"
-    ).done ->
-      sails.log.debug "Get single org done"
 }

@@ -21,10 +21,12 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       console.log("Get team result");
       console.log(res);
       $scope.org = res.data.main_org;
-      return $scope.team = res.data;
+      $scope.team = res.data;
+      return alertify.success("Got team info");
     }), function(errResponse) {
       console.log("Get team error");
-      return console.log(errResponse);
+      console.log(errResponse);
+      return alertify.error("Failed to get team info");
     });
     return $scope.invite_manager = function() {
       console.log($scope.invite_manager_data);
