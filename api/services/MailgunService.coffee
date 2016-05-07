@@ -25,8 +25,7 @@ module.exports = {
     data = {
       from: 'subzappBot <me@samples.mailgun.org>',
       to: 'louisangelini@gmail.com',
-      subject: 'Withdrawl request',
-      text: "#{ org_name } has requested to withdraw #{ amount }. \n Sort it out like."
+      messsage: './views/mail_templates/billing.html'
     }
 
     mailgun.messages().send data, (error, body) ->

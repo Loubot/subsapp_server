@@ -29,7 +29,7 @@ module.exports =
 ###
 
   session =
-    secret: '4b41d154bfc09279db1de29acbe5e3e7'
+    secret: process.env.SESSION_SECRET
     adapter: 'redis'
     host: process.env.REDIS_HOST
     port: process.env.REDIS_PORT
