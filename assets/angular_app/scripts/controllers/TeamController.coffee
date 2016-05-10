@@ -79,7 +79,7 @@ angular.module('subzapp').controller('TeamController', [
         get_team_info() 
       ), ( errResponse ) ->
         $rootScope.USER = null
-        # $state.go 'login'
+        $state.go 'login'
     else
       console.log "USER already defined"
       $scope.user = $rootScope.USER

@@ -53,7 +53,8 @@ angular.module('subzapp').controller('TeamController', [
         $scope.show_upload = $rootScope.USER.club_admin;
         return get_team_info();
       }), function(errResponse) {
-        return $rootScope.USER = null;
+        $rootScope.USER = null;
+        return $state.go('login');
       });
     } else {
       console.log("USER already defined");

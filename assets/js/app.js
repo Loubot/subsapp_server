@@ -61,20 +61,15 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     templateUrl: "angular_app/views/org/org_financials.html",
     controller: 'OrgFinancialsController'
   });
-  $stateProvider.state("team", {
-    url: '/team',
-    templateUrl: 'angular_app/views/team/team.html',
-    controller: 'TeamController'
-  });
-  $stateProvider.state('team_manager_home', {
-    url: '/team-manager-home',
-    templateUrl: 'angular_app/views/team/team_manager_home.html',
-    controller: 'TeamController'
-  });
   $stateProvider.state('team_manager', {
     url: '/team-manager',
     templateUrl: 'angular_app/views/team/team_manager.html',
     controller: 'TeamController'
+  });
+  $stateProvider.state('team_events', {
+    url: '/team-events',
+    templateUrl: 'angular_app/views/team/team_events.html',
+    controller: 'TeamEventsController'
   });
   $stateProvider.state('event', {
     url: '/event',
@@ -119,7 +114,6 @@ angular.module('subzapp').service('user', function($http, $state, RESOURCES, $ro
         }
       }).success(function(data) {
         console.log("Fetched user data");
-        console.log(data);
         if (!(data != null)) {
           $state.go('login');
           console.log("No user data");

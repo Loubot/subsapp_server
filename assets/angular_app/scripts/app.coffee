@@ -81,21 +81,19 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
       controller : 'OrgFinancialsController'
 
     # team state
-    $stateProvider.state "team",
-      url : '/team'
-      templateUrl : 'angular_app/views/team/team.html'
-      controller : 'TeamController'
-
-    $stateProvider.state 'team_manager_home',
-      url: '/team-manager-home'
-      templateUrl : 'angular_app/views/team/team_manager_home.html'
-      controller : 'TeamController'
-
       
     $stateProvider.state 'team_manager',
       url: '/team-manager'
       templateUrl : 'angular_app/views/team/team_manager.html'
       controller : 'TeamController'
+
+    $stateProvider.state 'team_events',
+      url: '/team-events'
+      templateUrl : 'angular_app/views/team/team_events.html'
+      controller : 'TeamEventsController'
+
+
+    # event state
 
     $stateProvider.state 'event',
       url: '/event'
@@ -146,7 +144,7 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope,
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
       ).success( (data) ->
         console.log "Fetched user data"
-        console.log data
+        # console.log data
         if !(data?)
           $state.go 'login'
           console.log "No user data"

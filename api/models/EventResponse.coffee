@@ -1,4 +1,4 @@
-###*
+###
 # Team
 # @description :: Model for storing token transactions
 ###
