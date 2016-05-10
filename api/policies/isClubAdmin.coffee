@@ -18,7 +18,7 @@ module.exports = (req, res, next) ->
 
 
   Org.findOne( id: req.param('id') ).populateAll().then( ( org ) ->
-    sails.log.debug "Find org #{ JSON.stringify org }"
+    sails.log.debug "Find org"
     if Boolean( req.user.super_admin )
       req.org = org
       next()

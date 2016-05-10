@@ -111,12 +111,15 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
 
     requestify = require('requestify')
-    requestify.post('https://connect.stripe.com/oauth/token?client_secret=sk_test_Ly71q4jFo4bBx4FL1wC6MxeT&code=ac_8QT9kRYlqZCBj9pS33xcsQ9nV7DMd2tb&grant_type=authorization_code').then( (response) ->
-        sails.log.debug "Response #{ JSON.stringify response }"
-        response.getBody()
-        res.json response.getBody()
-      ).catch( ( err ) ->
-        res.negotiate err
-      )
+    requestify.post("https://connect.stripe.com/oauth/token?client_secret=sk_test_Ly71q4jFo4bBx4FL1wC6MxeT&\
+              code=#{ req.body.auth_code }&\
+              grant_type=authorization_code"
+    ).then( (response) ->
+      sails.log.debug "Response #{ JSON.stringify response }"
+      response.getBody()
+      res.json response.getBody()
+    ).catch( ( err ) ->
+      res.negotiate err
+    )
 }
 

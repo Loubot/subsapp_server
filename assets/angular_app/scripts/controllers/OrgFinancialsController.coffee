@@ -15,9 +15,10 @@ angular.module('subzapp').controller('OrgFinancialsController', [
 
     check_for_stripe_code = ->
       if $location.search().code?
+        console.log $location.search().code
         COMMS.POST(
-          "org/#{ $scope.org.id }/authenticate-stripe"
-          $location.search().code
+          "/org/#{ $scope.org.id }/authenticate-stripe"
+          auth_code: $location.search().code
         ).then ( ( res ) ->
           console.log "Authenticated stripe"
           alertify.success "Authenticated stripe"

@@ -5,7 +5,10 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     console.log("OrgFinancialsController");
     check_for_stripe_code = function() {
       if ($location.search().code != null) {
-        return COMMS.POST("org/" + $scope.org.id + "/authenticate-stripe", $location.search().code).then((function(res) {
+        console.log($location.search().code);
+        return COMMS.POST("/org/" + $scope.org.id + "/authenticate-stripe", {
+          auth_code: $location.search().code
+        }).then((function(res) {
           console.log("Authenticated stripe");
           alertify.success("Authenticated stripe");
           return console.log(res);
