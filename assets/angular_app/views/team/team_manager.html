@@ -152,12 +152,15 @@
 
 </div> <!-- end of container-fluid -->
 
-<form action="#/org-admin-team" ng-if="user.club_admin">
+<div class="container-fluid">
   <div class="form-group text-center">
-    <button  class="btn btn-warning btn-lg">Invite manager for this team</button
-      >
+    
+    <button  class="btn btn-warning btn-lg" data-toggle="modal" data-target="#invite_manager">
+      Invite manager for this team
+    </button>
   </div>
-</form> <!-- end of container-fluid -->
+</div>
+
 
 
 
@@ -257,3 +260,4 @@
 
 
 <div ng-include="'/angular_app/views/global_partials/add_locations_part.html'"></div>
+<div ng-include="'/angular_app/views/team/invite_manager_part.html'"></div>

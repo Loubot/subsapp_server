@@ -239,6 +239,27 @@ angular.module('subzapp').controller('TeamController', [
         return alertify.error(errResponse.data);
       });
     };
+    $scope.invite_manager_data = {};
+    $scope.invite_manager = function() {
+      console.log($scope.invite_manager_data);
+      return COMMS.POST('/invite-manager', {
+        org_id: $scope.org.id,
+        team_id: $location.search().id,
+        club_admin: $scope.user.id,
+        club_admin_email: $scope.user.email,
+        invited_email: $scope.invite_manager_data.invited_email,
+        main_org_name: $scope.org.name,
+        team_name: $scope.team.name
+      }).then((function(response) {
+        console.log("Send invite mail");
+        console.log(response);
+        return alertify.success("Invite sent ok");
+      }), function(errResponse) {
+        console.log("Send invite mail");
+        console.log(errResponse);
+        return alertify.error(errResponse.message);
+      });
+    };
     return $scope.onTimeSet = function(nd, od) {
       $scope.create_event_data.start_date = moment(nd).format('DD-MM-YYYY HH:mm');
       $scope.create_event_data.kick_off_date = moment(nd).add(1, 'hours').format('DD-MM-YYYY HH:mm');

@@ -238,7 +238,7 @@ module.exports = {
   withdraw: ( req, res ) ->
     sails.log.debug "Hit the OrgController/withdraw"
 
-    MailgunService.withdrawl_message( 3, "Lakewood", "louisangelini@gmail.com" )
+    SendInBlueService.withdrawl_message( 3, "Lakewood", "louisangelini@gmail.com" )
 
     res.json 'ok'
 }

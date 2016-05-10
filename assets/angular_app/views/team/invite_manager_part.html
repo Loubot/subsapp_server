@@ -1,0 +1,48 @@
+
+
+<!-- Modal -->
+<div class="modal fade" id="invite_manager" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title black_text" id="myModalLabel">Invite manager for {{ team.name }}</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Enter email and name and we'll take care of the rest</h4>
+
+        <form class="form-horizontal black_text" 
+                ng-submit="invite_manager()" 
+                method="post" enctype="application/x-www-form-urlencoded">
+
+          <div class="form-group">
+            <label class="col-sm-2">Name: </label>
+            <div class="col-sm-10">
+              <input type="text" name="name" ng-model="invite_manager_data.name" class="form-control business_name" placholder:'Name' required>
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+          <div class="form-group">
+            <label class="col-sm-2">email: </label>
+            <div class="col-sm-10">
+              <input type="email" name="name" ng-model="invite_manager_data.invited_email" class="form-control business_name" placholder:'Name' required>
+            </div> <!-- end of col-sm-10 -->
+          </div> <!-- end of form-group -->
+          
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <input type="submit" value="Invite Manager!" class="btn btn-default btn btn-success btn-lg">
+              
+            </div>  <!-- end of col-sm-offset-2 col-sm-10 -->
+          </div> <!-- end of form-group -->
+
+         
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

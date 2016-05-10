@@ -20,9 +20,10 @@
           <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Club settings <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#/edit-user"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Details</a></li>
-            <li><a href="#/org">Register players</a></li>
-            <li><a ui-sref="org_financials">Something else here</a></li>
+            <li ng-if="USER.super_admin"><a href="#/org">Register players</a></li>
+            <li><a ui-sref="org_financials">Club financials</a></li>
             <li role="separator" class="divider"></li>
+            <li class=" black_text"><a ui-sref="org_admin">Club admin</a></li>
             <li><a href="" ng-click="log_out()">Logout</a></li>
           </ul>
         </li>

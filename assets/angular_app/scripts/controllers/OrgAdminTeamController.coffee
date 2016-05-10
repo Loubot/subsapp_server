@@ -41,26 +41,6 @@ angular.module('subzapp').controller('OrgAdminTeamController', [
       console.log "Get team error"
       console.log errResponse
       alertify.error "Failed to get team info"
-    $scope.invite_manager = ->
-      console.log $scope.invite_manager_data
-      COMMS.POST(
-        '/invite-manager'
-        { org_id: $scope.org.id
-
-        team_id: $location.search().id
-        club_admin: $scope.user.id
-        club_admin_email: $scope.user.email
-        invited_email: $scope.invite_manager_data.invited_email
-        main_org_name: $scope.org.name
-        team_name: $scope.team.name }
-
-      ).then ( ( response ) ->
-        console.log "Send invite mail"
-        console.log response
-        alertify.success "Invite sent ok"
-      ), ( errResponse ) ->
-        console.log "Send invite mail"
-        console.log errResponse
-        alertify.error errResponse.message 
+    
 ])
 
