@@ -110,16 +110,32 @@ module.exports = {
     sails.log.debug "Body #{ JSON.stringify req.body }"
     sails.log.debug "Params #{ req.param('id') }"
 
+
     requestify = require('requestify')
-    requestify.post("https://connect.stripe.com/oauth/token?client_secret=sk_test_Ly71q4jFo4bBx4FL1wC6MxeT&\
-              code=#{ req.body.auth_code }&\
-              grant_type=authorization_code"
+    requestify.post(
+      "https://connect.stripe.com/oauth/token?client_secret=#{ process.env.SUBZAPP_STRIPE_SECRET }&\
+      code=#{ req.body.auth_code }&\
+      grant_type=authorization_code"
     ).then( (response) ->
-      sails.log.debug "Response #{ JSON.stringify response }"
-      response.getBody()
-      res.json response.getBody()
+      sails.log.debug "Response #{ JSON.stringify response.getBody().stripe_user_id }"
+      User.findOne( req.user.id ).populate('tokens').then( ( user ) ->
+        sails.log.debug "User found #{ JSON.stringify user.tokens[0] }"
+        user.tokens[0].stripe_user_id = response.getBody().stripe_user_id
+        user.tokens[0].save().then( ( user_saved ) ->
+          sails.log.debug "User saved"
+          res.json user_saved
+        ).catch( ( user_saved_err ) ->
+          sails.log.debug "User saved error"
+          res.negotiate user_saved_err
+        ) #user.save()
+      ).catch( ( user_err ) ->  
+        sails.log.debug "User find error "
+        res.negotiate user_err
+      ) #user.findOne
     ).catch( ( err ) ->
       res.negotiate err
-    )
+    ) #requestify.post
+
+
 }
 

@@ -132,9 +132,6 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope,
   console.log "user service"
   {
 
-    check_if_org_admin: ( user, id ) -> #check if user is org admin of club referenced by id
-      return parseInt( user.orgs[0].id ) == parseInt( id )
-
     get_user: ->
       
       console.log "yyyyyyyyyyyyyyyyyyy"

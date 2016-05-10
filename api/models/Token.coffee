@@ -16,8 +16,15 @@ module.exports =
       required: true
       defaultsTo: 0
 
+    stripe_user_id:
+      type: 'string'
+      defaultsTo: null
+
+  ########### associations ##################
+
     owner: 
       model: 'user'
+
       
     
     toJSON: ->
