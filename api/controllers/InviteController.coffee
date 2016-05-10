@@ -4,7 +4,9 @@
 # @description :: Server-side logic for managing invites
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
+Promise = require( 'bluebird' )
 
+SendInvite = Promise.promisify( SendInBlueService.invite_manager )
 module.exports = {
     
   
@@ -18,8 +20,13 @@ module.exports = {
         team_name: req.body.team_name
       ).then( ( invite ) ->
         sails.log.debug "Invite created #{ JSON.stringify invite }"
-        MandrillService.send_mail( invite.id, req.body.invited_email )
-        res.json invite
+        SendInvite( invite.id, req.body.invited_email ).then( ( success ) ->
+          res.json "Invite sent", invite
+        ).catch( ( mail_err ) ->
+          sails.log.debug "Mail err"
+          res.negotiate "Invite create failed"
+        )
+        
       ).catch( ( err ) ->
         sails.log.debug "Invite failure #{ JSON.stringify err }"
         res.negotiate "Invite create failed", JSON.stringify err

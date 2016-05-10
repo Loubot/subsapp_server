@@ -244,7 +244,7 @@ angular.module('subzapp').controller('TeamController', [
       console.log($scope.invite_manager_data);
       return COMMS.POST('/invite-manager', {
         org_id: $scope.org.id,
-        team_id: $location.search().id,
+        team_id: $scope.team.id,
         club_admin: $scope.user.id,
         club_admin_email: $scope.user.email,
         invited_email: $scope.invite_manager_data.invited_email,
@@ -253,7 +253,8 @@ angular.module('subzapp').controller('TeamController', [
       }).then((function(response) {
         console.log("Send invite mail");
         console.log(response);
-        return alertify.success("Invite sent ok");
+        alertify.success("Invite sent ok");
+        return $('#invite_manager').modal('hide');
       }), function(errResponse) {
         console.log("Send invite mail");
         console.log(errResponse);

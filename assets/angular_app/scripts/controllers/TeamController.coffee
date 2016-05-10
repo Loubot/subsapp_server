@@ -313,7 +313,7 @@ angular.module('subzapp').controller('TeamController', [
         '/invite-manager'
         { org_id: $scope.org.id
 
-        team_id: $location.search().id
+        team_id: $scope.team.id
         club_admin: $scope.user.id
         club_admin_email: $scope.user.email
         invited_email: $scope.invite_manager_data.invited_email
@@ -324,6 +324,7 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Send invite mail"
         console.log response
         alertify.success "Invite sent ok"
+        $('#invite_manager').modal 'hide'
       ), ( errResponse ) ->
         console.log "Send invite mail"
         console.log errResponse

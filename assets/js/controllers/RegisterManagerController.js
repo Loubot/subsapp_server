@@ -1,6 +1,6 @@
 'use strict';
 angular.module('subzapp').controller('RegisterManagerController', [
-  '$scope', '$state', '$http', '$window', 'alertify', '$location', 'RESOURCES', function($scope, $state, $http, $window, alertify, $location, RESOURCES) {
+  '$scope', '$state', '$http', '$window', 'alertify', '$location', 'RESOURCES', 'COMMS', function($scope, $state, $http, $window, alertify, $location, RESOURCES, COMMS) {
     console.log('Register Manager Controller');
     $scope.register_manager_form_data = $location.search();
     console.log($location.search());
@@ -16,6 +16,7 @@ angular.module('subzapp').controller('RegisterManagerController', [
     }).then((function(response) {
       console.log("Get invite response");
       console.log(response.data);
+      window.localStorage.setItem('team_id', response.data.team_id);
       $scope.register_manager_form_data = response.data;
       $scope.register_manager_form_data.invited_email = response.data.invited_email;
       return $scope.team_id = response.data.team_id;
@@ -30,21 +31,15 @@ angular.module('subzapp').controller('RegisterManagerController', [
       $scope.register_manager_form_data.email = $scope.register_manager_form_data.invited_email;
       delete $scope.register_manager_form_data.invited_email;
       console.log($scope.register_manager_form_data);
-      return $http({
-        method: 'POST',
-        url: RESOURCES.DOMAIN + "/auth/team_manager_signup",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: $scope.register_manager_form_data
-      }).then((function(response) {
+      return COMMS.POST("/auth/signup/team_manager", $scope.register_manager_form_data).then((function(response) {
         console.log("Registration successfull ");
         console.log(response);
-        window.localStorage.setItem('user_token', response.data.data.token);
-        window.localStorage.setItem('user_id', response.data.data.user.id);
-        return $state.go('user');
+        window.localStorage.setItem('user_token', response.data.token);
+        window.localStorage.setItem('user_id', response.data.user.id);
+        return $state.go('team_manager');
       }), function(errResponse) {
         console.log("Registration failed ");
+        alertify.error("Registration failed " + (JSON.stringify(errResponse)));
         setTimeout((function() {
           return $state.go('login');
         }), 5000);

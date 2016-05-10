@@ -40,7 +40,7 @@ module.exports.routes =
 
   'post /auth/signup/team_manager' :
         controller :            'AuthController'  #requires team_id. Adds new user as team_admin of club_id
-        action :                 'team_manager_signup'
+        action :                'team_manager_signup'
         
   '/': view: 'index'
   # 'post /api/v1/login' :

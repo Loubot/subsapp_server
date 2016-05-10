@@ -8,7 +8,8 @@ angular.module('subzapp').controller('RegisterManagerController', [
   'alertify'
   '$location'
   'RESOURCES'
-  ( $scope, $state, $http, $window, alertify, $location, RESOURCES ) ->
+  'COMMS'
+  ( $scope, $state, $http, $window, alertify, $location, RESOURCES, COMMS ) ->
     console.log 'Register Manager Controller'
     $scope.register_manager_form_data = $location.search()
 
@@ -25,6 +26,7 @@ angular.module('subzapp').controller('RegisterManagerController', [
     ).then ( ( response ) ->
       console.log "Get invite response"
       console.log response.data
+      window.localStorage.setItem 'team_id', response.data.team_id
       $scope.register_manager_form_data = response.data
       $scope.register_manager_form_data.invited_email = response.data.invited_email
       $scope.team_id = response.data.team_id
@@ -41,22 +43,19 @@ angular.module('subzapp').controller('RegisterManagerController', [
       delete $scope.register_manager_form_data.invited_email
       
       console.log $scope.register_manager_form_data
-      $http(
-        method: 'POST'
-        url: "#{ RESOURCES.DOMAIN }/auth/team_manager_signup"
-        headers: { 
-                  'Content-Type': 'application/json'
-                  }
-        data: $scope.register_manager_form_data
+      COMMS.POST(
+        "/auth/signup/team_manager"
+        $scope.register_manager_form_data
       ).then ( (response) ->
         console.log "Registration successfull "
         console.log response
-        window.localStorage.setItem 'user_token', response.data.data.token
+        window.localStorage.setItem 'user_token', response.data.token
         # console.log "user_token " + window.localStorage.getItem 'user_token'
-        window.localStorage.setItem 'user_id', response.data.data.user.id
-        $state.go 'user'
+        window.localStorage.setItem 'user_id', response.data.user.id
+        $state.go 'team_manager'
       ), ( errResponse ) ->
         console.log "Registration failed "
+        alertify.error "Registration failed #{ JSON.stringify errResponse }"
         setTimeout ( ->
           $state.go 'login' 
         ), 5000

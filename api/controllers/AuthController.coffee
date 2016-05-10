@@ -75,8 +75,8 @@ module.exports =
           )
       )
       
-    ).then(res.created).catch res.serverError
-    return
+    )
+    
 
   parent_sign_up: ( req, res ) ->
     sails.log.debug "Hit the AuthController/parent_sign_up"
