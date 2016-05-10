@@ -148,8 +148,8 @@ angular.module('subzapp').service 'user', ($http, $state, RESOURCES, $rootScope,
         url: "#{ RESOURCES.DOMAIN }/user/#{ id }"
         headers: { 'Authorization': "JWT #{ user_token }", "Content-Type": "application/json" }
       ).success( (data) ->
-        # console.log "Fetched user data"
-        # console.log data
+        console.log "Fetched user data"
+        console.log data
         if !(data?)
           $state.go 'login'
           console.log "No user data"

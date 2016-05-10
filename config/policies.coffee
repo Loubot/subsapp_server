@@ -56,6 +56,11 @@ module.exports.policies =
 
   TeamController: 
     '*': [ 'isAuthenticated' ]
+    'findOne': [ 'isAuthenticated', 'isTeamAdmin' ]
+    'update': [ 'isAuthenticated', 'isTeamAdmin' ]
+    'org_members': [ 'isAuthenticated', 'isTeamAdmin' ]
+    'get_team_info': [ 'isAuthenticated', 'isTeamAdmin' ]
+    'org_locations': [ 'isAuthenticated', 'isTeamAdmin' ]
 
   TokenController: 
     '*': [ 'isAuthenticated' ]

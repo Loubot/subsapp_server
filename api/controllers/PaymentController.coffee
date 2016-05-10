@@ -105,5 +105,18 @@ module.exports = {
       sails.log.debug "User found err #{ JSON.stringify err }"
       res.negotiate err
 
+  authenticate_stripe: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/authenticate_stripe"
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+    sails.log.debug "Params #{ req.param('id') }"
+
+    requestify = require('requestify')
+    requestify.post('https://connect.stripe.com/oauth/token?client_secret=sk_test_Ly71q4jFo4bBx4FL1wC6MxeT&code=ac_8QT9kRYlqZCBj9pS33xcsQ9nV7DMd2tb&grant_type=authorization_code').then( (response) ->
+        sails.log.debug "Response #{ JSON.stringify response }"
+        response.getBody()
+        res.json response.getBody()
+      ).catch( ( err ) ->
+        res.negotiate err
+      )
 }
 

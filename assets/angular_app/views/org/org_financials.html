@@ -1,1 +1,19 @@
-{{ org.org_token[0].tokens }}
+<div class="container-fluid">
+  <h2>{{ org.name }}</h2>
+  Token balance: {{ org.org_token[0].tokens }}
+</div>
+
+<div class="container-fluid">
+  <form ng-submit="withdraw_tokens()" class="form-horizontal">
+    <h4>You can withdraw tokens. The amount will be deposited in your selected bank account</h4>
+    <div class="form-group">
+      <label for="withdraw_button" class="col-sm-2 control-label">Token amount</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" id="inputEmail3" placeholder="Email">
+      </div>
+    </div>
+  </form>
+</div>
+
+<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_7U9yBDJZiiWwLVPnViz885gsmxhUmxd4&scope=read_write&redirect_uri=http://localhost:1337/%23/org-financials" class="stripe-connect"><span>Connect with Stripe</span></a>
+<br />

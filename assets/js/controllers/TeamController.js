@@ -10,25 +10,36 @@ angular.module('subzapp').controller('TeamController', [
     $scope.location = {};
     $scope.markers = new Array();
     get_team_info = function() {
+      COMMS.GET("/locations").then((function(locations) {
+        console.log("Got locations");
+        console.log(locations);
+        alertify.success("Got locations");
+        return $scope.locations = locations.data;
+      }), function(errResponse) {
+        console.log("Failed to get locations");
+        return alertify.error("Failed to get locations");
+      });
       if ($rootScope.USER.club_admin) {
         return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
           console.log("get_team_info response club admin");
           console.log(res);
           $scope.team = res.data.team;
           $scope.org = res.data.org;
-          $scope.org_members = res.data.org.org_members;
-          return $scope.locations = res.data.org.org_locations;
+          return $scope.org_members = res.data.org.org_members;
         }), function(errResponse) {
           console.log("get_team_info error");
           return console.log(errResponse);
         });
       } else {
+        console.log('helllo');
         return COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(res) {
           console.log("Get team info response");
           console.log(res.data);
-          return $scope.team = res.data;
+          $scope.team = res.data;
+          return alertify.success("Got team info");
         }), function(errResponse) {
           console.log("Get team info error " + (JSON.stringify(errResponse)));
+          alertify.error("Failed to get team info");
           return $state.go('login');
         });
       }
@@ -40,9 +51,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = $rootScope.USER.teams;
         return_team($rootScope.USER.teams, $location.search().id);
         $scope.show_upload = $rootScope.USER.club_admin;
-        if ($rootScope.USER.club_admin) {
-          return get_team_info();
-        }
+        return get_team_info();
       }), function(errResponse) {
         return $rootScope.USER = null;
       });
@@ -110,6 +119,7 @@ angular.module('subzapp').controller('TeamController', [
       }).then((function(res) {
         console.log("Update team members");
         console.log(res);
+        $scope.team = res.data;
         $scope.team_members_array = res.data.team_members.map(function(member) {
           return member.id;
         });
@@ -147,19 +157,35 @@ angular.module('subzapp').controller('TeamController', [
     });
     get_org_and_members = function() {
       console.log("org id " + $scope.team.main_org.id);
-      return COMMS.GET("/org/get-org-team-members/" + $scope.team.main_org.id, $scope.team).then((function(res) {
-        console.log("Get org info ");
-        console.log(res.data);
-        $scope.org_members = res.data.org.org_members;
-        $scope.team_members_array = res.data.team.team_members.map(function(member) {
-          return member.id;
+      if ($rootScope.USER.club_admin) {
+        console.log("Fetching org and team members");
+        return COMMS.GET("/org/get-org-team-members/" + $scope.team.main_org.id, $scope.team).then((function(res) {
+          console.log("Get org info ");
+          console.log(res.data);
+          $scope.org_members = res.data.org.org_members;
+          $scope.team_members_array = res.data.team.team_members.map(function(member) {
+            return member.id;
+          });
+          return alertify.success("Got players info");
+        }), function(errResponse) {
+          console.log("Get org info error ");
+          console.log(errResponse);
+          return alertify.error("Couldn't get players info");
         });
-        return alertify.success("Got players info");
-      }), function(errResponse) {
-        console.log("Get org info error ");
-        console.log(errResponse);
-        return alertify.error("Couldn't get players info");
-      });
+      } else {
+        return COMMS.GET("/team/org-members/" + $scope.team.id, $scope.team).then((function(res) {
+          console.log("Get org members");
+          console.log(res.data);
+          $scope.org_members = res.data;
+          return $scope.team_members_array = $scope.team.team_members.map(function(member) {
+            return member.id;
+          });
+        }), function(errResponse) {
+          console.log("Get org members error");
+          console.log(errResponse);
+          return alertify.error("Failed to fetch org members");
+        });
+      }
     };
     set_map = function(lat, lng, set_markers, zoom) {
       var i, len, marker, ref;
@@ -245,7 +271,7 @@ angular.module('subzapp').controller('TeamController', [
       return COMMS.POST('/invite-manager', {
         org_id: $scope.org.id,
         team_id: $scope.team.id,
-        club_admin: $scope.user.id,
+        club_admin_id: $scope.user.id,
         club_admin_email: $scope.user.email,
         invited_email: $scope.invite_manager_data.invited_email,
         main_org_name: $scope.org.name,

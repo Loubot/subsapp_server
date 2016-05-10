@@ -15,7 +15,7 @@ module.exports = {
     sails.log.debug "params #{ JSON.stringify req.body }"
     Invite.create( 
         org_id: req.body.org_id, team_id: req.body.team_id,
-        club_admin: req.body.club_admin, club_admin_email: req.body.club_admin_email,
+        club_admin_id: req.body.club_admin_id, club_admin_email: req.body.club_admin_email,
         invited_email: req.body.invited_email, main_org_name: req.body.main_org_name,
         team_name: req.body.team_name
       ).then( ( invite ) ->

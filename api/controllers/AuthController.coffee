@@ -52,6 +52,8 @@ module.exports =
       res.serverError user_create_err
     )
     return
+
+    
   team_manager_signup: (req, res) ->
     sails.log.debug "Hit the authcontroller/team_manager_signup"
     sails.log.debug "Body #{ JSON.stringify req.body }"

@@ -147,6 +147,10 @@ module.exports.routes =
 
   # Team controller
 
+  'get /team/:id':
+        controller:             'TeamController'
+        action:                 'findOne'
+
   'post /team/update/:id':
         controller:             'TeamController'
         action:                 'update'
@@ -159,9 +163,6 @@ module.exports.routes =
   #       controller:             'TeamController'
   #       action:                 'destroy_team'
 
-  'get /get-team' :           #Requires team id. Returns team with events and main org.
-        controller:             'TeamController'
-        action:                 'get_team'
 
   'post /join-team':          #Requires team id and user id. Adds user to list of teams members.          
         controller:             'TeamController'
@@ -179,9 +180,9 @@ module.exports.routes =
         controller:              'TeamController'
         action:                  'update_members'
 
-  'get /team/get-teams':           #Require org_id, returns all teams associated with an org
-        controller:             'TeamController'
-        action:                 'get_teams' # Move to org controller..
+  'get /team/org-members/:id':
+        controller:              'TeamController'
+        action:                  'org_members'
 
   # end of Team controller
 
@@ -200,6 +201,10 @@ module.exports.routes =
   'post /up-token':
         controller:             'TokenController'
         action:                 'up_token'
+
+  'post /org/:id/authenticate-stripe':
+        controller:             'PaymentController'
+        action:                 'authenticate_stripe'
 
   # end of Token controller
 

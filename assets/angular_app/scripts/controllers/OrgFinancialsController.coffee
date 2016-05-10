@@ -6,11 +6,28 @@ angular.module('subzapp').controller('OrgFinancialsController', [
   '$state'
   '$http'
   'RESOURCES'
+  '$location'
   'alertify'
   'user'
   'COMMS'
-  ( $scope, $rootScope, $state, $http, RESOURCES, alertify, user, COMMS ) ->
+  ( $scope, $rootScope, $state, $http, RESOURCES, $location, alertify, user, COMMS ) ->
     console.log "OrgFinancialsController"
+
+    check_for_stripe_code = ->
+      if $location.search().code?
+        COMMS.POST(
+          "org/#{ $scope.org.id }/authenticate-stripe"
+          $location.search().code
+        ).then ( ( res ) ->
+          console.log "Authenticated stripe"
+          alertify.success "Authenticated stripe"
+          console.log res
+        ), ( errResponse ) ->
+
+          console.log "Failed to authenticate stripe"
+          alertify.error "Failed to authenticate stripe"
+          console.log errResponse
+
 
     user.get_user().then( ( res ) ->
       $scope.user = $rootScope.USER
@@ -22,10 +39,13 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         console.log res.data.org
         $scope.org = res.data.org
         alertify.success "Got org info"
+        check_for_stripe_code()
       ), ( errResponse ) ->
         console.log "Get org error"
         console.log. errResponse
         alertify.error "Failed to get org info"
     ) # end of get_user
+
+
 
 ])

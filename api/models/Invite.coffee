@@ -17,7 +17,7 @@ module.exports =
     team_id:
       type: 'integer'
       required: true
-    club_admin:
+    club_admin_id:
       type: 'integer'
       required: true
     club_admin_email:

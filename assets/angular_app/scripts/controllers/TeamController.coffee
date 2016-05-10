@@ -20,6 +20,17 @@ angular.module('subzapp').controller('TeamController', [
     $scope.markers = new Array()
     get_team_info = ->
 
+      COMMS.GET(
+        "/locations"
+      ).then ( ( locations ) -> 
+        console.log "Got locations"
+        console.log locations
+        alertify.success "Got locations"
+        $scope.locations = locations.data
+      ), ( errResponse ) ->
+        console.log "Failed to get locations"
+        alertify.error "Failed to get locations"
+
       if $rootScope.USER.club_admin
         COMMS.GET(
           "/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"          
@@ -31,13 +42,13 @@ angular.module('subzapp').controller('TeamController', [
           $scope.org = res.data.org
 
           $scope.org_members = res.data.org.org_members
-          $scope.locations = res.data.org.org_locations
           
         ), ( errResponse ) ->
 
           console.log "get_team_info error"
           console.log errResponse
       else
+        console.log 'helllo'
         COMMS.GET(
           "/team/#{ window.localStorage.getItem 'team_id' }"
         ).then ( (res) ->
@@ -45,11 +56,13 @@ angular.module('subzapp').controller('TeamController', [
           console.log "Get team info response"
           console.log res.data
           $scope.team = res.data
+          alertify.success "Got team info"
 
            
         ), ( errResponse ) ->
 
           console.log "Get team info error #{ JSON.stringify errResponse }"
+          alertify.error "Failed to get team info"
           $state.go 'login'
 
     if !($rootScope.USER?)
@@ -63,7 +76,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.teams = $rootScope.USER.teams
         return_team( $rootScope.USER.teams, $location.search().id )
         $scope.show_upload = $rootScope.USER.club_admin
-        get_team_info() if $rootScope.USER.club_admin
+        get_team_info() 
       ), ( errResponse ) ->
         $rootScope.USER = null
         # $state.go 'login'
@@ -141,6 +154,7 @@ angular.module('subzapp').controller('TeamController', [
       ).then ( ( res ) ->
         console.log "Update team members"
         console.log res
+        $scope.team = res.data
         $scope.team_members_array = res.data.team_members.map( ( member ) ->
           member.id
         )
@@ -175,7 +189,7 @@ angular.module('subzapp').controller('TeamController', [
         $scope.team.eligible_date = moment($scope.team.eligible_date).format('YYYY-MM-DD')
         $scope.team.eligible_date_end = moment($scope.team.eligible_date_end).format('YYYY-MM-DD')
         console.log $scope.team.eligible_date
-        get_org_and_members() #update eligible player list. 
+        get_org_and_members()   #update eligible player list. 
       else
         alertify.log("Please set the eligible date of this team. Click to dismiss", "", 0)
         
@@ -187,22 +201,39 @@ angular.module('subzapp').controller('TeamController', [
     get_org_and_members = -> #fetch org info with members. Only members under the teams eligible age. 
       console.log "org id #{ $scope.team.main_org.id }"
       
-      COMMS.GET(
-        "/org/get-org-team-members/#{ $scope.team.main_org.id }"
-        $scope.team
-      ).then ( ( res ) ->
-        console.log "Get org info "
-        console.log res.data
-        $scope.org_members = res.data.org.org_members
-        $scope.team_members_array = res.data.team.team_members.map( ( member ) ->
-            member.id ) #create array containing team members user.id
-        
-        alertify.success "Got players info"
-      ), ( errResponse ) ->
-        console.log "Get org info error "
-        
-        console.log errResponse
-        alertify.error "Couldn't get players info"
+      if $rootScope.USER.club_admin
+        console.log "Fetching org and team members"
+        COMMS.GET(
+          "/org/get-org-team-members/#{ $scope.team.main_org.id }"
+          $scope.team
+        ).then ( ( res ) ->
+          console.log "Get org info "
+          console.log res.data
+          $scope.org_members = res.data.org.org_members
+          $scope.team_members_array = res.data.team.team_members.map( ( member ) ->
+              member.id ) #create array containing team members user.id
+          
+          alertify.success "Got players info"
+        ), ( errResponse ) ->
+          console.log "Get org info error "
+          
+          console.log errResponse
+          alertify.error "Couldn't get players info"
+      else
+        COMMS.GET(
+          "/team/org-members/#{ $scope.team.id }"
+          $scope.team
+        ).then ( ( res ) ->
+          console.log "Get org members"
+          console.log res.data
+          $scope.org_members = res.data
+          $scope.team_members_array = $scope.team.team_members.map ( member ) ->
+            member.id
+        ), ( errResponse ) ->
+          
+          console.log "Get org members error"
+          console.log errResponse
+          alertify.error "Failed to fetch org members"
 
     ###########################################
     #               Map stuff                 #
@@ -314,7 +345,7 @@ angular.module('subzapp').controller('TeamController', [
         { org_id: $scope.org.id
 
         team_id: $scope.team.id
-        club_admin: $scope.user.id
+        club_admin_id: $scope.user.id
         club_admin_email: $scope.user.email
         invited_email: $scope.invite_manager_data.invited_email
         main_org_name: $scope.org.name

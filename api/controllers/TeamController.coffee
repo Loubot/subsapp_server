@@ -11,13 +11,8 @@ module.exports = {
   findOne: ( req, res ) ->
     sails.log.debug "hit the TeamController/findOne"
     sails.log.debug "Params #{ req.param('id') }"
-    Team.findOne( { id: req.param('id') } ).populateAll().then( ( team ) ->
-      sails.log.debub "Team findOne #{ JSON.stringify team }"
-      res.json team
-    ).catch( ( err ) ->
-      sails.log.debug "Team find one err #{ JSON.stringify err }"
-      res.negotiate err
-    )
+    ## req.team defined in isTeamAdmin policy 
+    res.json req.team 
 
   update: ( req, res ) ->
     sails.log.debug "Hit the TeamController/update"
@@ -165,31 +160,20 @@ module.exports = {
       res.negotiate err
     )   
 
+  org_members: ( req, res ) ->
+    sails.log.debug "Hit the TeamController.coffee/org_members"
+    sails.log.debug "Params #{ JSON.stringify req.body }"
+    sails.log.debug "Id #{ req.param('id') }"
 
-
-
-  get_team: (req, res) ->
-    sails.log.debug "Hit the TeamController/get_team"
-    Team.findOne( { id: req.query.team_id } ).populate('events').populate('main_org').populate('manager').then( (team) ->
-      sails.log.debug "Get team response #{ JSON.stringify team }"
-      res.json team
-    ).catch( (err) ->
-      sails.log.debug "Get team error #{ JSON.stringify err }"
-      res.negotiate err
-    ).done ->
-      sails.log.debug "Team get team main org done"
-
-  get_teams: ( req, res ) -> #return all teams from an org
-    sails.log.debug "Hit the team conroller/get_teams"
-    Org.findOne( id: req.query.org_id ).populate('teams').then( ( org_and_teams ) ->
-      sails.log.debug "Org and teams #{ JSON.stringify org_and_teams }"
-      res.json org_and_teams
-    ).catch( ( err ) ->
-      sails.log.debug "Get org and teams error"
-      res.negotiate err
+    
+    Org.findOne( { id: req.team.main_org.id } )
+    .populate('org_members', dob_stamp: { '>': moment( req.query.eligible_date ).toISOString(), '<': moment( req.query.eligible_date_end ).toISOString()  } 
+      
+    ).then( ( org ) ->
+      sails.log.debug "Org found #{ JSON.stringify org }"
+      res.json org.org_members
+    ).catch( ( org_and_team_err ) ->
+      sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
     )
-
-
-  
   
 }
