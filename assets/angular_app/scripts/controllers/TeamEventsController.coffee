@@ -25,12 +25,28 @@ angular.module('subzapp').controller('TeamEventsController', [
         console.log "Team error"
         console.log team_err
         alertify.error "Failed to get team"
+
+      COMMS.GET(
+        "/team/#{ window.localStorage.getItem 'team_id' }/teams-events"
+      ).then ( ( team ) ->
+        console.log "Got events info"
+        console.log team
+        $scope.events = team.data
+        alertify.success "Got team info"
+      ), ( team_err ) ->
+
+        console.log "Team error"
+        console.log team_err
+        alertify.error "Failed to get team"
       
     ), ( errResponse ) ->
       $rootScope.USER = null
       $state.go 'login'
     
 
-      
+      #moment(res.data[0].eligible_date).format('YYYY-MM-DD')
 
+    $scope.format_date = ( date ) ->
+      console.log date
+      return moment( date ).format( 'YYYY-MM-DD HH:mm' )
 ])

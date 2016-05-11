@@ -184,6 +184,10 @@ module.exports.routes =
         controller:              'TeamController'
         action:                  'org_members'
 
+  'get /team/:id/teams-events':
+        controller:              'TeamController'
+        action:                  'teams_events'
+
   # end of Team controller
 
   # PaymentController

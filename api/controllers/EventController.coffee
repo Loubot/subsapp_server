@@ -173,7 +173,7 @@ module.exports = {
     )
 
   create_parent_event: ( req, res ) ->
-    sails.log.debug "Hit the event controller/create_parent_event"
+    sails.log.debug "Hit the EventController/create_parent_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"
     ParentEvent.create( 
       req.body

@@ -175,5 +175,20 @@ module.exports = {
     ).catch( ( org_and_team_err ) ->
       sails.log.debug "Org and team error #{ JSON.stringify org org_and_team_err }"
     )
+
+  teams_events: ( req, res ) ->
+    sails.log.debug "Hit the EventController/teams_events"
+    sails.log.debug "Params #{ req.param('id') }"
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+
+    Event.find( event_team: req.param('id'), where: { start_date: { '>': new Date() } } )
+    .populate('location_id').then( ( team) ->
+      sails.log.debug "Found team #{ JSON.stringify team }"
+      res.json team
+    ).catch( ( err ) ->
+      sails.log.debug "Team find error #{ JSON.stringify err }"
+      res.negotiate err
+    )
+    
   
 }

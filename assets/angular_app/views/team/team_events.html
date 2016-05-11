@@ -1,1 +1,14 @@
-{{ team }}
+<span us-spinner spinner-key="spinner-1"></span>
+
+<div class="container-fluid text-center">
+  <h3>{{ team.main_org.name }}</h3>
+  <h4>{{ team.name }}</h4>
+</div> <!-- end of container-fluid -->
+
+<div class="container-fluid">
+  <div class="list-group">
+    <button ng-repeat="event in events" type="button" class="list-group-item">{{ event.name }} 
+      {{ format_date(event.start_date) }} ({{ event.location_id.address }})</button>
+    
+  </div> <!-- end of list-group -->
+</div>  <!-- end of container-fluid -->
