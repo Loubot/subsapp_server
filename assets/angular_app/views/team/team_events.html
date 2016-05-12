@@ -6,9 +6,28 @@
 </div> <!-- end of container-fluid -->
 
 <div class="container-fluid">
+  <div class="form-group">
+    <label class="col-sm-2">Arrival Time: </label>
+    <div class="col-sm-10 black_text">
+      <div class="dropdown">
+        <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
+          <div class="input-group"><input type="text" class="form-control" data-ng-model="create_event_data.start_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <datetimepicker data-ng-model="create_event_data.start_date" 
+          data-on-set-time="onTimeSet(newDate, oldDate)"
+          data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
+        </ul>
+      </div>
+      
+    </div> <!-- end of col-sm-10 -->
+  </div> <!-- end of form-group -->
+
+
   <div class="list-group">
-    <button ng-repeat="event in events" type="button" class="list-group-item">{{ event.name }} 
-      {{ format_date(event.start_date) }} ({{ event.location_id.address }})</button>
+    <button ng-repeat="event in events" type="button" class="list-group-item">{{ event.name }}
+    {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }})</button>
     
   </div> <!-- end of list-group -->
 </div>  <!-- end of container-fluid -->

@@ -28,9 +28,16 @@ angular.module('subzapp').controller('TeamEventsController', [
       $rootScope.USER = null;
       return $state.go('login');
     });
-    return $scope.format_date = function(date) {
+    $scope.format_date = function(date) {
       console.log(date);
       return moment(date).format('YYYY-MM-DD HH:mm');
+    };
+    return $scope.onTimeSet = function(nd, od) {
+      console.log(nd);
+      console.log(od);
+      console.log(moment.duration(moment(od).diff(moment(nd))));
+      $scope.date.from = moment(nd).format('DD-MM-YYYY HH:mm');
+      return $scope.date.to = moment(od).format('DD-MM-YYYY HH:mm');
     };
   }
 ]);

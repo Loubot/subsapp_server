@@ -49,4 +49,11 @@ angular.module('subzapp').controller('TeamEventsController', [
     $scope.format_date = ( date ) ->
       console.log date
       return moment( date ).format( 'YYYY-MM-DD HH:mm' )
+
+    $scope.onTimeSet = ( nd, od ) ->
+      console.log nd
+      console.log od
+      console.log moment.duration( moment( od ).diff( moment( nd ) ) )
+      $scope.date.from = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.date.to = moment( od ).format( 'DD-MM-YYYY HH:mm' )
 ])

@@ -54,7 +54,7 @@
     "tag": "v1.0.10",
     "commit": "27a90d518261b8eb9c0aada6d5fe1947ccdb347e"
   },
-  "_source": "git://github.com/alertifyjs/alertify.js.git",
-  "_target": "~1.0.8",
+  "_source": "https://github.com/alertifyjs/alertify.js.git",
+  "_target": "^1.0.10",
   "_originalSource": "alertifyjs"
 }
