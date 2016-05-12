@@ -21,10 +21,13 @@ module.exports = (req, res, next) ->
     sails.log.debug "Find team #{ JSON.stringify team }"
     if Boolean( req.user.super_admin )
       req.team = team
-      next()
-      return
+      return next()
+      
+    if Boolean( req.user.club_admin ) and team.main_org.user_id == req.user.id
+      req.team = team 
+      return next()
     
-    if !team.manager? or team.manager.id != req.user.id
+    if !team.manager? or team.manager.id != req.user.id 
       return res.negotiate "Your are not authourised"
     req.team = team
     next()

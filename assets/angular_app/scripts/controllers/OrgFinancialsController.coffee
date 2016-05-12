@@ -17,12 +17,19 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       if $location.search().code?
         console.log $location.search().code
         COMMS.POST(
-          "/org/#{ $scope.org.id }/authenticate-stripe"
+          "/payment/#{ $scope.org.id }/authenticate-stripe"
           auth_code: $location.search().code
         ).then ( ( res ) ->
           console.log "Authenticated stripe"
-          alertify.success "Authenticated stripe"
-          console.log res
+          
+          
+          message = JSON.parse res.data.body
+          console.log message.error_description
+          if message.error_description?
+            alertify.error message.error_description
+          else
+            alertify.success "Authenticated stripe"
+
         ), ( errResponse ) ->
 
           console.log "Failed to authenticate stripe"

@@ -133,7 +133,7 @@ module.exports = {
         res.negotiate user_err
       ) #user.findOne
     ).catch( ( err ) ->
-      res.negotiate err
+      res.json err
     ) #requestify.post
 
 

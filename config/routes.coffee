@@ -206,7 +206,7 @@ module.exports.routes =
         controller:             'TokenController'
         action:                 'up_token'
 
-  'post /org/:id/authenticate-stripe':
+  'post /payment/:id/authenticate-stripe':
         controller:             'PaymentController'
         action:                 'authenticate_stripe'
 
