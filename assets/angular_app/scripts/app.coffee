@@ -16,6 +16,7 @@ angular.module('subzapp', [
     "checklist-model"
     'angularSpinner'
     'uiGmapgoogle-maps'
+    'ui.bootstrap'
 ])
 
 angular.module('subzapp').config (uiGmapGoogleMapApiProvider) ->
