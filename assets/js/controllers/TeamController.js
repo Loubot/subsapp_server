@@ -36,6 +36,7 @@ angular.module('subzapp').controller('TeamController', [
           console.log("Get team info response");
           console.log(res.data);
           $scope.team = res.data;
+          $scope.org = res.data.main_org;
           return alertify.success("Got team info");
         }), function(errResponse) {
           console.log("Get team info error " + (JSON.stringify(errResponse)));

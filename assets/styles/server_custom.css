@@ -4,7 +4,7 @@ html, body {
 }
 
 body{
-  background-color: #e4f4f2;
+  background-color: #66c2b7 ;
   width: 100%;
   word-wrap: break-word;
   color: #FFF;
@@ -27,7 +27,7 @@ body{
 
 .form_border{
   margin: 30px 5px !important;
-  border: solid #b8b8b8;
+  /*border: solid #b8b8b8;*/
   padding: 7px;
 }
 
@@ -190,7 +190,7 @@ body{
 
 .location_form{
   /*margin: 10px 150px;*/
-  border: solid #b8b8b8;
+  /*border: solid #b8b8b8;*/
   padding: 7px;
   margin-bottom: 50px;
 }
