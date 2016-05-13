@@ -7,20 +7,10 @@ angular.module('subzapp').controller('TeamEventsController', [
     }
     user.get_user().then((function(res) {
       $scope.user = $rootScope.USER;
-      COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(team) {
+      return COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(team) {
         console.log("Got team info");
         console.log(team);
         $scope.team = team.data;
-        return alertify.success("Got team info");
-      }), function(team_err) {
-        console.log("Team error");
-        console.log(team_err);
-        return alertify.error("Failed to get team");
-      });
-      return COMMS.GET("/team/" + (window.localStorage.getItem('team_id')) + "/teams-events").then((function(team) {
-        console.log("Got events info");
-        console.log(team);
-        $scope.events = team.data;
         return alertify.success("Got team info");
       }), function(team_err) {
         console.log("Team error");
@@ -44,11 +34,7 @@ angular.module('subzapp').controller('TeamEventsController', [
     };
     $scope.dt = {};
     $scope.today = function() {
-      var date;
-      $scope.dt.start_date = new Date();
-      date = new Date();
-      $scope.dt.end_date = date.setDate(date.getDate() + 1);
-      console.log("Date " + $scope.dt.end_date);
+      return $scope.dt.start_date = new Date();
     };
     $scope.today();
     $scope.clear = function() {
@@ -72,8 +58,10 @@ angular.module('subzapp').controller('TeamEventsController', [
     };
     return $scope.get_events = function() {
       console.log("team " + (window.localStorage.getItem('team_id')));
+      console.log($scope.dt);
       return COMMS.GET("/team/" + (window.localStorage.getItem('team_id')) + "/teams-events", $scope.dt).then((function(resp) {
-        return console.log(resp);
+        console.log(resp);
+        return $scope.events = resp.data;
       }), function(errResponse) {
         return console.log(errResponse);
       });

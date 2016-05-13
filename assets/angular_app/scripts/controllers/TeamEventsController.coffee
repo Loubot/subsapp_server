@@ -28,19 +28,6 @@ angular.module('subzapp').controller('TeamEventsController', [
         console.log "Team error"
         console.log team_err
         alertify.error "Failed to get team"
-
-      COMMS.GET(
-        "/team/#{ window.localStorage.getItem 'team_id' }/teams-events"
-      ).then ( ( team ) ->
-        console.log "Got events info"
-        console.log team
-        $scope.events = team.data
-        alertify.success "Got team info"
-      ), ( team_err ) ->
-
-        console.log "Team error"
-        console.log team_err
-        alertify.error "Failed to get team"
       
     ), ( errResponse ) ->
       $rootScope.USER = null
@@ -67,19 +54,13 @@ angular.module('subzapp').controller('TeamEventsController', [
 
     $scope.today = ->
       $scope.dt.start_date = new Date()
-      date = new Date()
-      $scope.dt.end_date = date.setDate( date.getDate() + 1 )
-      console.log "Date #{ $scope.dt.end_date }"
-      return
+      
 
     $scope.today()
 
     $scope.clear = ->
       $scope.dt = null
       return
-
-
-
 
     $scope.open1 = ->
       $scope.popup1.opened = true
@@ -102,11 +83,13 @@ angular.module('subzapp').controller('TeamEventsController', [
 
     $scope.get_events = ->
       console.log "team #{ window.localStorage.getItem 'team_id' }"
+      console.log $scope.dt
       COMMS.GET(
         "/team/#{ window.localStorage.getItem 'team_id' }/teams-events"
         $scope.dt
       ).then ( ( resp ) ->
         console.log resp
+        $scope.events = resp.data
       ), ( errResponse ) ->
         console.log errResponse
 ])

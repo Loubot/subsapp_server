@@ -55,5 +55,4 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     ) # end of get_user
 
 
-  
 ])

@@ -181,7 +181,7 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
     sails.log.debug "Body #{ JSON.stringify moment( req.query.end_date ).toISOString() }"
 
-    Event.find( event_team: req.param('id'),  where: start_date: { '>': moment( req.query.start_date ).toISOString() }, start_date: { '>': moment( req.query.end_date ).toISOString() } )
+    Event.find( event_team: req.param('id'),  where: start_date: { '>': moment( req.query.start_date ).toISOString() }, start_date: { '<': moment( req.query.end_date ).toISOString() } )
     .populate('location_id').then( ( team) ->
       sails.log.debug "Found team #{ JSON.stringify team }"
       res.json team
