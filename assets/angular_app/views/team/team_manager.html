@@ -3,6 +3,8 @@
 <div class="container-fluid">
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
 </div>
+
+
 <div class="row text-center main">
   <h2 >Viewing: {{ org.name }}</h2>
   <h3> {{ team.name }}</h3>
@@ -139,38 +141,36 @@
         </div> <!-- end of form-group text-center -->
       </fieldset>
     </form>
-
-
     
-    
-    
+  </div> <!-- end of col-xs-12 -->
 
-    
-  </div> <!-- end of col-xs-12 --> 
-  
+  <div class="container-fluid" ng-if="USER.club_admin">
+    <div class="form-group text-center">
+      
+      <button  class="btn btn-warning btn-lg" data-toggle="modal" data-target="#invite_manager">
+        Invite manager for this team
+      </button>
+    </div>
+  </div> <!-- end of container-fluid -->
 
 
-</div> <!-- end of container-fluid -->
 
-<div class="container-fluid" ng-if="USER.club_admin">
-  <div class="form-group text-center">
-    
-    <button  class="btn btn-warning btn-lg" data-toggle="modal" data-target="#invite_manager">
-      Invite manager for this team
+
+  <!-- Button trigger modal -->
+  <div class="container-fluid">
+    <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#select_player_modal">
+      Manage players
     </button>
-  </div>
-</div>
+  </div> <!-- end of container-fluid -->
+  <hr>
+  <div class="container-fluid">
+    <button ui-sref="team_events" class="btn btn-warning btn-lg center-block" >
+      Manage Events
+    </button>
+  </div> <!-- end of container-fluid --> 
+</div> <!-- end row text-center main -->
 
 
-
-
-<!-- Button trigger modal -->
-<div class="container-fluid">
-  <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#select_player_modal">
-    Manage players
-  </button>
-
-</div> <!-- end of container-fluid -->
 
 
 <!-- Modal -->

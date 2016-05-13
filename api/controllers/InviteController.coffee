@@ -34,6 +34,7 @@ module.exports = {
 
   get_invite: (req, res) ->
     sails.log.debug "Hit the invite controller/get_invite"
+    sails.log.debug "Param #{ JSON.stringify req.query }"
     Invite.findOne( id: req.query.invite_id ).then( ( invite) ->
       sails.log.debug "Invite found #{ JSON.stringify invite }"
       res.json invite

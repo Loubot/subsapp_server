@@ -31,6 +31,7 @@ module.exports = {
 
   invite_manager: ( id, email, cb ) ->
     sails.log.debug "Hit the SendInBlueService/invite_manager"
+    sails.log.debug "id: #{ id } email: #{ email }"
     data = 
       'to': 'louisangelini@gmail.com': 'to whom!'
       'from': [

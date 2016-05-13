@@ -14,7 +14,7 @@ angular.module('subzapp').controller('LoginController', [
           return $state.go('org_admin');
         } else {
           console.log('team_manager');
-          return $state.go('team_manager_home');
+          return $state.go('team_manager');
         }
       }), function(errResponse) {
         console.log("Error response " + (JSON.stringify(errResponse.data)));

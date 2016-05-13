@@ -57,6 +57,7 @@ body{
 
 .main{  
   height: 100%;
+  margin: 0px 8%;
 }
 
 .subs_app_logo{
@@ -182,6 +183,7 @@ body{
   /*margin: 10px 150px;*/
   border: solid #b8b8b8;
   padding: 7px;
+  margin-bottom: 50px;
 }
 
 .team_location_select{

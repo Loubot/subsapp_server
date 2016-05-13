@@ -29,7 +29,7 @@ angular.module('subzapp').controller('LoginController', [
           $state.go 'org_admin'
         else
           console.log 'team_manager'
-          $state.go 'team_manager_home'
+          $state.go 'team_manager'
       ), ( errResponse ) ->
         console.log "Error response #{ JSON.stringify errResponse.data }"
         $rootScope.USER = null
