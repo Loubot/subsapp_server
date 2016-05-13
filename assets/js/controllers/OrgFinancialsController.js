@@ -68,7 +68,8 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       opened: false
     };
     return $scope.get_events = function() {
-      return COMMS.GET("/team/:id/teams-events", $scope.dt).then((function(resp) {
+      console.log("team " + (window.localStorage.getItem('team_id')));
+      return COMMS.GET("/team/" + (window.localStorage.getItem('team_id')) + "/teams-events", $scope.dt).then((function(resp) {
         return console.log(resp);
       }), function(errResponse) {
         return console.log(errResponse);

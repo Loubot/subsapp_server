@@ -2,6 +2,9 @@
 angular.module('subzapp').controller('TeamEventsController', [
   '$scope', '$rootScope', '$state', 'COMMS', 'user', 'alertify', 'RESOURCES', function($scope, $rootScope, $state, COMMS, user, alertify, RESOURCES) {
     console.log('Team Events Controller');
+    if ((window.localStorage.getItem('team_id')) == null) {
+      $state.go('team_manager');
+    }
     user.get_user().then((function(res) {
       $scope.user = $rootScope.USER;
       COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(team) {

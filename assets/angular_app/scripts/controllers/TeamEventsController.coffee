@@ -11,6 +11,9 @@ angular.module('subzapp').controller('TeamEventsController', [
   ( $scope, $rootScope, $state, COMMS, user, alertify, RESOURCES ) ->    
     console.log 'Team Events Controller'
 
+    if !( window.localStorage.getItem 'team_id' )?
+      $state.go 'team_manager'
+
     user.get_user().then ( (res) ->
       $scope.user = $rootScope.USER
       COMMS.GET(

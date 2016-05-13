@@ -5,29 +5,43 @@
   <h4>{{ team.name }}</h4>
 </div> <!-- end of container-fluid -->
 
+
 <div class="container-fluid">
-  <div class="form-group">
-    <label class="col-sm-2">Arrival Time: </label>
-    <div class="col-sm-10 black_text">
-      <div class="dropdown">
-        <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
-          <div class="input-group"><input type="text" class="form-control" data-ng-model="create_event_data.start_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-          </div>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <datetimepicker data-ng-model="create_event_data.start_date" 
-          data-on-set-time="onTimeSet(newDate, oldDate)"
-          data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
-        </ul>
-      </div>
-      
-    </div> <!-- end of col-sm-10 -->
-  </div> <!-- end of form-group -->
-
-
-  <div class="list-group">
-    <button ng-repeat="event in events" type="button" class="list-group-item">{{ event.name }}
-    {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }})</button>
     
-  </div> <!-- end of list-group -->
-</div>  <!-- end of container-fluid -->
+
+    <h4>View events</h4>
+    <form ng-submit="get_events()">
+      <div class="col-sm-6">
+        <label class="control-label">From:</label>
+        <p class="input-group">
+
+          <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt.start_date" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+
+      </div> <!-- end of col-sm-6 -->
+
+
+      <div class="col-sm-6">
+        <label class="control-label">To:</label>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt.end_date" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div> <!-- end of col-sm-6 -->
+      <button type="submit" class="btn btn-success btn-lg">Filter events</button>
+    </form>
+    <hr />
+
+    <div class="container-fluid">
+      <div class="list-group">
+        <button ng-repeat="event in events" type="button" class="list-group-item">{{ event.name }}
+        {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }})</button>
+        
+      </div> <!-- end of list-group -->
+    </div> <!-- end of container-fluid -->
+</div>

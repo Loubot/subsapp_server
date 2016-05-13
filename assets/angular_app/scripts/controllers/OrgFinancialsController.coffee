@@ -96,8 +96,9 @@ angular.module('subzapp').controller('OrgFinancialsController', [
   ##################### end of calendar stuff ##########################
 
     $scope.get_events = ->
+      console.log "team #{ window.localStorage.getItem 'team_id' }"
       COMMS.GET(
-        "/team/:id/teams-events"
+        "/team/#{ window.localStorage.getItem 'team_id' }/teams-events"
         $scope.dt
       ).then ( ( resp ) ->
         console.log resp
