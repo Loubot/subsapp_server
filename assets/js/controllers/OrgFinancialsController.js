@@ -25,7 +25,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         });
       }
     };
-    user.get_user().then(function(res) {
+    return user.get_user().then(function(res) {
       $scope.user = $rootScope.USER;
       return COMMS.GET("/org/" + $scope.user.org[0].id).then((function(res) {
         console.log("Got org info");
@@ -39,42 +39,6 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         return alertify.error("Failed to get org info");
       });
     });
-    $scope.dt = {};
-    $scope.today = function() {
-      var date;
-      $scope.dt.start_date = new Date();
-      date = new Date();
-      $scope.dt.end_date = date.setDate(date.getDate() + 1);
-      console.log("Date " + $scope.dt.end_date);
-    };
-    $scope.today();
-    $scope.clear = function() {
-      $scope.dt = null;
-    };
-    $scope.open1 = function() {
-      $scope.popup1.opened = true;
-    };
-    $scope.open2 = function() {
-      $scope.popup2.opened = true;
-    };
-    $scope.setDate = function(year, month, day) {
-      $scope.dt = new Date(year, month, day);
-    };
-    $scope.format = "dd-MMMM-yyyy";
-    $scope.popup1 = {
-      opened: false
-    };
-    $scope.popup2 = {
-      opened: false
-    };
-    return $scope.get_events = function() {
-      console.log("team " + (window.localStorage.getItem('team_id')));
-      return COMMS.GET("/team/" + (window.localStorage.getItem('team_id')) + "/teams-events", $scope.dt).then((function(resp) {
-        return console.log(resp);
-      }), function(errResponse) {
-        return console.log(errResponse);
-      });
-    };
   }
 ]);
 

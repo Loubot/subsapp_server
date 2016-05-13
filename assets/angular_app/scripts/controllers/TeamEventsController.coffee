@@ -59,4 +59,54 @@ angular.module('subzapp').controller('TeamEventsController', [
       console.log moment.duration( moment( od ).diff( moment( nd ) ) )
       $scope.date.from = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
       $scope.date.to = moment( od ).format( 'DD-MM-YYYY HH:mm' )
+
+    ###################### calendar stuff ############################
+
+    $scope.dt = {}
+   
+
+    $scope.today = ->
+      $scope.dt.start_date = new Date()
+      date = new Date()
+      $scope.dt.end_date = date.setDate( date.getDate() + 1 )
+      console.log "Date #{ $scope.dt.end_date }"
+      return
+
+    $scope.today()
+
+    $scope.clear = ->
+      $scope.dt = null
+      return
+
+
+
+
+    $scope.open1 = ->
+      $scope.popup1.opened = true
+      return
+
+    $scope.open2 = ->
+      $scope.popup2.opened = true
+      return
+
+    $scope.setDate = (year, month, day) ->
+      $scope.dt = new Date(year, month, day)
+      return
+
+    
+    $scope.format = "dd-MMMM-yyyy"
+    $scope.popup1 = opened: false
+    $scope.popup2 = opened: false
+
+  ##################### end of calendar stuff ##########################
+
+    $scope.get_events = ->
+      console.log "team #{ window.localStorage.getItem 'team_id' }"
+      COMMS.GET(
+        "/team/#{ window.localStorage.getItem 'team_id' }/teams-events"
+        $scope.dt
+      ).then ( ( resp ) ->
+        console.log resp
+      ), ( errResponse ) ->
+        console.log errResponse
 ])
