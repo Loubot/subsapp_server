@@ -20,3 +20,38 @@
 <div class="text-center container-fluid" ng-if="user.tokens[0].stripe_user_id == null">
   <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_7U9yBDJZiiWwLVPnViz885gsmxhUmxd4&scope=read_write&redirect_uri=http://localhost:1337/%23/org-financials" class="stripe-connect"><span>Connect with Stripe</span></a>
 </div>
+
+
+
+<div class="container-fluid">
+    
+
+    <h4>View events</h4>
+    <form ng-submit="get_events()">
+      <div class="col-sm-6">
+        <label class="control-label">From:</label>
+        <p class="input-group">
+
+          <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt.start_date" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+
+      </div> <!-- end of col-sm-6 -->
+
+
+      <div class="col-sm-6">
+        <label class="control-label">To:</label>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt.end_date" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div> <!-- end of col-sm-6 -->
+      <button type="submit">Submit</button>
+    </form>
+    <hr />
+    
+</div>
