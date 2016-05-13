@@ -1,7 +1,7 @@
 'use strict';
 angular.module('subzapp').controller('OrgFinancialsController', [
   '$scope', '$rootScope', '$state', '$http', 'RESOURCES', '$location', 'alertify', 'user', 'COMMS', function($scope, $rootScope, $state, $http, RESOURCES, $location, alertify, user, COMMS) {
-    var afterTomorrow, check_for_stripe_code, disabled, getDayClass, tomorrow;
+    var check_for_stripe_code;
     console.log("OrgFinancialsController");
     check_for_stripe_code = function() {
       if ($location.search().code != null) {
@@ -39,53 +39,18 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         return alertify.error("Failed to get org info");
       });
     });
-    disabled = function(data) {
-      var date, mode;
-      date = data.date;
-      mode = data.mode;
-      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-    };
-    getDayClass = function(data) {
-      var currentDay, date, dayToCheck, i, mode;
-      date = data.date;
-      mode = data.mode;
-      if (mode === 'day') {
-        dayToCheck = new Date(date).setHours(0, 0, 0, 0);
-        i = 0;
-        while (i < $scope.events.length) {
-          currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
-          if (dayToCheck === currentDay) {
-            return $scope.events[i].status;
-          }
-          i++;
-        }
-      }
-      return '';
-    };
+    $scope.dt = {};
     $scope.today = function() {
-      $scope.dt = new Date;
+      var date;
+      $scope.dt.start_date = new Date();
+      date = new Date();
+      $scope.dt.end_date = date.setDate(date.getDate() + 1);
+      console.log("Date " + $scope.dt.end_date);
     };
     $scope.today();
     $scope.clear = function() {
       $scope.dt = null;
     };
-    $scope.inlineOptions = {
-      customClass: getDayClass,
-      minDate: new Date,
-      showWeeks: true
-    };
-    $scope.dateOptions = {
-      dateDisabled: disabled,
-      formatYear: 'yy',
-      maxDate: new Date(2020, 5, 22),
-      minDate: new Date,
-      startingDay: 1
-    };
-    $scope.toggleMin = function() {
-      $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date;
-      $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-    };
-    $scope.toggleMin();
     $scope.open1 = function() {
       $scope.popup1.opened = true;
     };
@@ -95,28 +60,20 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     $scope.setDate = function(year, month, day) {
       $scope.dt = new Date(year, month, day);
     };
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-    $scope.altInputFormats = ['M!/d!/yyyy'];
+    $scope.format = "dd-MMMM-yyyy";
     $scope.popup1 = {
       opened: false
     };
     $scope.popup2 = {
       opened: false
     };
-    tomorrow = new Date;
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    afterTomorrow = new Date;
-    afterTomorrow.setDate(tomorrow.getDate() + 1);
-    return $scope.events = [
-      {
-        date: tomorrow,
-        status: 'full'
-      }, {
-        date: afterTomorrow,
-        status: 'partially'
-      }
-    ];
+    return $scope.get_events = function() {
+      return COMMS.GET("/team/:id/teams-events", $scope.dt).then((function(resp) {
+        return console.log(resp);
+      }), function(errResponse) {
+        return console.log(errResponse);
+      });
+    };
   }
 ]);
 

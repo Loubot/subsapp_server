@@ -54,26 +54,17 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         alertify.error "Failed to get org info"
     ) # end of get_user
 
-    disabled = (data) ->
-      date = data.date
-      mode = data.mode
-      mode == 'day' and (date.getDay() == 0 or date.getDay() == 6)
 
-    getDayClass = (data) ->
-      date = data.date
-      mode = data.mode
-      if mode == 'day'
-        dayToCheck = new Date(date).setHours(0, 0, 0, 0)
-        i = 0
-        while i < $scope.events.length
-          currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0)
-          if dayToCheck == currentDay
-            return $scope.events[i].status
-          i++
-      ''
+  ###################### calendar stuff ############################
+
+    $scope.dt = {}
+   
 
     $scope.today = ->
-      $scope.dt = new Date
+      $scope.dt.start_date = new Date()
+      date = new Date()
+      $scope.dt.end_date = date.setDate( date.getDate() + 1 )
+      console.log "Date #{ $scope.dt.end_date }"
       return
 
     $scope.today()
@@ -82,23 +73,8 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       $scope.dt = null
       return
 
-    $scope.inlineOptions =
-      customClass: getDayClass
-      minDate: new Date
-      showWeeks: true
-    $scope.dateOptions =
-      dateDisabled: disabled
-      formatYear: 'yy'
-      maxDate: new Date(2020, 5, 22)
-      minDate: new Date
-      startingDay: 1
 
-    $scope.toggleMin = ->
-      $scope.inlineOptions.minDate = if $scope.inlineOptions.minDate then null else new Date
-      $scope.dateOptions.minDate = $scope.inlineOptions.minDate
-      return
 
-    $scope.toggleMin()
 
     $scope.open1 = ->
       $scope.popup1.opened = true
@@ -112,30 +88,19 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       $scope.dt = new Date(year, month, day)
       return
 
-    $scope.formats = [
-      'dd-MMMM-yyyy'
-      'yyyy/MM/dd'
-      'dd.MM.yyyy'
-      'shortDate'
-    ]
-    $scope.format = $scope.formats[0]
-    $scope.altInputFormats = [ 'M!/d!/yyyy' ]
+    
+    $scope.format = "dd-MMMM-yyyy"
     $scope.popup1 = opened: false
     $scope.popup2 = opened: false
-    tomorrow = new Date
-    tomorrow.setDate tomorrow.getDate() + 1
-    afterTomorrow = new Date
-    afterTomorrow.setDate tomorrow.getDate() + 1
-    $scope.events = [
-      {
-        date: tomorrow
-        status: 'full'
-      }
-      {
-        date: afterTomorrow
-        status: 'partially'
-      }
-    ]
 
+  ##################### end of calendar stuff ##########################
 
+    $scope.get_events = ->
+      COMMS.GET(
+        "/team/:id/teams-events"
+        $scope.dt
+      ).then ( ( resp ) ->
+        console.log resp
+      ), ( errResponse ) ->
+        console.log errResponse
 ])
