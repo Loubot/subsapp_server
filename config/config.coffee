@@ -5,3 +5,7 @@ module.exports.orm = {
 module.exports.pubsub = {
   _hookTimeout: 1000000 
 }
+
+module.exports.views = {
+  _hookTimeout: 1000000
+}
