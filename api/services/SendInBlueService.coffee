@@ -1,4 +1,4 @@
-require('../../node_modules/mailin/mailin.js')
+require('mailin-api-node-js')
 client = new Mailin('https://api.sendinblue.com/v2.0', '0E6kXPLmN3SpcbJM')
 
 
