@@ -56,7 +56,7 @@ angular.module('subzapp').controller('TeamEventsController', [
     $scope.popup2 = {
       opened: false
     };
-    return $scope.get_events = function() {
+    $scope.get_events = function() {
       console.log("team " + (window.localStorage.getItem('team_id')));
       console.log($scope.dt);
       return COMMS.GET("/team/" + (window.localStorage.getItem('team_id')) + "/teams-events", $scope.dt).then((function(resp) {
@@ -64,6 +64,20 @@ angular.module('subzapp').controller('TeamEventsController', [
         return $scope.events = resp.data;
       }), function(errResponse) {
         return console.log(errResponse);
+      });
+    };
+    return $scope.view_event = function(id) {
+      console.log("View event " + id);
+      return COMMS.GET("/event/" + id).then((function(res) {
+        console.log("Got event");
+        console.log(res);
+        $('#view_event').modal('show');
+        alertify.success("Got event successfully");
+        return $scope.event = res.data;
+      }), function(errResponse) {
+        console.log("Failed to get event ");
+        console.log(errResponse);
+        return alertify.error("Failed to get event");
       });
     };
   }

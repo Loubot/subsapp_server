@@ -92,4 +92,20 @@ angular.module('subzapp').controller('TeamEventsController', [
         $scope.events = resp.data
       ), ( errResponse ) ->
         console.log errResponse
+
+    $scope.view_event = ( id ) ->
+      console.log "View event #{ id }"
+      COMMS.GET(
+        "/event/#{ id }"
+      ).then ( ( res) ->
+        console.log "Got event"
+        console.log res
+        $('#view_event').modal 'show'
+        alertify.success "Got event successfully"
+        $scope.event = res.data
+      ), ( errResponse ) ->
+        console.log "Failed to get event "
+        console.log errResponse
+        alertify.error "Failed to get event"
+
 ])

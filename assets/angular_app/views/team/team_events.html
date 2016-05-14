@@ -39,9 +39,28 @@
 
     <div class="container-fluid">
       <div class="list-group">
-        <button ng-repeat="event in events" type="button" class="list-group-item">{{ event.name }}
+        <button ng-repeat="event in events" ng-click="view_event( event.id )" type="button" class="list-group-item">{{ event.name }}
         {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }})</button>
         
       </div> <!-- end of list-group -->
     </div> <!-- end of container-fluid -->
-</div>
+</div> <!-- end of container-fluid -->
+
+
+<!-- Modal -->
+<div class="modal fade black_text" id="view_event" tabindex="-1" role="dialog" aria-labelledby="view-event">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="view-event">Event name: {{ event.name }}</h4>
+      </div> <!-- end of modal-content -->
+      <div class="modal-body">
+        {{ event }}
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> <!-- end of modal-footer -->
+    </div> <!-- end of modal-content -->
+  </div> <!-- end of modal-dialog -->
+</div> <!-- end of modal fade -->
