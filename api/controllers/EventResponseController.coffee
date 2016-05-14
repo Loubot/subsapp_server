@@ -5,7 +5,7 @@
 # @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
 ###
 
-
+Promise = require('bluebird')
 module.exports = {
   find: ( req, res ) ->
     sails.log.debug "Hit the EventResponseController/findOne"
@@ -52,15 +52,26 @@ module.exports = {
           parent.tokens[0].amount = tokenBalanceAfterTransaction
           sails.log.debug "new amount #{ parent.tokens[0].amount }"
 
-          
+          User.findOne( req.body.user_id ).populate('user_events').then( ( kid ) ->
+            sails.log.debug "Found kid #{ JSON.stringify kid }"
+            kid.user_events.add( req.body.event_id )
+            Promise.all([
+              kid.save()
+              parent.tokens[0].save()
+            ]).spread( ( kid_saved, saved_parent ) ->
+              sails.log.debug "Kid saved #{ JSON.stringify kid_saved }"
+              sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
+              OrgTokenService.add_tokens( req.body.token_amount, req.body.team_id ) # Update the orgs token amaount
+              res.json e_response
+            ).catch( ( kid_parent_save_err ) ->
+              sails.log.debug "Kid and parent save err #{ JSON.stringify kid_parent_save_err }"
+              res.negotiate kid_parent_save_err
+            )
+          ).catch( ( kid_err ) ->
+            sails.log.debug "Find kid err #{ JSON.stringify kid_err }"
+            res.negotiate kid_err
+          )
 
-          parent.tokens[0].save ( saved_parent_error, saved_parent ) ->
-            sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
-            sails.log.debug "Saved parent saved_parent_error #{ JSON.stringify saved_parent_error }" if saved_parent_error?
-
-            OrgTokenService.add_tokens( req.body.token_amount, req.body.team_id ) # Update the orgs token amaount
-            
-            res.json e_response
         ).catch ( e_response_err ) ->
           sails.log.debug "EventResponse create error/event pay #{ JSON.stringify e_response_err }"
           res.negotiate e_response_err

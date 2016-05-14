@@ -18,8 +18,8 @@ angular.module('subzapp').controller('TeamController', [
     $scope.training_or_match = 'disabled'
     $scope.location = {}
     $scope.markers = new Array()
-    get_team_info = ->
 
+    get_team_info = ->
       COMMS.GET(
         "/locations"
       ).then ( ( locations ) -> 
@@ -31,40 +31,49 @@ angular.module('subzapp').controller('TeamController', [
         console.log "Failed to get locations"
         alertify.error "Failed to get locations"
 
-      if $rootScope.USER.club_admin
-        COMMS.GET(
-          "/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"          
-        ).then ( (res) ->
-          
-          console.log "get_team_info response club admin"
-          console.log res
-          $scope.team = res.data.team
-          $scope.org = res.data.org
+      fetch_info = ->
+        if $rootScope.USER.club_admin
+          COMMS.GET(
+            "/team/get-team-info/#{ window.localStorage.getItem 'team_id' }"          
+          ).then ( (res) ->
+            
+            console.log "get_team_info response club admin"
+            console.log res
+            $scope.team = res.data.team
+            $scope.org = res.data.org
 
-          $scope.org_members = res.data.org.org_members
-          
-        ), ( errResponse ) ->
+            $scope.org_members = res.data.org.org_members
+            
+          ), ( errResponse ) ->
 
-          console.log "get_team_info error"
-          console.log errResponse
+            console.log "get_team_info error"
+            console.log errResponse
+        else
+          console.log 'helllo'
+          COMMS.GET(
+            "/team/#{ window.localStorage.getItem 'team_id' }"
+          ).then ( (res) ->
+            
+            console.log "Get team info response"
+            console.log res.data
+            $scope.team = res.data
+            $scope.org = res.data.main_org
+            alertify.success "Got team info"
+
+             
+          ), ( errResponse ) ->
+
+            console.log "Get team info error #{ JSON.stringify errResponse }"
+            alertify.error "Failed to get team info"
+            $state.go 'login'
+
+      if !( window.localStorage.getItem 'team_id' )?
+        console.log "Setting team id"
+        if $rootScope.USER.teams[0]?
+          window.localStorage.setItem 'team_id', $rootScope.USER.teams[0].id
+          fetch_info()
       else
-        console.log 'helllo'
-        COMMS.GET(
-          "/team/#{ window.localStorage.getItem 'team_id' }"
-        ).then ( (res) ->
-          
-          console.log "Get team info response"
-          console.log res.data
-          $scope.team = res.data
-          $scope.org = res.data.main_org
-          alertify.success "Got team info"
-
-           
-        ), ( errResponse ) ->
-
-          console.log "Get team info error #{ JSON.stringify errResponse }"
-          alertify.error "Failed to get team info"
-          $state.go 'login'
+        fetch_info()
 
     if !($rootScope.USER?)
       user.get_user().then ( (res) ->

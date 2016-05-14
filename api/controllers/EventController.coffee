@@ -6,6 +6,18 @@
 ###
 Promise = require('bluebird')
 module.exports = {
+
+  findOne: ( req, res ) ->
+    sails.log.debug "Hit the EventController/findOne"
+    sails.log.debug "Params #{ req.param('id') }"
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+    Event.findOne( req.param('id') ).populateAll().then( ( event ) ->
+      sails.log.debug "Found event #{ JSON.stringify event }"
+      res.json event
+    ).catch( ( err ) ->
+      sails.log.debug "Event find error #{ JSON.stringify err }"
+      res.negotiate err
+    )
   
   create: (req, res) -> #user association happens in afterCreate callback
     sails.log.debug "Hit the EventController/create"
@@ -27,7 +39,7 @@ module.exports = {
           res.json event_created
       )
       res.json event_created
-    ).catch((err) ->
+    ).catch( (err) ->
       sails.log.debug "Create event error #{ JSON.stringify err }"
       res.negotiate err
     )

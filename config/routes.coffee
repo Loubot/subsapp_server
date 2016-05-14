@@ -213,6 +213,10 @@ module.exports.routes =
   # end of Token controller
 
   # Event controller
+  'get /event/:id':
+        controller:             'EventController'
+        action:                 'findOne'
+
   'post /event':       #Creates event. See Event.coffee for attributes
         controller:             'EventController'
         action:                 'create'

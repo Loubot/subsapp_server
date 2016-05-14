@@ -10,6 +10,7 @@ angular.module('subzapp').controller('TeamController', [
     $scope.location = {};
     $scope.markers = new Array();
     get_team_info = function() {
+      var fetch_info;
       COMMS.GET("/locations").then((function(locations) {
         console.log("Got locations");
         console.log(locations);
@@ -19,30 +20,41 @@ angular.module('subzapp').controller('TeamController', [
         console.log("Failed to get locations");
         return alertify.error("Failed to get locations");
       });
-      if ($rootScope.USER.club_admin) {
-        return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
-          console.log("get_team_info response club admin");
-          console.log(res);
-          $scope.team = res.data.team;
-          $scope.org = res.data.org;
-          return $scope.org_members = res.data.org.org_members;
-        }), function(errResponse) {
-          console.log("get_team_info error");
-          return console.log(errResponse);
-        });
+      fetch_info = function() {
+        if ($rootScope.USER.club_admin) {
+          return COMMS.GET("/team/get-team-info/" + (window.localStorage.getItem('team_id'))).then((function(res) {
+            console.log("get_team_info response club admin");
+            console.log(res);
+            $scope.team = res.data.team;
+            $scope.org = res.data.org;
+            return $scope.org_members = res.data.org.org_members;
+          }), function(errResponse) {
+            console.log("get_team_info error");
+            return console.log(errResponse);
+          });
+        } else {
+          console.log('helllo');
+          return COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(res) {
+            console.log("Get team info response");
+            console.log(res.data);
+            $scope.team = res.data;
+            $scope.org = res.data.main_org;
+            return alertify.success("Got team info");
+          }), function(errResponse) {
+            console.log("Get team info error " + (JSON.stringify(errResponse)));
+            alertify.error("Failed to get team info");
+            return $state.go('login');
+          });
+        }
+      };
+      if ((window.localStorage.getItem('team_id')) == null) {
+        console.log("Setting team id");
+        if ($rootScope.USER.teams[0] != null) {
+          window.localStorage.setItem('team_id', $rootScope.USER.teams[0].id);
+          return fetch_info();
+        }
       } else {
-        console.log('helllo');
-        return COMMS.GET("/team/" + (window.localStorage.getItem('team_id'))).then((function(res) {
-          console.log("Get team info response");
-          console.log(res.data);
-          $scope.team = res.data;
-          $scope.org = res.data.main_org;
-          return alertify.success("Got team info");
-        }), function(errResponse) {
-          console.log("Get team info error " + (JSON.stringify(errResponse)));
-          alertify.error("Failed to get team info");
-          return $state.go('login');
-        });
+        return fetch_info();
       }
     };
     if (!($rootScope.USER != null)) {
