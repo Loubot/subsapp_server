@@ -2,47 +2,39 @@
 
 angular.module('subzapp').controller('EventController', [
   '$scope'
+  '$rootScope'
   '$state'
-  '$http'
-  '$location'
-  '$window'
+  'COMMS'
+  '$stateParams'
   'user'
   'RESOURCES'
   'alertify'
-  ( $scope, $state, $http, $location, $window, user, RESOURCES, alertify ) ->
+  ( $scope, $rootScope, $state, COMMS, $stateParams, user, RESOURCES, alertify ) ->
     console.log 'Event Controller'
-    user_token = window.localStorage.getItem 'user_token'
+    console.log $stateParams.id
 
-    if !(window.USER?)
-      user.get_user().then ( (res) ->
-        # console.log "User"
-        # console.log res 
-        
-
-      ), ( errResponse ) ->
-        console.log "User get error #{ JSON.stringify errResponse }"
-        window.USER = null
-        $state.go 'login'
-    else
-      console.log "USER already defined"
-      $scope.org = window.USER.orgs[0]
     
-    console.log "id #{ $location.search().id }"
-    $http(
-      method: 'GET'
-      url: "#{ RESOURCES.DOMAIN }/get-event-members"
-      headers: { 
-                  'Authorization': "JWT #{ user_token }", "Content-Type": "application/json"
-                  }
-      params:
-        event_id: $location.search().id
-    ).then ( (res) ->
-       console.log "Get team members response"
-       console.log res
-       $scope.event_members = res.data.event_user
-       
+    user.get_user().then ( (res) ->
+      $scope.user = $rootScope.USER
+      COMMS.GET(
+        "/event/#{ $stateParams.id }"
+      ).then ( ( resp ) ->
+        console.log "Got event"
+        console.log resp
+        alertify.success "Got event info"
+        $scope.event = resp.data
+      ), ( event_err ) ->
+        console.log "Failed to get event"
+        console.log event_err
+        alertify.error "Failed to get err "
+      
+
     ), ( errResponse ) ->
-      console.log "Get event members error "
-      console.log errResponse
+      console.log "User get error #{ JSON.stringify errResponse }"
+      window.USER = null
+      $state.go 'login'
+    
+    
+    
 
 ])

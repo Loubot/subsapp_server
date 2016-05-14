@@ -72,7 +72,7 @@ angular.module('subzapp').config(function($stateProvider, $urlRouterProvider) {
     controller: 'TeamEventsController'
   });
   $stateProvider.state('event', {
-    url: '/event',
+    url: '/event/:id',
     templateUrl: 'angular_app/views/event/event.html',
     controller: 'EventController'
   });

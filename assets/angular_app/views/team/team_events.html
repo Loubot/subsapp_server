@@ -38,11 +38,15 @@
     <hr />
 
     <div class="container-fluid">
-      <div class="list-group">
-        <button ng-repeat="event in events" ng-click="view_event( event.id )" type="button" class="list-group-item">{{ event.name }}
-        {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }})</button>
+      <ul class="list-group black_text">
+        <li ng-repeat="event in events"  type="button" class="list-group-item">
+          {{ event.name }}
+          {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }}) 
+          <span ui-sref="event({ id: event.id })" class="btn btn-xs btn-primary pull-right">Edit</span>
+          <span  class="glyphicon glyphicon-eye-open pull-right r-margin-10" ></span>
+        </li>
         
-      </div> <!-- end of list-group -->
+      </ul> <!-- end of list-group -->
     </div> <!-- end of container-fluid -->
 </div> <!-- end of container-fluid -->
 

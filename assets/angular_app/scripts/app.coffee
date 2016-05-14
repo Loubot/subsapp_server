@@ -97,7 +97,7 @@ angular.module('subzapp').config ($stateProvider, $urlRouterProvider) ->
     # event state
 
     $stateProvider.state 'event',
-      url: '/event'
+      url: '/event/:id'
       templateUrl : 'angular_app/views/event/event.html'
       controller : 'EventController'
 

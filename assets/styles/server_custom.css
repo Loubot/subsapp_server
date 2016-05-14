@@ -43,6 +43,10 @@ body{
   margin: 0px !important;
 }
 
+.r-margin-10{
+  margin-right: 10px;
+}
+
 .make_space{
   height: 15px !important;
   width: 100% !important;
