@@ -42,8 +42,8 @@
         <li ng-repeat="event in events"  type="button" class="list-group-item">
           {{ event.name }}
           {{ event.start_date | date:'yyyy-MM-dd HH:mm' }} ({{ event.location_id.address }}) 
-          <span ui-sref="event({ id: event.id })" class="btn btn-xs btn-primary pull-right">Edit</span>
-          <span  class="glyphicon glyphicon-eye-open pull-right r-margin-10" ></span>
+          <span ui-sref="event({ id: event.id })" class="btn btn-xs btn-primary pull-right">Edit</span> <!-- link to event page -->
+          <span  class="glyphicon glyphicon-eye-open pull-right r-margin-10" ng-click="view_event( event.id )"></span>
         </li>
         
       </ul> <!-- end of list-group -->

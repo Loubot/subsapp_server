@@ -44,6 +44,19 @@ module.exports = {
       res.negotiate err
     )
 
+  update: ( req, res ) ->
+    sails.log.debug "Hit the EventController/update"
+    sails.log.debug "Param #{ req.param('id') }"
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+
+    Event.update( { id: req.param('id') }, req.body ).then( ( event ) ->
+      sails.log.debug "Event update #{ JSON.stringify event }"
+      res.json event
+    ).catch( ( err ) ->
+      sails.log.debug "Event update err #{ JSON.stringify err }"
+      res.negotiate err
+    )
+
   create_multi_event: ( req, res ) -> # Create event for multiple teams or managers
     sails.log.debug "Hit the EventController/create_multi_event"
     sails.log.debug "Params #{ JSON.stringify req.body }"

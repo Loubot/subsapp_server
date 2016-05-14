@@ -2,24 +2,70 @@
   <img src="images/subzapp_logo.png" class="img-responsive subs_app_logo" alt="Responsive image">
 </div>
 <div class="container-fluid">
-  
-  <ul class="example-animate-container">
-    <input type="search" ng-model="q" placeholder="filter members..." aria-label="filter friends" class="black_text" />
-    <br>members.
-    <li class="animate-repeat org_list" ng-repeat="member in event.event_user | filter:q as results">
-      <a href="#/member?id={{ member.id }}" >[{{$index + 1}}] {{ member.firstName }} </a>
-          
-    </li>
-    <li class="animate-repeat" ng-if="orgs.length == 0">
-      <strong>No-one registered yet</strong>
-    </li>
-  </ul>
-<!-- gh -->
-  <div class="message">
+
+  <form class="form-horizontal" ng-submnit="update_event()">
+    <div class="form-group">
+      <label for="name" class="col-sm-2 control-label">Name:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="event.name" id="name" placeholder="Name">
+      </div> <!-- end of col-sm-10 -->
+    </div> <!-- end of form-group -->
+
+    <div class="form-group">
+      <label for="name" class="col-sm-2 control-label">Details:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="event.details" id="name" placeholder="Name">
+      </div> <!-- end of col-sm-10 -->
+    </div> <!-- end of form-group -->
+
+    <div class="form-group">
+      <label for="start_date" class="col-sm-2 control-label">Arrival time:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="event.start_date" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  />
+      </div> <!-- end of col-sm-10 -->
+    </div> <!-- end of form-group -->
+
+    <div class="form-group">
+      <label for="start_date" class="col-sm-2 control-label">Kick off (optional):</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="event.kick_off_date" id="start_date" placeholder="Start date">
+      </div> <!-- end of col-sm-10 -->
+    </div> <!-- end of form-group -->
+
+
+
+    <div class="form-group">
+      <label for="end_date" class="col-sm-2 control-label">End time:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="event.end_date" id="end_date" placeholder="End date">
+      </div> <!-- end of col-sm-10 -->
+    </div> <!-- end of form-group -->
+
     
-  </div> <!-- end of message -->
+    
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success btn-lg">Update event</button>
+      </div>
+    </div>
+  </form> <!-- end of form-horizontal -->
+  
+  <div class="black_text">  
+    <uib-accordion >
+      <uib-accordion-group heading="Click to view confirmed attendees" is-open="status.isFirstOpen">
+        <ul class="list-group">
+          <li ng-repeat="user in event.event_user" class="list-group-item">{{ user.firstName }}</li>
+          
+        </ul>
+      </uib-accordion-group>
+      
+    </uib-accordion>
+  </div>
+
     
  
 
 
 </div> <!-- end of container-fluid -->
+
+

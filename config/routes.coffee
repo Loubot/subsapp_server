@@ -217,6 +217,10 @@ module.exports.routes =
         controller:             'EventController'
         action:                 'findOne'
 
+  'post /event/:id':
+        controller:             'EventController'
+        action:                 'update'
+
   'post /event':       #Creates event. See Event.coffee for attributes
         controller:             'EventController'
         action:                 'create'
