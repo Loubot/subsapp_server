@@ -39,6 +39,10 @@ body{
   margin-bottom: 50px;
 }
 
+.bottom_margin_20{
+  margin-bottom: 20px !important;
+}
+
 .no_margin{
   margin: 0px !important;
 }

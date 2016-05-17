@@ -2,7 +2,7 @@ window.USER = null;
 
 'use strict';
 
-angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps', 'ui.bootstrap']);
+angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps', 'ui.bootstrap', 'ui.dateTimeInput']);
 
 angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
   return uiGmapGoogleMapApiProvider.configure({
@@ -171,6 +171,28 @@ angular.module('subzapp').service('COMMS', function($http, $state, RESOURCES, $r
       return $q(function(resolve, reject) {
         return $http({
           method: 'GET',
+          url: "" + RESOURCES.DOMAIN + url,
+          headers: {
+            'Authorization': "JWT " + user_token,
+            "Content-Type": "application/json"
+          },
+          params: data
+        }).then(function(result) {
+          usSpinnerService.stop('spinner-1');
+          return resolve(result);
+        })["catch"](function(err_result) {
+          usSpinnerService.stop('spinner-1');
+          return reject(err_result);
+        });
+      });
+    },
+    PATCH: function(url, data) {
+      var user_token;
+      user_token = window.localStorage.getItem('user_token');
+      usSpinnerService.spin('spinner-1');
+      return $q(function(resolve, reject) {
+        return $http({
+          method: 'PATCH',
           url: "" + RESOURCES.DOMAIN + url,
           headers: {
             'Authorization': "JWT " + user_token,

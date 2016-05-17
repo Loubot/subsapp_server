@@ -25,6 +25,7 @@ angular.module('subzapp').controller('EventController', [
         console.log resp
         alertify.success "Got event info"
         $scope.event = resp.data
+        $scope.setDate()
       ), ( event_err ) ->
         console.log "Failed to get event"
         console.log event_err
@@ -37,6 +38,7 @@ angular.module('subzapp').controller('EventController', [
       $state.go 'login'
 
     $scope.update_event = ->
+      console.log "Help"
       console.log $scope.event
 
       COMMS.POST(
@@ -52,32 +54,19 @@ angular.module('subzapp').controller('EventController', [
         alertify.error "Event update error"
 
     
-    $scope.today = ->
-      $scope.event.start_date = new Date()
+    #################### calendar stuff ####################################
+    
+    $scope.setDate = ->
+      $scope.event.start_date = moment( $scope.event.start_date ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.event.kick_off_date = moment( $scope.event.kick_off_date ).format( 'DD-MM-YYYY HH:mm' ) if $scope.event.kick_off_date?
+      $scope.event.end_date = moment( $scope.event.end_date ).format( 'DD-MM-YYYY HH:mm' )
       
 
-    # $scope.today()
 
-    $scope.clear = ->
-      $scope.event = null
-      return
-
-    $scope.open1 = ->
-      $scope.popup1.opened = true
-      return
-
-    $scope.open2 = ->
-      $scope.popup2.opened = true
-      return
-
-    $scope.setDate = (year, month, day) ->
-      $scope.event = new Date(year, month, day)
-      return
-
-    
-    $scope.format = "dd-MMMM-yyyy"
-    $scope.popup1 = opened: false
-    $scope.popup2 = opened: false
+    $scope.onTimeSet = ( nd, od ) ->
+      $scope.event.start_date = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.event.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'DD-MM-YYYY HH:mm' ) if $scope.event.kick_off_date?
+      $scope.event.end_date = moment( nd ).add( 2, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
     
 
 ])

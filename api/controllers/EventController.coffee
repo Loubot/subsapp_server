@@ -49,6 +49,10 @@ module.exports = {
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Body #{ JSON.stringify req.body }"
 
+    req.body.start_date =  DateService.create_timestamp( req.body.start_date )
+    req.body.end_date = DateService.create_timestamp( req.body.end_date )
+    req.body.kick_off_date = DateService.create_timestamp( req.body.kick_off_date ) if req.body.kick_off_date?
+
     Event.update( { id: req.param('id') }, req.body ).then( ( event ) ->
       sails.log.debug "Event update #{ JSON.stringify event }"
       res.json event

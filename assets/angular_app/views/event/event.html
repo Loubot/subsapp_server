@@ -3,7 +3,7 @@
 </div>
 <div class="container-fluid">
 
-  <form class="form-horizontal" ng-submnit="update_event()">
+  <form class="form-horizontal" ng-submit="update_event()">
     <div class="form-group">
       <label for="name" class="col-sm-2 control-label">Name:</label>
       <div class="col-sm-10">
@@ -19,25 +19,58 @@
     </div> <!-- end of form-group -->
 
     <div class="form-group">
-      <label for="start_date" class="col-sm-2 control-label">Arrival time:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="event.start_date" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"  />
+      <label class="col-sm-2">Arrival Time: </label>
+      <div class="col-sm-10 black_text">
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
+            <div class="input-group"><input type="text" class="form-control" data-ng-model="event.start_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            </div>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker data-ng-model="event.start_date" 
+            data-on-set-time="onTimeSet(newDate, oldDate)"
+            data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" ng-required="true" />
+          </ul>
+        </div>
+        
       </div> <!-- end of col-sm-10 -->
     </div> <!-- end of form-group -->
 
     <div class="form-group">
-      <label for="start_date" class="col-sm-2 control-label">Kick off (optional):</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="event.kick_off_date" id="start_date" placeholder="Start date">
+      <label class="col-sm-2">Kick off time (optional): </label>
+      <div class="col-sm-10 black_text">
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
+            <div class="input-group"><input type="text" class="form-control" data-ng-model="event.kick_off_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            </div>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker data-ng-model="event.kick_off_date" 
+            data-on-set-time="onTimeSet(newDate, oldDate)"
+            data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" ng-required="true" />
+          </ul>
+        </div>
+        
       </div> <!-- end of col-sm-10 -->
     </div> <!-- end of form-group -->
 
 
 
     <div class="form-group">
-      <label for="end_date" class="col-sm-2 control-label">End time:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="event.end_date" id="end_date" placeholder="End date">
+      <label class="col-sm-2">End Time: </label>
+      <div class="col-sm-10 black_text">
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" ng-required="true">
+            <div class="input-group"><input type="text" class="form-control" data-ng-model="event.end_date"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            </div>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker data-ng-model="event.end_date" 
+            data-on-set-time="onTimeSet(newDate, oldDate)"
+            data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }" ng-required="true" />
+          </ul>
+        </div>
+        
       </div> <!-- end of col-sm-10 -->
     </div> <!-- end of form-group -->
 
@@ -54,7 +87,7 @@
     <uib-accordion >
       <uib-accordion-group heading="Click to view confirmed attendees" is-open="status.isFirstOpen">
         <ul class="list-group">
-          <li ng-repeat="user in event.event_user" class="list-group-item">{{ user.firstName }}</li>
+          <li ng-repeat="user in event.event_user" class="list-group-item">{{ user.firstName }} {{ user.lastName }}</li>
           
         </ul>
       </uib-accordion-group>

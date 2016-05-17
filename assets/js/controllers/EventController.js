@@ -10,7 +10,8 @@ angular.module('subzapp').controller('EventController', [
         console.log("Got event");
         console.log(resp);
         alertify.success("Got event info");
-        return $scope.event = resp.data;
+        $scope.event = resp.data;
+        return $scope.setDate();
       }), function(event_err) {
         console.log("Failed to get event");
         console.log(event_err);
@@ -22,6 +23,7 @@ angular.module('subzapp').controller('EventController', [
       return $state.go('login');
     });
     $scope.update_event = function() {
+      console.log("Help");
       console.log($scope.event);
       return COMMS.POST("/event/" + $stateParams.id, $scope.event).then((function(res) {
         console.log("Event updated");
@@ -33,27 +35,19 @@ angular.module('subzapp').controller('EventController', [
         return alertify.error("Event update error");
       });
     };
-    $scope.today = function() {
-      return $scope.event.start_date = new Date();
+    $scope.setDate = function() {
+      $scope.event.start_date = moment($scope.event.start_date).format('DD-MM-YYYY HH:mm');
+      if ($scope.event.kick_off_date != null) {
+        $scope.event.kick_off_date = moment($scope.event.kick_off_date).format('DD-MM-YYYY HH:mm');
+      }
+      return $scope.event.end_date = moment($scope.event.end_date).format('DD-MM-YYYY HH:mm');
     };
-    $scope.clear = function() {
-      $scope.event = null;
-    };
-    $scope.open1 = function() {
-      $scope.popup1.opened = true;
-    };
-    $scope.open2 = function() {
-      $scope.popup2.opened = true;
-    };
-    $scope.setDate = function(year, month, day) {
-      $scope.event = new Date(year, month, day);
-    };
-    $scope.format = "dd-MMMM-yyyy";
-    $scope.popup1 = {
-      opened: false
-    };
-    return $scope.popup2 = {
-      opened: false
+    return $scope.onTimeSet = function(nd, od) {
+      $scope.event.start_date = moment(nd).format('DD-MM-YYYY HH:mm');
+      if ($scope.event.kick_off_date != null) {
+        $scope.event.kick_off_date = moment(nd).add(1, 'hours').format('DD-MM-YYYY HH:mm');
+      }
+      return $scope.event.end_date = moment(nd).add(2, 'hours').format('DD-MM-YYYY HH:mm');
     };
   }
 ]);

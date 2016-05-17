@@ -17,6 +17,7 @@ angular.module('subzapp', [
     'angularSpinner'
     'uiGmapgoogle-maps'
     'ui.bootstrap'
+    'ui.dateTimeInput'
 ])
 
 angular.module('subzapp').config (uiGmapGoogleMapApiProvider) ->
@@ -196,6 +197,26 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
     $q ( resolve, reject ) ->
       $http(
         method: 'GET'
+        url: "#{ RESOURCES.DOMAIN }#{ url }"
+        headers: { 
+                    'Authorization': "JWT #{ user_token }"
+                    "Content-Type": "application/json"
+                  }
+        params: data
+      ).then( ( result ) ->
+        usSpinnerService.stop('spinner-1')
+        resolve result
+      ).catch( ( err_result ) ->
+        usSpinnerService.stop('spinner-1')
+        reject err_result
+      )
+
+  PATCH: ( url, data ) ->
+    user_token = window.localStorage.getItem 'user_token'
+    usSpinnerService.spin('spinner-1')
+    $q ( resolve, reject ) ->
+      $http(
+        method: 'PATCH'
         url: "#{ RESOURCES.DOMAIN }#{ url }"
         headers: { 
                     'Authorization': "JWT #{ user_token }"
