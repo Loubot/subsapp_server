@@ -1,0 +1,27 @@
+<div class="modal fade" id="select_players" tabindex="-1" role="dialog" aria-labelledby="select_players">
+  <div class="modal-dialog black_text" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="select_players">Select players</h4>
+      </div> <!-- end of modal-header -->
+      <div class="modal-body no_padding">
+        <div class="col-xs-12"> <!-- update members form -->
+          
+          <div ng-repeat="memb in team.team_members">
+            <label >
+              <input type="checkbox" checklist-value="memb.id" checklist-model="create_event_data.event_members"> {{ memb.firstName }} {{ memb.lastName }} 
+            </label>
+          </div> <!-- end of ng-repeat="memb in org_members" -->
+            
+        {{ create_event_data.event_members }}          
+            
+          
+        </div> <!-- end of col-xs-12 -->
+      </div> <!-- end of modal-body -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Save selection</button>
+      </div> <!-- end of modal-footer -->
+    </div> <!-- end of modal-content -->
+  </div> <!-- end of modal-dialog -->
+</div> <!-- end of modal fade -->
