@@ -9,6 +9,7 @@ angular.module('subzapp').controller('TeamController', [
     $scope.training_or_match = 'disabled';
     $scope.location = {};
     $scope.markers = new Array();
+    $scope.event_members = [];
     get_team_info = function() {
       var fetch_info;
       COMMS.GET("/locations").then((function(locations) {
@@ -123,6 +124,10 @@ angular.module('subzapp').controller('TeamController', [
       }), function(errResponse) {
         return console.log("DOwnload error " + (JSON.stringify(errResponse)));
       });
+    };
+    $scope.update_event_members = function() {
+      console.log('yep');
+      return console.log($scope.event_members);
     };
     $scope.update_members = function() {
       console.log("team id " + $scope.team.id);

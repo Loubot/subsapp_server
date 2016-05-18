@@ -129,14 +129,27 @@
       </fieldset>
 
       <fieldset ng-disabled="training_or_match=='disabled'">
+        <div class="form-group " >
+          <div class="col-sm-6">
+            <button class="btn btn-default btn-lg" data-toggle="modal" data-target="#select_players">Select players</button>
+          </div>
+          <div class="col-sm-6">
+            <button class="btn btn-info btn-lg" data-toggle="modal" data-target="#add_locations">Add a new location</button>
+          </div>
+          
+          
+        </div>
+      </fieldset>
+
+      <fieldset ng-disabled="training_or_match=='disabled'">
         <div class="form-group center-block" >
-          <button class="btn btn-info" data-toggle="modal" data-target="#add_locations">Add a new location</button>
+          
         </div>
       </fieldset>
 
       <fieldset ng-disabled="training_or_match=='disabled'">
         <div class="form-group text-center">
-          <input type="submit" value="Create event" class="btn btn-default btn btn-success btn-lg register">
+          <input type="submit" value="Create event" class="btn btn-success btn-lg">
           
         </div> <!-- end of form-group text-center -->
       </fieldset>
@@ -242,7 +255,7 @@
                 <input type="checkbox" checklist-value="memb.id" checklist-model="team_members_array"> {{ memb.firstName }} {{ memb.lastName }} {{ memb.id }}
               </label>
             </div> <!-- end of ng-repeat="memb in org_members" -->
-            <input <input type="submit" value="Update members" class="btn btn-default btn btn-success btn-lg register pull-right">
+            <input type="submit" value="Update members" class="btn btn-default btn btn-success btn-lg register pull-right">
           </form>
           
         </div> <!-- end of col-xs-12 -->
@@ -258,4 +271,5 @@
 
 
 <div ng-include="'/angular_app/views/global_partials/add_locations_part.html'"></div>
+<div ng-include="'/angular_app/views/global_partials/select_players_part.html'"></div>
 <div ng-include="'/angular_app/views/team/invite_manager_part.html'"></div>
