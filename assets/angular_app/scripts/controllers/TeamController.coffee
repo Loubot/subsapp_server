@@ -18,7 +18,7 @@ angular.module('subzapp').controller('TeamController', [
     $scope.training_or_match = 'disabled'
     $scope.location = {}
     $scope.markers = new Array()
-    $scope.event_members = []
+    $scope.create_event_data = {}
 
     get_team_info = ->
       COMMS.GET(
@@ -44,6 +44,9 @@ angular.module('subzapp').controller('TeamController', [
             $scope.org = res.data.org
 
             $scope.org_members = res.data.org.org_members
+            $scope.create_event_data.event_members = res.data.team.team_members.map( ( member ) ->
+              member.id
+            )
             
           ), ( errResponse ) ->
 
@@ -154,10 +157,6 @@ angular.module('subzapp').controller('TeamController', [
          
       ), ( errResponse ) ->
         console.log "DOwnload error #{ JSON.stringify errResponse }"
-
-    $scope.update_event_members = ->
-      console.log 'yep'
-      console.log $scope.event_members
 
     $scope.update_members = ->
       console.log "team id #{ $scope.team.id }"

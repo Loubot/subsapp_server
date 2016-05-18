@@ -26,28 +26,30 @@ module.exports = {
     req.body.start_date =  DateService.create_timestamp( req.body.start_date )
     req.body.end_date = DateService.create_timestamp( req.body.end_date )
     req.body.kick_off_date = DateService.create_timestamp( req.body.kick_off_date ) if req.body.kick_off_date?
-    Event.create( 
-      req.body      
-    ).then( ( event_created ) ->
-      sails.log.debug "Event create response #{ JSON.stringify event_created }"
-      GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
-      EventService.team_event_associations( event_created.event_team, event_created.id, ( associations_err, cb ) ->
-        if associations_err?
-          sails.log.debug "Event create team_event_associations err #{ JSON.stringify associations_err }"
-        else 
-          sails.log.debug "Event created with associations"
-          res.json event_created
-      )
-      res.json event_created
-    ).catch( (err) ->
-      sails.log.debug "Create event error #{ JSON.stringify err }"
-      res.negotiate err
-    )
+    res.json req.body
+    # Event.create( 
+    #   req.body      
+    # ).then( ( event_created ) ->
+    #   sails.log.debug "Event create response #{ JSON.stringify event_created }"
+    #   GCMService.send_message( event_created, "Trainging at #{ event_created.start_date }" )
+    #   EventService.team_event_associations( event_created.event_team, event_created.id, ( associations_err, cb ) ->
+    #     if associations_err?
+    #       sails.log.debug "Event create team_event_associations err #{ JSON.stringify associations_err }"
+    #     else 
+    #       sails.log.debug "Event created with associations"
+    #       res.json event_created
+    #   )
+    #   res.json event_created
+    # ).catch( (err) ->
+    #   sails.log.debug "Create event error #{ JSON.stringify err }"
+    #   res.negotiate err
+    # )
 
   create_with_players: ( req, res ) ->
     sails.log.debug "Hit the EventController/create_with_players"
     sails.log.debug "Body #{ JSON.stringify req.body }"
-    
+
+
 
 
   update: ( req, res ) ->
