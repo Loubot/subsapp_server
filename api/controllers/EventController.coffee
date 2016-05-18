@@ -44,6 +44,12 @@ module.exports = {
       res.negotiate err
     )
 
+  create_with_players: ( req, res ) ->
+    sails.log.debug "Hit the EventController/create_with_players"
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+    
+
+
   update: ( req, res ) ->
     sails.log.debug "Hit the EventController/update"
     sails.log.debug "Param #{ req.param('id') }"

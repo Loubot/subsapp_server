@@ -225,6 +225,10 @@ module.exports.routes =
         controller:             'EventController'
         action:                 'create'
 
+  'post /event/create-with-players':
+        controller:             'EventController'
+        action:                 'create_with_players'
+
   'post /event/create-multi-event':
         controller:             'EventController'
         action:                 'create_multi_event'
@@ -326,6 +330,12 @@ module.exports.routes =
 
 
   # End of GCMController
+
+  #Test controller
+
+  'get /test':
+        controller:             'TestController'
+        action:                 'test'
 
 
   # #Mail controller

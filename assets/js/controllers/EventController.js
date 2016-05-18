@@ -36,18 +36,18 @@ angular.module('subzapp').controller('EventController', [
       });
     };
     $scope.setDate = function() {
-      $scope.event.start_date = moment($scope.event.start_date).format('DD-MM-YYYY HH:mm');
+      $scope.event.start_date = moment($scope.event.start_date).format('YYYY-MM-DD HH:mm');
       if ($scope.event.kick_off_date != null) {
-        $scope.event.kick_off_date = moment($scope.event.kick_off_date).format('DD-MM-YYYY HH:mm');
+        $scope.event.kick_off_date = moment($scope.event.kick_off_date).format('YYYY-MM-DD HH:mm');
       }
-      return $scope.event.end_date = moment($scope.event.end_date).format('DD-MM-YYYY HH:mm');
+      return $scope.event.end_date = moment($scope.event.end_date).format('YYYY-MM-DD HH:mm');
     };
     return $scope.onTimeSet = function(nd, od) {
-      $scope.event.start_date = moment(nd).format('DD-MM-YYYY HH:mm');
+      $scope.event.start_date = moment(nd).format('YYYY-MM-DD HH:mm');
       if ($scope.event.kick_off_date != null) {
-        $scope.event.kick_off_date = moment(nd).add(1, 'hours').format('DD-MM-YYYY HH:mm');
+        $scope.event.kick_off_date = moment(nd).add(1, 'hours').format('YYYY-MM-DD HH:mm');
       }
-      return $scope.event.end_date = moment(nd).add(2, 'hours').format('DD-MM-YYYY HH:mm');
+      return $scope.event.end_date = moment(nd).add(2, 'hours').format('YYYY-MM-DD HH:mm');
     };
   }
 ]);

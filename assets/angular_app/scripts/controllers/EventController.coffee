@@ -57,16 +57,16 @@ angular.module('subzapp').controller('EventController', [
     #################### calendar stuff ####################################
     
     $scope.setDate = ->
-      $scope.event.start_date = moment( $scope.event.start_date ).format( 'DD-MM-YYYY HH:mm' )
-      $scope.event.kick_off_date = moment( $scope.event.kick_off_date ).format( 'DD-MM-YYYY HH:mm' ) if $scope.event.kick_off_date?
-      $scope.event.end_date = moment( $scope.event.end_date ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.event.start_date = moment( $scope.event.start_date ).format( 'YYYY-MM-DD HH:mm' )
+      $scope.event.kick_off_date = moment( $scope.event.kick_off_date ).format( 'YYYY-MM-DD HH:mm' ) if $scope.event.kick_off_date?
+      $scope.event.end_date = moment( $scope.event.end_date ).format( 'YYYY-MM-DD HH:mm' )
       
 
 
     $scope.onTimeSet = ( nd, od ) ->
-      $scope.event.start_date = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
-      $scope.event.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'DD-MM-YYYY HH:mm' ) if $scope.event.kick_off_date?
-      $scope.event.end_date = moment( nd ).add( 2, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.event.start_date = moment( nd ).format( 'YYYY-MM-DD HH:mm' )
+      $scope.event.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'YYYY-MM-DD HH:mm' ) if $scope.event.kick_off_date?
+      $scope.event.end_date = moment( nd ).add( 2, 'hours' ).format( 'YYYY-MM-DD HH:mm' )
     
 
 ])
