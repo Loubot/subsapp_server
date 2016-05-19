@@ -378,9 +378,9 @@ angular.module('subzapp').controller('TeamController', [
       
 
     $scope.onTimeSet = ( nd, od ) ->
-      $scope.create_event_data.start_date = moment( nd ).format( 'DD-MM-YYYY HH:mm' )
-      $scope.create_event_data.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
-      $scope.create_event_data.end_date = moment( nd ).add( 2, 'hours' ).format( 'DD-MM-YYYY HH:mm' )
+      $scope.create_event_data.start_date = moment( nd ).format( 'YYYY-MM-DD HH:mm' )
+      $scope.create_event_data.kick_off_date = moment( nd ).add( 1, 'hours' ).format( 'YYYY-MM-DD HH:mm' )
+      $scope.create_event_data.end_date = moment( nd ).add( 2, 'hours' ).format( 'YYYY-MM-DD HH:mm' )
       
       
 

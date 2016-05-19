@@ -18,6 +18,28 @@ module.exports = {
       cb( err )
     )
 
+  team_event_with_player_ids: ( event_members, event, cb ) ->
+    sails.log.debug "Hit the EventService/team_event_with_player_ids"
+
+    associate_users_with_event = ( event_members, event, index, cb ) ->
+      sails.log.debug "Event assocaition"
+      sails.log.debug "Index #{ index }"
+      sails.log.debug "Event member #{ event_members.length }"
+      if index >= event_members.length
+        cb( null, 'Associations done' )
+        return false
+
+      event.event_user.add( event_members[ index ] )
+      event.save ( err, event_saved ) ->
+        if err?
+          sails.log.debug "Failed to associate user with event"
+        else
+          sails.log.debug "User associated with event"
+          ++index
+          associate_users_with_event( event_members, event, index, cb )
+
+    associate_users_with_event( event_members, event, 1, cb )
+
 
   org_event_associations: ( event_id, team_id, cb ) ->
     sails.log.debug "Hit the EventService/org_event_associations"
