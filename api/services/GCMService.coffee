@@ -1,5 +1,7 @@
 gcm = require('node-gcm')
 Promise = require('bluebird')
+sender = new gcm.Sender( sails.config.GCM.server_key )
+message = new (gcm.Message)
 module.exports = {
   send_message: ( event_created, message ) ->
     sails.log.debug "GCMService/send_message"
@@ -12,8 +14,8 @@ module.exports = {
     # ).catch( ( team_find_err ) ->
     #   sails.log.debug "Team find err #{ JSON.stringify team_find_err }"
     # )
-    message = new (gcm.Message)
-    sender = new gcm.Sender( sails.config.GCM.server_key )
+    
+    
 
     user_query = Promise.promisify( User.query )
     user_query(
@@ -57,13 +59,52 @@ module.exports = {
 
   send_message_with_players_ids: ( event_created, event_members ) ->
     sails.log.debug "Hit the GCMService/send_message_with_players_ids"
-    
-    GCMReg.find( user_id: event_members ).then( ( gcmregs ) ->
-      sails.log.debug "Found GCMRegs #{ JSON.stringify gcmregs }"
+
+    User.find( id: event_members ).populate('parent').then( ( kids ) ->
+      sails.log.debug "Found kids #{ JSON.stringify kids }"
+      parents = new Array()
+      for kid in kids
+        parents.push kid.parent[0].id if kid.parent[0]?
+
+      sails.log.debug "Parents array #{ JSON.stringify parents }"
+
+      GCMReg.find( user_id: parents ).then( ( gcmregs ) ->
+        sails.log.debug "Found GCMRegs #{ JSON.stringify gcmregs }"
+        send_array = new Array()
+        for reg in gcmregs
+          if Boolean( reg.event_notifications )
+            send_array.push reg.gcm_token
+
+        message.addNotification
+          #title: event_created
+          title: "New event: " + event_created.name
+          body: event_created.details
+          icon: 'app_icon'
+          
+        message.addData
+          eventName: event_created.name
+          eventDetails: event_created.details
+          eventStart: event_created.start_date
+          eventEnd: event_created.end_date
+
+        sender.send message, { registrationTokens: send_array }, (err, response) ->
+          if err?
+            sails.log.debug "GCM err #{ JSON.stringify err }"
+          else
+            sails.log.debug "GCM response #{ JSON.stringify response }"
+          return
+
+      ).catch( ( err ) ->
+        sails.log.debug "GCMReg find err #{ JSON.stringify err }"
+      )
+
       
-    ).catch( ( err ) ->
-      sails.log.debug "GCMReg find err #{ JSON.stringify err }"
+    ).catch( ( find_parent_err ) ->
+      sails.log.debug "Find kids error #{ JSON.stringify find_parent_err }"
     )
 
     
+
+    
 }
+ 

@@ -159,7 +159,7 @@
 </div> <!-- end row text-center main -->
 
 <hr>
-<div class="container-fluid" ng-if="USER.club_admin">
+<div ng-if="!team.manager" class="container-fluid" ng-if="USER.club_admin">
   <div class="form-group text-center">
     
     <button  class="btn btn-warning btn-lg" data-toggle="modal" data-target="#invite_manager">
