@@ -5,7 +5,7 @@
 </div>
 
 
-<div class="row text-center">
+<div class="text-center">
   <h2 >Viewing: {{ org.name }}</h2>
   <h3> {{ team.name }}</h3>
   
@@ -116,7 +116,7 @@
       </fieldset>
 
       <fieldset ng-disabled="training_or_match=='disabled'">
-        <div class="form-group" >
+        <div class="form-group">
           <select class="form-control team_location_select" ng-change="new_location()" ng-model="create_event_data.location_id" required>
             <option value="" >---Please select location---</option>
             <option ng-repeat="location in locations" value="{{ location.id }}" 

@@ -17,7 +17,6 @@ body{
   height:auto !important; /* important rule for modern Browser */
   height:100%; /* min. height for IE */
   overflow: hidden !important; /* FF scroll-bar */
-  height: 100%;
   margin: 0px 8%;
 }
 
@@ -320,4 +319,15 @@ body{
  .show_it{
   visibility: visible;
   opacity: 1;
+ }
+
+
+
+ /* Media queries*/
+
+ @media (max-width: 700px) { 
+  .main{
+    margin: 0px;
+  }
+
  }
