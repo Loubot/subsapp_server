@@ -14,7 +14,16 @@ module.exports =
   models: 
     connection: 'subsapp_db_prod'
 
-  ###*
+  session:
+    secret: process.env.SESSION_SECRET
+    adapter: 'redis'
+    host: process.env.REDIS_HOST
+    port: process.env.REDIS_PORT
+    db: process.env.REDIS_DB
+    pass: process.env.REDIS_PASS
+
+
+###
 # Session Configuration
 # (sails.config.session)
 #
@@ -27,11 +36,3 @@ module.exports =
 # For more information on configuring the session, check out:
 # http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.session.html
 ###
-
-  session =
-    secret: process.env.SESSION_SECRET
-    adapter: 'redis'
-    host: process.env.REDIS_HOST
-    port: process.env.REDIS_PORT
-    db: process.env.REDIS_DB
-    pass: process.env.REDIS_PASS
