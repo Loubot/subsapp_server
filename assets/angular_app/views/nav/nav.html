@@ -23,8 +23,8 @@
             <li ng-if="USER.super_admin"><a href="#/org">Register players</a></li>
             <li ng-if="USER.club_admin"><a ui-sref="org_financials">Club financials</a></li>
             <li role="separator" class="divider"></li>
-            <li class="black_text" ng-if="USER.org_admin"><a ui-sref="org_admin">Club admin</a></li>
-            <li class="black_text" ng-if="USER.team_admin"><a ui-sref="team_manager">Club admin</a></li>
+            <li class="black_text" ng-if="USER.club_admin"><a ui-sref="org_admin">Club admin</a></li>
+            <li class="black_text" ng-if="USER.team_admin"><a ui-sref="team_manager">Team admin</a></li>
             <li><a href="" ng-click="log_out()">Logout</a></li>
           </ul>
         </li>
