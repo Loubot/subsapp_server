@@ -4,9 +4,9 @@ module.exports = {
     sails.log.debug "Hit the DateService"
     sails.log.debug "Original date #{ date }"
 
-    sails.log.debug moment( date, "DD-MM-YYYY HH:mm").toISOString()
+    sails.log.debug moment( date, "YYYY-MM-DD HH:mm").toISOString()
 
-    moment( date, "DD-MM-YYYY HH:mm").toISOString()
+    moment( date, "YYYY-MM-DD HH:mm").toISOString()
 
 
 }
