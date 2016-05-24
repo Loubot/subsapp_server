@@ -4,15 +4,19 @@ module.exports = {
 
     Team.findOne( id: team_id ).populate('team_members').then( ( team ) ->
       sails.log.debug "Event afterCreate Team find #{ JSON.stringify team }"
-      for user in team.team_members
-        sails.log.debug "User loop #{ JSON.stringify user }"
-        user.user_events.add event_id
-        user.save ( err, saved ) ->
-          sails.log.debug "Event afterCreate User save err #{ JSON.stringify err }" if err?
-          sails.log.debug "Event afterCreate User save #{ JSON.stringify saved }" 
+      # for user in team.team_members
+      #   sails.log.debug "User loop #{ JSON.stringify user }"
+      #   user.user_events.add event_id
+      #   user.save ( err, saved ) ->
+      #     sails.log.debug "Event afterCreate User save err #{ JSON.stringify err }" if err?
+      #     sails.log.debug "Event afterCreate User save #{ JSON.stringify saved }" 
 
-      cb( null, 'Yep' )
-
+      # cb( null, 'Yep' )
+      team.events.add( event_id )
+      team.save ( err, team_saved ) ->
+        sails.log.debug "team save err #{ JSON.stringify err }" if err?
+        sails.log.debug "Event afterCreate User save #{ JSON.stringify team_saved }" 
+      cb( null, 'yep' )
     ).catch( ( err ) ->
       sails.log.debug "Event afterCreate Team find err #{ JSON.stringify err }"
       cb( err )
