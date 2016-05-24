@@ -106,7 +106,7 @@ module.exports = {
       res.negotiate err
 
   authenticate_stripe: ( req, res ) ->
-    sails.log.debug "Hit the OrgController/authenticate_stripe"
+    sails.log.debug "Hit the PaymentController/authenticate_stripe"
     sails.log.debug "Body #{ JSON.stringify req.body }"
     sails.log.debug "Params #{ req.param('id') }"
 

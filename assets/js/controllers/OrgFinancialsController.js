@@ -4,16 +4,24 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     var check_for_stripe_code;
     console.log("OrgFinancialsController");
     check_for_stripe_code = function() {
+      var display_stripe;
+      display_stripe = $rootScope.USER.tokens[0].stripe_user_id === null;
       if ($location.search().code != null) {
         console.log($location.search().code);
         return COMMS.POST("/payment/" + $scope.org.id + "/authenticate-stripe", {
           auth_code: $location.search().code
         }).then((function(res) {
-          var message;
+          var error, error1, message;
           console.log("Authenticated stripe");
-          message = JSON.parse(res.data.body);
-          console.log(message.error_description);
-          if (message.error_description != null) {
+          console.log(res);
+          try {
+            message = JSON.parse(res.data.body);
+            console.log(message.error_description);
+          } catch (error1) {
+            error = error1;
+            alert("No good boss");
+          }
+          if ((message != null) && (message.error_description != null)) {
             return alertify.error(message.error_description);
           } else {
             return alertify.success("Authenticated stripe");

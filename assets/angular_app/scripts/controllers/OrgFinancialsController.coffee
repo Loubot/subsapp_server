@@ -14,6 +14,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     console.log "OrgFinancialsController"
 
     check_for_stripe_code = ->
+      display_stripe = $rootScope.USER.tokens[0].stripe_user_id == null
       if $location.search().code?
         console.log $location.search().code
         COMMS.POST(
@@ -22,10 +23,13 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         ).then ( ( res ) ->
           console.log "Authenticated stripe"
           
-          
-          message = JSON.parse res.data.body
-          console.log message.error_description
-          if message.error_description?
+          console.log res
+          try 
+            message = JSON.parse res.data.body
+            console.log message.error_description
+          catch error
+            alert "No good boss"
+          if message? and message.error_description?
             alertify.error message.error_description
           else
             alertify.success "Authenticated stripe"
