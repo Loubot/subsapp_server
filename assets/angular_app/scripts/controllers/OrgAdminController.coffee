@@ -74,10 +74,11 @@ angular.module('subzapp').controller('OrgAdminController', [
         $scope.org = response.data.org
         $rootScope.USER = response.data.user
 
-        $scope.show_team_admin = response.data.user.org
+        $scope.show_team_admin = false
 
         $scope.location = response.data.location
         console.log "Location set #{ JSON.stringify $scope.location}"
+        set_map( response.data.location.lat, response.data.location.lng, true, 15, true )
         # console.log "Org set: #{ JSON.stringify $scope.org }"
         alertify.success "Club created successfully"
         # $scope.business_form.$setPristine()

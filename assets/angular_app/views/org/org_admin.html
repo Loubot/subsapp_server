@@ -18,7 +18,7 @@
 <div class="container-fluid">
   <h1 class="text-center">Hello {{ user.email }}</h1>
   
-
+  {{ show_team_admin }}
   <div class="col-xs-12 text-center" ng-show="show_team_admin">
     <form class="form-horizontal form_border" 
             ng-submit="org_create()" 
