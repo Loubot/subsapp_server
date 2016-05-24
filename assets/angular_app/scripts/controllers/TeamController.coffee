@@ -121,7 +121,7 @@ angular.module('subzapp').controller('TeamController', [
 
       console.log $scope.create_event_data
       COMMS.POST(
-        "/event/create-event-with-ids"
+        "/event"
         $scope.create_event_data
       ).then ( (res) ->
         # console.log "Create event response"
