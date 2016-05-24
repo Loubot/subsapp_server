@@ -169,6 +169,7 @@ angular.module('subzapp').service 'COMMS', ( $http, $state, RESOURCES, $rootScop
   console.log "comms service"
   
   POST: ( url, data ) ->
+    console.log "Url #{ RESOURCES.DOMAIN }#{ url }"
     user_token = window.localStorage.getItem 'user_token'
     usSpinnerService.spin('spinner-1')
     $q ( resolve, reject ) ->
