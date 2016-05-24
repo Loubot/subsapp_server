@@ -6,7 +6,7 @@ angular.module('subzapp').controller('EventController', [
     $scope.format = "dd-MMMM-yyyy";
     user.get_user().then((function(res) {
       $scope.user = $rootScope.USER;
-      return COMMS.GET("/event/" + $stateParams.id).then((function(resp) {
+      return COMMS.GET("/user/find-by-eventresponse/" + $stateParams.id).then((function(resp) {
         console.log("Got event");
         console.log(resp);
         alertify.success("Got event info");

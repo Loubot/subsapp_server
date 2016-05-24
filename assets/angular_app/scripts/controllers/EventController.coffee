@@ -19,7 +19,7 @@ angular.module('subzapp').controller('EventController', [
     user.get_user().then ( (res) ->
       $scope.user = $rootScope.USER
       COMMS.GET(
-        "/event/#{ $stateParams.id }"
+        "/user/find-by-eventresponse/#{ $stateParams.id }"
       ).then ( ( resp ) ->
         console.log "Got event"
         console.log resp

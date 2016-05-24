@@ -57,6 +57,10 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'update'
 
+  'get /user/find-by-eventresponse/:id':
+        controller:               'UserController'
+        action:                   'find_by_event'
+
   # 'get /get-user-teams':
   #       controller:             'UserController'
   #       action:                 'get_user_teams'

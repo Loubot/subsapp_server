@@ -34,6 +34,27 @@ module.exports = {
     ).done ->
       sails.log.debug "Edit user done"
 
+  find_by_event: ( req, res ) ->
+    sails.log.debug "Hit the EventController/find_by_event"
+    sails.log.debug "Param #{ req.param('id') }"
+
+    EventResponse.find( event_id: req.param('id') ).then( ( eventresponses ) ->
+      sails.log.debug "eventresponse #{ JSON.stringify eventresponses }"
+      user_ids = new Array()
+      for e in eventresponses
+        user_ids.push e.user_id
+      User.find( id: user_ids).then( ( users ) ->
+        sails.log.debug "Users found #{ JSON.stringify users }"
+        res.json users
+      ).catch( ( users_err ) ->
+        sails.log.debug "User find error #{ JSON.stringify users_err }"
+        res.negotiate users_err
+      )
+    ).catch( ( err ) ->
+      sails.log.debug "error "
+      res.negotiate err
+    )
+
   # pick_kids: ( req, res ) ->
   #   Promise = require('bluebird')
   #   sails.log.debug JSON.stringif
