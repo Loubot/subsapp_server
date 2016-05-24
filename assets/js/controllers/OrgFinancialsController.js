@@ -27,7 +27,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     };
     return user.get_user().then(function(res) {
       $scope.user = $rootScope.USER;
-      return COMMS.GET("/org/" + $scope.user.org[0].id).then((function(res) {
+      return COMMS.GET("/org/" + $rootScope.USER.org[0].id).then((function(res) {
         console.log("Got org info");
         console.log(res.data.org);
         $scope.org = res.data.org;

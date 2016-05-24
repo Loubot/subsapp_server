@@ -41,7 +41,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       $scope.user = $rootScope.USER
 
       COMMS.GET(
-        "/org/#{ $scope.user.org[0].id }"
+        "/org/#{ $rootScope.USER.org[0].id }"
       ).then ( ( res ) ->
         console.log "Got org info"
         console.log res.data.org
