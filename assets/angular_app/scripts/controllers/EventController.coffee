@@ -19,7 +19,7 @@ angular.module('subzapp').controller('EventController', [
     user.get_user().then ( (res) ->
       $scope.user = $rootScope.USER
       COMMS.GET(
-        "/user/find-by-eventresponse/#{ $stateParams.id }"
+        "/event/#{ $stateParams.id }"
       ).then ( ( resp ) ->
         console.log "Got event"
         console.log resp
@@ -52,6 +52,9 @@ angular.module('subzapp').controller('EventController', [
         console.log "Event update error "
         console.log errResponse
         alertify.error "Event update error"
+
+    $scope.expanded = ->
+      alert 'b'
 
     
     #################### calendar stuff ####################################

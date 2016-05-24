@@ -91,9 +91,10 @@
     </div>
   </form> <!-- end of form-horizontal -->
   
+  {{ isCollapsed }}
   <div class="black_text">  
     <uib-accordion >
-      <uib-accordion-group heading="Click to view confirmed attendees" is-open="status.isFirstOpen">
+      <uib-accordion-group heading="Click to view confirmed attendees" uib-collapse="isCollapsed" is-open="status.isFirstOpen">
         <ul class="list-group">
           <li ng-repeat="user in event.event_user" class="list-group-item">{{ user.firstName }} {{ user.lastName }}</li>
           

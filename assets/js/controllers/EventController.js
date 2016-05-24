@@ -6,7 +6,7 @@ angular.module('subzapp').controller('EventController', [
     $scope.format = "dd-MMMM-yyyy";
     user.get_user().then((function(res) {
       $scope.user = $rootScope.USER;
-      return COMMS.GET("/user/find-by-eventresponse/" + $stateParams.id).then((function(resp) {
+      return COMMS.GET("/event/" + $stateParams.id).then((function(resp) {
         console.log("Got event");
         console.log(resp);
         alertify.success("Got event info");
@@ -34,6 +34,9 @@ angular.module('subzapp').controller('EventController', [
         console.log(errResponse);
         return alertify.error("Event update error");
       });
+    };
+    $scope.expanded = function() {
+      return alert('b');
     };
     $scope.setDate = function() {
       $scope.event.start_date = moment($scope.event.start_date).format('YYYY-MM-DD HH:mm');
