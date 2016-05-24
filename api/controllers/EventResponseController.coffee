@@ -56,10 +56,10 @@ module.exports = {
             sails.log.debug "Found kid #{ JSON.stringify kid }"
             kid.user_events.add( req.body.event_id )
             Promise.all([
-              kid.save()
+              # kid.save()
               parent.tokens[0].save()
-            ]).spread( ( kid_saved, saved_parent ) ->
-              sails.log.debug "Kid saved #{ JSON.stringify kid_saved }"
+            ]).spread( (  saved_parent ) ->
+              # sails.log.debug "Kid saved #{ JSON.stringify kid_saved }"
               sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
               OrgTokenService.add_tokens( req.body.token_amount, req.body.team_id ) # Update the orgs token amaount
               res.json e_response
