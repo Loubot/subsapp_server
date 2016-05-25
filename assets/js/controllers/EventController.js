@@ -35,8 +35,21 @@ angular.module('subzapp').controller('EventController', [
         return alertify.error("Event update error");
       });
     };
-    $scope.expanded = function() {
-      return alert('b');
+    $scope.is_open = false;
+    $scope.toggle_open = function() {
+      $scope.is_open = !$scope.is_open;
+      if ($scope.is_open) {
+        return COMMS.GET("/eventresponse/" + $scope.event.id + "/get-attendees-by-event-response").then((function(resp) {
+          console.log("Got users");
+          console.log(resp);
+          alertify.success("Got users");
+          return $scope.attendees(resp.data);
+        }), function(errResponse) {
+          console.log("Failed to get event users");
+          console.log(errResponse);
+          return alertify.error("Failed to get event users");
+        });
+      }
     };
     $scope.setDate = function() {
       $scope.event.start_date = moment($scope.event.start_date).format('YYYY-MM-DD HH:mm');

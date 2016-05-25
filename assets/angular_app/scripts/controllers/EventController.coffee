@@ -53,8 +53,23 @@ angular.module('subzapp').controller('EventController', [
         console.log errResponse
         alertify.error "Event update error"
 
-    $scope.expanded = ->
-      alert 'b'
+    $scope.is_open = false
+
+    $scope.toggle_open = ->
+      $scope.is_open = !$scope.is_open
+      if $scope.is_open 
+        COMMS.GET(
+          "/eventresponse/#{ $scope.event.id }/get-attendees-by-event-response"
+        ).then ( ( resp ) ->
+          console.log "Got users"
+          console.log resp
+          alertify.success "Got users"
+          $scope.attendees resp.data
+        ), ( errResponse ) ->
+
+          console.log "Failed to get event users"
+          console.log errResponse
+          alertify.error "Failed to get event users"
 
     
     #################### calendar stuff ####################################

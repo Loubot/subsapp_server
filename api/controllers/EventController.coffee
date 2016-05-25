@@ -237,4 +237,5 @@ module.exports = {
     ).catch ( err ) ->
       sails.log.debug "Parent event create error #{ JSON.stringify err }"
       res.negotiate err
+
 }

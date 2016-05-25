@@ -57,10 +57,6 @@ module.exports.routes =
         controller:             'UserController'
         action:                 'update'
 
-  'get /user/find-by-eventresponse/:id':
-        controller:               'UserController'
-        action:                   'find_by_event'
-
   # 'get /get-user-teams':
   #       controller:             'UserController'
   #       action:                 'get_user_teams'
@@ -249,6 +245,7 @@ module.exports.routes =
     'post /event/parent/create-event':
         controller:             'EventController'
         action:                 'create_parent_event'
+
   # end of Event controller
 
   #Invite controller
@@ -316,6 +313,10 @@ module.exports.routes =
   'patch /eventresponse/update':
         controller:              'EventResponseController'
         action:                  'update'
+
+  'get /eventresponse/:id/get-attendees-by-event-response':
+        controller:               'EventResponseController'
+        action:                   'get_attendees_by_event_response'
 
   #End of TokenTransactionController
 
