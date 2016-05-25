@@ -43,7 +43,7 @@ angular.module('subzapp').controller('EventController', [
           console.log("Got users");
           console.log(resp);
           alertify.success("Got users");
-          return $scope.attendees(resp.data);
+          return $scope.attendees = resp.data;
         }), function(errResponse) {
           console.log("Failed to get event users");
           console.log(errResponse);
