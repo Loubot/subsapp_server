@@ -35,6 +35,7 @@
     "moment": "^2.11.2",
     "angular-google-maps": "^2.3.2",
     "angular-touch": "^1.5.5",
-    "angular-date-time-input": "^1.1.0"
+    "angular-date-time-input": "^1.1.0",
+    "angular-stripe": "^4.2.12"
   }
 }

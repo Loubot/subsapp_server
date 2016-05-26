@@ -1,22 +1,22 @@
 module.exports = {
-  team_event_associations: ( team_id, event_id, cb ) ->
-    sails.log.debug "Hit the EventService/team_event_associations"
+  # team_event_associations: ( team_id, event_id, cb ) ->
+  #   sails.log.debug "Hit the EventService/team_event_associations"
 
-    Team.findOne( id: team_id ).populate('team_members').then( ( team ) ->
-      sails.log.debug "Event afterCreate Team find #{ JSON.stringify team }"
-      for user in team.team_members
-        sails.log.debug "User loop #{ JSON.stringify user }"
-        user.user_events.add event_id
-        user.save ( err, saved ) ->
-          sails.log.debug "Event afterCreate User save err #{ JSON.stringify err }" if err?
-          sails.log.debug "Event afterCreate User save #{ JSON.stringify saved }" 
+  #   Team.findOne( id: team_id ).populate('team_members').then( ( team ) ->
+  #     sails.log.debug "Event afterCreate Team find #{ JSON.stringify team }"
+  #     for user in team.team_members
+  #       sails.log.debug "User loop #{ JSON.stringify user }"
+  #       user.user_events.add event_id
+  #       user.save ( err, saved ) ->
+  #         sails.log.debug "Event afterCreate User save err #{ JSON.stringify err }" if err?
+  #         sails.log.debug "Event afterCreate User save #{ JSON.stringify saved }" 
 
-      cb( null, 'Yep' )
+  #     cb( null, 'Yep' )
 
-    ).catch( ( err ) ->
-      sails.log.debug "Event afterCreate Team find err #{ JSON.stringify err }"
-      cb( err )
-    )
+  #   ).catch( ( err ) ->
+  #     sails.log.debug "Event afterCreate Team find err #{ JSON.stringify err }"
+  #     cb( err )
+  #   )
 
   team_event_with_player_ids: ( event_members, event, cb ) ->
     sails.log.debug "Hit the EventService/team_event_with_player_ids"

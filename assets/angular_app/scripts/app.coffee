@@ -7,6 +7,7 @@ window.USER = null
 'use strict'
 
 angular.module('subzapp', [
+    'angular-stripe'
     'ngAnimate'
     'ui.router'
     'ngRoute'

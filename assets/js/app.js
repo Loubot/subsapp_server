@@ -2,7 +2,7 @@ window.USER = null;
 
 'use strict';
 
-angular.module('subzapp', ['ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps', 'ui.bootstrap', 'ui.dateTimeInput']);
+angular.module('subzapp', ['angular-stripe', 'ngAnimate', 'ui.router', 'ngRoute', 'ui.bootstrap.datetimepicker', "ngAlertify", 'ngFileUpload', "checklist-model", 'angularSpinner', 'uiGmapgoogle-maps', 'ui.bootstrap', 'ui.dateTimeInput']);
 
 angular.module('subzapp').config(function(uiGmapGoogleMapApiProvider) {
   return uiGmapGoogleMapApiProvider.configure({

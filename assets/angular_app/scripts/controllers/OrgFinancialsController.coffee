@@ -10,8 +10,16 @@ angular.module('subzapp').controller('OrgFinancialsController', [
   'alertify'
   'user'
   'COMMS'
-  ( $scope, $rootScope, $state, $http, RESOURCES, $location, alertify, user, COMMS ) ->
+  'stripe'
+  ( $scope, $rootScope, $state, $http, RESOURCES, $location, alertify, user, COMMS, stripe ) ->
     console.log "OrgFinancialsController"
+    $scope.withdrawl = {}
+
+    $scope.account = {}
+    $scope.account.country = "IE"
+    $scope.account.currency = "EUR"
+    $scope.options = [ "individual", "company" ]
+    stripe.setPublishableKey 'pk_test_bedFzS7vnmzthkrQolmUjXNn'
 
     check_for_stripe_code = ->
       display_stripe = $rootScope.USER.tokens[0].stripe_user_id == null
@@ -57,6 +65,17 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         console.log. errResponse
         alertify.error "Failed to get org info"
     ) # end of get_user
+
+    $scope.add_bank_details = ->
+      console.log $scope.account
+      stripe.bankAccount.createToken( $scope.account ).then ( ( stripe_account ) ->
+        console.log "Stripe response"
+        console.log stripe_account
+      ), ( errResponse ) ->
+        console.log errResponse
+
+    $scope.withdraw_tokens = ->
+      console.log $scope.withdrawl.amount
 
 
 ])

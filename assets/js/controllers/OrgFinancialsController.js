@@ -1,8 +1,14 @@
 'use strict';
 angular.module('subzapp').controller('OrgFinancialsController', [
-  '$scope', '$rootScope', '$state', '$http', 'RESOURCES', '$location', 'alertify', 'user', 'COMMS', function($scope, $rootScope, $state, $http, RESOURCES, $location, alertify, user, COMMS) {
+  '$scope', '$rootScope', '$state', '$http', 'RESOURCES', '$location', 'alertify', 'user', 'COMMS', 'stripe', function($scope, $rootScope, $state, $http, RESOURCES, $location, alertify, user, COMMS, stripe) {
     var check_for_stripe_code;
     console.log("OrgFinancialsController");
+    $scope.withdrawl = {};
+    $scope.account = {};
+    $scope.account.country = "IE";
+    $scope.account.currency = "EUR";
+    $scope.options = ["individual", "company"];
+    stripe.setPublishableKey('pk_test_bedFzS7vnmzthkrQolmUjXNn');
     check_for_stripe_code = function() {
       var display_stripe;
       display_stripe = $rootScope.USER.tokens[0].stripe_user_id === null;
@@ -33,7 +39,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         });
       }
     };
-    return user.get_user().then(function(res) {
+    user.get_user().then(function(res) {
       $scope.user = $rootScope.USER;
       return COMMS.GET("/org/" + $rootScope.USER.org[0].id).then((function(res) {
         console.log("Got org info");
@@ -47,6 +53,18 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         return alertify.error("Failed to get org info");
       });
     });
+    $scope.add_bank_details = function() {
+      console.log($scope.account);
+      return stripe.bankAccount.createToken($scope.account).then((function(stripe_account) {
+        console.log("Stripe response");
+        return console.log(stripe_account);
+      }), function(errResponse) {
+        return console.log(errResponse);
+      });
+    };
+    return $scope.withdraw_tokens = function() {
+      return console.log($scope.withdrawl.amount);
+    };
   }
 ]);
 
