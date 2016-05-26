@@ -1,5 +1,5 @@
 ###*
-# Event
+# BankAccount
 # @description :: Model for storing bank_accounts
 ###
 
@@ -44,10 +44,9 @@ module.exports =
 
 
   ################## associations ###########################
-
-    org_id: 
+    org_id:
       model: 'org'
-      required: true
+    
       
     
     toJSON: ->
@@ -72,7 +71,7 @@ module.exports =
       values = if criteria.where then criteria.where else criteria
     @findOne criteria, (err, result) ->
       if err
-        sails.log.debug "BankAccount findOne err #{ JSON.stringify err }"
+        sails.log.debug "BankAccount findOne err"
         return cb(err, false)
       if result
         sails.log.debug "BankAccount findOne #{ JSON.stringify result }"

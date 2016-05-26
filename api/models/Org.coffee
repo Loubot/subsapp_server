@@ -53,11 +53,13 @@ module.exports =
     files:
       collection: 'filetracker'
       via: 'org'
-      # columnName: 'filetracker_id'
-
-    bank_account:
-      collection: 'bankaccount'
+      
+    banks:
+      collection: 'bankaccount',
       via: 'org_id'
+    
+
+
     
     toJSON: ->
       obj = @toObject()

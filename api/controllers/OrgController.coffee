@@ -246,18 +246,30 @@ module.exports = {
     sails.log.debug "Hit the OrgController/add_bank_account"
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Body #{ JSON.stringify req.body }"
-    BankAccount.updateOrCreate( 
-      { org_id: req.param('id') }
-      req.body
-      ( err, bank_account ) ->
-        if err?
-          sails.log.debug "Bank account updateOrCrate err #{ JSON.stringify err }"
-          res.negotiate err
-        else
-          sails.log.debug "Bank account updated or created #{ JSON.stringify bank_account }"
-          res.json bank_account
-          Org.findOne( id: req.param('id') ).populate('bank_account').then( ( org) ->
-            sails.log.debug "Org found #{ JSON.stringify org }"
-          )
+    BankAccount.create( req.body ).then( ( bank_account ) ->
+      sails.log.debug "Bank #{ JSON.stringify bank_account }"
+      res.json bank_account
+      Org.findOne( id: req.body.org_id ).populate('banks').then( ( org ) ->
+        sails.log.debug "Org found #{ JSON.stringify org }"
+        org.banks.add( bank_account.id )
+        org.save ( err, saved ) ->
+          if err?
+            sails.log.debug "Org save error #{ JSON.stringify err }"
+            res.negotiate err
+          else
+            sails.log.debug "Org saved #{ JSON.stringify saved }"
+            res.json saved
+      )
     )
+    # Bank.updateOrCreate( 
+    #   { org_id: req.param('id') }
+    #   req.body
+    #   ( err, bank_account ) ->
+    #     if err?
+    #       sails.log.debug "Bank account updateOrCrate err "
+    #       res.negotiate err
+    #     else
+    #       sails.log.debug "Bank account updated or created #{ JSON.stringify bank_account }"
+    #       res.json bank_account
+    # )
 }
