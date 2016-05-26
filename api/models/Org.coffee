@@ -52,12 +52,7 @@ module.exports =
 
     files:
       collection: 'filetracker'
-      via: 'org'
-      
-    banks:
-      collection: 'bankaccount',
-      via: 'org_id'
-    
+      via: 'org'   
 
 
     
