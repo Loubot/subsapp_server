@@ -40,6 +40,7 @@ module.exports.policies =
     'find': [ 'isAuthenticated', 'isSuperAdmin' ]
     'update': [ 'isAuthenticated', 'isClubAdmin' ]
     'withdraw': [ 'isAuthenticated', 'isClubAdmin']
+    'bank_account': [ 'isAuthenticated', 'isClubAdmin' ]
 
   ParentController:
     'associate_kids': [ 'isAuthenticated', 'isCurrentUser' ]

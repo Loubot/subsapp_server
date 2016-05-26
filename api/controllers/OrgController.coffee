@@ -241,4 +241,23 @@ module.exports = {
     SendInBlueService.withdrawl_message( 3, "Lakewood", "louisangelini@gmail.com" )
 
     res.json 'ok'
+
+  bank_account: ( req, res ) ->
+    sails.log.debug "Hit the OrgController/add_bank_account"
+    sails.log.debug "Param #{ req.param('id') }"
+    sails.log.debug "Body #{ JSON.stringify req.body }"
+    BankAccount.updateOrCreate( 
+      { org_id: req.param('id') }
+      req.body
+      ( err, bank_account ) ->
+        if err?
+          sails.log.debug "Bank account updateOrCrate err #{ JSON.stringify err }"
+          res.negotiate err
+        else
+          sails.log.debug "Bank account updated or created #{ JSON.stringify bank_account }"
+          res.json bank_account
+          Org.findOne( id: req.param('id') ).populate('bank_account').then( ( org) ->
+            sails.log.debug "Org found #{ JSON.stringify org }"
+          )
+    )
 }

@@ -61,7 +61,7 @@ module.exports = {
             ]).spread( (  saved_parent ) ->
               # sails.log.debug "Kid saved #{ JSON.stringify kid_saved }"
               sails.log.debug "Saved parent #{ JSON.stringify saved_parent }"
-              OrgTokenService.add_tokens( req.body.token_amount, req.body.team_id ) # Update the orgs token amaount
+              BankAccountService.add_tokens( req.body.token_amount, req.body.team_id ) # Update the orgs token amaount
               res.json e_response
             ).catch( ( kid_parent_save_err ) ->
               sails.log.debug "Kid and parent save err #{ JSON.stringify kid_parent_save_err }"

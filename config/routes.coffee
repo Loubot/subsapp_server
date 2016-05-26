@@ -129,6 +129,10 @@ module.exports.routes =
         controller:             'OrgController'
         action:                 'get_teams_and_managers'
 
+  'post /org/:id/bank-account':
+        controller:             'OrgController'
+        action:                 'bank_account'
+
   'post /org/withdraw/:id':
         controller:             'OrgController'
         action:                 'withdraw'
@@ -206,9 +210,6 @@ module.exports.routes =
         controller:             'TokenController'
         action:                 'up_token'
 
-  'post /payment/:id/authenticate-stripe':
-        controller:             'PaymentController'
-        action:                 'authenticate_stripe'
 
   # end of Token controller
 

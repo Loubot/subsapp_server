@@ -55,8 +55,8 @@ module.exports =
       via: 'org'
       # columnName: 'filetracker_id'
 
-    org_token:
-      collection: 'orgtokenbalance'
+    bank_account:
+      collection: 'bankaccount'
       via: 'org_id'
     
     toJSON: ->
