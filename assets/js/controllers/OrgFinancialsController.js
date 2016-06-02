@@ -24,10 +24,12 @@ angular.module('subzapp').controller('OrgFinancialsController', [
     $scope.add_bank_details = function() {
       console.log($scope.account);
       return stripe.bankAccount.createToken($scope.account).then((function(stripe_account) {
-        stripe_account.bank_account.org_id = $scope.org.id;
+        stripe_account.org_id = $scope.org.id;
         console.log("Stripe response");
         console.log(stripe_account);
-        return COMMS.POST("/org/" + $scope.org.id + "/bank-account", stripe_account.bank_account).then((function(account_saved) {
+        stripe_account.account_id = stripe_account.id;
+        delete stripe_account.id;
+        return COMMS.POST("/org/" + $scope.org.id + "/bank-account", stripe_account).then((function(account_saved) {
           console.log("Account saved");
           console.log(account_saved);
           return alertify.success("Account saved ok");

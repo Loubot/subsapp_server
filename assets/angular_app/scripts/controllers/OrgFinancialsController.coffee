@@ -42,12 +42,14 @@ angular.module('subzapp').controller('OrgFinancialsController', [
 
       console.log $scope.account
       stripe.bankAccount.createToken( $scope.account ).then ( ( stripe_account ) ->
-        stripe_account.bank_account.org_id = $scope.org.id
+        stripe_account.org_id = $scope.org.id
         console.log "Stripe response"
         console.log stripe_account
+        stripe_account.account_id = stripe_account.id
+        delete stripe_account.id
         COMMS.POST(
           "/org/#{ $scope.org.id }/bank-account"
-          stripe_account.bank_account
+          stripe_account
         ).then ( ( account_saved ) ->
           console.log "Account saved"
           console.log account_saved

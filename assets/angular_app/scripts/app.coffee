@@ -1,6 +1,3 @@
-#Global variable for logged in user
-
-window.USER = null
 
 # See user service
 

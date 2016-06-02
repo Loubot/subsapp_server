@@ -246,16 +246,12 @@ module.exports = {
     sails.log.debug "Hit the OrgController/add_bank_account"
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Body #{ JSON.stringify req.body }"
-    
-    # Bank.updateOrCreate( 
-    #   { org_id: req.param('id') }
-    #   req.body
-    #   ( err, bank_account ) ->
-    #     if err?
-    #       sails.log.debug "Bank account updateOrCrate err "
-    #       res.negotiate err
-    #     else
-    #       sails.log.debug "Bank account updated or created #{ JSON.stringify bank_account }"
-    #       res.json bank_account
-    # )
+    req.body.bank_account = JSON.stringify req.body.bank_account
+    BankAcc.create( req.body ).then( ( bank_acc ) ->
+      sails.log.debug "Bank account created #{ JSON.stringify bank_acc }"
+      res.json bank_acc
+    ).catch( ( err ) ->
+      sails.log.debug "Bank account create error #{ JSON.stringify err }"
+      res.negotiate err
+    )
 }
