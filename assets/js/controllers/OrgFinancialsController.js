@@ -18,21 +18,9 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         return COMMS.POST("/payment/" + $scope.org.id + "/authenticate-stripe", {
           auth_code: $location.search().code
         }).then((function(res) {
-          var error, error1, message;
           console.log("Authenticated stripe");
           console.log(res);
-          try {
-            message = JSON.parse(res.data.body);
-            console.log(message.error_description);
-          } catch (error1) {
-            error = error1;
-            alert("No good boss");
-          }
-          if ((message != null) && (message.error_description != null)) {
-            return alertify.error(message.error_description);
-          } else {
-            return alertify.success("Authenticated stripe");
-          }
+          return alertify.success("Authenticated stripe");
         }), function(errResponse) {
           console.log("Failed to authenticate stripe");
           alertify.error("Failed to authenticate stripe");

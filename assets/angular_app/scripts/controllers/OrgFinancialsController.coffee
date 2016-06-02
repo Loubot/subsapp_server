@@ -34,15 +34,8 @@ angular.module('subzapp').controller('OrgFinancialsController', [
           console.log "Authenticated stripe"
           
           console.log res
-          try 
-            message = JSON.parse res.data.body
-            console.log message.error_description
-          catch error
-            alert "No good boss"
-          if message? and message.error_description?
-            alertify.error message.error_description
-          else
-            alertify.success "Authenticated stripe"
+          
+          alertify.success "Authenticated stripe"
 
         ), ( errResponse ) ->
 
