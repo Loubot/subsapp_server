@@ -9,7 +9,7 @@ module.exports = {
     Team.findOne( id ).then( ( team ) ->
       sails.log.debug "Team found #{ JSON.stringify team }"
       
-      BankAccount.updateOrCreate(
+      BankAcc.updateOrCreate(
         { org_id: team.main_org } 
         org_id: team.main_org
         tokens: amount
