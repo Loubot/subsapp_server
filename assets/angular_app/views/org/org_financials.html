@@ -1,60 +1,8 @@
 <span us-spinner spinner-key="spinner-1"></span>
 <div class="container-fluid">
   <h2>{{ org.name }}</h2>
-  Token balance: {{ org.bank_account[0].tokens }}
+  Token balance: {{ org.bank_acc[0].tokens }}
 </div>
-
-<div class="container-fluid">
-  <form class="form-horizontal" ng-submit="add_bank_details()">
-
-    <div class="form-group">
-      <label for="country" class="col-sm-2 control-label">Country</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="account.country" value ="IE" id="currnency" placeholder="Country" disabled>
-      </div> <!-- end of col-sm-10 -->
-    </div> <!-- end of form-group --> 
-
-    <div class="form-group">
-      <label for="country" class="col-sm-2 control-label">Currency</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="account.currency" id="currency" placeholder="Currency" disabled>
-      </div> <!-- end of col-sm-10 -->
-    </div> <!-- end of form-group -->
-
-    <div class="form-group">
-      <label for="country" class="col-sm-2 control-label">IBAN</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="account.account_number" id="iban" placeholder="IBAN" required>
-      </div> <!-- end of col-sm-10 -->
-    </div> <!-- end of form-group -->
-
-    <div class="form-group">
-      <label for="country" class="col-sm-2 control-label">Account name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="account.account_holder_name" id="name" placeholder="Account name" required>
-      </div> <!-- end of col-sm-10 -->
-    </div> <!-- end of form-group -->
-
-    <div class="form-group">
-      <label for="country" class="col-sm-2 control-label">Account type</label>
-      <div class="col-sm-10">
-        <select class="form-control" ng-model="account.account_holder_type" ng-init="account.account_holder_type='individual'">
-
-          <option ng-repeat="opt in options">{{ opt }}</option>
-        </select>
-      </div> <!-- end of col-sm-10 -->
-    </div> <!-- end of form-group -->
-
-
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-success btn-lg">Add bank account</button>
-      </div> <!-- end of col-sm-offset-2 col-sm-10 -->
-    </div> <!-- end of form-group -->
-
-  </form>
-</div> <!-- end of container-fluid -->
 
 <div class="container-fluid">
   <form ng-submit="withdraw_tokens()" class="form-horizontal">
@@ -78,5 +26,3 @@
 <div class="text-center container-fluid" ng-if="display_stripe">
   <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_7U9yBDJZiiWwLVPnViz885gsmxhUmxd4&scope=read_write&redirect_uri=http://localhost:1337/%23/org-financials" class="stripe-connect"><span>Connect with Stripe</span></a>
 </div>
-
-

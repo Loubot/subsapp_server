@@ -203,6 +203,10 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'get_transactions'
 
+  'post /payment/pay-org/:id':
+        controller:             'PaymentController'
+        action:                 'pay_org'
+
   #End of PaymentController
 
   #Token TeamController     #
