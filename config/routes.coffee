@@ -207,6 +207,10 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'pay_org'
 
+  'post /payment/:id/authenticate-stripe':
+        controller:             'PaymentController'
+        action:                 'authenticate_stripe'
+
   #End of PaymentController
 
   #Token TeamController     #

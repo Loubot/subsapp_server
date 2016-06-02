@@ -1,6 +1,6 @@
 'use strict';
 angular.module('subzapp').controller('OrgFinancialsController', [
-  '$scope', '$rootScope', '$state', '$http', 'RESOURCES', 'alertify', 'user', 'COMMS', 'stripe', function($scope, $rootScope, $state, $http, RESOURCES, alertify, user, COMMS, stripe) {
+  '$scope', '$rootScope', '$state', '$http', 'RESOURCES', 'alertify', 'user', 'COMMS', 'stripe', '$location', function($scope, $rootScope, $state, $http, RESOURCES, alertify, user, COMMS, stripe, $location) {
     var check_for_stripe_code;
     console.log("OrgFinancialsController");
     $scope.withdrawl = {};
@@ -46,7 +46,8 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         console.log("Got org info");
         console.log(res.data.org);
         $scope.org = res.data.org;
-        return alertify.success("Got org info");
+        alertify.success("Got org info");
+        return check_for_stripe_code();
       }), function(errResponse) {
         console.log("Get org error");
         console.log.errResponse;

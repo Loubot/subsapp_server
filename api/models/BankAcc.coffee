@@ -11,7 +11,7 @@ module.exports =
   autoPK: true
   schema: true
   attributes:
-    account_id:
+    stripe_user_id:
       type: 'string'
       required: true
       defaultsTo: null

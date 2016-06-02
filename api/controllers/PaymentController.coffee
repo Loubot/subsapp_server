@@ -135,6 +135,7 @@ module.exports = {
     sails.log.debug "Params #{ req.param('id') }"
 
 
+
     requestify = require('requestify')
     requestify.post(
       "https://connect.stripe.com/oauth/token?client_secret=#{ process.env.SUBZAPP_STRIPE_SECRET }&\
@@ -142,20 +143,15 @@ module.exports = {
       grant_type=authorization_code"
     ).then( (response) ->
       sails.log.debug "Response #{ JSON.stringify response.getBody().stripe_user_id }"
-      User.findOne( req.user.id ).populate('tokens').then( ( user ) ->
-        sails.log.debug "User found #{ JSON.stringify user.tokens[0] }"
-        user.tokens[0].stripe_user_id = response.getBody().stripe_user_id
-        user.tokens[0].save().then( ( user_saved ) ->
-          sails.log.debug "User saved"
-          res.json user_saved
-        ).catch( ( user_saved_err ) ->
-          sails.log.debug "User saved error"
-          res.negotiate user_saved_err
-        ) #user.save()
-      ).catch( ( user_err ) ->  
-        sails.log.debug "User find error "
-        res.negotiate user_err
-      ) #user.findOne
+      sails.log.debug "Org #{ JSON.stringify req.org.bank_acc[0] }"
+      req.org.bank_acc[0].stripe_user_id = response.getBody().stripe_user_id
+      req.org.bank_acc[0].save ( err, saved ) ->
+        if err?
+          sails.log.debug "Failed to save stripe user id #{ JSON.stringify err }"
+          res.negotiate err
+        else
+          sails.log.debug "Saved stripe user id #{ JSON.stringify saved }"
+          res.json saved
     ).catch( ( err ) ->
       res.json err
     ) #requestify.post

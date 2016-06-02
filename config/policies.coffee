@@ -55,7 +55,7 @@ module.exports.policies =
 
   PaymentController: 
     '*': [ 'isAuthenticated' ]
-
+    'authenticate_stripe': [ 'isAuthenticated', 'isClubAdmin' ]
     'pay_org': [ 'isAuthenticated', 'isClubAdmin' ]
 
   TeamController: 

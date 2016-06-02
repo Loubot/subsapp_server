@@ -10,7 +10,8 @@ angular.module('subzapp').controller('OrgFinancialsController', [
   'user'
   'COMMS'
   'stripe'
-  ( $scope, $rootScope, $state, $http, RESOURCES, alertify, user, COMMS, stripe ) ->
+  '$location'
+  ( $scope, $rootScope, $state, $http, RESOURCES, alertify, user, COMMS, stripe, $location ) ->
     console.log "OrgFinancialsController"
     $scope.withdrawl = {}
     $scope.display_stripe = true
@@ -61,6 +62,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
         console.log res.data.org
         $scope.org = res.data.org
         alertify.success "Got org info"
+        check_for_stripe_code()
       ), ( errResponse ) ->
         console.log "Get org error"
         console.log. errResponse
