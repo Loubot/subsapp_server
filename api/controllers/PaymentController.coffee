@@ -6,13 +6,15 @@
 ###
 
 passport = require('passport')
+stripe = require('stripe')(process.env.SUBZAPP_STRIPE_SECRET)
+
 module.exports = {
 
   create_payment: ( req, res ) ->
     sails.log.debug "Hit the Payment controller/create_payment"
     sails.log.debug "Create payment params #{ JSON.stringify req.body }"
     # sails.log.debug "config #{ sails.config.stripe.stripe_publish }"
-    Stripe = require("stripe")(sails.config.stripe.stripe_secret)
+    
     Promise = require('q')
 
     total = StripeService.add_fees( req.body.amount )
@@ -111,7 +113,7 @@ module.exports = {
     sails.log.debug "Param #{ req.param('id') }"
     sails.log.debug "Org #{ JSON.stringify req.org.bank_acc }"
 
-    stripe = require('stripe')(process.env.SUBZAPP_STRIPE_SECRET)
+    
     # Create a transfer to the specified recipient
     stripe.transfers.create {
       amount: 1000
@@ -129,33 +131,27 @@ module.exports = {
       
 
 
-  authenticate_stripe: ( req, res ) ->
-    sails.log.debug "Hit the PaymentController/authenticate_stripe"
+  create_managed_account: ( req, res ) ->
+    sails.log.debug "Hit the PaymentController/create_managed_account"
     sails.log.debug "Body #{ JSON.stringify req.body }"
     sails.log.debug "Params #{ req.param('id') }"
 
 
+    stripe.accounts.create {
+      managed: true
+      country: 'IE'
+      email: 'bob@example.com'
+    }, (err, account) ->
+      if err?
+        sails.log.debug "Stripe account error #{ JSON.stringify err }"
+        res.negotiate err 
+      else
+        sails.log.debug "Stripe account created #{ JSON.stringify account }"
+        res.json account
+      return
 
-    requestify = require('requestify')
-    requestify.post(
-      "https://connect.stripe.com/oauth/token?client_secret=#{ process.env.SUBZAPP_STRIPE_SECRET }&\
-      code=#{ req.body.auth_code }&\
-      grant_type=authorization_code"
-    ).then( (response) ->
-      sails.log.debug "Response #{ JSON.stringify response.getBody().stripe_user_id }"
-      sails.log.debug "Org #{ JSON.stringify req.org.bank_acc[0] }"
-      req.org.bank_acc[0].stripe_user_id = response.getBody().stripe_user_id
-      req.org.bank_acc[0].save ( err, saved ) ->
-        if err?
-          sails.log.debug "Failed to save stripe user id #{ JSON.stringify err }"
-          res.negotiate err
-        else
-          sails.log.debug "Saved stripe user id #{ JSON.stringify saved }"
-          res.json saved
-    ).catch( ( err ) ->
-      res.json err
-    ) #requestify.post
 
+    
 
 }
 

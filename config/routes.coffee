@@ -207,9 +207,9 @@ module.exports.routes =
         controller:             'PaymentController'
         action:                 'pay_org'
 
-  'post /payment/:id/authenticate-stripe':
+  'post /payment/:id/create-managed-account':
         controller:             'PaymentController'
-        action:                 'authenticate_stripe'
+        action:                 'create_managed_account'
 
   #End of PaymentController
 

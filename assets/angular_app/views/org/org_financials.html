@@ -4,6 +4,9 @@
   Token balance: {{ org.bank_acc[0].tokens }}
 </div>
 
+
+
+
 <div class="container-fluid">
   <form ng-submit="withdraw_tokens()" class="form-horizontal">
     <h4>You can withdraw tokens. The amount will be deposited in your selected bank account</h4>
@@ -23,6 +26,6 @@
   </form> <!-- end of withdraw_tokens() -->
 </div> <!-- end of container-fluid -->
 
-<div class="text-center container-fluid" ng-if="display_stripe">
+<!-- <div class="text-center container-fluid" ng-if="display_stripe">
   <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_7U9yBDJZiiWwLVPnViz885gsmxhUmxd4&scope=read_write&redirect_uri=http://localhost:1337/%23/org-financials" class="stripe-connect"><span>Connect with Stripe</span></a>
-</div>
+</div> -->

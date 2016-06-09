@@ -28,7 +28,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       if $location.search().code?
         console.log $location.search().code
         COMMS.POST(
-          "/payment/#{ $scope.org.id }/authenticate-stripe"
+          "/payment/#{ $scope.org.id }/create-managed-account"
           auth_code: $location.search().code
         ).then ( ( res ) ->
           console.log "Authenticated stripe"

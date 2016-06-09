@@ -15,7 +15,7 @@ angular.module('subzapp').controller('OrgFinancialsController', [
       display_stripe = $rootScope.USER.tokens[0].stripe_user_id === null;
       if ($location.search().code != null) {
         console.log($location.search().code);
-        return COMMS.POST("/payment/" + $scope.org.id + "/authenticate-stripe", {
+        return COMMS.POST("/payment/" + $scope.org.id + "/create-managed-account", {
           auth_code: $location.search().code
         }).then((function(res) {
           console.log("Authenticated stripe");
