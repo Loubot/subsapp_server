@@ -72,7 +72,7 @@
     "test": "mocha  test/bootstrap.test.coffee test/integration/models/User.test.coffee test/integration/models/Org.test.coffee test/integration/models/Location.test.coffee test/integration/models/Team.test.coffee test/integration/models/Event.test.coffee test/integration/models/OrgTokenBalance.test.coffee test/integration/inject/seed.coffee test/integration/controllers/UserController.test.coffee test/integration/controllers/OrgController.test.coffee test/integration/controllers/EventController.test.coffee"
   },
   "engines": {
-    "node": "~4.2.2",
+    "node": "~6.11.1",
     "npm": "~2.14.17"
   },
   "main": "app.js",
